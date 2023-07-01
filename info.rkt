@@ -1,6 +1,6 @@
 #lang info
 
-(define collection "Jr. PLT")
+(define collection "Jr.PLT")
 (define pkg-desc "Programming Language Theory for Juniors, A Contrastive Approach")
 
 (define deps '("digimon" "pict"))
