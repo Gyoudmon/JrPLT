@@ -1,0 +1,9 @@
+[submodule "big-bang.cpp"]
+	path = digitama/big-bang-cpp
+	url = https://github.com/Gyoudmon/big-bang.cpp
+[submodule "digitama/big-bang-py"]
+	path = digitama/big-bang-py
+	url = https://github.com/Gyoudmon/big-bang.py
+[submodule "stone/mascot"]
+	path = stone/mascot
+	url = https://github.com/Gyoudmon/mascot.git
