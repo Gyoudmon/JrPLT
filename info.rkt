@@ -19,4 +19,6 @@
 (define native-compiled-subpath '())
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define typesettings '(["JrPLT.scrbl" xelatex]))
+(define typesettings
+  '(["TheBigBang.scrbl" xelatex]
+    ["literacy/Metrics.scrbl" xelatex #:always-make]))
