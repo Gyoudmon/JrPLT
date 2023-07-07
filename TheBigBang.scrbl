@@ -4,7 +4,7 @@
 @require{literacy/graphviz.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title{初级程序语言理论：对比学习方法}
+@handbook-title{C++ 亦或 Python，以及其他@linebreak[]@elem[#:style (make-style "large" null)]{跨学科方法}}
 
 @texbook-frontmatter[]
 
