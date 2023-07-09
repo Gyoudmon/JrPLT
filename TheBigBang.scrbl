@@ -4,7 +4,7 @@
 @require{literacy/graphviz.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title{C++ 亦或 Python，以及其他@linebreak[]@elem[#:style (make-style "large" null)]{跨学科方法}}
+@handbook-title[#:subtitle "从零到跨学科" #:hide-version? #true]{C++ 异或 Python，以及其他}
 
 @texbook-frontmatter[]
 

@@ -18,6 +18,9 @@
 
 (define native-compiled-subpath '())
 
+(define native-launcher-names
+  `(["BigBang.cpp" so ,sdl2-config]))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define typesettings
   '(["TheBigBang.scrbl" xelatex]
