@@ -101,3 +101,14 @@
 (define question
   (lambda argv
     (apply racketparenfont argv)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define japanese
+  (lambda [#:latex? [latex? 'auto] . contents]
+    (cond [(symbol? latex?)
+           (make-traverse-element
+            (λ [get set!]
+              (japanese #:latex? (handbook-latex-renderer? get)
+                       contents)))]
+          [(and latex?) (make-element "japanese" (list contents))]
+          [else contents])))
