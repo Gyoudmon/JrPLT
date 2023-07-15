@@ -4,7 +4,7 @@
 @require{literacy/graphviz.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title[#:subtitle "从零到跨学科完全自学手册" #:hide-version? #true]{不只是“C++ 异或 Python”}
+@handbook-title[#:subtitle "混合语言 ior 跨学科方法" #:hide-version? #true]{不只是“C++ 异或 Python”}
 
 @texbook-frontmatter[]
 

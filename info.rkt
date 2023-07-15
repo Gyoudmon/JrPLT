@@ -19,7 +19,7 @@
 (define native-compiled-subpath '())
 
 (define native-launcher-names
-  `(["digitama/big-bang-cpp/BigBang.cpp" so ,sdl2-config]))
+  `(["digitama/big-bang-cpp/libgstem.cpp" so ,sdl2-config]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define typesettings
