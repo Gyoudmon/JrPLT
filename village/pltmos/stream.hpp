@@ -9,7 +9,7 @@
 
 namespace WarGrey::PLT {
     /******************************************* 声明游戏物体 ******************************************/
-    class StreamSprite : public WarGrey::STEM::Sprite {
+    class __lambda__ StreamSprite : public WarGrey::STEM::Sprite {
     public:
         StreamSprite(const char* action, float width = 0.0F, float ratio = 3.0F);
 
@@ -29,7 +29,7 @@ namespace WarGrey::PLT {
     };
     
     /******************************************* 声明游戏世界 ******************************************/
-    class StreamPlane : public WarGrey::PLT::ThePLTPlane {
+    class __lambda__ StreamPlane : public WarGrey::PLT::ThePLTPlane {
     public:
         StreamPlane(const char* spath = "");
         virtual ~StreamPlane() {}

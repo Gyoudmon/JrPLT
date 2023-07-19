@@ -3,9 +3,9 @@
 #include <gydm_stem/game.hpp>
 
 namespace WarGrey::PLT {
-    bool is_plt_plane_name(const char* name);
+    __lambda__ bool is_plt_plane_name(const char* name);
 
-    class ThePLTPlane : public WarGrey::STEM::Plane {
+    class __lambda__ ThePLTPlane : public WarGrey::STEM::Plane {
     public:
         ThePLTPlane(const char* name);
         virtual ~ThePLTPlane() {}
