@@ -12,10 +12,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; WARNING
-; Package binaries and resources inside one repository might not be a good idea
-;   as the SDL2 header files causes "typedef redefinition with different types
-;   about the `size_t`" in macOS, in which we don't have to manage SDL2 header
-;   files manually.
+; Packaging binaries and resources inside one repository might not be a good
+;   idea as the SDL2 header files causes "typedef redefinition with different
+;   types about the `size_t`" in macOS, in which we don't have to manage SDL2
+;   header files manually.
 ; Here we choose to link to the base shared object directly for generating
 ;   additional shared objects, in which case the mentioned problem above
 ;   is avoided.
