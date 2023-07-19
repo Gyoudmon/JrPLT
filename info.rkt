@@ -22,16 +22,16 @@
 
 (define sdl2-config
   '((config SDL2)
-    (include [windows "C:\\opt\\vcso\\include"])
-    (libpath [windows "C:\\opt\\vcso\\lib"])))
+    (include [windows "C:\\opt\\GYDMstem\\include"])
+    (libpath [windows "C:\\opt\\GYDMstem\\lib"])))
 
 (define sdl2+config
   '((config SDL2)
     (lib gydm.stem)
     (include "digitama/big-bang-cpp/compiled/native"
-             [windows "C:\\opt\\vcso\\include"])
+             [windows "C:\\opt\\GYDMstem\\include"])
     (libpath "digitama/big-bang-cpp/compiled/native"
-             [windows "C:\\opt\\vcso\\lib"])))
+             [windows "C:\\opt\\GYDMstem\\lib"])))
 
 (define native-compiled-subpath '())
 
