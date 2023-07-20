@@ -41,5 +41,5 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define typesettings
-  '(["TheBigBang.scrbl" xelatex]
+  '(["literacy/TheBigBang.scrbl" xelatex]
     ["literacy/Metrics.scrbl" xelatex #:always-make]))

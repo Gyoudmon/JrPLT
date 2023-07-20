@@ -1,7 +1,7 @@
 #lang scribble/book
 
-@require{literacy/literacy.rkt}
-@require{literacy/graphviz.rkt}
+@require{literacy.rkt}
+@require{graphviz.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-title[#:subtitle "跨学科 ior 对比语言方法" #:hide-version? #true]{不只是“C++ 异或 Python”}
@@ -21,16 +21,16 @@
 
 @texbook-mainmatter[]
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@include-section{literacy/greetings.scrbl}
-@include-section{literacy/typesystem.scrbl}
-@include-section{literacy/nature.scrbl}
-@include-section{literacy/ecology.scrbl}
-@include-section{literacy/goodbye.scrbl}
+@include-section{greetings.scrbl}
+@include-section{typesystem.scrbl}
+@include-section{nature.scrbl}
+@include-section{ecology.scrbl}
+@include-section{goodbye.scrbl}
 
 @texbook-appendix{附录}
 
-@include-section{literacy/environment.scrbl}
-@include-section{literacy/answers.scrbl}
+@include-section{environment.scrbl}
+@include-section{answers.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @texbook-backmatter[]
@@ -54,6 +54,10 @@
  (book-bib-entry #:date "2012" #:url "https://natureofcode.com/book/"
                  "NoC" "The Nature of Code"
                  "Daniel Shiffman" #false)
+ (book-bib-entry #:date "2020"  #:edition "1st"
+                 "DTC" "Don't teach coding: until you read this book"
+                 (list "Lindsey D. Handley" "Stephen R. Foster")
+                 "Jossey Bass")
  (book-bib-entry #:date "2009"
                  "TCC" "冒号课堂：编程范式与OOP思想"
                  "郑辉" "电子工业出版社")

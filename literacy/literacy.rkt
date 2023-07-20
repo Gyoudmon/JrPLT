@@ -25,6 +25,8 @@
 (tamer-default-figure-label "图")
 (tamer-default-code-label "段")
 
+(current-tongue 'zh-Hans)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define stone-image
   (lambda [path #:scale [scale 1.0]]
