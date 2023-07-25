@@ -1,10 +1,8 @@
 #lang scribble/book
 
-@(require "../literacy.rkt")
+@(require "../../literacy.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-story{一维数组}
-
-@handbook-scenario{贪吃环节动物}
+@handbook-story{黑客语言：一行 Shell 胜过万行 C}
 
 @handbook-reference[]

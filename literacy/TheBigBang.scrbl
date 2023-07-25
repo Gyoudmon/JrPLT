@@ -67,4 +67,8 @@
  (book-bib-entry #:date "2015" #:edition "8th"
                  "SE:APA" "Software Engineering: A Practitioner's Approach"
                  (list "Roger S. Pressman" "Bruce R. Maxim")
-                 "机械工业出版社")]
+                 "机械工业出版社")
+ (url-bib-entry #"ST" "什么是科学思维？如何建立科学思维？"
+                "https://b23.tv/WvDw04W"
+                #:author (list "芳斯塔芙" "鬼谷藏龙")
+                #:date "2023")]
