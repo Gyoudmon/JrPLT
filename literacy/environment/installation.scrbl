@@ -7,6 +7,10 @@
 
 @(define figure-scale 0.20)
 
+初学编程最麻烦的地方不来自于编程本身，
+而是要配置好各种编程软件让你自己能顺利学习，
+有时候这个过程真的挺让人挫败的。
+
 @handbook-scenario{Racket}
 
 Racket 是 Lisp 语系的一种方言，Lisp 是最古老的两大高级程序语言之一。

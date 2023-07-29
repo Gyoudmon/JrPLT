@@ -36,9 +36,9 @@
 @texbook-backmatter[]
 
 @handbook-appendix[#:index-section? #true #:numbered? #false
- (book-bib-entry #:date "2019" #:edition "3rd"
-                 "GEA" "Game Engine Architecture"
-                 "Jason Gregory" "CRC Press")
+ (book-bib-entry #:date "1997"
+                 "CnC" "Computability and Complexity: From a Programming Perspective"
+                 "Neil D. Jones" "The MIT Press")
  (book-bib-entry #:date "2013" #:edition "1st"
                  "RoR" "Realm of Racket: Learn to Program, One Game at a Time!"
                  (list "Forrest Bice" "Rose DeMaio" "Spencer Florence" "Feng-Yun Mimi Lin" "Scott Lindeman"
@@ -54,6 +54,9 @@
  (book-bib-entry #:date "2012" #:url "https://natureofcode.com/book/"
                  "NoC" "The Nature of Code"
                  "Daniel Shiffman" #false)
+ (book-bib-entry #:date "2019" #:edition "3rd"
+                 "GEA" "Game Engine Architecture"
+                 "Jason Gregory" "CRC Press")
  (book-bib-entry #:date "2020"  #:edition "1st"
                  "DTC" "Don't teach coding: until you read this book"
                  (list "Lindsey D. Handley" "Stephen R. Foster")
