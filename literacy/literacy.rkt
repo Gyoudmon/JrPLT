@@ -104,6 +104,10 @@
   (lambda argv
     (apply racketparenfont argv)))
 
+(define mlink
+  (lambda argv
+    (apply litchar argv)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define japanese
   (lambda [#:latex? [latex? 'auto] . contents]

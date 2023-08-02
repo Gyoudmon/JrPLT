@@ -71,6 +71,10 @@
                  "SE:APA" "Software Engineering: A Practitioner's Approach"
                  (list "Roger S. Pressman" "Bruce R. Maxim")
                  "机械工业出版社")
+ (book-bib-entry #:date "2018"
+                 "CJLH" "The Combridge Handbook of Japanese Linguistics"
+                 (editor "Yoko Hasegawa")
+                 "Cambridge University Press")
  (url-bib-entry #"ST" "什么是科学思维？如何建立科学思维？"
                 "https://b23.tv/WvDw04W"
                 #:author (list "芳斯塔芙" "鬼谷藏龙")

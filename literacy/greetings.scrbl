@@ -3,7 +3,7 @@
 @(require "literacy.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-part{热身准备}
+@handbook-part{数字世界}
 
 @include-section{greetings/language.scrbl}
 @include-section{greetings/function.scrbl}
