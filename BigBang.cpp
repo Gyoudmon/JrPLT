@@ -5,6 +5,7 @@
 #include <filesystem>
 
 using namespace WarGrey::STEM;
+using namespace WarGrey::PLT;
 
 /*************************************************************************************************/
 namespace {
@@ -123,15 +124,24 @@ namespace {
 
     public:
         bool can_select(IMatter* m) override {
-            return true;
+            return isinstance(m, Coinlet)
+                    || (m == this->tux)
+                    || (m == this->agent);
         }
 
         void on_tap(IMatter* m, float x, float y) override {
+            auto coin = dynamic_cast<Coinlet*>(m);
+
             if (m == this->tux) {
                 if (this->tux->is_wearing()) {
                     this->tux->take_off();
                 } else {
                     this->tux->wear("santa_hat");
+                }
+            } else if (coin != nullptr) {
+                if (coin->name.compare(unknown_task_name) != 0) {
+                    this->target_plane = coin->idx;
+                    this->agent->play("Hide", 1);
                 }
             }
         }
@@ -194,6 +204,8 @@ namespace {
             GameFont::fontsize(21);
 
             this->push_plane(new TheBigBangPlane(this));
+
+            this->push_plane(new StreamPlane());
         }
 
     protected:
@@ -204,31 +216,7 @@ namespace {
         }
 
     private:
-        void parse_cmdline_options(int argc, char* argv[]) {
-            CmdlineOps opt = CmdlineOps::_;
-            std::string datin;
-
-            // this->set_cmdwin_height(32);
-
-            for (int idx = 1; idx < argc; idx ++) {
-                switch (opt) {
-                    case CmdlineOps::TopCount: {
-                        this->top_count = std::stoi(argv[idx]);
-                        opt = CmdlineOps::_;
-                    }; break;
-                    default: {
-                        if (strncmp("--tc", argv[idx], 5) == 0) {
-                            opt = CmdlineOps::TopCount;
-                        } else {
-                            datin = std::string(argv[idx]);
-                        }
-                    }
-                }
-            }
-        }
-
-    private:
-        int top_count = 0;
+        void parse_cmdline_options(int argc, char* argv[]) {}
     };
 }
 
