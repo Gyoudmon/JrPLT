@@ -3,6 +3,8 @@
         {
             "name": "macOS",
             "includePath": [
+                "digitama",
+                "village",
                 "/usr/local/include",
                 "/opt/GYDMstem/include"
             ],
@@ -27,6 +29,8 @@
         {
             "name": "win32",
             "includePath": [
+                "digitama",
+                "village",
                 "C:\\opt\\GYDMstem\\include"
             ],
             "defines": [
