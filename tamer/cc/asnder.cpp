@@ -1,10 +1,10 @@
 
-#include "../../digitama/big-bang-cpp/wormhole/jargon/asn_der.hpp"
+#include "../../digitama/gydm_stem/wormhole/jargon/asn_der.hpp"
 
-#include "../../digitama/big-bang-cpp/datum/fixnum.hpp"
-#include "../../digitama/big-bang-cpp/datum/flonum.hpp"
-#include "../../digitama/big-bang-cpp/datum/natural.hpp"
-#include "../../digitama/big-bang-cpp/datum/enum.hpp"
+#include "../../digitama/gydm_stem/datum/fixnum.hpp"
+#include "../../digitama/gydm_stem/datum/flonum.hpp"
+#include "../../digitama/gydm_stem/datum/natural.hpp"
+#include "../../digitama/gydm_stem/datum/enum.hpp"
 
 using namespace WarGrey::STEM;
 

@@ -3,8 +3,6 @@
 @(require "../literacy.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-story{演化策略}
-
-@handbook-scenario{利他主义}
+@handbook-story{生命游戏}
 
 @handbook-reference[]

@@ -1,7 +1,7 @@
-#include "../../digitama/big-bang-cpp/wormhole/checksum/crc32.hpp"
-#include "../../digitama/big-bang-cpp/wormhole/checksum/ipv4.hpp"
+#include "../../digitama/gydm_stem/wormhole/checksum/crc32.hpp"
+#include "../../digitama/gydm_stem/wormhole/checksum/ipv4.hpp"
 
-#include "../../digitama/big-bang-cpp/datum/string.hpp"
+#include "../../digitama/gydm_stem/datum/string.hpp"
 
 using namespace WarGrey::STEM;
 

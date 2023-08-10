@@ -39,7 +39,7 @@ namespace {
             
 #ifndef __windows__
                     this->names.push_back(this->insert(new Labellet(GameFont::fangsong(), GAINSBORO, "%s", vname.c_str())));
-                    this->coins.push_back(this->insert(new StarFruitlet(idx + 1)));
+                    this->coins.push_back(this->insert(new Coinlet(vname, idx + 1)));
 #else
                     this->coins.push_back(this->insert(new Coinlet(vname, idx + 1)));
 #endif
@@ -50,7 +50,7 @@ namespace {
                     std::string vname = make_nstring(task_name_fmt, idx + 1, string_add_between(task_name).c_str());
 
                     this->names.push_back(this->insert(new Labellet(GameFont::fangsong(), ROYALBLUE, "%s", vname.c_str())));
-                    this->stars.push_back(this->insert(new StarFruitlet(idx + 1)));
+                    this->coins.push_back(this->insert(new Coinlet(vname, idx + 1)));
 #else
                     std::string vname = make_nstring(task_name_fmt, idx + 1, task_name);
 
@@ -77,7 +77,7 @@ namespace {
                 }
 
 #ifndef __windows__
-                this->move_to(this->names[idx], this->stars[idx], MatterAnchor::CB, MatterAnchor::CT);
+                this->move_to(this->names[idx], this->coins[idx], MatterAnchor::CB, MatterAnchor::CT);
 #endif
             }
 
