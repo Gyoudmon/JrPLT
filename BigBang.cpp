@@ -20,9 +20,9 @@ namespace {
     static const int advent_days = 25;
 
     /*********************************************************************************************/
-    class TheBigBangPlane : public Plane {
+    class BlankPlane : public Plane {
     public:
-        TheBigBangPlane(Cosmos* master) : Plane("The Big Bang!"), master(master) {}
+        BlankPlane(Cosmos* master) : Plane("The Big Bang!"), master(master) {}
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override {
@@ -178,9 +178,9 @@ namespace {
     /*************************************************************************************************/
     enum class CmdlineOps { TopCount, GroupSize, _ };
 
-    class TheBigBangCosmos : public Cosmos {
+    class BlankCosmos : public Cosmos {
     public:
-        TheBigBangCosmos(const char* process_path) : Cosmos(60) {
+        BlankCosmos(const char* process_path) : Cosmos(60) {
             enter_digimon_zone(process_path);
             imgdb_setup(digimon_zonedir().append("stone"));
             
@@ -193,7 +193,7 @@ namespace {
 #endif
         }
 
-        virtual ~TheBigBangCosmos() {
+        virtual ~BlankCosmos() {
             imgdb_teardown();
         }
 
@@ -203,7 +203,7 @@ namespace {
             this->set_window_size(1200, 0);
             GameFont::fontsize(21);
 
-            this->push_plane(new TheBigBangPlane(this));
+            this->push_plane(new BlankPlane(this));
 
             this->push_plane(new StreamPlane());
         }
@@ -215,6 +215,14 @@ namespace {
             }
         }
 
+        void on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) override {
+            if (pressed) {
+                printf("you pressed '%c'\n", key);
+            }
+
+            Cosmos::on_char(key, modifiers, repeats, pressed);
+        }
+
     private:
         void parse_cmdline_options(int argc, char* argv[]) {}
     };
@@ -222,7 +230,7 @@ namespace {
 
 /*************************************************************************************************/
 int main(int argc, char* args[]) {
-    TheBigBangCosmos universe(args[argc]);
+    BlankCosmos universe(args[argc]);
 
     universe.construct(argc, args);
     universe.big_bang();

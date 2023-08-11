@@ -52,6 +52,19 @@
             "environment": [],
             "externalConsole": false,
             "preLaunchTask": "宇宙大爆炸@Windows[Debug]"
+        },
+        
+        {
+            "name": "winBlank",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/tamer/compiled/native/debug/blank.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "preLaunchTask": "宇宙大爆炸@Windows[Debug]"
         }
     ],
     "version": "2.0.0"

@@ -48,7 +48,9 @@
 (define native-launcher-names
   `(["digitama/gydm_stem/gydm.stem.cpp" so ,sdl2-config]
     ["village/pltmos/pltmos.cpp" so ,sdl2+config]
-    ["BigBang.cpp" console ,sdl2+all]))
+    ["BigBang.cpp" console ,sdl2+all]
+    
+    ["tamer/blank.cpp" console ,sdl2-config]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define typesettings
