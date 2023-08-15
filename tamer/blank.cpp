@@ -43,6 +43,10 @@ namespace {
             }
         }
 
+        void on_text(const char* text, size_t size, bool entire) override {
+            this->ime_msg->set_text(MatterAnchor::RB, "%s", text);
+        }
+
         void on_editing_text(const char* text, int pos, int span) override {
             this->ime_msg->set_text(MatterAnchor::RB, "%s", text);
         }

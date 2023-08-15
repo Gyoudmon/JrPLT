@@ -7,6 +7,8 @@
 
 @include-section{typesystem/number.scrbl}
 @include-section{typesystem/boolean.scrbl}
-@include-section{typesystem/array.scrbl}
+@include-section{typesystem/collection.scrbl}
+@include-section{typesystem/string.scrbl}
+@include-section{typesystem/stream.scrbl}
 
 @handbook-reference[]

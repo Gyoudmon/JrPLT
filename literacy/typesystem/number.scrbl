@@ -3,6 +3,6 @@
 @(require "../literacy.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-story{数值类型}
+@handbook-story{数塔}
 
 @handbook-reference[]

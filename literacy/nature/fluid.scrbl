@@ -3,6 +3,8 @@
 @(require "../literacy.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-story{函数式编程}
+@handbook-story{流体仿真}
+
+@handbook-scenario{非牛顿流体}
 
 @handbook-reference[]

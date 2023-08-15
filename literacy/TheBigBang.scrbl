@@ -15,7 +15,20 @@
 也一定能在学习这个假想的语言时碰到。
 如果一定要从语言角度来回答“如何学习编程，并能适应智能时代”，
 那就是学习这个包罗万象的假想语言，
-并知道如何将它翻译成稳定的可执行的具体的程序语言。
+并知道如何将它翻译成稳定的具体的可(编译)执行的代码。
+
+本书主要教授学生 C++ 和 Python，
+也会援引 Racket 和其他语言，
+或作为历史见证，
+或作为辅助工具，
+或只是出于写作本书的便利。
+
+知识是网状结构，
+但书只能以树形结构组织。因此，
+对本书章节标题的理解应该是“本节以此话题为主线”，
+而不应该理解为“本节只讲这个主题”。
+读者应铭记于心：
+跨学科和对比学习是贯穿全书的暗线。
 
 @handbook-smart-table[]
 
@@ -24,7 +37,7 @@
 @include-section{greetings.scrbl}
 @include-section{typesystem.scrbl}
 @include-section{nature.scrbl}
-@include-section{ecology.scrbl}
+@include-section{lambda.scrbl}
 @include-section{goodbye.scrbl}
 
 @texbook-appendix{附录}
