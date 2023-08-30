@@ -52,9 +52,8 @@
 但仅就语文、数学、英语三门课的学习，我们就可以自信地总结：
 @idea{我们的大脑远比我们自己想象的更容易接纳和吸收新语言}。
 
-@include-section{language/type.scrbl}
+@include-section{language/category.scrbl}
 @include-section{language/lop.scrbl}
 @include-section{language/shell.scrbl}
-@include-section{language/main.scrbl}
 
 @handbook-reference[]
