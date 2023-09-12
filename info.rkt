@@ -33,22 +33,14 @@
     (libpath "digitama/gydm_stem/compiled/native"
              [windows "C:\\opt\\GYDMstem\\lib"])))
 
-(define sdl2+all
-  '((config SDL2)
-    (lib gydm.stem pltmos)
-    (include "digitama/gydm_stem/compiled/native"
-             "village/pltmos/compiled/native"
-             [windows "C:\\opt\\GYDMstem\\include"])
-    (libpath "digitama/gydm_stem/compiled/native"
-             "village/pltmos/compiled/native"
-             [windows "C:\\opt\\GYDMstem\\lib"])))
-
 (define native-compiled-subpath '())
 
 (define native-launcher-names
   `(["digitama/gydm_stem/gydm.stem.cpp" so ,sdl2-config]
     ["village/pltmos/pltmos.cpp" so ,sdl2+config]
-    ["BigBang.cpp" console ,sdl2+all]
+    ["village/scsmos/scsmos.cpp" so ,sdl2+config]
+    
+    ["BigBang.cpp" console ,sdl2+config]
     
     ["tamer/blank.cpp" console ,sdl2-config]))
 

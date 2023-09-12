@@ -1,35 +1,34 @@
 #include <gydm_stem/game.hpp>
-#include <pltmos/stream.hpp>
+
+#include "village/pltmos/stream.hpp"
+#include "village/scsmos/schematics/optics/pinhole.hpp"
 
 #include <vector>
 #include <filesystem>
 
 using namespace WarGrey::STEM;
 using namespace WarGrey::PLT;
+using namespace WarGrey::SCSM;
 
 /*************************************************************************************************/
 namespace {
-#ifndef __windows__
-    static const char* unknown_task_name = "冒\n险\n越\n来\n越\n深\n入\n了";
-    static const char* task_name_fmt = "%02d\n%s";
-#else
     static const char* unknown_task_name = "冒险越来越深入了";
     static const char* task_name_fmt = "%02d %s";
-#endif
 
     static const int advent_days = 25;
 
     /*********************************************************************************************/
-    class BlankPlane : public Plane {
+    class SplashPlane : public Plane {
     public:
-        BlankPlane(Cosmos* master) : Plane("The Big Bang!"), master(master) {}
+        SplashPlane(Cosmos* master) : Plane("青少计算机科学"), master(master) {}
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override {
-            this->title = this->insert(new Labellet(GameFont::Title(), BLACK, "青少计算机科学：宇宙大爆炸"));
+            this->title = this->insert(new Labellet(GameFont::Title(), BLACK, this->name()));
             
             this->agent = this->insert(new Linkmon());
             this->agent->scale(-1.0F, 1.0F);
+            this->set_sentry_sprite(this->agent);
             
             for (int idx = 0; idx < advent_days; idx ++) {
                 const char* task_name = this->master->plane_name(idx + 1);
@@ -37,25 +36,12 @@ namespace {
                 if (task_name == nullptr) {
                     std::string vname = make_nstring(task_name_fmt, idx + 1, unknown_task_name);
             
-#ifndef __windows__
-                    this->names.push_back(this->insert(new Labellet(GameFont::fangsong(), GAINSBORO, "%s", vname.c_str())));
                     this->coins.push_back(this->insert(new Coinlet(vname, idx + 1)));
-#else
-                    this->coins.push_back(this->insert(new Coinlet(vname, idx + 1)));
-#endif
-
                     this->coins.back()->stop();
                 } else {
-#ifndef __windows__
-                    std::string vname = make_nstring(task_name_fmt, idx + 1, string_add_between(task_name).c_str());
-
-                    this->names.push_back(this->insert(new Labellet(GameFont::fangsong(), ROYALBLUE, "%s", vname.c_str())));
-                    this->coins.push_back(this->insert(new Coinlet(vname, idx + 1)));
-#else
                     std::string vname = make_nstring(task_name_fmt, idx + 1, task_name);
 
                     this->coins.push_back(this->insert(new Coinlet(vname, idx + 1)));
-#endif
                 }
             }
 
@@ -75,10 +61,6 @@ namespace {
                 } else {
                     this->move_to(this->coins[idx], this->coins[idx - 1], MatterAnchor::RC, MatterAnchor::LC);
                 }
-
-#ifndef __windows__
-                this->move_to(this->names[idx], this->coins[idx], MatterAnchor::CB, MatterAnchor::CT);
-#endif
             }
 
             if (this->coins.size() == 0) {
@@ -139,7 +121,7 @@ namespace {
                     this->tux->wear("santa_hat");
                 }
             } else if (coin != nullptr) {
-                if (coin->name.compare(unknown_task_name) != 0) {
+                if (coin->in_playing()) {
                     this->target_plane = coin->idx;
                     this->agent->play("Hide", 1);
                 }
@@ -148,16 +130,14 @@ namespace {
 
     protected:
         bool update_tooltip(IMatter* m, float local_x, float local_y, float global_x, float global_y) override {
-            bool updated = false;
-            
-#ifdef __windows__
             auto coin = dynamic_cast<Coinlet*>(m);
-
+            bool updated = false;            
+            
             if (coin != nullptr) {
                 this->tooltip->set_text(" %s ", coin->name.c_str());
+                this->tooltip->set_text_color(coin->in_playing() ? BLACK : GREY);
                 updated = true;
             }
-#endif
 
             return updated;
         }
@@ -203,9 +183,10 @@ namespace {
             this->set_window_size(1200, 0);
             GameFont::fontsize(21);
 
-            this->push_plane(new BlankPlane(this));
+            this->splash = this->push_plane(new SplashPlane(this));
 
             this->push_plane(new StreamPlane());
+            this->push_plane(new PinholePlane());
         }
 
     protected:
@@ -215,16 +196,15 @@ namespace {
             }
         }
 
-        void on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) override {
-            if (pressed) {
-                printf("you pressed '%c'\n", key);
-            }
-
-            Cosmos::on_char(key, modifiers, repeats, pressed);
+        bool can_exit() override {
+            return this->splash->has_mission_completed();
         }
 
     private:
         void parse_cmdline_options(int argc, char* argv[]) {}
+
+    private:
+        IPlane* splash;
     };
 }
 

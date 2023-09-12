@@ -2,10 +2,10 @@
 
 #include <gydm_stem/game.hpp>
 
-#include "plt.hpp"
-
 #include <fstream>
 #include <deque>
+
+#include "plt.hpp"
 
 namespace WarGrey::PLT {
     /******************************************* 声明游戏物体 ******************************************/

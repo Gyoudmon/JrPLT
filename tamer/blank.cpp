@@ -4,9 +4,9 @@ using namespace WarGrey::STEM;
 
 /*************************************************************************************************/
 namespace {
-    class BlankPlane : public Plane {
+    class SplashPlane : public Plane {
     public:
-        BlankPlane(Cosmos* master) : Plane("Blank!"), master(master) {}
+        SplashPlane(Cosmos* master) : Plane("Blank!"), master(master) {}
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override {
@@ -85,7 +85,7 @@ namespace {
             this->set_window_size(400, 300);
             GameFont::fontsize(21);
 
-            this->push_plane(new BlankPlane(this));
+            this->push_plane(new SplashPlane(this));
         }
     };
 }
