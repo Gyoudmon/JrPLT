@@ -4,7 +4,7 @@ using namespace WarGrey::STEM;
 using namespace WarGrey::PLT;
 
 /*************************************************************************************************/
-WarGrey::PLT::ThePLTPlane::ThePLTPlane(const char* name) : TheBigBang(name) {
+WarGrey::PLT::ThePLTPlane::ThePLTPlane(const char* name, uint32_t title_color) : TheBigBang(name, title_color) {
     this->the_name("[λ]程序语言理论");
 }
 

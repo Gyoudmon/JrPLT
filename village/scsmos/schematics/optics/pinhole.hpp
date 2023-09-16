@@ -29,7 +29,7 @@ namespace WarGrey::SCSM {
         void on_tap(WarGrey::STEM::IMatter* m, float x, float y) override;                  // 处理鼠标事件
 
     private:
-        void load_gameboard(float width, float height);
+        void load_labview(float width, float height);
         void load_instructions(float width, float height);
         void switch_game_state(WarGrey::SCSM::GameState new_state);
         void update_instructions_state(const uint32_t* colors);
@@ -40,7 +40,7 @@ namespace WarGrey::SCSM {
 
     private:
         class Pinholet;
-        WarGrey::SCSM::PinholePlane::Pinholet* gameboard;
+        WarGrey::SCSM::PinholePlane::Pinholet* labview;
 
     private: // 游戏状态
         WarGrey::SCSM::GameState state = GameState::_;

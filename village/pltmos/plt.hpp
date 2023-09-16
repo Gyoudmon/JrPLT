@@ -6,7 +6,7 @@
 namespace WarGrey::PLT {
     class __lambda__ ThePLTPlane : public WarGrey::STEM::TheBigBang {
     public:
-        ThePLTPlane(const char* name);
+        ThePLTPlane(const char* name, uint32_t title_color = 0U);
         virtual ~ThePLTPlane() {}
 
     protected:

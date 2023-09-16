@@ -2,27 +2,54 @@
 
 #include <gydm_stem/graphics/text.hpp>
 
+#include <SDL2/SDL2_gfxPrimitives.h>
 #include <filesystem>
+#include <vector>
 
 using namespace WarGrey::SCSM;
 using namespace WarGrey::STEM;
 using namespace std::filesystem;
 
 /*************************************************************************************************/
-#define DEFAULT_CONWAY_DEMO digimon_path("demo/conway/typical", ".gof")
+static const int default_frame_rate = 24;
 
-static const int default_frame_rate = 8;
+static const float light_dot_radius = 2.0F;
+static const float light_delta_length = 8.0F;
+static const float moving_distance = 2.0F;
+
+const uint32_t light_color = SNOW;
+const uint32_t pinhole_color = BURLYWOOD;
+const uint32_t pinhole_light_color = GREEN;
 
 /*************************************************************************************************/
-static const char AUTO_KEY = 'a';
+static const char ILLU_KEY = 'i';
 static const char STOP_KEY = 's';
+static const char EDIT_KEY = 'e';
 static const char PACE_KEY = 'p';
-static const char RSET_KEY = 'z';
+static const char CLER_KEY = 'c';
+static const char RSET_KEY = 'r';
 
-static const char ordered_keys[] = { AUTO_KEY, STOP_KEY, PACE_KEY, RSET_KEY };
-static const uint32_t colors_for_auto[] = { GRAY, GREEN, GRAY, GRAY, GRAY, GRAY, GRAY, GRAY };
-static const uint32_t colors_for_stop[]  = { GREEN, GRAY, GREEN, GREEN, GRAY, GRAY, GRAY, GRAY };
-static const uint32_t colors_for_edit[] = { GREEN, GRAY, GREEN, GRAY, GREEN, GREEN, GREEN, GREEN };
+static const char ordered_keys[] = { ILLU_KEY, STOP_KEY, EDIT_KEY, PACE_KEY, CLER_KEY, RSET_KEY };
+static const uint32_t colors_for_auto[] = { GRAY,  GREEN, GRAY,  GRAY,  GRAY,  GRAY };
+static const uint32_t colors_for_stop[] = { GREEN, GRAY,  GREEN, GREEN, GRAY,  GRAY };
+static const uint32_t colors_for_edit[] = { GREEN, GRAY,  GRAY,  GREEN, GREEN, GREEN };
+
+
+/*************************************************************************************************/
+class LightSource {
+public:
+    LightSource(float x, float y)
+        : x(x), y(y), length(0.0F), dirty(true) {}
+
+public:
+    float x;
+    float y;
+    float length;
+
+public:
+    bool dirty;
+    shared_texture_t texture;
+};
 
 /*************************************************************************************************/
 class WarGrey::SCSM::PinholePlane::Pinholet : public WarGrey::STEM::IGraphlet {
@@ -35,25 +62,279 @@ public:
         SET_BOX(width, this->width + 1.0F);
         SET_BOX(height, this->height + 1.0F);
     }
+
     void draw(SDL_Renderer* renderer, float x, float y, float Width, float Height) override {
-        RGB_SetRenderDrawColor(renderer, this->color);
-        game_draw_rect(renderer, x, y, Width, Height, this->color);
+        game_fill_rect(renderer, x, y, Width, Height, this->background_color);
+
+        for (auto light : this->lights) {
+            float cx = light.x - 1.0F;
+            float cy = light.y - 1.0F;
+
+            if (light.texture.use_count() == 0) {
+                light.texture = std::make_shared<Texture>(game_blank_image(renderer, this->width, this->height));
+            }
+
+            if (light.texture->okay()) {
+                if (light.dirty) {
+                    SDL_Texture* origin = SDL_GetRenderTarget(renderer);
+
+                    SDL_SetRenderTarget(renderer, light.texture->self());
+                    game_fill_rect(renderer, 0.0F, 0.0F, this->width, this->height, BLACK, 0.0);
+
+                    if (light.length > 0.0F) {
+                        RGB_SetRenderDrawColor(renderer, light_color, 0.1618);
+                        this->draw_light_area(renderer, cx, cy, light.length);
+                    }
+
+                    SDL_SetRenderTarget(renderer, origin);
+                    light.dirty = false;
+                }
+
+                game_render_texture(renderer, light.texture->self(), x, y, Width, Height);
+            }
+
+            game_fill_circle(renderer, x + cx, y + cy, light_dot_radius, light_color, 0.8);
+        }
+
+        /* draw pinhole and screen */ {
+            float px = x + this->pinhole_x;
+            float py = y + this->pinhole_ty;
+            float pte = py + this->pinhole_half_height;
+            float pbs = pte + this->pinhole_size;
+            float pb = pbs + this->pinhole_half_height;
+            float sx = x + this->screen_x;
+            float sy = y + this->screen_y;
+            float sb = sy + this->screen_height;
+            uint8_t r, g, b;
+
+            RGB_From_Hexadecimal(pinhole_color, &r, &g, &b);
+            aalineRGBA(renderer, px, py, px, pte, r, g, b, 0xFFU);
+            aalineRGBA(renderer, px, pbs, px, pb, r, g, b, 0xFFU);
+            aalineRGBA(renderer, sx, sy, sx, sb, r, g, b, 0xFFU);
+                
+            aalineRGBA(renderer, px, py, sx, sy, r, g, b, 0xFFU);
+            aalineRGBA(renderer, px, pb, sx, sb, r, g, b, 0xFFU);
+
+            for (auto light : this->lights) { 
+                if (light.x < this->pinhole_x) {
+                    float cx = x + light.x - 1.0F;
+                    float cy = y + light.y - 1.0F;
+                    float pty, pby;
+
+                    lines_intersect(cx, cy, px, pte, sx, sy, sx, sb, flnull_f, &pty, flnull_f);
+                    lines_intersect(cx, cy, px, pbs, sx, sy, sx, sb, flnull_f, &pby, flnull_f);
+
+                    RGB_From_Hexadecimal(pinhole_light_color, &r, &g, &b);
+                    aalineRGBA(renderer, cx, cy, sx, pty, r, g, b, 0xFFU);
+                    aalineRGBA(renderer, cx, cy, sx, pby, r, g, b, 0xFFU);
+
+                    game_draw_line(renderer, cx, cy, px, py, ROYALBLUE);
+                    game_draw_line(renderer, cx, cy, px, pb, ROYALBLUE);
+                    game_draw_line(renderer, cx, cy, sx, sy, ROYALBLUE);
+                    game_draw_line(renderer, cx, cy, sx, sb, ROYALBLUE);
+                }
+            }
+        }
     }
 
 public:
-    void set_color(uint32_t hex) {
-        if (this->color != hex) {
-            this->color = hex;
+    void set_background_color(uint32_t hex) {
+        if (this->background_color != hex) {
+            this->background_color = hex;
             this->notify_updated();
+        }
+    }
+
+    void set_pinhole(float fx, float length, float size = 4.0F) {
+        this->pinhole_size = size;
+        this->pinhole_half_height = (length - this->pinhole_size) * 0.5F;
+        this->pinhole_x = this->width * fx;
+        this->pinhole_ty = (this->height - length) * 0.5F;
+        
+        this->notify_updated();
+    }
+
+    void set_screen(float fx, float length) {
+        this->screen_x = this->width * fx;
+        this->screen_y = (this->height - length) * 0.5F;
+        this->screen_height = length;
+
+        this->notify_updated();
+    }
+
+    void move_pinhole(float dx) {
+        this->pinhole_x += dx;
+
+        if (flin(1.0F, this->pinhole_x, this->screen_x - 1.0F)) {
+            this->dirty_all();
+            this->notify_updated();
+        } else {
+            this->pinhole_x -= dx;
+        }
+    }
+
+    void move_screen(float dx) {
+        this->screen_x += dx;
+        
+        if (flin(this->pinhole_x + 1.0F, this->screen_x, this->width)) {
+            this->dirty_all();
+            this->notify_updated();
+        } else {
+            this->screen_x -= dx;
+        }
+    }
+
+    void move_pinhole_screen(float dx) {
+        this->pinhole_x += dx;
+        this->screen_x += dx;
+
+        if ((this->pinhole_x > 0.0F) && (this->screen_x <= this->width)) {
+            this->dirty_all();
+            this->notify_updated();
+        } else {
+            this->pinhole_x -= dx;
+            this->screen_x -= dx;
+        }
+    }
+
+    void resize_hole(float d) {
+        this->pinhole_half_height -= d;
+        this->pinhole_size += (d * 2.0F);
+
+        if ((this->pinhole_half_height > 0.0F) && (this->pinhole_size > 0.0F)) {
+            this->notify_updated();
+        } else {
+            this->pinhole_half_height += d;
+            this->pinhole_size -= (d * 2.0F);
         }
     }
     
 public:
+    void add_light_source(float x, float y) {
+        if (x < this->pinhole_x) {
+            float precision = light_dot_radius * 0.618F;
+
+            for (int i = 0; i < this->lights.size(); i ++) {
+                float dx = flabs(this->lights[i].x - x);
+                float dy = flabs(this->lights[i].y - y);
+
+                if ((dx <= precision) && (dy <= precision)) {
+                    this->lights.erase(this->lights.begin() + i);
+                    this->notify_updated();
+
+                    return;
+                }
+            }
+
+            this->lights.push_back(LightSource(x, y));
+            this->notify_updated();
+        }
+    }
+
     bool pace_forward() {
-        return false;
+        bool stepped = false;
+
+        for (int i = 0; i < this->lights.size(); i ++) {
+            float mx = flmax(this->lights[i].x, this->width - this->lights[i].x);
+            float my = flmax(this->lights[i].x, this->height - this->lights[i].y);
+                
+            if (this->lights[i].length < flmax(mx, my)) {
+                stepped = true;
+            } else {
+                float mlength = point_distance(0.0F, 0.0F, mx, my);
+
+                if (this->lights[i].length < mlength) {
+                    stepped = true;
+                }
+            }
+
+            if (stepped) {
+                this->lights[i].length += light_delta_length;
+                this->lights[i].dirty = true;
+            }
+        }
+
+        if (stepped) {
+            this->notify_updated();
+        }
+
+        return stepped;
+    }
+
+    void clear() {
+        if (!this->lights.empty()) {
+            for (int i = 0; i < this->lights.size(); i ++) {
+                this->lights[i].length = 0.0F;
+                this->lights[i].dirty = true;
+            }
+
+            this->notify_updated();
+        }
     }
 
     void reset() {
+        if (!this->lights.empty()) {
+            this->lights.clear();
+        }
+    }
+
+    void dirty_all() {
+        for (int i = 0; i < this->lights.size(); i ++) {
+            this->lights[i].dirty = true;
+        }
+    }
+
+private:
+    void draw_light_area(SDL_Renderer* renderer, int cx, int cy, int radius) {
+        int err = 2 - 2 * radius;
+        int x = -radius;
+        int y = 0;
+    
+        do {
+            float trx = this->right_boundary_of_light_area(float(cx), float(cy), cx - x, cy + y);
+            float brx = this->right_boundary_of_light_area(float(cx), float(cy), cx - x, cy - y);
+
+            SDL_RenderDrawLine(renderer, cx + x, cy,     cx + x, cy - y); // Q II
+            SDL_RenderDrawLine(renderer, cx + x, cy + y, trx,    cy + y); // Q III, Q IV
+            SDL_RenderDrawLine(renderer, cx,     cy - y, brx,    cy - y); // Q I
+
+            radius = err;
+            if (radius <= y) {
+                err += ++y * 2 + 1;
+            }
+
+            if ((radius > x) || (err > y)) {
+                err += ++x * 2 + 1;
+            }
+        } while (x < 0);
+    }
+
+    float right_boundary_of_light_area(float cx, float cy, float rx, float y) {
+        if (rx >= this->pinhole_x) {
+            float px = this->pinhole_x;
+            float py = this->pinhole_ty;
+            float pb = py + this->pinhole_half_height * 2.0F + this->pinhole_size;
+            float sx = this->screen_x;
+            float sy = this->screen_y;
+            float sb = sy + this->screen_height;
+            float ktp = line_slope(cx, cy, px, py);
+            float kts = line_slope(cx, cy, sx, sy);
+            float kt = line_slope(px, py, sx, sy);
+            float tt, bt, xp, xs, tp, ts;
+
+            if (y <= cy) {
+                lines_intersect(px, py, sx, sy, cx, y, rx, y, &xp, flnull_f, &ts);
+
+                if (flin(0.0F, ts, 1.0F)) {
+                    rx = flmin(rx, xp);
+                } else {
+                    lines_intersect(cx, cy, sx, sy, cx, y, rx, y, &xs, flnull_f, &tp);
+                    rx = flmin(rx, xs);
+                }
+            }
+        }
+
+        return rx;
     }
 
 private:
@@ -61,37 +342,51 @@ private:
     float height;
 
 private:
-    uint32_t color = BLACK;
+    std::vector<LightSource> lights;
+    float pinhole_x;
+    float pinhole_ty;
+    float pinhole_half_height;
+    float pinhole_size;
+    float screen_x;
+    float screen_y;
+    float screen_height;
+
+private:
+    uint32_t background_color = BLACK;
 };
 
 /*************************************************************************************************/
 void WarGrey::SCSM::PinholePlane::load(float width, float height) {
     TheSCSMPlane::load(width, height);
 
-    this->load_gameboard(width, height);
+    this->load_labview(width, height);
     this->load_instructions(width, height);
 
     this->set_local_fps(default_frame_rate);
 }
 
-void WarGrey::SCSM::PinholePlane::load_gameboard(float width, float height) {
+void WarGrey::SCSM::PinholePlane::load_labview(float width, float height) {
     float board_height = height - this->get_titlebar_height() * 2.0F;
     float board_width = width - this->get_titlebar_height();
 
-    this->gameboard = this->insert(new PinholePlane::Pinholet(board_width, board_height));
+    this->labview = this->insert(new PinholePlane::Pinholet(board_width, board_height));
+    this->labview->set_pinhole(0.5F, 32.0F);
+    this->labview->set_screen(0.7F, 96.0F);
 }
 
 void WarGrey::SCSM::PinholePlane::load_instructions(float width, float height) {
-    this->instructions[AUTO_KEY] = this->insert(new Labellet(GameFont::monospace(), "%c. 自行演化", AUTO_KEY));
-    this->instructions[STOP_KEY] = this->insert(new Labellet(GameFont::monospace(), "%c. 停止演化", STOP_KEY));
-    this->instructions[RSET_KEY] = this->insert(new Labellet(GameFont::monospace(), "%c. 世界归零", RSET_KEY));
+    this->instructions[ILLU_KEY] = this->insert(new Labellet(GameFont::monospace(), "%c. 正常发光", ILLU_KEY));
+    this->instructions[STOP_KEY] = this->insert(new Labellet(GameFont::monospace(), "%c. 停止发光", STOP_KEY));
+    this->instructions[EDIT_KEY] = this->insert(new Labellet(GameFont::monospace(), "%c. 编辑光源", EDIT_KEY));
+    this->instructions[CLER_KEY] = this->insert(new Labellet(GameFont::monospace(), "%c. 清除光线", CLER_KEY));
+    this->instructions[RSET_KEY] = this->insert(new Labellet(GameFont::monospace(), "%c. 重制光源", RSET_KEY));
     this->instructions[PACE_KEY] = this->insert(new Labellet(GameFont::monospace(), "%c. 单步跟踪", PACE_KEY));
 }
 
 void WarGrey::SCSM::PinholePlane::reflow(float width, float height) {
     TheSCSMPlane::reflow(width, height);
 
-    this->move_to(this->gameboard, width * 0.5F, (height + this->get_titlebar_height()) * 0.5F, MatterAnchor::CC);
+    this->move_to(this->labview, width * 0.5F, (height + this->get_titlebar_height()) * 0.5F, MatterAnchor::CC);
     
     this->move_to(this->instructions[ordered_keys[0]], 0.0F, height, MatterAnchor::LB);
     for (int idx = 1; idx < sizeof(ordered_keys) / sizeof(char); idx ++) {
@@ -102,7 +397,7 @@ void WarGrey::SCSM::PinholePlane::reflow(float width, float height) {
 }
 
 void WarGrey::SCSM::PinholePlane::on_mission_start(float width, float height) {
-    this->switch_game_state(GameState::Stop);
+    this->switch_game_state(GameState::Edit);
 }
 
 void WarGrey::SCSM::PinholePlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
@@ -117,13 +412,17 @@ bool WarGrey::SCSM::PinholePlane::can_select(IMatter* m) {
 
     return m == this->agent
         || ((this->state == GameState::Edit)
-            && (m == this->gameboard))
+            && (m == this->labview))
         || ((menu != nullptr)
             && (menu->get_text_color() == GREEN));
 }
 
 void WarGrey::SCSM::PinholePlane::on_tap(IMatter* matter, float x, float y) {
-    if (isinstance(matter, Labellet)) {
+    if (matter == this->labview) {
+        if (this->state == GameState::Edit) {
+            this->labview->add_light_source(x, y);
+        }
+    } else if (isinstance(matter, Labellet)) {
         for (size_t idx = 0; idx < sizeof(ordered_keys) / sizeof(char);  idx ++) {
             if (this->instructions[ordered_keys[idx]] == matter) {
                 this->on_char(ordered_keys[idx], 0, 1, false);
@@ -139,23 +438,36 @@ void WarGrey::SCSM::PinholePlane::on_char(char key, uint16_t modifiers, uint8_t 
         if (this->instructions.find(key) != this->instructions.end()) {
             if (this->instructions[key]->get_text_color() == GREEN) {
                 switch(key) {
-                case AUTO_KEY: this->switch_game_state(GameState::Auto); break;
+                case ILLU_KEY: this->switch_game_state(GameState::Auto); break;
                 case STOP_KEY: this->switch_game_state(GameState::Stop); break;
-                case RSET_KEY: this->agent->play_empty_trash(1); this->gameboard->reset(); break;
+                case EDIT_KEY: this->switch_game_state(GameState::Edit); break;
                 case PACE_KEY: this->agent->play_processing(1); this->pace_forward(); break;
+                case CLER_KEY: this->agent->play_empty_trash(1); this->labview->clear(); break;
+                case RSET_KEY: this->agent->play_empty_trash(1); this->labview->reset(); break;
                 }
-
-                this->notify_updated();
             } else {
                 this->instructions[key]->set_text_color(CRIMSON);
             }
+        } else {
+            switch(key) {
+            case 'a': this->labview->move_pinhole(- moving_distance); break;
+            case 'd': this->labview->move_pinhole(+ moving_distance); break;
+            case 'j': this->labview->move_screen(- moving_distance); break;
+            case 'l': this->labview->move_screen(+ moving_distance); break;
+            case 'v': this->labview->move_pinhole_screen(- moving_distance); break;
+            case 'n': this->labview->move_pinhole_screen(+ moving_distance); break;
+            case 'w': this->labview->resize_hole(+1.0F); break;
+            case 'z': this->labview->resize_hole(-1.0F); break;
+            }    
         }
     }
 }
 
 /*************************************************************************************************/
 void WarGrey::SCSM::PinholePlane::pace_forward() {
-    this->gameboard->pace_forward();
+    if (!this->labview->pace_forward()) {
+        this->switch_game_state(GameState::Stop);
+    }
 }
 
 /*************************************************************************************************/
@@ -163,17 +475,14 @@ void WarGrey::SCSM::PinholePlane::switch_game_state(GameState new_state) {
     if (this->state != new_state) {
         switch (new_state) {
         case GameState::Auto: {
-            this->gameboard->set_color(LIGHTSKYBLUE);
             this->agent->play_thinking(8);
             this->update_instructions_state(colors_for_auto);
         }; break;
         case GameState::Stop: {
-            this->gameboard->set_color(DIMGRAY);
             this->agent->play_rest_pose(1);
             this->update_instructions_state(colors_for_stop);
         }; break;
         case GameState::Edit: {
-            this->gameboard->set_color(ROYALBLUE);
             this->agent->play_writing(-1);
             this->update_instructions_state(colors_for_edit);
         }; break;

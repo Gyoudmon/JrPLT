@@ -6,7 +6,7 @@ using namespace WarGrey::STEM;
 namespace {
     class SplashPlane : public Plane {
     public:
-        SplashPlane(Cosmos* master) : Plane("Blank!"), master(master) {}
+        SplashPlane(Cosmos* master) : Plane("Blank!") {}
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override {
@@ -56,9 +56,6 @@ namespace {
         Labellet* title;
         Labellet* message;
         Labellet* ime_msg;
-        
-    private:
-        Cosmos* master;
     };
 
     class BlankCosmos : public Cosmos {
