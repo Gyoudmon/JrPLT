@@ -17,9 +17,7 @@ static const float light_dot_radius = 2.0F;
 static const float light_delta_length = 8.0F;
 static const float moving_distance = 2.0F;
 
-const uint32_t light_color = SNOW;
 const uint32_t pinhole_color = BURLYWOOD;
-const uint32_t pinhole_light_color = GREEN;
 
 /*************************************************************************************************/
 static const char ILLU_KEY = 'i';
@@ -38,13 +36,15 @@ static const uint32_t colors_for_edit[] = { GREEN, GRAY,  GRAY,  GREEN, GREEN, G
 /*************************************************************************************************/
 class LightSource {
 public:
-    LightSource(float x, float y)
-        : x(x), y(y), length(0.0F), dirty(true) {}
+    LightSource(float x, float y, uint32_t rgb)
+        : x(x), y(y), length(0.0F)
+        , color(rgb), dirty(true) {}
 
 public:
     float x;
     float y;
     float length;
+    uint32_t color;
 
 public:
     bool dirty;
@@ -65,7 +65,7 @@ public:
 
     void draw(SDL_Renderer* renderer, float x, float y, float Width, float Height) override {
         game_fill_rect(renderer, x, y, Width, Height, this->background_color);
-
+        
         for (auto light : this->lights) {
             float cx = light.x - 1.0F;
             float cy = light.y - 1.0F;
@@ -82,7 +82,7 @@ public:
                     game_fill_rect(renderer, 0.0F, 0.0F, this->width, this->height, BLACK, 0.0);
 
                     if (light.length > 0.0F) {
-                        RGB_SetRenderDrawColor(renderer, light_color, 0.1618);
+                        RGB_SetRenderDrawColor(renderer, light.color, 0.1618);
                         this->draw_light_area(renderer, cx, cy, light.length);
                     }
 
@@ -93,15 +93,16 @@ public:
                 game_render_texture(renderer, light.texture->self(), x, y, Width, Height);
             }
 
-            game_fill_circle(renderer, x + cx, y + cy, light_dot_radius, light_color, 0.8);
+            game_fill_circle(renderer, x + cx, y + cy, light_dot_radius, light.color, 0.8);
         }
 
         /* draw pinhole and screen */ {
             float px = x + this->pinhole_x;
-            float py = y + this->pinhole_ty;
-            float pte = py + this->pinhole_half_height;
+            float py = y + this->pinhole_y;
+            float pte = py + (this->pinhole_height - this->pinhole_size) * 0.5F;
+            float pm  = py + this->pinhole_height * 0.5F;
             float pbs = pte + this->pinhole_size;
-            float pb = pbs + this->pinhole_half_height;
+            float pb = py + this->pinhole_height;
             float sx = x + this->screen_x;
             float sy = y + this->screen_y;
             float sb = sy + this->screen_height;
@@ -111,27 +112,21 @@ public:
             aalineRGBA(renderer, px, py, px, pte, r, g, b, 0xFFU);
             aalineRGBA(renderer, px, pbs, px, pb, r, g, b, 0xFFU);
             aalineRGBA(renderer, sx, sy, sx, sb, r, g, b, 0xFFU);
-                
-            aalineRGBA(renderer, px, py, sx, sy, r, g, b, 0xFFU);
-            aalineRGBA(renderer, px, pb, sx, sb, r, g, b, 0xFFU);
 
-            for (auto light : this->lights) { 
+            for (auto light : this->lights) {
                 if (light.x < this->pinhole_x) {
                     float cx = x + light.x - 1.0F;
                     float cy = y + light.y - 1.0F;
-                    float pty, pby;
+                    float pty, pby, pmy;
 
                     lines_intersect(cx, cy, px, pte, sx, sy, sx, sb, flnull_f, &pty, flnull_f);
+                    lines_intersect(cx, cy, px, pm,  sx, sy, sx, sb, flnull_f, &pmy, flnull_f);
                     lines_intersect(cx, cy, px, pbs, sx, sy, sx, sb, flnull_f, &pby, flnull_f);
 
-                    RGB_From_Hexadecimal(pinhole_light_color, &r, &g, &b);
+                    RGB_From_Hexadecimal(light.color, &r, &g, &b);
                     aalineRGBA(renderer, cx, cy, sx, pty, r, g, b, 0xFFU);
+                    aalineRGBA(renderer, cx, cy, sx, pmy, r, g, b, 0xFFU);
                     aalineRGBA(renderer, cx, cy, sx, pby, r, g, b, 0xFFU);
-
-                    game_draw_line(renderer, cx, cy, px, py, ROYALBLUE);
-                    game_draw_line(renderer, cx, cy, px, pb, ROYALBLUE);
-                    game_draw_line(renderer, cx, cy, sx, sy, ROYALBLUE);
-                    game_draw_line(renderer, cx, cy, sx, sb, ROYALBLUE);
                 }
             }
         }
@@ -145,11 +140,11 @@ public:
         }
     }
 
-    void set_pinhole(float fx, float length, float size = 4.0F) {
+    void set_pinhole(float fx, float length, float size = 3.0F) {
         this->pinhole_size = size;
-        this->pinhole_half_height = (length - this->pinhole_size) * 0.5F;
+        this->pinhole_height = length;
         this->pinhole_x = this->width * fx;
-        this->pinhole_ty = (this->height - length) * 0.5F;
+        this->pinhole_y = (this->height - length) * 0.5F;
         
         this->notify_updated();
     }
@@ -198,14 +193,14 @@ public:
     }
 
     void resize_hole(float d) {
-        this->pinhole_half_height -= d;
-        this->pinhole_size += (d * 2.0F);
+        float dsize = d * 2.0F;
 
-        if ((this->pinhole_half_height > 0.0F) && (this->pinhole_size > 0.0F)) {
+        this->pinhole_size += dsize;
+
+        if ((this->pinhole_size > 0.0F) && (this->pinhole_size < this->pinhole_height)) {
             this->notify_updated();
         } else {
-            this->pinhole_half_height += d;
-            this->pinhole_size -= (d * 2.0F);
+            this->pinhole_size -= dsize;
         }
     }
     
@@ -226,7 +221,7 @@ public:
                 }
             }
 
-            this->lights.push_back(LightSource(x, y));
+            this->lights.push_back(LightSource(x, y, random_uniform(0x030303U, 0xDDDDDDU)));
             this->notify_updated();
         }
     }
@@ -286,17 +281,24 @@ public:
 
 private:
     void draw_light_area(SDL_Renderer* renderer, int cx, int cy, int radius) {
+        float flx = float(cx);
+        float fly = float(cy);
         int err = 2 - 2 * radius;
         int x = -radius;
         int y = 0;
     
         do {
-            float trx = this->right_boundary_of_light_area(float(cx), float(cy), cx - x, cy + y);
-            float brx = this->right_boundary_of_light_area(float(cx), float(cy), cx - x, cy - y);
+            float self_x = flx - x;
+            
+            SDL_RenderDrawLineF(renderer, flx + x, cy,     flx + x, fly - y); // Q II
 
-            SDL_RenderDrawLine(renderer, cx + x, cy,     cx + x, cy - y); // Q II
-            SDL_RenderDrawLine(renderer, cx + x, cy + y, trx,    cy + y); // Q III, Q IV
-            SDL_RenderDrawLine(renderer, cx,     cy - y, brx,    cy - y); // Q I
+            if (self_x < this->pinhole_x) {
+                SDL_RenderDrawLineF(renderer,   flx + x, fly + y, self_x, fly + y); // Q III, Q IV
+                SDL_RenderDrawLineF(renderer,   flx,     fly - y, self_x, fly - y); // Q I
+            } else {
+                this->draw_light_line(renderer, flx,     fly - y, self_x, fly - y, flx, fly); // Q I
+                this->draw_light_line(renderer, flx + x, fly + y, self_x, fly + y, flx, fly); // Q III, Q IV
+            }
 
             radius = err;
             if (radius <= y) {
@@ -309,32 +311,53 @@ private:
         } while (x < 0);
     }
 
-    float right_boundary_of_light_area(float cx, float cy, float rx, float y) {
-        if (rx >= this->pinhole_x) {
-            float px = this->pinhole_x;
-            float py = this->pinhole_ty;
-            float pb = py + this->pinhole_half_height * 2.0F + this->pinhole_size;
-            float sx = this->screen_x;
-            float sy = this->screen_y;
-            float sb = sy + this->screen_height;
-            float ktp = line_slope(cx, cy, px, py);
-            float kts = line_slope(cx, cy, sx, sy);
-            float kt = line_slope(px, py, sx, sy);
-            float tt, bt, xp, xs, tp, ts;
+    void draw_light_line(SDL_Renderer* renderer, float x0, float y0, float rx, float y, float ox, float oy) {
+        float px = this->pinhole_x;
+        float py = this->pinhole_y;
+        float pte = py + (this->pinhole_height - this->pinhole_size) * 0.5F;
+        float pbs = pte + this->pinhole_size;
+        float pb = py + this->pinhole_height;
+        float sx = this->screen_x;
+        float sy = this->screen_y;
+        float sb = sy + this->screen_height;
+        float pix, six, ptt, ptb, st, stt, stb;
+        std::vector<float> xs = { x0, width };
 
-            if (y <= cy) {
-                lines_intersect(px, py, sx, sy, cx, y, rx, y, &xp, flnull_f, &ts);
+        // 与孔阑有交点
+        lines_intersect(x0, y0, rx, y, px, py, px, pte, flnull_f, flnull_f, flnull_f, &ptt);
+        lines_intersect(x0, y0, rx, y, px, pbs, px, pb, flnull_f, flnull_f, flnull_f, &ptb);
+        if (flin(0.0F, ptt, 1.0F) || flin(0.0F, ptb, 1.0F)) this->insert_ordered_x(xs, px);
 
-                if (flin(0.0F, ts, 1.0F)) {
-                    rx = flmin(rx, xp);
+        if (flin(px, oy, py)) {
+            lines_intersect(x0, y0, rx, y, ox, oy, px, py, &pix, flnull_f, flnull_f, &ptt);
+            lines_intersect(ox, oy, sx, sy, px, py, px, pb, flnull_f, flnull_f, flnull_f, &st);
+            if (flin(0.0F, st, 1.0F)) { // 屏被孔阑遮挡，忽略
+                this->insert_ordered_x(xs, (ptt >= 1.0F) ? flmin(pix, rx) : rx);
+            } else { // 屏未被孔阑遮挡，光线能抵达靠右的交点
+                lines_intersect(x0, y0, rx, y, ox, oy, sx, sb, &six, flnull_f, flnull_f, &ptb);
+
+                if (ptb > 0.0F) {
+                    this->insert_ordered_x(xs, (ptb > 0.0F) ? flmin(flmax(pix, six), rx) : rx);
                 } else {
-                    lines_intersect(cx, cy, sx, sy, cx, y, rx, y, &xs, flnull_f, &tp);
-                    rx = flmin(rx, xs);
+                    this->insert_ordered_x(xs, (ptt >= 1.0F) ? flmin(pix, rx) : rx);
                 }
             }
+        } else {
+            this->insert_ordered_x(xs, rx);
         }
 
-        return rx;
+        for (int idx = 0; idx < xs.size() - 1; idx += 2) {
+            SDL_RenderDrawLineF(renderer, xs[idx], y, xs[idx + 1], y);
+        }
+    }
+
+    void insert_ordered_x(std::vector<float>& xs, float x) {
+        for (auto it = xs.begin(); it != xs.end(); ++ it) {
+            if (x < (*it)) {
+                xs.emplace(it, x);
+                break;
+            }
+        }
     }
 
 private:
@@ -344,8 +367,8 @@ private:
 private:
     std::vector<LightSource> lights;
     float pinhole_x;
-    float pinhole_ty;
-    float pinhole_half_height;
+    float pinhole_y;
+    float pinhole_height;
     float pinhole_size;
     float screen_x;
     float screen_y;
@@ -370,8 +393,8 @@ void WarGrey::SCSM::PinholePlane::load_labview(float width, float height) {
     float board_width = width - this->get_titlebar_height();
 
     this->labview = this->insert(new PinholePlane::Pinholet(board_width, board_height));
-    this->labview->set_pinhole(0.5F, 32.0F);
-    this->labview->set_screen(0.7F, 96.0F);
+    this->labview->set_pinhole(0.5F, 128.0F);
+    this->labview->set_screen(0.7F, 128.0F);
 }
 
 void WarGrey::SCSM::PinholePlane::load_instructions(float width, float height) {

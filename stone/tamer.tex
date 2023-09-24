@@ -3,3 +3,32 @@
 
 %% NOTE: Scribble does not number sections whose depth is larger than 3
 \setcounter{tocdepth}{4} % it seems that this line is redundant
+
+%% Tag format
+\usepackage{tcolorbox}
+
+\newtcbox{\langBox}[1][]{tcbox raise base,nobeforeafter,
+  rounded corners=all,size=small,
+  colframe=cyan,colback=cyan!42,
+  colupper=white}
+
+\newtcbox{\tagBox}[1][]{tcbox raise base,nobeforeafter,
+  rounded corners=all,size=small,
+  colframe=blue,colback=blue!42,
+  colupper=white}
+
+\newtcbox{\shortBox}[1][]{tcbox raise base,nobeforeafter,
+  rounded corners=all,size=tight,
+  colframe=orange,colback=orange!42,
+  colupper=blue}
+
+\newtcbox{\detailBox}[1][]{tcbox raise base,nobeforeafter,
+  rounded corners=all,size=tight,
+  colframe=green,colback=green!42,
+  colupper=blue}
+
+\newcommand{\langTag}[1]{\langBox{\uppercase{\scriptsize{#1}}}}
+\newcommand{\disTag}[1]{\tagBox{\footnotesize{#1}}}
+\newcommand{\tldrTag}[1]{\noindent\shortBox{\footnotesize{#1}}}
+\newcommand{\deepTag}[1]{\noindent\detailBox{\footnotesize{#1}}}
+
