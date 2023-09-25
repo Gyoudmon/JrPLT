@@ -49,6 +49,6 @@
   '(["literacy/TheBigBang.scrbl" xelatex]
     ["literacy/Metrics.scrbl" xelatex #:always-make]
 
-    ["village/portfilios/Portfilios.scrbl" xelatex]
-    ["village/portfilios/student/wuchang.scrbl" xelatex]
-    ["village/portfilios/student/dingjiaqi.scrbl" xelatex]))
+    ["literacy/Portfilios.scrbl" xelatex]
+    ["literacy/portfilios/wuchang.scrbl" xelatex]
+    ["literacy/portfilios/dingjiaqi.scrbl" xelatex]))

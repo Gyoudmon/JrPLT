@@ -1,4 +1,14 @@
+%% employing the CTeX for better localization
+%% the default fontset `fandol` has trouble
+%%   in displaying rarely used characters
+\usepackage[heading = true, fontset = macnew]{ctex}
+
+%% reset chapter counters for parts
+\usepackage{chngcntr}
+\counterwithin{chapter}{part}
+
+%% set chapter format
 \ctexset{
-  chapter/name = { 第, 部分} ,
-  chapter/number = \Roman{chapter}
+  chapter/name = {},
+  chapter/number = \arabic{chapter}
 }

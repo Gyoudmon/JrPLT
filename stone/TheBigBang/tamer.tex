@@ -1,3 +1,8 @@
+%% employing the CTeX for better localization
+%% `fandol` is also the default font set,
+%%   it has trouble in displaying rarely used characters
+\usepackage[heading = true, fontset = fandol]{ctex}
+
 %% Define fonts for Japanese
 \newCJKfontfamily\japanesefont{Hiragino Mincho ProN}
 \newcommand{\japanese}[1]{\japanesefont #1}

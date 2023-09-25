@@ -40,21 +40,19 @@
 
 @texbook-mainmatter[]
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@include-section{greetings.scrbl}
-@include-section{typesystem.scrbl}
-@include-section{nature.scrbl}
-@include-section{lambda.scrbl}
-@include-section{goodbye.scrbl}
+@include-section{big-bang/greetings.scrbl}
+@include-section{big-bang/typesystem.scrbl}
+@include-section{big-bang/nature.scrbl}
+@include-section{big-bang/lambda.scrbl}
+@include-section{big-bang/goodbye.scrbl}
 
 @texbook-appendix{附录}
 
-@include-section{environment.scrbl}
-@include-section{answers.scrbl}
+@include-section{big-bang/environment.scrbl}
+@include-section{big-bang/answers.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@texbook-backmatter[]
-
-@handbook-appendix[#:index-section? #true #:numbered? #false
+@handbook-appendix[#:index-section? #true #:numbered? #true
  (book-bib-entry #:date "1997"
                  "CnC" "Computability and Complexity: From a Programming Perspective"
                  "Neil D. Jones" "The MIT Press")

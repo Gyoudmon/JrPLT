@@ -2,7 +2,7 @@
 
 @require{../literacy.rkt}
 
-@handbook-root-story{λgirls}
+@handbook-portfilio-story{λgirls}
 
 @class-desc[
  #:langs [tag:C++ tag:Racket]
@@ -31,3 +31,5 @@
  @item{本班正常授课过程中也会加入对@thus{女生和科研}相关话题的讨论。
   希望将来有更多女生参与到数学和计算机科学的研究中去。}
 ]
+
+@handbook-reference[]

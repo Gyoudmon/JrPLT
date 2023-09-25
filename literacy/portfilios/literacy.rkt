@@ -1,20 +1,32 @@
 #lang racket/base
 
 (provide (all-defined-out))
-(provide (all-from-out "../../literacy/literacy.rkt"))
+(provide (all-from-out "../literacy.rkt"))
 
-(require "../../literacy/literacy.rkt")
+(require "../literacy.rkt")
+
+(require scribble/core)
+(require scribble/latex-properties)
 
 (require (for-syntax racket/base))
-(require (for-syntax racket/syntax))
 (require (for-syntax syntax/parse))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define-syntax (handbook-student-title stx)
+(define-syntax (handbook-portfilio-title stx)
   (syntax-parse stx #:datum-literals []
-    [(_) (syntax/loc stx
-           (handbook-title #:hide-version? #true
-                           (list "青少计算机科学" (hspace 1) "成长档案")))]))
+    [(_ name ...)
+     (syntax/loc stx
+       (handbook-title #:hide-version? #true
+                       #:subtitle "青少计算机科学"
+                       #:author "居老师"
+                       #:properties tamer:tex:prop
+                       name ... (hspace 1) "成长档案"))]))
+
+(define-syntax (handbook-portfilio-story stx)
+  (syntax-parse stx #:datum-literals []
+    [(_ argl ...)
+     (syntax/loc stx
+       (handbook-root-story argl ...))]))
 
 (define-syntax (class-desc stx)
   (syntax-parse stx #:datum-literals []
@@ -38,6 +50,15 @@
                      (add-between (list next ...) " "))))]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define stu-name
+  (lambda name
+    (make-element #false name)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define tamer:tex:prop
+  (make-tex-addition
+   (digimon-path 'stone "Portfilios/tamer.tex")))
+
 (define tag:Racket (elem #:style "langTag" "Racket"))
 (define tag:C++ (elem #:style "langTag" "C++"))
 (define tag:Python (elem #:style "langTag" "Python"))

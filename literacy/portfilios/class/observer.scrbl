@@ -2,7 +2,7 @@
 
 @require{../literacy.rkt}
 
-@handbook-appendix-story{Observers}
+@handbook-portfilio-story{Observers}
 
 @class-desc[
  #:langs [tag:Python tag:C++]
@@ -26,3 +26,5 @@
  @item{知道学校课程与编程的关联；}
  @item{知道偏科不可取，并愿意找方法、花时间主动攻克此问题。}
 ]
+
+@handbook-reference[]

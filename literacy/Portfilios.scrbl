@@ -1,20 +1,18 @@
-#lang scribble/book
+#lang scribble/report
 
 @require{literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title[#:author "居老师" #:subtitle "学生档案袋" #:hide-version? #true]{青少计算机科学}
+@handbook-title[#:subtitle "学生成长档案" #:hide-version? #true]{青少计算机科学}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-smart-table[]
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@texbook-mainmatter[]
-
-@include-section{student.scrbl}
-@include-section{class.scrbl}
+@include-section{portfilios/student.scrbl}
+@include-section{portfilios/class.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@texbook-backmatter[]
+@texbook-appendix{附录}
 
-@handbook-appendix[#:index-section? #true #:numbered? #false]
+@handbook-appendix[#:index-section? #true #:numbered? #true]

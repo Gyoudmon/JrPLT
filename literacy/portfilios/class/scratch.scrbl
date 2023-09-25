@@ -2,7 +2,7 @@
 
 @require{../literacy.rkt}
 
-@handbook-appendix-story{Scratch}
+@handbook-portfilio-story{Scratch}
 
 @class-desc[
  #:langs [tag:Scratch]
@@ -29,3 +29,5 @@
  @item{对于简单项目，能大致给出实现思路；}
  @item{知道编程与学校教育有联系，不应该偏科。}
 ]
+
+@handbook-reference[]
