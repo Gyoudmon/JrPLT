@@ -49,6 +49,6 @@
   '(["literacy/TheBigBang.scrbl" xelatex]
     ["literacy/Metrics.scrbl" xelatex #:always-make]
 
-    ["literacy/Portfilios.scrbl" xelatex]
-    ["literacy/portfilios/wuchang.scrbl" xelatex]
-    ["literacy/portfilios/dingjiaqi.scrbl" xelatex]))
+    ["literacy/Portfolios.scrbl" xelatex #px"Portfolios/*.(png|gv)"]
+    ["literacy/portfolios/wuchang.scrbl" xelatex]
+    ["literacy/portfolios/dingjiaqi.scrbl" xelatex]))

@@ -16,8 +16,6 @@
 ;;; Just in case for README.md
 (enter-digimon-zone!)
 
-(tamer-indexed-block-hide-chapter-index #false)
-
 (tamer-block-label-separator #false)
 (tamer-block-label-tail "： ")
 (tamer-block-label-style 'bold)

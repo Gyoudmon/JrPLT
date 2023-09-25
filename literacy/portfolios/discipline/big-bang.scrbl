@@ -1,0 +1,19 @@
+#lang scribble/base
+
+@require{../literacy.rkt}
+
+@handbook-portfilio-story{宇宙大爆炸}
+
+@tamer-deftech{宇宙大爆炸}是青少计算机科学后续所有课程的基础。
+学完本课程之后，学生将对程序语言、程序设计和计算思维有个初步的了解。
+本课程取名为@tech{宇宙大爆炸}是顺应了宇宙发展“从无到有”的自然规律。
+
+@tamer-figure!["d:bigbang" "宇宙大爆炸 主界面"]{
+ @stone-image["Portfolios/Disciplines/big-bang.png" #:scale 0.25]}
+
+@margin-note{@tamer-deftech{Linux} 是信息学奥赛唯一指定的参赛系统。}
+@tamer-figure-ref{d:bigbang}是@tech{宇宙大爆炸}的主界面。
+其中，企鹅@racketerror{不代表腾讯}，而是 @tech{Linux} 操作系统的吉祥物；
+鱼币是企鹅的食物，大部分鱼币代表学生作品，少部分是教师扩展程序。
+
+@handbook-reference[]

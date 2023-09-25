@@ -2,15 +2,23 @@
 
 @require{literacy.rkt}
 
-@;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title[#:subtitle "学生成长档案" #:hide-version? #true]{青少计算机科学}
+@handbook-portfilio-title{丁嘉琪}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-smart-table[]
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@include-section{portfilios/student.scrbl}
-@include-section{portfilios/class.scrbl}
+@handbook-part/section{学生档案}
+
+@include-section{student/dingjiaqi/self.scrbl}
+
+@handbook-part/section{课程详情}
+
+@include-section{discipline/big-bang.scrbl}
+
+@handbook-part/section{班级简介}
+
+@include-section{class/lambda-girl.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @texbook-appendix{附录}

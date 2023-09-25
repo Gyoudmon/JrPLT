@@ -2,19 +2,16 @@
 
 @require{literacy.rkt}
 
-@handbook-portfilio-title{吴玚}
+@;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+@handbook-title[#:subtitle "学生成长档案" #:hide-version? #true]{青少计算机科学}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-smart-table[]
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-part/section{学生档案}
-
-@include-section{student/wuchang/self.scrbl}
-
-@handbook-part/section{班级简介}
-
-@include-section{class/lambda-girl.scrbl}
+@include-section{portfolios/class.scrbl}
+@include-section{portfolios/discipline.scrbl}
+@include-section{portfolios/student.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @texbook-appendix{附录}
