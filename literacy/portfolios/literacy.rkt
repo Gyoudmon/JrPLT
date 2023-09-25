@@ -61,7 +61,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define tamer:tex:prop
   (make-tex-addition
-   (digimon-path 'stone "Portfilios/tamer.tex")))
+   (digimon-path 'stone "Portfolios/tamer.tex")))
 
 (define tag:Racket (elem #:style "langTag" "Racket"))
 (define tag:C++ (elem #:style "langTag" "C++"))
