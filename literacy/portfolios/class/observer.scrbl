@@ -2,7 +2,7 @@
 
 @require{../literacy.rkt}
 
-@handbook-portfilio-story{观察者(Observers)}
+@handbook-portfolio-story{观察者(Observers)}
 
 @class-desc[
  #:langs [tag:Python tag:C++]

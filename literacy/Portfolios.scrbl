@@ -16,4 +16,6 @@
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @texbook-appendix{附录}
 
+@include-section{portfolios/faq.scrbl}
+
 @handbook-appendix[#:index-section? #true #:numbered? #true]

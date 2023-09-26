@@ -16,7 +16,7 @@
 (tamer-indexed-block-hide-chapter-index #true)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define-syntax (handbook-portfilio-title stx)
+(define-syntax (handbook-portfolio-title stx)
   (syntax-parse stx #:datum-literals []
     [(_ name ...)
      (syntax/loc stx
@@ -26,7 +26,7 @@
                        #:properties tamer:tex:prop
                        name ... (hspace 1) "成长档案"))]))
 
-(define-syntax (handbook-portfilio-story stx)
+(define-syntax (handbook-portfolio-story stx)
   (syntax-parse stx #:datum-literals []
     [(_ argl ...)
      (syntax/loc stx
@@ -81,3 +81,6 @@
 (define tag:OI (elem #:style "disTag" "信息学奥赛"))
 (define tag:ET (elem #:style "disTag" "电子技术"))
 (define tag:OW (elem #:style "disTag" "其他"))
+
+(define tag:TLDR (elem #:style "tldrTag" "太长;不看"))
+(define tag:deep (elem #:style "deepTag" "少侠;留步"))

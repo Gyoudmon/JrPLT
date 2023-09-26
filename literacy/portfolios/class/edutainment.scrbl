@@ -2,7 +2,7 @@
 
 @require{../literacy.rkt}
 
-@handbook-portfilio-story{娱乐者(Edutainment)}
+@handbook-portfolio-story{娱乐者(Edutainment)}
 
 @class-desc[
  #:langs [tag:Scratch]

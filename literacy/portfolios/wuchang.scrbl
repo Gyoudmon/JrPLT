@@ -2,7 +2,7 @@
 
 @require{literacy.rkt}
 
-@handbook-portfilio-title{吴玚}
+@handbook-portfolio-title{吴玚}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-smart-table[]

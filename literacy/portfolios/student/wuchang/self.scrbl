@@ -2,6 +2,6 @@
 
 @require{../../literacy.rkt}
 
-@handbook-portfilio-story{吴玚}
+@handbook-portfolio-story{吴玚}
 
 @handbook-reference[]

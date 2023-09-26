@@ -2,7 +2,7 @@
 
 @require{../literacy.rkt}
 
-@handbook-portfilio-story{探索者(Explorers)}
+@handbook-portfolio-story{探索者(Explorers)}
 
 @class-desc[
  #:langs [tag:C++]

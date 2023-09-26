@@ -2,7 +2,7 @@
 
 @require{../literacy.rkt}
 
-@handbook-portfilio-story{拓荒者(Pioneers)}
+@handbook-portfolio-story{拓荒者(Pioneers)}
 
 @class-desc[
  #:langs [tag:C++ tag:Python]

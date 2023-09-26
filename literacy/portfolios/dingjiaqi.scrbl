@@ -2,7 +2,7 @@
 
 @require{literacy.rkt}
 
-@handbook-portfilio-title{丁嘉琪}
+@handbook-portfolio-title{丁嘉琪}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-smart-table[]
