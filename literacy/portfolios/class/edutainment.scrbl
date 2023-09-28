@@ -2,7 +2,7 @@
 
 @require{../literacy.rkt}
 
-@handbook-portfolio-story{娱乐者(Edutainment)}
+@handbook-portfolio-story{@speak['edutainment](Edutainment)}
 
 @class-desc[
  #:langs [tag:Scratch]
@@ -23,10 +23,10 @@
 以下条目仅作为升阶评估的参考，而不必强制达标：
 
 @itemlist[
- @item{学生已完成三年级学业；}
- @item{学习习惯、专注力或家长期望的其他素质有提高趋势；}
- @item{知道学编程可以做什么，不抗拒深入学习；}
- @item{对于简单项目，能大致给出实现思路；}
+ @item{学生已完成三年级学业。}
+ @item{学习习惯、专注力或家长期望的其他素质有提高趋势。}
+ @item{知道学编程可以做什么，不抗拒深入学习。}
+ @item{对于简单项目，能大致给出实现思路。}
  @item{知道编程与学校教育有联系，不应该偏科。}
 ]
 

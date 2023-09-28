@@ -3,6 +3,9 @@
 %%   it has trouble in displaying rarely used characters
 \usepackage[heading = true, fontset = fandol]{ctex}
 
+%% NOTE: Scribble does not number sections whose depth is larger than 3
+\setcounter{tocdepth}{4}
+
 %% Define fonts for Japanese
 \newCJKfontfamily\japanesefont{Hiragino Mincho ProN}
 \newcommand{\japanese}[1]{\japanesefont #1}

@@ -3,6 +3,9 @@
 %%   in displaying rarely used characters
 \usepackage[heading = true, fontset = macnew]{ctex}
 
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{3}
+
 %% reset chapter counters for parts
 \usepackage{chngcntr}
 \counterwithin{chapter}{part}
@@ -10,5 +13,7 @@
 %% set chapter format
 \ctexset{
   chapter/name = {},
-  chapter/number = \arabic{chapter}
+  chapter/number = \arabic{chapter},
+  section/number = \thesection,
+  section/format = \Large\bfseries
 }

@@ -13,7 +13,7 @@
 (require (for-syntax syntax/parse))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(tamer-indexed-block-hide-chapter-index #true)
+(define current-lesson (make-parameter 0))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-syntax (handbook-portfolio-title stx)
@@ -30,7 +30,16 @@
   (syntax-parse stx #:datum-literals []
     [(_ argl ...)
      (syntax/loc stx
-       (handbook-root-story argl ...))]))
+       (begin (current-lesson 0)
+              (handbook-root-story argl ...)))]))
+
+(define-syntax (handbook-lesson stx)
+  (syntax-parse stx #:datum-literals []
+    [(_ argl ...)
+     (syntax/loc stx
+       (begin (current-lesson (add1 (current-lesson)))
+              (handbook-scenario "第" (number->string (current-lesson)) "课"
+                                 (hspace 1) argl ...)))]))
 
 (define-syntax (class-desc stx)
   (syntax-parse stx #:datum-literals []
@@ -52,6 +61,40 @@
 
                (para (emph "进阶方向：")
                      (add-between (list next ...) " "))))]))
+
+(define-syntax (lesson-desc stx)
+  (syntax-parse stx #:datum-literals []
+    [(_ (~alt (~once (~seq #:class class-type))
+              (~once (~seq #:topic [discipline topic])))
+        ...)
+     (syntax/loc stx
+       (nested #:style 'vertical-inset
+               (para (emph "课程主题：")
+                     (list (seclink (format "portfolios/discipline/~a.scrbl" discipline) (speak discipline))
+                           (racketparenfont"-")
+                           (seclink (format "portfolios/discipline/~a/~a.scrbl" discipline topic) (speak topic))))
+
+               (para (emph "所属班级：")
+                     (seclink (format "portfolios/class/~a.scrbl" class-type)
+                              (list (speak class-type))))))]))
+
+(define-syntax (period-desc stx)
+  (syntax-parse stx #:datum-literals []
+    [(_ (~alt (~once (~seq #:goals goals))
+              (~once (~seq #:date date)))
+        ...)
+     (syntax/loc stx
+       (nested #:style 'vertical-inset
+               (para (emph "上课日期：") date)
+               (para (emph "授课课时：") "90min")
+               
+               (para (emph "上课内容："))
+               (itemlist #:style 'ordered
+                         (for/list ([goal (in-list goals)])
+                           (item goal)))))]))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(tamer-indexed-block-hide-chapter-index #true)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define stu-name

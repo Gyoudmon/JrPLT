@@ -2,7 +2,7 @@
 
 @require{literacy.rkt}
 
-@handbook-portfolio-title{丁嘉琪}
+@handbook-portfolio-title{孙功铖}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-smart-table[]
@@ -11,7 +11,7 @@
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-part-section{学生档案}
 
-@include-section{student/dingjiaqi/self.scrbl}
+@include-section{student/sungongcheng/self.scrbl}
 
 @handbook-part-section{课程简介}
 
@@ -19,7 +19,7 @@
 
 @handbook-part-section{班级简介}
 
-@include-section{class/lambda-girl.scrbl}
+@include-section{class/observer.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @texbook-appendix{附录}

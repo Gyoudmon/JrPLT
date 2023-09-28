@@ -4,4 +4,6 @@
 
 @handbook-portfolio-story{吴玚}
 
+@include-section{shell.scrbl}
+
 @handbook-reference[]

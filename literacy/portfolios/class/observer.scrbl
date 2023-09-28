@@ -2,7 +2,7 @@
 
 @require{../literacy.rkt}
 
-@handbook-portfolio-story{观察者(Observers)}
+@handbook-portfolio-story{@speak['observer](Observers)}
 
 @class-desc[
  #:langs [tag:Python tag:C++]
@@ -22,9 +22,9 @@
 在升阶考评的指标中，应当重点考察以下几个方面：
 
 @itemlist[
- @item{学习习惯、专注力或家长期望的其他素质能够稳定发挥或提高；}
- @item{知道学编程到底在学什么；}
- @item{知道学校课程与编程的关联；}
+ @item{学习习惯、专注力或家长期望的其他素质能够稳定发挥或提高。}
+ @item{知道学编程到底在学什么。}
+ @item{知道学校课程与编程的关联。}
  @item{知道偏科不可取，并愿意找方法、花时间主动攻克此问题。}
 ]
 

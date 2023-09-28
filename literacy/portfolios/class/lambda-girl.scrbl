@@ -2,7 +2,7 @@
 
 @require{../literacy.rkt}
 
-@handbook-portfolio-story{函数女孩(λgirls)}
+@handbook-portfolio-story{@speak['lambda-girl](λgirls)}
 
 @class-desc[
  #:langs [tag:C++ tag:Racket]

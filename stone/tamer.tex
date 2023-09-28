@@ -1,5 +1,5 @@
-%% NOTE: Scribble does not number sections whose depth is larger than 3
-\setcounter{tocdepth}{4} % it seems that this line is redundant
+%% `menukeys` in texlive 2022 doesn't care the loading order
+\usepackage[os=win, mackeys=symbols]{menukeys}
 
 %% Tag format
 \usepackage{tcolorbox}
@@ -28,4 +28,3 @@
 \newcommand{\disTag}[1]{\tagBox{\footnotesize{#1}}}
 \newcommand{\tldrTag}[1]{\noindent\shortBox{\footnotesize{#1}}}
 \newcommand{\deepTag}[1]{\noindent\detailBox{\footnotesize{#1}}}
-

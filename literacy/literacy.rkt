@@ -106,6 +106,11 @@
   (lambda argv
     (apply litchar argv)))
 
+(define hotkeys
+  (lambda keys
+    (elem #:style "keys"
+          (string-join (add-between (map ~a keys) "+")))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define japanese
   (lambda [#:latex? [latex? 'auto] . contents]

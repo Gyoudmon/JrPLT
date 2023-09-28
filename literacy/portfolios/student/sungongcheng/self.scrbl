@@ -2,8 +2,8 @@
 
 @require{../../literacy.rkt}
 
-@handbook-portfolio-story{丁嘉琪}
+@handbook-portfolio-story{孙功铖}
 
-@include-section{shell.scrbl}
+@include-section{function-object.scrbl}
 
 @handbook-reference[]
