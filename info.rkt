@@ -50,6 +50,6 @@
     ["literacy/Metrics.scrbl" xelatex #:always-make]
 
     ["literacy/Portfolios.scrbl" xelatex #px"Portfolios/*.(png|gv)"]
-    ["literacy/portfolios/dingjiaqi.scrbl" xelatex]
-    ["literacy/portfolios/sungongcheng.scrbl" xelatex]
-    ["literacy/portfolios/wuchang.scrbl" xelatex]))
+    ["literacy/portfolios/dingjiaqi.scrbl" "丁嘉琪" xelatex]
+    ["literacy/portfolios/sungongcheng.scrbl" "孙功铖" xelatex]
+    ["literacy/portfolios/wuchang.scrbl" "吴玚" xelatex]))

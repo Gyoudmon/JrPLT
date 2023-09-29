@@ -2,6 +2,8 @@
 
 (provide (all-defined-out))
 
+(require scribble/manual)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define shell-goals
   (vector
@@ -12,7 +14,12 @@
 
    ; lesson 2
    (list "理解局域网"
-         "使用 git 命令从教师机下载课程源码")))
+         "使用 git 命令从教师机下载课程源码")
+
+   ; lesson 3
+   (list "理解当前路径、绝对路径、相对路径"
+         (list "了解文件路径中的特殊路径" (litchar ".") "和" (litchar ".."))
+         "复习“踢猫效应”，理清楚函数的定义、实现和调用")))
 
 (define function-object-goals.py
   (vector
