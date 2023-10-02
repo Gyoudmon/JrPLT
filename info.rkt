@@ -42,12 +42,13 @@
     
     ["BigBang.cpp" console ,sdl2+config]
     
-    ["tamer/blank.cpp" console ,sdl2-config]))
+    ["tamer/IME.cpp" console ,sdl2-config]
+    ["tamer/Layer.cpp" console ,sdl2-config]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define typesettings
   '(["literacy/TheBigBang.scrbl" xelatex]
-    ["literacy/Metrics.scrbl" xelatex #:always-make]
+    ["literacy/Metrics.scrbl" xelatex #:explicitly-make]
 
     ["literacy/Portfolios.scrbl" xelatex #px"Portfolios/*.(png|gv)"]
     ["literacy/portfolios/dingjiaqi.scrbl" "丁嘉琪" xelatex]

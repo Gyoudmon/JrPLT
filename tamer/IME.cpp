@@ -4,9 +4,9 @@ using namespace WarGrey::STEM;
 
 /*************************************************************************************************/
 namespace {
-    class SplashPlane : public Plane {
+    class LayerPlane : public Plane {
     public:
-        SplashPlane(Cosmos* master) : Plane("Blank!") {}
+        LayerPlane(Cosmos* master) : Plane("IME") {}
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override {
@@ -15,8 +15,8 @@ namespace {
             this->agent = this->insert(new Linkmon());
             this->agent->scale(-1.0F, 1.0F);
             
-            this->message = this->insert(new Labellet(GameFont::fangsong(), DIMGRAY, "%s", this->name()));
-            this->ime_msg = this->insert(new Labellet(GameFont::fangsong(), DIMGRAY, "%s", this->name()));
+            this->message = this->insert(new Labellet(GameFont::fangsong(), DIMGRAY, "PRESS ANY KEY"));
+            this->ime_msg = this->insert(new Labellet(GameFont::fangsong(), DIMGRAY, ""));
         }
         
         void reflow(float width, float height) override {
@@ -58,9 +58,10 @@ namespace {
         Labellet* ime_msg;
     };
 
-    class BlankCosmos : public Cosmos {
+    /*********************************************************************************************/
+    class LayerCosmos : public Cosmos {
     public:
-        BlankCosmos(const char* process_path) : Cosmos(60) {
+        LayerCosmos(const char* process_path) : Cosmos(60) {
             enter_digimon_zone(process_path);
             imgdb_setup(digimon_zonedir().append("stone"));
             
@@ -73,7 +74,7 @@ namespace {
 #endif
         }
 
-        virtual ~BlankCosmos() {
+        virtual ~LayerCosmos() {
             imgdb_teardown();
         }
 
@@ -82,14 +83,14 @@ namespace {
             this->set_window_size(400, 300);
             GameFont::fontsize(21);
 
-            this->push_plane(new SplashPlane(this));
+            this->push_plane(new LayerPlane(this));
         }
     };
 }
 
 /*************************************************************************************************/
 int main(int argc, char* args[]) {
-    BlankCosmos universe(args[argc]);
+    LayerCosmos universe(args[argc]);
 
     universe.construct(argc, args);
     universe.big_bang();
