@@ -18,9 +18,9 @@ namespace {
     static const int advent_days = 25;
 
     /*********************************************************************************************/
-    class LayerPlane : public Plane {
+    class JrPlane : public Plane {
     public:
-        LayerPlane(Cosmos* master) : Plane("青少计算机科学"), master(master) {}
+        JrPlane(Cosmos* master) : Plane("青少计算机科学"), master(master) {}
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override {
@@ -158,9 +158,9 @@ namespace {
     /*************************************************************************************************/
     enum class CmdlineOps { TopCount, GroupSize, _ };
 
-    class LayerCosmos : public Cosmos {
+    class JrCosmos : public Cosmos {
     public:
-        LayerCosmos(const char* process_path) : Cosmos(60) {
+        JrCosmos(const char* process_path) : Cosmos(60) {
             enter_digimon_zone(process_path);
             imgdb_setup(digimon_zonedir().append("stone"));
             
@@ -173,7 +173,7 @@ namespace {
 #endif
         }
 
-        virtual ~LayerCosmos() {
+        virtual ~JrCosmos() {
             imgdb_teardown();
         }
 
@@ -183,7 +183,7 @@ namespace {
             this->set_window_size(1200, 0);
             GameFont::fontsize(21);
 
-            this->splash = this->push_plane(new LayerPlane(this));
+            this->splash = this->push_plane(new JrPlane(this));
 
             this->push_plane(new StreamPlane());
             this->push_plane(new PinholePlane());
@@ -210,7 +210,7 @@ namespace {
 
 /*************************************************************************************************/
 int main(int argc, char* args[]) {
-    LayerCosmos universe(args[argc]);
+    JrCosmos universe(args[argc]);
 
     universe.construct(argc, args);
     universe.big_bang();

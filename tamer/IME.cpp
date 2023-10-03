@@ -4,9 +4,9 @@ using namespace WarGrey::STEM;
 
 /*************************************************************************************************/
 namespace {
-    class LayerPlane : public Plane {
+    class IMEPlane : public Plane {
     public:
-        LayerPlane(Cosmos* master) : Plane("IME") {}
+        IMEPlane(Cosmos* master) : Plane("IME") {}
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override {
@@ -59,9 +59,9 @@ namespace {
     };
 
     /*********************************************************************************************/
-    class LayerCosmos : public Cosmos {
+    class IMECosmos : public Cosmos {
     public:
-        LayerCosmos(const char* process_path) : Cosmos(60) {
+        IMECosmos(const char* process_path) : Cosmos(60) {
             enter_digimon_zone(process_path);
             imgdb_setup(digimon_zonedir().append("stone"));
             
@@ -74,7 +74,7 @@ namespace {
 #endif
         }
 
-        virtual ~LayerCosmos() {
+        virtual ~IMECosmos() {
             imgdb_teardown();
         }
 
@@ -83,14 +83,14 @@ namespace {
             this->set_window_size(400, 300);
             GameFont::fontsize(21);
 
-            this->push_plane(new LayerPlane(this));
+            this->push_plane(new IMEPlane(this));
         }
     };
 }
 
 /*************************************************************************************************/
 int main(int argc, char* args[]) {
-    LayerCosmos universe(args[argc]);
+    IMECosmos universe(args[argc]);
 
     universe.construct(argc, args);
     universe.big_bang();

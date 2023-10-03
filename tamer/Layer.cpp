@@ -7,7 +7,7 @@ using namespace WarGrey::STEM;
 /*************************************************************************************************/
 namespace {
     static float radius = 80.0F;
-    static double gliding_duration = 2.0;
+    static double gliding_duration = 1.0;
 
     class LayerPlane : public Plane {
     public:
@@ -79,7 +79,7 @@ namespace {
     private:
         void move_shapes_at_random() {
             for (auto shape : this->shapes) {
-                this->glide_to_random_location(1.0, shape);
+                this->glide_to_random_location(gliding_duration, shape);
             }
         }
 
