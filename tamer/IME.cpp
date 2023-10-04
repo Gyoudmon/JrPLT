@@ -1,39 +1,33 @@
 #include "../digitama/gydm_stem/game.hpp"
+#include "../digitama/gydm_stem/bang.hpp"
 
 using namespace WarGrey::STEM;
 
 /*************************************************************************************************/
 namespace {
-    class IMEPlane : public Plane {
+    class IMEPlane : public TheBigBang {
     public:
-        IMEPlane(Cosmos* master) : Plane("IME") {}
+        IMEPlane(Cosmos* master) : TheBigBang("IME") {
+            this->the_name("Tamer");
+        }
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override {
-            this->title = this->insert(new Labellet(GameFont::Title(), BLACK, "%s", this->name()));
-            
-            this->agent = this->insert(new Linkmon());
-            this->agent->scale(-1.0F, 1.0F);
+            TheBigBang::load(width, height);
             
             this->message = this->insert(new Labellet(GameFont::fangsong(), DIMGRAY, "PRESS ANY KEY"));
             this->ime_msg = this->insert(new Labellet(GameFont::fangsong(), DIMGRAY, ""));
         }
         
         void reflow(float width, float height) override {
-            this->move_to(this->title, this->agent, MatterAnchor::RB, MatterAnchor::LB);
+            TheBigBang::reflow(width, height);
+
             this->move_to(this->message, this->agent, MatterAnchor::LB, MatterAnchor::LT);
             this->move_to(this->ime_msg, width, height, MatterAnchor::RB);
         }
 
-        void update(uint64_t count, uint32_t interval, uint64_t uptime) override {}
-
         void on_enter(IPlane* from) override {
             this->agent->play("Greeting", 1);
-        }
-
-    public:
-        bool can_select(IMatter* m) override {
-            return true;
         }
 
     protected:
@@ -52,8 +46,6 @@ namespace {
         }
 
     private:
-        Linkmon* agent;
-        Labellet* title;
         Labellet* message;
         Labellet* ime_msg;
     };
@@ -64,7 +56,7 @@ namespace {
         IMECosmos(const char* process_path) : Cosmos(60) {
             enter_digimon_zone(process_path);
             imgdb_setup(digimon_zonedir().append("stone"));
-            
+
 #ifdef __windows__
             digimon_appdata_setup("C:\\opt\\GYDMstem\\");
             digimon_mascot_setup("C:\\opt\\GYDMstem\\stone\\mascot");

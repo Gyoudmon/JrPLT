@@ -1,4 +1,5 @@
 #include "../digitama/gydm_stem/game.hpp"
+#include "../digitama/gydm_stem/bang.hpp"
 
 #include <vector>
 
@@ -9,24 +10,19 @@ namespace {
     static float radius = 80.0F;
     static double gliding_duration = 1.0;
 
-    class LayerPlane : public Plane {
+    class LayerPlane : public TheBigBang {
     public:
-        LayerPlane(Cosmos* master) : Plane("Layer Order") {}
+        LayerPlane(Cosmos* master) : TheBigBang("Layer Order") {
+            this->the_name("Tamer");
+        }
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override {
-            this->title = this->insert(new Labellet(GameFont::Title(), BLACK, "%s", this->name()));
-            
-            this->agent = this->insert(new Linkmon());
-            this->agent->scale(-1.0F, 1.0F);
-            
+            TheBigBang::load(width, height);
+
             for (int n = 3; n < 13; n++) {
                 this->shapes.push_back(this->insert(new RegularPolygonlet(n, radius, -90.0F, random_uniform(0x333333U, 0xDDDDDDU))));
             }
-        }
-        
-        void reflow(float width, float height) override {
-            this->move_to(this->title, this->agent, MatterAnchor::RB, MatterAnchor::LB);
         }
 
         void on_enter(IPlane* from) override {
@@ -36,17 +32,17 @@ namespace {
 
     public:
         bool can_select(IMatter* m) override {
-            return isinstance(m, IShapelet);
+            return isinstance(m, IShapelet) || (this->agent == m);
         }
 
     protected:
-        void after_select(WarGrey::STEM::IMatter* m, bool yes) override {
+        void after_select(IMatter* m, bool yes) override {
             if (!yes) {
                 this->glide_to_mouse(gliding_duration, m, MatterAnchor::CC);
             }
         }
 
-        void on_tap_selected(WarGrey::STEM::IMatter* m, float x, float y) override {
+        void on_tap_selected(IMatter* m, float x, float y) override {
             if (is_shift_pressed()) {
                 this->bring_forward(m);
             } else {
@@ -82,10 +78,6 @@ namespace {
                 this->glide_to_random_location(gliding_duration, shape);
             }
         }
-
-    private:
-        Linkmon* agent;
-        Labellet* title;
         
     private:
         std::vector<IShapelet*> shapes;
@@ -97,7 +89,7 @@ namespace {
         LayerCosmos(const char* process_path) : Cosmos(60) {
             enter_digimon_zone(process_path);
             imgdb_setup(digimon_zonedir().append("stone"));
-            
+
 #ifdef __windows__
             digimon_appdata_setup("C:\\opt\\GYDMstem\\");
             digimon_mascot_setup("C:\\opt\\GYDMstem\\stone\\mascot");

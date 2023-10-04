@@ -43,7 +43,8 @@
     ["BigBang.cpp" console ,sdl2+config]
     
     ["tamer/IME.cpp" console ,sdl2-config]
-    ["tamer/Layer.cpp" console ,sdl2-config]))
+    ["tamer/Layer.cpp" console ,sdl2-config]
+    ["tamer/Track.cpp" console ,sdl2-config]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define typesettings

@@ -7,4 +7,6 @@
 
 @handbook-scenario{利他主义}
 
+@handbook-scenario{25号宇宙}
+
 @handbook-reference[]
