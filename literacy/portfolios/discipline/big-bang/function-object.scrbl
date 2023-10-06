@@ -36,7 +36,7 @@
 
   @tech{函数}的第三个要素是“返回值”(@tech{函数}的执行结果)。
   有返回值的@tech{函数}的最典型例子是@handbook-defterm{数学函数}：
-  根据一定的运算规则将一个或多个输入参数转化为一个返回值。}
+  根据一定的运算规则将一个或多个输入参数@term-name{映射}为一个返回值。}
 
  @item{@handbook-defterm[#:origin "Variable"]{变量}即可以被改变的量。
   在计算机中它指的是@focus{内存地址}，用来提示“这段内存中的内容可以修改”。
@@ -68,9 +68,11 @@
 
  @item{@handbook-defterm[#:origin "Class"]{类}即自定义@tech{类型}，
   它封装了一系列相关联的@tech{变量}和@tech{函数}。
+  
+  @tech{类}的@tech{变量}称为@handbook-defterm[#:origin "Field"]{字段}；
   @tech{类}的@tech{函数}称为@handbook-defterm[#:origin "Method"]{方法}。}
 
- @item{@tech{类}可以比作设计图，根据此设计图制造出的产品
+ @item{@tech{类}可以比作设计图，根据此设计图创建出的产品
   称为该@tech{类}的@handbook-defterm[#:origin "Object"]{对象}。
   每个@tech{对象}都是自己@tech{类}型的@handbook-defterm[#:origin "Instance"]{实例}。
   
