@@ -1,53 +1,53 @@
 #lang scribble/report
 
 @require{../../literacy.rkt}
-@require{../../discipline/big-bang/lessons.rkt}
+
+@(require "../../discipline/big-bang/lessons.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-portfolio-story{Shell}
+@handbook-portfolio-story{函数与对象}
 
 @lesson-desc[
  #:topic ['big-bang 'shell]
  #:class 'lambda-girl
 ]
 
-@handbook-lesson{认识 Shell 与 PowerShell}
+@handbook-lesson{初识类与对象}
 
 @period-desc[
- #:goals (vector-ref shell-goals 0) 
- #:date "2023-09-17 08:45-10:15"
+ #:goals (vector-ref function-object-goals.λ 0) 
+ #:date "2023-10-06 08:45-10:15"
 ]
 
-这是本班开设以来的第一节正式课程(其他人的电脑都还没准备好)。
+@tech{变量}的@tech{类型}和@tech{值}是难点知识。
+本班学生会通过认识 Racket 语言来理解这个难点。
+因此，本节课的前半段部分是先更新课程源码，
+然后熟悉 DrRacket 软件来运行 racket 程序。
 
-吴玚作为有基础的学生，表现出了对课程内容的浓厚兴趣，以及对新同学的热情。
-氛围相当好。
+更新源码，吴玚有经验，
+我安排她去教会同学使用 git 命令来做这件事。
 
-@handbook-lesson{路径}
+本节课的后半段部分是重新思考“踢猫效应”。
+这次学生是导演，要把这个现象编制成话剧表演给大家看，
+这个过程涉及设计角色、安排演员、表演等环节。
+这些环节恰好对应着“基于对象”的软件设计思路，
+因此，我们就自然而然地引入了@tech{类}与@tech{对象}的概念。
 
-@period-desc[
- #:goals (vector-ref shell-goals 2) 
- #:date "2023-09-29 08:45-10:15"
+@handbook-action{课后作业}
+
+吴玚在使用命令行操作文件夹时一直有个坎迈不过来：
+项目目录@tech{路径}(@litchar{D:\wuchang\basis})不能一次输入正确了。
+因此，
+
+@itemlist[
+ #:style 'order
+ 
+ @item{请回顾@tech{盘符}和@tech{绝对路径}在 Windows 下的关系(@secref{$shell:path})，
+  并上机操作克服此问题。}
+
+ @item{【选做】请用@exec{mkdir}命令确认是否可以创建一个长得像@tech{盘符}的文件夹。
+  即，冒号(@litchar{:})是否可以出现在文件名里。
+  并解释为什么 @litchar{\D:\wuchange} 不是一个靠谱的@tech{路径}。}
 ]
-
-上节课请假，吴玚并没有落下课程，
-因为同学的进度本来就慢了一些，
-现在她俩都拉平了，
-下节课开始学习新内容。
-
-今天这节课主要是复习之前已经学过的学习，
-一方面理清楚了之前没弄明白的概念(函数的定义、实现、调用)，
-一方面新学习了本班才会专门去学的知识(当前路径、绝对路径、相对路径)。
-
-今天这节课以复习为主的原因是，
-之前为了尽快让吴玚看到我上课方式的多样化，
-也为了及早去大厅演讲，
-进度有点赶。
-
-不过从复习效果上看，
-吴玚的记忆力挺可靠的，
-基本没有太多的遗忘。
-只是需要动手的部分还需要再多练习。
-今天新学的内容也是在帮助学生理解这部分内容。
 
 @handbook-reference[]

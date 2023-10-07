@@ -30,3 +30,9 @@
    ; lesson 2
    (list "认识 Python 函数的定义、实现和调用"
          "利用内存教具模拟函数的调用过程")))
+
+(define function-object-goals.λ
+  (vector
+   ; lesson 1
+   (list "初次了解 Racket 语言，借此体验“类型系统”如何确保代码正确"
+         "再谈“踢猫效应”，设计舞台剧角色，引入“类”和“对象”")))

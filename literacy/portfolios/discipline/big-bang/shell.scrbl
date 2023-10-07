@@ -53,14 +53,26 @@
 
  ]
 
-@handbook-action{最终知识}
+@handbook-action[#:tag "$shell:path"]{最终知识}
 
 @itemlist[
  #:style 'ordered
+ 
+ @item{@handbook-defterm[#:origin "Drive Specifier"]{盘符} 是 Windows 硬盘分区的符号，
+  写作@litchar{英文字母:}。比如 @litchar{C:}、@litchar{D:}。注意那个冒号(@litchar{:})不能漏。}
 
  @item{@handbook-defterm[#:origin "Path"]{路径}用于唯一定位一个资源(目录或文件)。
-  资源通常以树形结构组织，不同层级之间用@litchar{/}或@litchar{\}分隔。}
+  资源通常以@emph{树形结构}组织，不同层级之间用@litchar{/}或@litchar{\}分隔。
 
+  @itemlist[
+   @item{在 Windows 系统里至少有一个(树)根，对应着各个硬盘，
+    因此 Windows 的@tech{路径}通常会跟在@tech{盘符}后面。
+    比如：@litchar{D:\name\basis}、@litchar{G:Laboratory}。}
+    
+   @item{在 macOS、Linux 等 Unix 系统里只有一个(树)根，
+    因此 Unix 的@tech{路径}之前什么都不加。
+    比如：@litchar{/home/name/Laboratory}。}]}
+  
  @item{@handbook-defterm[#:origin "Current Directory"]{当前目录}指的是应用程序运行时所关联的目录。
   所有的应用程序在启动时都会关联一个@tech{当前目录}。
   比如，无论是直接图形界面登陆，还是@tech{命令行}远程登陆，
@@ -68,15 +80,12 @@
   桌面上显示的文件和文件夹都在你@tech{首目录}的@tt{Desktop}子目录里。}
 
  @item{@handbook-defterm[#:origin "Absolute Path"]{绝对路径}指从根开始的一条完整路径。
-  @tech{绝对路径}一定会以@litchar{/}或@litchar{\}开始，
-  在 Windows 里至少有一个根，对应着各个硬盘；
-  在 Unix 里只有一个根。}
+  @tech{绝对路径}一定会以@litchar{/}或@litchar{\}开始。}
  
  @item{@handbook-defterm[#:origin "Relative Path"]{相对路径}指的是相对@tech{当前目录}的路径。
   @tech{相对路径}不以@litchar{/}或@litchar{\}开始，
   但@tech{相对路径}被用于定位时会被转化为@tech{绝对路径}。}
-
-]
+ ]
 
 @handbook-scenario{常用 Shell 命令}
 
@@ -85,7 +94,7 @@
      (define cmd (symbol->string shell))
      (define args (map smaller arglist))
 
-     (list @commandline[(add-between (cons (id cmd) args) @hspace[1])]
+     (list @commandline[(add-between (cons (exec cmd) args) @hspace[1])]
            @smaller[semantics]
            @smaller[helper])))
 

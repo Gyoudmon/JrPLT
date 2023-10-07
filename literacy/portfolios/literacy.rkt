@@ -86,12 +86,20 @@
      (syntax/loc stx
        (nested #:style 'vertical-inset
                (para (emph "上课日期：") date)
-               (para (emph "授课课时：") "90min")
-               
-               (para (emph "上课内容："))
-               (itemlist #:style 'ordered
-                         (for/list ([goal (in-list goals)])
-                           (item goal)))))]))
+               (para (emph "课程时长：") "90min")
+
+               (cond [(null? goals) goals]
+                     [else (list (para (emph "上课内容："))
+                                 (itemlist #:style 'ordered
+                                           (for/list ([goal (in-list goals)])
+                                             (item goal))))])))]))
+
+(define-syntax (milestone-desc stx)
+  (syntax-parse stx #:datum-literals []
+    [(_ (~alt (~once (~seq #:date date))) ...)
+     (syntax/loc stx
+       (nested #:style 'vertical-inset
+               (para (emph "时间戳：") date)))]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (tamer-indexed-block-hide-chapter-index #true)

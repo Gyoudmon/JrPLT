@@ -1,7 +1,8 @@
 #lang scribble/report
 
 @require{../../literacy.rkt}
-@require{../../discipline/big-bang/lessons.rkt}
+
+@(require "../../discipline/big-bang/lessons.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-portfolio-story{函数与对象}
