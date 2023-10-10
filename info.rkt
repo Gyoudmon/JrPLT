@@ -28,23 +28,28 @@
 (define sdl2+config
   '((config SDL2)
     (lib gydm.stem)
-    (include "digitama/gydm_stem/compiled/native"
-             [windows "C:\\opt\\GYDMstem\\include"])
-    (libpath "digitama/gydm_stem/compiled/native"
-             [windows "C:\\opt\\GYDMstem\\lib"])))
+
+    [#:release
+     (include "digitama/gydm_stem/compiled/native")
+     (libpath "digitama/gydm_stem/compiled/native")]
+    [#:debug
+     (include "digitama/gydm_stem/compiled/native/debug")
+     (libpath "digitama/gydm_stem/compiled/native/debug")]
+
+    (include [windows "C:\\opt\\GYDMstem\\include"])
+    (libpath [windows "C:\\opt\\GYDMstem\\lib"])))
 
 (define native-compiled-subpath '())
 
 (define native-launcher-names
-  `(["digitama/gydm_stem/gydm.stem.cpp" so ,sdl2-config]
-    ["village/pltmos/pltmos.cpp" so ,sdl2+config]
-    ["village/scsmos/scsmos.cpp" so ,sdl2+config]
+  `(["digitama/gydm_stem/gydm.stem.cpp" so ,@sdl2-config]
+    ["village/pltmos/pltmos.cpp" so ,@sdl2+config]
+    ["village/scsmos/scsmos.cpp" so ,@sdl2+config]
     
-    ["BigBang.cpp" console ,sdl2+config]
+    ["BigBang.cpp" console ,@sdl2+config]
     
-    ["tamer/IME.cpp" console ,sdl2-config]
-    ["tamer/Layer.cpp" console ,sdl2-config]
-    ["tamer/Track.cpp" console ,sdl2-config]))
+    ["tamer/IME.cpp" console ,@sdl2-config]
+    ["tamer/Tamer.cpp" console ,@sdl2-config]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define typesettings

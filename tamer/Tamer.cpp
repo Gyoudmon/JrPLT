@@ -1,14 +1,12 @@
-#include <gydm_stem/game.hpp>
+#include "../digitama/gydm_stem/game.hpp"
 
-#include "village/pltmos/stream.hpp"
-#include "village/scsmos/schematics/optics/pinhole.hpp"
+#include "engine/layer.hpp"
+#include "engine/track.hpp"
 
 #include <vector>
 #include <filesystem>
 
 using namespace WarGrey::STEM;
-using namespace WarGrey::PLT;
-using namespace WarGrey::SCSM;
 
 /*************************************************************************************************/
 namespace {
@@ -18,9 +16,9 @@ namespace {
     static const int advent_days = 25;
 
     /*********************************************************************************************/
-    class JrPlane : public Plane {
+    class TamerPlane : public Plane {
     public:
-        JrPlane(Cosmos* master) : Plane("青少计算机科学"), master(master) {}
+        TamerPlane(Cosmos* master) : Plane("Tamer"), master(master) {}
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override {
@@ -158,9 +156,9 @@ namespace {
     /*************************************************************************************************/
     enum class CmdlineOps { TopCount, GroupSize, _ };
 
-    class JrCosmos : public Cosmos {
+    class TamerCosmos : public Cosmos {
     public:
-        JrCosmos(const char* process_path) : Cosmos(60) {
+        TamerCosmos(const char* process_path) : Cosmos(60) {
             enter_digimon_zone(process_path);
             imgdb_setup(digimon_zonedir().append("stone"));
             
@@ -173,7 +171,7 @@ namespace {
 #endif
         }
 
-        virtual ~JrCosmos() {
+        virtual ~TamerCosmos() {
             imgdb_teardown();
         }
 
@@ -183,10 +181,10 @@ namespace {
             this->set_window_size(1200, 0);
             GameFont::fontsize(21);
 
-            this->splash = this->push_plane(new JrPlane(this));
+            this->splash = this->push_plane(new TamerPlane(this));
 
-            this->push_plane(new StreamPlane());
-            this->push_plane(new PinholePlane());
+            this->push_plane(new LayerPlane());
+            this->push_plane(new TrackPlane());
         }
 
     protected:
@@ -210,7 +208,7 @@ namespace {
 
 /*************************************************************************************************/
 int main(int argc, char* args[]) {
-    JrCosmos universe(args[argc]);
+    TamerCosmos universe(args[argc]);
 
     universe.construct(argc, args);
     universe.big_bang();
