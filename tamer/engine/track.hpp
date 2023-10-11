@@ -7,16 +7,19 @@
 namespace WarGrey::STEM {
     class TrackPlane : public TheBigBang {
     public:
-        TrackPlane() : TheBigBang("Track") { this->the_name("Tamer"); }
+        TrackPlane() : TheBigBang("Track") { }
 
     public: // 覆盖游戏基本方法
+        void construct(float width, float height) override;
         void load(float width, float height) override;
+        void reflow(float width, float height) override;
         void update(uint64_t interval, uint32_t count, uint64_t uptime) override;
 
         void on_enter(IPlane *from) override;
 
     public:
         bool can_select(IMatter *m) override;
+        bool can_select_multiple() override;
 
     protected:
         void after_select(IMatter *m, bool yes) override;
@@ -33,6 +36,11 @@ namespace WarGrey::STEM {
 
     private:
         std::vector<Bracer*> bracers;
+        Dimensionlet* variable;
         Tracklet* track;
+
+    private:
+        DimensionStyle style;
+        double heading;
     };
 }

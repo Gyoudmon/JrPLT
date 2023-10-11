@@ -6,10 +6,18 @@ using namespace WarGrey::STEM;
 static double gliding_duration = 0.2;
 
 /*************************************************************************************************/
+void WarGrey::STEM::TrackPlane::construct(float width, float height) {
+    this->the_name("Tamer");
+    this->style = make_highlight_dimension_style(24U, 8U, 2);
+}
+
 void WarGrey::STEM::TrackPlane::load(float width, float height) {
     this->track = this->insert(new Tracklet(width, height));
 
     TheBigBang::load(width, height);
+
+    this->variable = this->insert(new Dimensionlet(this->style, "deg", "方向"));
+    this->variable->bind_value(this->heading);
 
     this->bracers.push_back(this->insert(new Estelle()));
     this->bracers.push_back(this->insert(new Joshua()));
@@ -23,6 +31,12 @@ void WarGrey::STEM::TrackPlane::load(float width, float height) {
     for (auto bracer : this->bracers) {
         this->bind_canvas(bracer, this->track, 0.5F, 0.9F, true);
     }
+}
+
+void WarGrey::STEM::TrackPlane::reflow(float width, float height) {
+    TheBigBang::reflow(width, height);
+
+    this->move_to(this->variable, width, 0.0F, MatterAnchor::RT, -8.0F, 8.0F);
 }
 
 void WarGrey::STEM::TrackPlane::update(uint64_t interval, uint32_t count, uint64_t uptime) {
@@ -46,19 +60,27 @@ bool WarGrey::STEM::TrackPlane::can_select(IMatter *m) {
     return isinstance(m, Citizen) || (this->agent == m);
 }
 
+bool WarGrey::STEM::TrackPlane::can_select_multiple() {
+    return is_shift_pressed();
+}
+
 void WarGrey::STEM::TrackPlane::after_select(IMatter *m, bool yes) {
     if (!yes) {
-        this->glide_to_mouse(gliding_duration, m, MatterAnchor::CC);
+        if (isinstance(m, Citizen)) {
+            this->glide_to_mouse(gliding_duration, m, MatterAnchor::CC);
+        }
+    } else {
+        this->heading = m->get_heading(false);
     }
 }
 
 void WarGrey::STEM::TrackPlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {
     if (pressed) {
         switch (key) {
+        case 'c': this->track->erase(); break;
         case 'r': this->run_bracers_at_random(true); break;
         case '8': this->run_bracers_in_8_ways(); break;
         case ' ': this->run_bracers_in_direction(); break;
-        case 'c': this->track->erase(); break;
         }
     }
 }
@@ -66,7 +88,7 @@ void WarGrey::STEM::TrackPlane::on_char(char key, uint16_t modifiers, uint8_t re
 bool WarGrey::STEM::TrackPlane::update_tooltip(IMatter *m, float lx, float ly, float gx, float gy) {
     bool updated = false;
 
-    if (this->can_select(m)) {
+    if (isinstance(m, Citizen)) {
         this->tooltip->set_text("heading: %.02lf˚", m->get_heading(false));
         updated = true;
     }
@@ -75,28 +97,49 @@ bool WarGrey::STEM::TrackPlane::update_tooltip(IMatter *m, float lx, float ly, f
 }
 
 void WarGrey::STEM::TrackPlane::run_bracers_at_random(bool drawing) {
-    for (auto bracer : this->bracers) {
-        this->glide_to_random_location(gliding_duration, bracer);
+    IMatter* selected = this->find_next_selected_matter();
+
+    if (selected == nullptr) {
+        for (auto bracer : this->bracers) {
+            this->glide_to_random_location(gliding_duration, bracer);
+        }
+    } else {
+        do {
+            if (isinstance(selected, Citizen)) {
+                this->glide_to_random_location(gliding_duration, selected);
+            }
+            selected = this->find_next_selected_matter(selected);
+        } while (selected != nullptr);
     }
 }
 
 void WarGrey::STEM::TrackPlane::run_bracers_in_direction() {
+    size_t selected = this->count_selected();
     float length = 72.0F;
 
-    for (auto bracer : this->bracers) {
-        this->glide(gliding_duration, bracer, length);
+    if (selected > 0) {
+        this->glide(gliding_duration, nullptr, length);
+    } else {
+        for (auto bracer : this->bracers) {
+            this->glide(gliding_duration, bracer, length);
+        }
     }
 }
 
 void WarGrey::STEM::TrackPlane::run_bracers_in_8_ways() {
     IMatter* selected = this->find_next_selected_matter();
 
-    if (selected != nullptr) {
-        this->run_bracer_in_8_ways(selected, 6, 6, 16.0);
-    } else {
+    if (selected == nullptr) {
         for (size_t i = 0; i < this->bracers.size(); i ++) {
             this->run_bracer_in_8_ways(this->bracers[i], 3 + i, 3 + i, 16.0);
         }
+    } else {
+        do {
+            if (isinstance(selected, Citizen)) {
+                this->run_bracer_in_8_ways(selected, 6, 6, 16.0);
+            }
+            selected = this->find_next_selected_matter(selected);
+        } while (selected != nullptr);
     }
 }
 
