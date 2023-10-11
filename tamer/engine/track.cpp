@@ -67,11 +67,13 @@ bool WarGrey::STEM::TrackPlane::can_select_multiple() {
 void WarGrey::STEM::TrackPlane::after_select(IMatter *m, bool yes) {
     if (!yes) {
         if (isinstance(m, Citizen)) {
-            this->glide_to_mouse(gliding_duration, m, MatterAnchor::CC);
+            if (!this->is_colliding_with_mouse(m)) {
+                this->glide_to_mouse(gliding_duration, m, MatterAnchor::CC);
+            }
         }
-    } else {
-        this->heading = m->get_heading(false);
     }
+
+    this->heading = m->get_heading(false);
 }
 
 void WarGrey::STEM::TrackPlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {

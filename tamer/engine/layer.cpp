@@ -25,9 +25,11 @@ bool WarGrey::STEM::LayerPlane::can_select(IMatter* m) {
 }
 
 void WarGrey::STEM::LayerPlane::after_select(IMatter* m, bool yes) {
-    if (isinstance(m, RegularPolygonlet)) {
-        if (!yes) {
-            this->glide_to_mouse(gliding_duration, m, MatterAnchor::CC);
+    if (!yes) {
+        if (isinstance(m, RegularPolygonlet)) {
+            if (!this->is_colliding_with_mouse(m)) {
+                this->glide_to_mouse(gliding_duration, m, MatterAnchor::CC);
+            }
         }
     }
 }
