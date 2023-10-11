@@ -15,7 +15,7 @@ void WarGrey::STEM::LayerPlane::load(float width, float height) {
     TheBigBang::load(width, height);
 
     this->variable = this->insert(new Dimensionlet(this->style, "边形", "选中了"));
-    this->variable->set_value(&this->n);
+    this->variable->bind_value(this->n);
 
     for (int n = 3; n < 13; n++) {
         this->shapes.push_back(this->insert(new RegularPolygonlet(n, radius, -90.0F, random_uniform(0x333333U, 0xDDDDDDU))));
