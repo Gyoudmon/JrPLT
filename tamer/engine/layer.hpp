@@ -7,10 +7,14 @@
 namespace WarGrey::STEM {
     class LayerPlane : public TheBigBang {
     public:
-        LayerPlane() : TheBigBang("Layer Order") {}
+        LayerPlane() : TheBigBang("Layer Order") { this->the_name("Tamer"); }
 
     public:  // 覆盖游戏基本方法
+        void construct(float width, float height) override;
         void load(float width, float height) override;
+        void reflow(float width, float height) override;
+
+    public:
         void on_enter(IPlane* from) override;
 
     public:
@@ -23,8 +27,13 @@ namespace WarGrey::STEM {
 
     private:
         void move_shapes_at_random();
+
+    private:
+        DimensionStyle style;
+        float n;
         
     private:
-        std::vector<IShapelet*> shapes;
+        std::vector<RegularPolygonlet*> shapes;
+        Dimensionlet* variable;
     };
 }

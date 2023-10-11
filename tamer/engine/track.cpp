@@ -7,10 +7,10 @@ static double gliding_duration = 0.2;
 
 /*************************************************************************************************/
 void WarGrey::STEM::TrackPlane::load(float width, float height) {
+    this->track = this->insert(new Tracklet(width, height));
+
     TheBigBang::load(width, height);
 
-    this->track = this->insert(new Tracklet(width, height));
-            
     this->bracers.push_back(this->insert(new Estelle()));
     this->bracers.push_back(this->insert(new Joshua()));
     this->bracers.push_back(this->insert(new Scherazard()));

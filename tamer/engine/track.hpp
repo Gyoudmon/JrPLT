@@ -7,7 +7,7 @@
 namespace WarGrey::STEM {
     class TrackPlane : public TheBigBang {
     public:
-        TrackPlane() : TheBigBang("Track") {}
+        TrackPlane() : TheBigBang("Track") { this->the_name("Tamer"); }
 
     public: // 覆盖游戏基本方法
         void load(float width, float height) override;

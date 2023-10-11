@@ -18,7 +18,7 @@ namespace {
     /*********************************************************************************************/
     class TamerPlane : public Plane {
     public:
-        TamerPlane(Cosmos* master) : Plane("Tamer"), master(master) {}
+        TamerPlane(Cosmos* master) : Plane("Tamer"), master(master) { }
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override {
