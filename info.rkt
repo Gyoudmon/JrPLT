@@ -27,7 +27,7 @@
 
 (define sdl2+config
   '((config SDL2)
-    (lib gydm.stem)
+    (lib gydm_stem)
 
     [#:release
      (include "digitama/gydm_stem/compiled/native/release/usr/include")
@@ -48,7 +48,7 @@
 (define native-compiled-debug '("debug"))
 
 (define native-launcher-names
-  `(["digitama/gydm_stem/gydm.stem.cpp" so ,@sdl2-config]
+  `(["digitama/gydm_stem/gydm_stem.cpp" so ,@sdl2-config]
     ["village/pltmos/pltmos.cpp" so ,@sdl2+config]
     ["village/scsmos/scsmos.cpp" so ,@sdl2+config]
     
