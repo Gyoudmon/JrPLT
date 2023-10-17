@@ -8,14 +8,14 @@
 @handbook-portfolio-story{函数与对象}
 
 @lesson-desc[
- #:topic ['big-bang 'shell]
+ #:topic ['big-bang 'function-object]
  #:class 'lambda-girl
 ]
 
 @handbook-lesson{初识类与对象}
 
 @period-desc[
- #:goals (vector-ref function-object-goals.λ 0) 
+ #:goals (vector-ref function-object-goals.λ 0)
  #:date "2023-10-06 08:45-10:15"
 ]
 
@@ -31,5 +31,24 @@
 因此，我们就自然而然地引入了@tech{类}与@tech{对象}的概念。
 
 下节课开始敲代码。
+
+@handbook-lesson{定义角色类}
+
+@period-desc[
+ #:goals (vector-ref function-object-goals.λ 0)
+ #:date "2023-10-15 08:45-10:15"
+]
+
+本节课主要是以比较专业的方式复习和总结了上节课的内容，
+再把纸笔设计的角色翻译成 C++ 代码。
+
+丁嘉琪的问题主要有两个：
+1. 这周电脑是真的没有硬盘空间可用了，上课嘉琪用的是我的电脑，
+因此本周也没法在课后复习和练习了。
+2. 敲代码的速度有待提升，不过这是所有初学者都有的问题，
+我对所有学生也都会统一提要求课后练习。
+因为上课时间有限，不应该浪费在打字上。
+
+以上两个问题，需要你们家庭内部沟通好。
 
 @handbook-reference[]

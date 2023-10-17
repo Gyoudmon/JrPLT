@@ -2,9 +2,8 @@
 
 @require{../../literacy.rkt}
 
-@handbook-portfolio-story{华佳泽}
+@handbook-portfolio-story{孙艺溶}
 
-@include-section{milestone1.scrbl}
 @include-section{function-object.scrbl}
 
 @handbook-reference[]

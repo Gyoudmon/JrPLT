@@ -8,7 +8,7 @@
 @handbook-portfolio-story{函数与对象}
 
 @lesson-desc[
- #:topic ['big-bang 'shell]
+ #:topic ['big-bang 'function-object]
  #:class 'lambda-girl
 ]
 
@@ -49,5 +49,23 @@
   即，冒号(@litchar{:})是否可以出现在文件名里。
   并解释为什么 @litchar{\D:\wuchange} 不是一个靠谱的@tech{路径}。}
 ]
+
+@handbook-lesson{定义角色类}
+
+@period-desc[
+ #:goals (vector-ref function-object-goals.λ 0)
+ #:date "2023-10-15 08:45-10:15"
+]
+
+本节课主要是以比较专业的方式复习和总结了上节课的内容，
+再把纸笔设计的角色翻译成 C++ 代码。
+
+吴玚没有大问题，就是敲代码的速度需要加快，
+不过这是所有初学者都有的问题，
+我对所有学生也都会统一提要求课后练习。
+因为上课时间有限，不应该浪费在打字上。
+
+因此，建议吴玚每隔2-3天就要把最近上课时输入过的代码再输入一遍。
+我觉得吴玚本周的状态不如她刚来的时候。
 
 @handbook-reference[]

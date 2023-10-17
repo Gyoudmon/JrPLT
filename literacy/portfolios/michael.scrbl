@@ -2,22 +2,28 @@
 
 @require{literacy.rkt}
 
-@;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title[#:subtitle "学生成长档案" #:hide-version? #true]{青少计算机科学}
+@handbook-portfolio-title{刘嘉淳}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-smart-table[]
-
 @$tex:setcounter['page 1]
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@include-section{portfolios/class.scrbl}
-@include-section{portfolios/discipline.scrbl}
-@include-section{portfolios/student.scrbl}
+@handbook-part-section{学生档案}
+
+@include-section{student/michael/self.scrbl}
+
+@handbook-part-section{课程简介}
+
+@include-section{discipline/big-bang.scrbl}
+
+@handbook-part-section{班级简介}
+
+@include-section{class/pioneer.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @texbook-appendix{附录}
 
-@include-section{portfolios/faq.scrbl}
+@include-section{faq.scrbl}
 
-@handbook-appendix[#:index-section? #false #:numbered? #true]
+@handbook-appendix[#:index-section? #true #:numbered? #true]

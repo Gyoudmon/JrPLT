@@ -77,6 +77,9 @@
   每个@tech{对象}都是自己@tech{类}型的@handbook-defterm[#:origin "Instance"]{实例}。
   
   在语言学视角下，@tech{对象}是@tech{函数}的真·主语。}
+
+ @item{@tech{类}的实例化过程本质上是调用了该@tech{类}的@handbook-defterm[#:origin "Constructor"]{构造函数}，
+  用以完成对@tech{对象}的初始化工作。因此实例化的语法与@tech{函数}调用相似。}
  
 ]
 
