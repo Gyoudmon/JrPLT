@@ -9,6 +9,7 @@
 (require scribble/latex-properties)
 
 (require (for-syntax racket/base))
+(require (for-syntax racket/string))
 (require (for-syntax racket/syntax))
 (require (for-syntax syntax/parse))
 
@@ -80,19 +81,25 @@
 
 (define-syntax (period-desc stx)
   (syntax-parse stx #:datum-literals []
-    [(_ (~alt (~once (~seq #:goals goals))
-              (~once (~seq #:date date)))
+    [(_ (~alt (~once (~seq #:goals gvar))
+              (~once (~seq #:datetime [date start end]))
+              (~optional (~seq #:subclass subcls) #:defaults ([subcls #'#false])))
         ...)
-     (syntax/loc stx
-       (nested #:style 'vertical-inset
-               (para (emph "上课日期：") date)
-               (para (emph "课程时长：") "90min")
-
-               (cond [(null? goals) goals]
-                     [else (list (para (emph "上课内容："))
-                                 (itemlist #:style 'ordered
-                                           (for/list ([goal (in-list goals)])
-                                             (item goal))))])))]))
+     (with-syntax* ([(sh smin) (map string->number (string-split (syntax-e #'start) ":"))]
+                    [(eh emin) (map string->number (string-split (syntax-e #'end) ":"))])
+       (syntax/loc stx
+         (let* ([gdate (hash-ref gvar (string->number (string-replace date "-" "")) hasheq)]
+                [goals (hash-ref gdate (+ (* sh 100) smin) list)]
+                [goals (if (and subcls (hash? goals)) (hash-ref goals 'subcls list) goals)])
+           (nested #:style 'vertical-inset
+                   (para (emph "上课时间：") (list date " " start))
+                   (para (emph "课程时长：") (~a (- (+ (* eh 60) emin) (+ (* sh 60) smin)) "min"))
+                   
+                   (cond [(null? goals) goals]
+                         [else (list (para (emph "上课内容："))
+                                     (itemlist #:style 'ordered
+                                               (for/list ([goal (in-list goals)])
+                                                 (item (desc goal)))))])))))]))
 
 (define-syntax (milestone-desc stx)
   (syntax-parse stx #:datum-literals []

@@ -2,7 +2,7 @@
 
 @require{../../literacy.rkt}
 
-@(require "../../discipline/big-bang/lessons.rkt")
+@(require "../../discipline/big-bang/lesson/function-object.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-portfolio-story{函数与对象}
@@ -15,9 +15,8 @@
 @handbook-lesson{类}
 
 @period-desc[
- #:goals (vector-ref function-object-goals.py 2) 
- #:date "2023-10-15 10:15-11:45"
-]
+ #:goals function-object-goals 
+ #:datetime ["2023-10-15" "10:15" "11:45"]]
 
 本节课新同学请假，还是华佳泽一个人上课，因此继续推进新内容。
 

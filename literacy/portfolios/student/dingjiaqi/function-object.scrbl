@@ -2,7 +2,7 @@
 
 @require{../../literacy.rkt}
 
-@(require "../../discipline/big-bang/lessons.rkt")
+@(require "../../discipline/big-bang/lesson/function-object.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-portfolio-story{函数与对象}
@@ -15,9 +15,8 @@
 @handbook-lesson{初识类与对象}
 
 @period-desc[
- #:goals (vector-ref function-object-goals.λ 0)
- #:date "2023-10-06 08:45-10:15"
-]
+ #:goals function-object-goals
+ #:datetime ["2023-10-06" "08:45" "10:15"]]
 
 @tech{变量}的@tech{类型}和@tech{值}是难点知识。
 本班学生会通过认识 Racket 语言来理解这个难点。
@@ -35,9 +34,8 @@
 @handbook-lesson{定义角色类}
 
 @period-desc[
- #:goals (vector-ref function-object-goals.λ 0)
- #:date "2023-10-15 08:45-10:15"
-]
+ #:goals function-object-goals
+ #:datetime ["2023-10-15" "08:45" "10:15"]]
 
 本节课主要是以比较专业的方式复习和总结了上节课的内容，
 再把纸笔设计的角色翻译成 C++ 代码。

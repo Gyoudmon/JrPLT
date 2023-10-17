@@ -2,7 +2,7 @@
 
 @require{../../literacy.rkt}
 
-@(require "../../discipline/big-bang/lessons.rkt")
+@(require "../../discipline/big-bang/lesson/function-object.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-portfolio-story{函数与对象}
@@ -15,9 +15,8 @@
 @handbook-lesson{开班第一课}
 
 @period-desc[
- #:goals (vector-ref function-object-goals.online 0)
- #:date "2023-10-15 15:15-17:00"
-]
+ #:goals function-object-goals
+ #:datetime ["2023-10-15" "15:15" "17:00"]]
 
 总的来说，这个开局还不错。
 我能感受得到 Michael 对这个领域的热情。

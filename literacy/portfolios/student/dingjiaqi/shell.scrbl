@@ -2,7 +2,7 @@
 
 @require{../../literacy.rkt}
 
-@(require "../../discipline/big-bang/lessons.rkt")
+@(require "../../discipline/big-bang/lesson/shell.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-portfolio-story{Shell}
@@ -15,18 +15,16 @@
 @handbook-lesson{认识 Shell 与 PowerShell}
 
 @period-desc[
- #:goals (vector-ref shell-goals 0) 
- #:date "2023-09-17 08:45-10:15"
-]
+ #:goals shell-goals
+ #:datetime ["2023-09-17" "08:45" "10:15"]]
 
 这是本班开设以来的第一节正式课程，氛围相当好。
 
 @handbook-lesson{C++ 预备(macOS)}
 
 @period-desc[
- #:goals (vector-ref shell-goals 1)
- #:date "2023-09-24 08:45-10:15"
-]
+ #:goals shell-goals
+ #:datetime ["2023-09-24" "08:45" "10:15"]]
 
 刚巧今天另一个同学生病请假，丁嘉琪继续未完成的安装。
 
@@ -36,9 +34,8 @@
 @handbook-lesson{路径}
 
 @period-desc[
- #:goals (vector-ref shell-goals 2) 
- #:date "2023-09-29 08:45-10:15"
-]
+ #:goals shell-goals
+ #:datetime ["2023-09-29" "08:45" "10:15"]]
 
 今天这节课主要是复习之前试听课时学习的知识，
 一方面理清楚了之前没弄明白的概念(@tech{函数}的定义、实现、调用)，

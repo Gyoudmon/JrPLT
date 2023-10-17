@@ -2,7 +2,7 @@
 
 @require{../../literacy.rkt}
 
-@(require "../../discipline/big-bang/lessons.rkt")
+@(require "../../discipline/big-bang/lesson/function-object.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-portfolio-story{函数与对象}
@@ -15,9 +15,8 @@
 @handbook-lesson{认识 Python}
 
 @period-desc[
- #:goals (vector-ref function-object-goals.py 0) 
- #:date "2023-09-16 14:45-16:15"
-]
+ #:goals function-object-goals 
+ #:datetime ["2023-09-16" "14:45" "16:15"]]
 
 现在这个班就只有三个学生了，整体氛围比较好，他们三个老同学、好朋友也都比较开心。
 同时上课的注意力也比之前好了一些，虽然个别时间仍然会互相打闹，孙功铖本人没有主动参与。
@@ -31,9 +30,8 @@
 @handbook-lesson{踢猫效应}
 
 @period-desc[
- #:goals (vector-ref function-object-goals.py 1) 
- #:date "2023-09-23 14:45-16:15"
-]
+ #:goals function-object-goals 
+ #:datetime ["2023-09-23" "14:45" "16:15"]]
 
 今天的上课氛围也很好，孙功铖是能好好学的。
 
@@ -41,9 +39,8 @@
 @handbook-lesson{类}
 
 @period-desc[
- #:goals (vector-ref function-object-goals.py 2) 
- #:date "2023-10-14 14:45-16:15"
-]
+ #:goals function-object-goals 
+ #:datetime ["2023-10-14" "14:45" "16:15"]]
 
 今天上课的前20分钟复习了之前的内容，后面开始推进新内容。
 学生充当导演设计一出舞台剧，将“踢猫效应”现象表演给观众看。

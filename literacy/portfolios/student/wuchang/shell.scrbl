@@ -2,7 +2,7 @@
 
 @require{../../literacy.rkt}
 
-@(require "../../discipline/big-bang/lessons.rkt")
+@(require "../../discipline/big-bang/lesson/shell.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-portfolio-story{Shell}
@@ -15,9 +15,8 @@
 @handbook-lesson{认识 Shell 与 PowerShell}
 
 @period-desc[
- #:goals (vector-ref shell-goals 0) 
- #:date "2023-09-17 08:45-10:15"
-]
+ #:goals shell-goals 
+ #:datetime ["2023-09-17" "08:45" "10:15"]]
 
 这是本班开设以来的第一节正式课程(其他人的电脑都还没准备好)。
 
@@ -27,9 +26,8 @@
 @handbook-lesson{路径}
 
 @period-desc[
- #:goals (vector-ref shell-goals 2) 
- #:date "2023-09-29 08:45-10:15"
-]
+ #:goals shell-goals 
+ #:datetime ["2023-09-29" "08:45" "10:15"]]
 
 上节课请假，吴玚并没有落下课程，
 因为同学的进度本来就慢了一些，
