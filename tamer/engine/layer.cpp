@@ -15,8 +15,7 @@ void WarGrey::STEM::LayerPlane::load(float width, float height) {
     }
 }
 
-void WarGrey::STEM::LayerPlane::on_enter(IPlane* from) {
-    this->agent->play("Greeting", 1);
+void WarGrey::STEM::LayerPlane::on_mission_start(float width, float height) {
     this->move_shapes_at_random();
 }
 
@@ -31,14 +30,6 @@ void WarGrey::STEM::LayerPlane::after_select(IMatter* m, bool yes) {
                 this->glide_to_mouse(gliding_duration, m, MatterAnchor::CC);
             }
         }
-    }
-}
-
-void WarGrey::STEM::LayerPlane::on_tap_selected(IMatter* m, float x, float y) {
-    if (is_shift_pressed()) {
-        this->bring_forward(m);
-    } else {
-        this->send_backward(m);
     }
 }
 

@@ -13,14 +13,13 @@ namespace WarGrey::STEM {
         void load(float width, float height) override;
 
     public:
-        void on_enter(IPlane* from) override;
+        void on_mission_start(float width, float height) override;
 
     public:
         bool can_select(IMatter* m) override;
 
     protected:
         void after_select(IMatter* m, bool yes) override;
-        void on_tap_selected(IMatter* m, float x, float y) override;
         void on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) override;
 
     private:

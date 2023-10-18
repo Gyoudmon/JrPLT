@@ -95,9 +95,7 @@ namespace {
             }
         }
 
-        void on_enter(IPlane* from) override {
-            this->agent->play("Greeting", 1);
-
+        void on_mission_start(float width, float height) override {
             this->tux->set_border_strategy(BorderStrategy::IGNORE);
             this->tux->set_velocity(2.0, 0.0);
         }

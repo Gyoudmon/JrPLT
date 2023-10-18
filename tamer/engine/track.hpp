@@ -15,7 +15,8 @@ namespace WarGrey::STEM {
         void reflow(float width, float height) override;
         void update(uint64_t interval, uint32_t count, uint64_t uptime) override;
 
-        void on_enter(IPlane *from) override;
+    public:
+        void on_mission_start(float width, float height) override;
 
     public:
         bool can_select(IMatter *m) override;

@@ -51,8 +51,7 @@ void WarGrey::STEM::TrackPlane::update(uint64_t interval, uint32_t count, uint64
     }
 }
 
-void WarGrey::STEM::TrackPlane::on_enter(IPlane *from) {
-    this->agent->play("Greeting", 1);
+void WarGrey::STEM::TrackPlane::on_mission_start(float width, float height) {
     this->run_bracers_at_random(false);
 }
 
