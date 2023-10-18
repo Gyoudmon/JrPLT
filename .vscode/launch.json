@@ -1,21 +1,46 @@
 {
+    "version": "2.0.0",
+
     "configurations": [
         {
-            "name": "宇宙大爆炸@macOS",
+            "name": "一键编译/运行 main 函数",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/compiled/native/BigBang",
+            "program": "${fileDirname}/compiled/native/release/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "internalConsoleOptions": "openOnSessionStart",
+            "MIMode": "lldb",
+            "preLaunchTask": "一键编译",
+
+            "windows": {
+                "program": "${fileDirname}/compiled/native/release/${fileBasenameNoExtension}.exe",
+                "type": "cppvsdbg"
+            }
+        },
+
+        {
+            "name": "宇宙大爆炸",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/compiled/native/release/BigBang",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "externalConsole": false,
             "MIMode": "lldb",
-            "preLaunchTask": "宇宙大爆炸@macOS[Release]"
+            "preLaunchTask": "宇宙大爆炸[Release]",
+
+            "windows": {
+                "program": "${workspaceFolder}/compiled/native/release/BigBang.exe",
+                "type": "cppvsdbg"
+            }
         },
-        
+
         {
-            "name": "macDBG宇宙大爆炸",
+            "name": "DBG宇宙大爆炸",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/compiled/native/debug/BigBang",
@@ -23,49 +48,13 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "externalConsole": false,
             "MIMode": "lldb",
-            "preLaunchTask": "宇宙大爆炸@macOS[Debug]"
-        },
+            "preLaunchTask": "宇宙大爆炸[Debug]",
 
-        {
-            "name": "win宇宙大爆炸",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/compiled/native/BigBang.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "preLaunchTask": "宇宙大爆炸@Windows[Release]"
-        },
-        
-        {
-            "name": "winDBG宇宙大爆炸",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/compiled/native/debug/BigBang.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "preLaunchTask": "宇宙大爆炸@Windows[Debug]"
-        },
-        
-        {
-            "name": "winBlank",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/tamer/compiled/native/debug/blank.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "preLaunchTask": "宇宙大爆炸@Windows[Debug]"
+            "windows": {
+                "program": "${workspaceFolder}/compiled/native/debug/BigBang.exe",
+                "type": "cppvsdbg"
+            }
         }
-    ],
-    "version": "2.0.0"
+    ]
 }
