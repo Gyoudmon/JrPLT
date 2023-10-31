@@ -11,12 +11,14 @@
 @tamer-figure!["d:bigbang" "宇宙大爆炸 主界面"]{
  @stone-image["Portfolios/Disciplines/big-bang.png" #:scale 0.28]}
 
-@margin-note{@tamer-deftech{Linux} 是信息学奥赛唯一指定的参赛系统。}
 @tamer-figure-ref{d:bigbang}是@tech{宇宙大爆炸}的主界面。
-其中，企鹅@racketerror{不代表腾讯}，而是 @tech{Linux} 操作系统的吉祥物；
-鱼币是企鹅的食物，大部分鱼币代表学生作品，少部分是教师演示程序。
+其中，企鹅是 @tech{Linux} 操作系统的吉祥物，
+这个系统是信息学奥赛唯一指定的参赛系统；
+鱼币是企鹅的食物，大部分鱼币代表学生作品，
+少部分是教师演示程序。
 
 @include-section{big-bang/shell.scrbl}
 @include-section{big-bang/function-object.scrbl}
+@include-section{big-bang/big-bang.scrbl}
 
 @handbook-reference[]

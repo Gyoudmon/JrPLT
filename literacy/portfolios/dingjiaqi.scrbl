@@ -25,5 +25,6 @@
 @texbook-appendix{附录}
 
 @include-section{faq.scrbl}
+@include-section{../big-bang/environment.scrbl}
 
 @handbook-appendix[#:index-section? #true #:numbered? #true]

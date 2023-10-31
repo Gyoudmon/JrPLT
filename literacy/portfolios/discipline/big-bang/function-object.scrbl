@@ -21,7 +21,7 @@
 
 @handbook-scenario{知识点}
 
-@handbook-action{前置知识}
+@handbook-action{重点知识}
 
 @itemlist[
  #:style 'ordered
@@ -47,21 +47,13 @@
 
  @item{@handbook-defterm[#:origin "Constant"]{常量}即是不可被改变的量，
   它也可以像@tech{变量}一样拥有名字。}
- 
-]
-
-@handbook-action{进阶知识}
-
-@itemlist[
- #:style 'ordered
 
  @item{@tech{变量}(和@tech{常量})有两个属性：@tech{类型}和@tech{值}。
   @handbook-defterm[#:origin "Value"]{值}指的是变量的@focus{内容}；
   @handbook-defterm[#:origin "Type"]{类型}则用于提示“@focus{如何解读}这个内容”。}
-
 ]
 
-@handbook-action{最终知识}
+@handbook-action{难点知识}
 
 @itemlist[
  #:style 'ordered

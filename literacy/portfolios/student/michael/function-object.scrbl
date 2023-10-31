@@ -34,4 +34,24 @@ Michael 的双语基础本身是学编程的一大优势。
 
 以后我们多多交流，有问题共同解决。
 
+@period-desc[
+ #:goals function-object-goals
+ #:datetime ["2023-10-29" "14:45" "16:15"]]
+
+今天总体上没有大问题，偶尔会有网络卡的问题。
+下次上课我们可以试试同时开腾讯会议和zoom，
+腾讯会议用来共享我的屏幕，
+zoom用来共享 Michael 的屏幕。
+
+@handbook-action{课后作业}
+
+@itemlist[
+ #:style 'ordered
+ 
+ @item{请完成《函数与对象》第一页的内容，这里面的题目都已经学过。}
+
+ @item{请完成《函数与对象》第二页第一题；预习第二页剩下的题目，这是下节课的重点。}
+ 
+]
+
 @handbook-reference[]

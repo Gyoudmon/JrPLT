@@ -63,9 +63,9 @@
     ["literacy/Metrics.scrbl" xelatex #:explicitly-make]
 
     ["literacy/Portfolios.scrbl" xelatex #px"Portfolios/*.(png|gv)"]
-    ["literacy/portfolios/dingjiaqi.scrbl" "丁嘉琪" xelatex]
-    ["literacy/portfolios/huajiaze.scrbl" "华佳泽" xelatex]
-    ["literacy/portfolios/michael.scrbl" "Michael" xelatex]
-    ["literacy/portfolios/sungongcheng.scrbl" "孙功铖" xelatex]
-    ["literacy/portfolios/sunyirong.scrbl" "孙艺溶" xelatex]
-    ["literacy/portfolios/wuchang.scrbl" "吴玚" xelatex]))
+    ["literacy/portfolios/dingjiaqi.scrbl" "丁嘉琪" xelatex #px"Portfolios/tamer.tex"]
+    ["literacy/portfolios/huajiaze.scrbl" "华佳泽" xelatex #px"Portfolios/tamer.tex"]
+    ["literacy/portfolios/michael.scrbl" "Michael" xelatex #px"Portfolios/tamer.tex"]
+    ["literacy/portfolios/sungongcheng.scrbl" "孙功铖" xelatex #px"Portfolios/tamer.tex"]
+    ["literacy/portfolios/sunyirong.scrbl" "孙艺溶" xelatex #px"Portfolios/tamer.tex"]
+    ["literacy/portfolios/wuchang.scrbl" "吴玚" xelatex #px"Portfolios/tamer.tex"]))

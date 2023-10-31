@@ -15,13 +15,11 @@
  
  @item{知道 Shell 既是一种操作计算机的方式，也是一种程序语言。}
  
- @item{使用常用 shell 命令管理项目目录，完成后续课程必要的教学配置。}
- 
-]
+ @item{使用常用 shell 命令管理项目目录，完成后续课程必要的教学配置。}]
 
 @handbook-scenario{知识点}
 
-@handbook-action{前置知识}
+@handbook-action{基础知识}
 
 @itemlist[
  #:style 'ordered
@@ -32,11 +30,9 @@
  
  @item{现在的家用计算机都遵循“存储程序”思想。
   程序写出来保存在外存(硬盘)里，程序运行时要加载到内存里。
-  因此@handbook-defterm{位置}是个基础且重要的概念。}
- 
-]
+  因此@handbook-defterm{位置}是个基础且重要的概念。}]
 
-@handbook-action{进阶知识}
+@handbook-action{重点知识}
 
 @itemlist[
  #:style 'ordered
@@ -49,11 +45,9 @@
   用户通过键盘操作计算机，每次输入一行，按回车键后计算机开始执行刚刚输入的行，
   并把输出结果显示在屏幕上。}
 
- @item{Windows 启动 PowerShell 快捷做法：@hotkeys['win #\R]，输入 @id{PowerShell}。}
+ @item{Windows 启动 PowerShell 快捷做法：@hotkeys['win #\R]，输入 @id{PowerShell}。}]
 
- ]
-
-@handbook-action[#:tag "$shell:path"]{最终知识}
+@handbook-action[#:tag "$shell:path"]{难点知识}
 
 @itemlist[
  #:style 'ordered
@@ -84,10 +78,9 @@
  
  @item{@handbook-defterm[#:origin "Relative Path"]{相对路径}指的是相对@tech{当前目录}的路径。
   @tech{相对路径}不以@litchar{/}或@litchar{\}开始，
-  但@tech{相对路径}被用于定位时会被转化为@tech{绝对路径}。}
- ]
+  但@tech{相对路径}被用于定位时会被转化为@tech{绝对路径}。}]
 
-@handbook-scenario{常用 Shell 命令}
+@handbook-scenario[#:tag "$shell:com_cmd"]{常用 Shell 命令}
 
 @(define make-shell-row
    (lambda [shell arglist semantics helper]
@@ -104,15 +97,16 @@
  #:column-properties '(left)
  #:row-properties '((top-border bottom-border))
 
- (list (list           @commandline{@emph{命令}}      @emph{语义}               @emph{助记单词})
-       (make-shell-row 'cd        '("目录路径")       "切换“当前工作目录”的路径"   @tt{@litchar{c}hange @litchar{d}irectory})
-       (make-shell-row 'ls        '("[目录路径]")     "列出目录的内容"            @tt{@litchar{l}i@litchar{s}t directory contents})
-       (make-shell-row 'mkdir     '("目录路径")       "在指定路径创建目录"         @tt{@litchar{m}a@litchar{k}e @litchar{dir}ectory})
-       (make-shell-row 'rmdir     '("目录路径")       "删除指定路径的目录"         @tt{@litchar{r}e@litchar{m}ove @litchar{dir}ectory})
-       (make-shell-row 'mv        '("源路径" "新路径") "移动文件或目录"            @tt{@litchar{m}o@litchar{v}e path})
-       (make-shell-row 'cp        '("源路径" "新路径") "复制文件或目录"            @tt{@litchar{c}o@litchar{p}y path})
-       (make-shell-row 'pwd       '()                "打印“当前工作目录”的路径"   @tt{@litchar{p}rint @litchar{w}orking @litchar{d}irectory})
-       (make-shell-row 'where.exe '("命令名")         "打印“命令名”对应的实际路径" @tt{-}))
-]
+ (list (list           @commandline{@emph{命令}}      @emph{语义}                        @emph{助记单词})
+       (make-shell-row 'cd        '("目录路径")       "切换“当前工作目录”的路径"            @tt{@litchar{c}hange @litchar{d}irectory})
+       (make-shell-row 'ls        '("[目录路径]")     "列出目录的内容"                     @tt{@litchar{l}i@litchar{s}t directory contents})
+       (make-shell-row 'mkdir     '("目录路径")       "在指定路径创建目录"                 @tt{@litchar{m}a@litchar{k}e @litchar{dir}ectory})
+       (make-shell-row 'rmdir     '("目录路径")       "删除指定路径的目录"                 @tt{@litchar{r}e@litchar{m}ove @litchar{dir}ectory})
+       (make-shell-row 'mv        '("源路径" "新路径") "移动文件或目录"                    @tt{@litchar{m}o@litchar{v}e path})
+       (make-shell-row 'cp        '("源路径" "新路径") "复制文件或目录"                    @tt{@litchar{c}o@litchar{p}y path})
+       (make-shell-row 'pwd       '()                "打印“当前工作目录”的路径"            @tt{@litchar{p}rint @litchar{w}orking @litchar{d}irectory})
+       (make-shell-row 'cat       '("文件路径")       "按顺序将指定文件的内容打印在屏幕上"    @tt{con@litchar{cat}enate and print files})
+       (make-shell-row 'which     '("命令名")         "打印“命令名”对应的实际路径(Unix)"    @tt{-})
+       (make-shell-row 'where.exe '("命令名")         "打印“命令名”对应的实际路径(Windows)" @tt{-}))]
 
 @handbook-reference[]
