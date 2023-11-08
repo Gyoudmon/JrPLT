@@ -4,29 +4,22 @@
 
 (require bitmap)
 
-(require racket/symbol)
-
-(require scribble/base)
-(require scribble/core)
+(require digimon/tamer)
 (require scribble/manual)
+
+(require racket/symbol)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define anchor-font (desc-font #:size 9))
 
 (define anchor-demo
   (for/fold ([base (bitmap-solid 'palegreen 96)])
-            ([anchor (in-list '(LT CT RT LC CC RC LB CB RB))])
-    (let ([label (bitmap-text anchor anchor-font #:color 'crimson)])
-      (case anchor
-        [(CT) (bitmap-ct-superimpose base label)]
-        [(RT) (bitmap-rt-superimpose base label)]
-        [(LC) (bitmap-lc-superimpose base label)]
-        [(CC) (bitmap-cc-superimpose base label)]
-        [(RC) (bitmap-rc-superimpose base label)]
-        [(LB) (bitmap-lb-superimpose base label)]
-        [(CB) (bitmap-cb-superimpose base label)]
-        [(RB) (bitmap-rb-superimpose base label)]
-        [else (bitmap-lt-superimpose base label)]))))
+            ([superimpose (in-list (list bitmap-lt-superimpose bitmap-ct-superimpose bitmap-rt-superimpose
+                                         bitmap-lc-superimpose bitmap-cc-superimpose bitmap-rc-superimpose
+                                         bitmap-lb-superimpose bitmap-cb-superimpose bitmap-rb-superimpose))])
+    (let* ([anchor (string-upcase (cadr (string-split (symbol->immutable-string (object-name superimpose)) "-")))]
+           [label (bitmap-text anchor anchor-font #:color 'crimson)])
+      (superimpose base label))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define anchors
@@ -37,9 +30,9 @@
            'B @tt{@litchar{B}ottom}))
 
 (define colored-percentages
-  (hasheq 0.0 (elem #:style (make-style #false (list (make-color-property "orange"))) "0.0")
-          0.5 (elem #:style (make-style #false (list (make-color-property "green"))) "0.5")
-          1.0 (elem #:style (make-style #false (list (make-color-property "violet"))) "1.0")))
+  (hasheq 0.0 (elem #:style (fg-rgb 'orange) "0.0")
+          0.5 (elem #:style (fg-rgb 'forestgreen) "0.5")
+          1.0 (elem #:style (fg-rgb 'violet) "1.0")))
 
 @(define width%s  (hasheq 'L 0.0 'C 0.5 'R 1.0))
 @(define height%s (hasheq 'T 0.0 'C 0.5 'B 1.0))

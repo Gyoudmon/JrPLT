@@ -53,6 +53,10 @@
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-appendix[#:index-section? #true #:numbered? #true
+ (book-bib-entry #:date "2020"  #:edition "1st"
+                 "DTC" "Don't teach coding: until you read this book"
+                 (list "Lindsey D. Handley" "Stephen R. Foster")
+                 "Jossey Bass")
  (book-bib-entry #:date "1997"
                  "CnC" "Computability and Complexity: From a Programming Perspective"
                  "Neil D. Jones" "The MIT Press")
@@ -74,10 +78,6 @@
  (book-bib-entry #:date "2019" #:edition "3rd"
                  "GEA" "Game Engine Architecture"
                  "Jason Gregory" "CRC Press")
- (book-bib-entry #:date "2020"  #:edition "1st"
-                 "DTC" "Don't teach coding: until you read this book"
-                 (list "Lindsey D. Handley" "Stephen R. Foster")
-                 "Jossey Bass")
  (book-bib-entry #:date "2009"
                  "TCC" "冒号课堂：编程范式与OOP思想"
                  "郑辉" "电子工业出版社")

@@ -1,6 +1,7 @@
 #lang scribble/report
 
 @require{literacy.rkt}
+@require{bibentry.rkt}
 
 @handbook-portfolio-title{吴玚}
 
@@ -27,4 +28,4 @@
 @include-section{faq.scrbl}
 @include-section{../big-bang/environment.scrbl}
 
-@handbook-appendix[#:index-section? #true #:numbered? #true]
+@handbook-appendix[#:index-section? #true #:numbered? #true bibentries]

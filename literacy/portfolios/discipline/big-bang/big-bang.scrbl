@@ -27,7 +27,7 @@
 @itemlist[
  #:style 'ordered
 
- @item{模块化是一种将复杂问题分解成一个个简单可行的小问题的过程。
+ @item{@handbook-defterm[#:origin "Modularity"]{模块化}是一种将复杂问题分解成一个个简单可行的小问题的过程。
   在软件工程中，模块化也是一种分割、组织、打包软件的方法。
 
   在C++/Python中，

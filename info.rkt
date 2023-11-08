@@ -63,6 +63,8 @@
     ["literacy/Metrics.scrbl" xelatex #:explicitly-make]
 
     ["literacy/Portfolios.scrbl" xelatex #px"Portfolios/*.(png|gv)"]
+    ["literacy/Disciplines.scrbl" xelatex #px"Portfolios/*.(png|gv)"]
+    
     ["literacy/portfolios/dingjiaqi.scrbl" "丁嘉琪" xelatex #px"Portfolios/tamer.tex"]
     ["literacy/portfolios/huajiaze.scrbl" "华佳泽" xelatex #px"Portfolios/tamer.tex"]
     ["literacy/portfolios/michael.scrbl" "Michael" xelatex #px"Portfolios/tamer.tex"]
