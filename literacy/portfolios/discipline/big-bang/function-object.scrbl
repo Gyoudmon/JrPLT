@@ -61,8 +61,8 @@
  @item{@handbook-defterm[#:origin "Class"]{类}即自定义@tech{类型}，
   它封装了一系列相关联的@tech{变量}和@tech{函数}。
   
-  @tech{类}的@tech{变量}称为@handbook-defterm[#:origin "Field"]{字段}；
-  @tech{类}的@tech{函数}称为@handbook-defterm[#:origin "Method"]{方法}。}
+  @tech{类}的@tech{变量}称为@handbook-defterm[#:origin "Field"]{字段}，通常代表@tech{类}的属性；
+  @tech{类}的@tech{函数}称为@handbook-defterm[#:origin "Method"]{方法}，通常代表@tech{类}的动作或行为。}
 
  @item{@tech{类}可以比作设计图，根据此设计图创建出的产品
   称为该@tech{类}的@handbook-defterm[#:origin "Object"]{对象}。

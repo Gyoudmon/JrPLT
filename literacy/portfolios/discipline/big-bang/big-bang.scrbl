@@ -1,6 +1,7 @@
 #lang scribble/base
 
 @require{../../literacy.rkt}
+@require{../../../share/stone/shape.rkt}
 @require{../../../share/stone/anchor.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -13,6 +14,8 @@
  #:style 'ordered
 
  @item{理解模块化。}
+
+ @item{了解类的继承。}
  
  @item{理解屏幕坐标系。}
  
@@ -35,7 +38,16 @@
   相当于一类工具箱；
   C++ 还需要一个@handbook-defterm[#:origin "Header File"]{头文件}，
   同常以@litchar{.hpp}或@litchar{.h}作为后缀名，
-  用以说明工具箱里有什么(@tech{函数}、@tech{类}等)。}]
+  用以说明工具箱里有什么(@tech{函数}、@tech{类}等)。}
+
+ @item{@handbook-defterm[#:origin "Inheritence"]{继承}是一种在已有@tech{类}的基础上定义新@tech{类}的机制，
+  用以复用或扩展已有代码。在一个继承关系中，
+  已经存在的@tech{类}称为@handbook-defterm[#:origin "Base Class"]{基类}或@handbook-defterm[#:origin "Superclass"]{超类}，
+  定义出来的新@tech{类}称为@handbook-defterm[#:origin "Derive Class"]{派生类}或@handbook-defterm[#:origin "Subclass"]{子类}。
+
+  @tech{子类}可以添加新的@tech{字段}和@tech{方法}，
+  也可以复用或@handbook-defterm[#:origin "Override"]{覆盖}@tech{基类}的@tech{方法}，
+  但一般不删除@tech{基类}的@tech{方法}。}]
  
 @handbook-action{难点知识}
 
@@ -48,7 +60,9 @@
   称竖直方向的轴为@handbook-deftech[#:origin "Y Axis"]{Y轴}。
   在数学教育中，@tech{X轴}方向向@emph{右}、@tech{Y轴}方向向@litchar{上}；
   在计算机图形学中，屏幕坐标系通常会让@tech{Y轴}朝@litchar{下}，
-  且只显示第一象限的内容。}
+  且只显示第一象限的内容。
+
+ @centered{@shape-demo[1.0]}}
 
  @item{在创建基本图形@tech{对象}时，应假设它位于坐标原点，
   之后可根据需要将它们@handbook-defterm[#:origin "Translate"]{平移}到舞台的其他位置。}

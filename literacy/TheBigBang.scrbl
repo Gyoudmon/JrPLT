@@ -1,7 +1,6 @@
 #lang scribble/book
 
 @require{literacy.rkt}
-@require{graphviz.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-title[#:subtitle "跨学科 ior 对比语言方法" #:hide-version? #true]{不只是“C++ 异或 Python”}
