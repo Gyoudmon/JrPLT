@@ -172,7 +172,7 @@ void WarGrey::STEM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, int sides,
         this->set_heading(bracer, direction, true);
         this->move(bracer, meridian);
         this->pen_down(bracer);
-        this->turn(bracer, (pi - rad) / 2.0, true);
+        this->turn(bracer, (pi - rad) * 0.5, true);
 
         for (int s = 0; s < sides; s ++) {
             this->turn(bracer, rad, true);

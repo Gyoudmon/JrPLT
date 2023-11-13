@@ -9,6 +9,8 @@
 
 @handbook-scenario{可变类型与不可变类型}
 
+@handbook-scenario{凯撒密码}
+
 @handbook-scenario{正则表达式}
 
 @handbook-scenario{禁术莫用：eval 函数}

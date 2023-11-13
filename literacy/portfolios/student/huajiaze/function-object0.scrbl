@@ -5,7 +5,7 @@
 @(require "../../discipline/big-bang/lesson/function-object.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-portfolio-story{函数与对象}
+@handbook-portfolio-story{函数与对象0}
 
 @lesson-desc[
  #:topic ['big-bang 'function-object]

@@ -9,11 +9,14 @@
 (define cs-line (desc-stroke #:color 'gray #:dash 'short-dash))
 (define arrow-color 'lightsteelblue)
 (define ch (font-metrics-ref math-font 'ch))
-(define axis-length 256.0)
+(define x-axis-length 384.0)
+(define y-axis-length (* x-axis-length 0.75))
 (define ar 4.0)
 
 (define (cs-xyline [x : Real] [y : Real]) : Bitmap
-  (bitmap-rb-superimpose (bitmap-hline x 0.5 #:stroke cs-line) (bitmap-vline 0.5 y #:stroke cs-line)))
+  (bitmap-rb-superimpose
+   (bitmap-hline x 0.5 #:stroke cs-line)
+   (bitmap-vline 0.5 y #:stroke cs-line)))
 
 (define (cs-dot [x : Real] [y : Real] [c : Color 'black]) : Bitmap
   (bitmap-pin* 1.0 1.0 0.5 0.5 (cs-xyline x y)
@@ -21,13 +24,17 @@
 
 (define (cs-rect [x : Real] [y : Real] [w : Real] [h : Real] [c : Color 'black]) : Bitmap
   (bitmap-pin* 1.0 1.0 0.0 0.0 (cs-xyline x y)
-               (bitmap-ct-superimpose (bitmap-rc-superimpose (bitmap-rectangle w h #:border c) (bitmap-text "h " math-font))
+               (bitmap-ct-superimpose (bitmap-rc-superimpose
+                                       (bitmap-rectangle w h #:border c)
+                                       (bitmap-text "h " math-font))
                                       (bitmap-text "w " math-font))))
 
 (define (cs-circle [x : Real] [y : Real] [r : Real] [c : Color 'black]) : Bitmap
   (bitmap-pin-over (cs-xyline x y)
                    (make-rectangular x y)
-                   (bitmap-hc-append (bitmap-rc-superimpose (bitmap-circle r #:border c) (bitmap-arrow ar (- r ar) #:fill arrow-color))
+                   (bitmap-hc-append (bitmap-rc-superimpose
+                                      (bitmap-circle r #:border c)
+                                      (bitmap-arrow ar (- r ar) #:fill arrow-color))
                                      (bitmap-text 'R math-font))
                    (make-rectangular r r)))
 
@@ -36,12 +43,24 @@
                    (make-rectangular x y)
                    (bitmap-vc-append
                     (bitmap-hc-append
-                     (bitmap-cb-superimpose (bitmap-rc-superimpose (bitmap-ellipse (* a 2) (* b 2) #:border c)
-                                                                   (bitmap-arrow ar (- a ar) #:fill arrow-color))
+                     (bitmap-cb-superimpose (bitmap-rc-superimpose
+                                             (bitmap-ellipse (* a 2) (* b 2) #:border c)
+                                             (bitmap-arrow ar (- a ar) #:fill arrow-color))
                                             (bitmap-arrow ar (- b ar) pi/2 #:fill arrow-color))
                      (bitmap-text 'a math-font))
                     (bitmap-text 'b math-font))
                    (make-rectangular a b)))
+
+(define (cs-regular-polygon [n : Byte] [x : Real] [y : Real] [r : Real] [c : Color 'black]) : Bitmap
+  (bitmap-pin-over (cs-xyline x y)
+                   (make-rectangular x y)
+                   (bitmap-hc-append (bitmap-rc-superimpose
+                                      (bitmap-cc-superimpose
+                                       (bitmap-circle r #:border 'grey)
+                                       (bitmap-regular-polygon n r #:border c))
+                                      (bitmap-arrow ar (- r ar) #:fill arrow-color))
+                                     (bitmap-text 'R math-font))
+                   (make-rectangular r r)))
 
 (define (cartesian-pin [cs : Bitmap] [shapes : (Listof Bitmap)]) : Bitmap
   (define pin-pt (+ (* ch 2) 2+2i))
@@ -49,21 +68,29 @@
             ([shape (in-list shapes)])
     (bitmap-pin-over bmp pin-pt shape)))
 
-(define (shape-demo [scale : Nonnegative-Flonum 1.0])
+(define (make-cartesian-demo [scale : Nonnegative-Flonum 1.0])
   (bitmap-scale
    (cartesian-pin
     (bitmap-hb-append #:gapsize ch
                       (bitmap-text "y " math-font)
                       (bitmap-lt-superimpose
-                       (bitmap-vr-append (bitmap-arrow ar axis-length) (bitmap-text "x" math-font))
-                       (bitmap-arrow ar axis-length pi/2)))
+                       (bitmap-vr-append
+                        (bitmap-arrow ar x-axis-length)
+                        (bitmap-text "x" math-font))
+                       (bitmap-arrow ar y-axis-length pi/2)))
     
     (list (cs-dot 30 40 'seagreen)
-          (cs-rect 60 80 60 42 'forestgreen)
-          (cs-circle 200 140 24 'royalblue)
-          (cs-ellipse 140 200 32 24 'crimson)))
+          (cs-rect 60 60 60 42 'forestgreen)
+          (cs-circle 200 120 24 'royalblue)
+          (cs-ellipse 140 200 32 24 'crimson)
+
+          (cs-regular-polygon 3 320 50 32 'orange)
+          (cs-regular-polygon 4 320 150 32 'green)
+          (cs-regular-polygon 5 320 250 32 'blue)))
    scale))
+
+(define shape-demo (make-cartesian-demo 2.0))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main
-  (shape-demo))
+  shape-demo)

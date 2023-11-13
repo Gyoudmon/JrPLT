@@ -62,7 +62,7 @@
   在计算机图形学中，屏幕坐标系通常会让@tech{Y轴}朝@litchar{下}，
   且只显示第一象限的内容。
 
- @centered{@shape-demo[1.0]}}
+ @centered{@make-cartesian-demo[0.75]}}
 
  @item{在创建基本图形@tech{对象}时，应假设它位于坐标原点，
   之后可根据需要将它们@handbook-defterm[#:origin "Translate"]{平移}到舞台的其他位置。}
@@ -81,8 +81,9 @@
 @itemlist[
  #:style 'ordered
 
- @item{游戏的本质是数学定义的虚拟世界。
-  探索科学是为了了解我们所处的宇宙，
+ @item{游戏的本质是数学定义的虚拟世界。}
+
+ @item{探索科学是为了了解和改造我们所处的宇宙，
   学习编程可以创建一个虚拟的宇宙。}]
 
 @handbook-reference[]

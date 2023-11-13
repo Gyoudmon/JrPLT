@@ -35,4 +35,10 @@
                         "了解 Shell 是一种为专业人士准备的操作计算机的方式"
                         "练习使用 pwd、cd、ls、mkdir、rmdir、type 等常用 shell 命令"
                         (list "配置环境变量 " (litchar "Path"))
-                        "使用 git 命令从教师机下载课程源码"))))
+                        "使用 git 命令从教师机下载课程源码"))
+
+          20231112
+          (hasheq 1015
+                  (list "安装 Python 开发软件"
+                        "初次了解盘符和文件系统"
+                        "练习使用 cd、ls、mkdir、rmdir 命令"))))
