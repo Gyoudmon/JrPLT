@@ -55,6 +55,24 @@
                 "program": "${workspaceFolder}/compiled/native/debug/BigBang.exe",
                 "type": "cppvsdbg"
             }
+        },
+
+        {
+            "name": "DBG Tamer",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/tamer/compiled/native/debug/Tamer",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "MIMode": "lldb",
+            "preLaunchTask": "Tamer[Debug]",
+
+            "windows": {
+                "program": "${workspaceFolder}/tamer/compiled/native/debug/Tamer.exe",
+                "type": "cppvsdbg"
+            }
         }
     ]
 }

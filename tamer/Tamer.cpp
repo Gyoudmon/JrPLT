@@ -1,4 +1,5 @@
 #include "../digitama/gydm_stem/game.hpp"
+#include "../village/splash.hpp"
 
 #include "engine/layer.hpp"
 #include "engine/track.hpp"
@@ -118,7 +119,7 @@ namespace {
                 }
             } else if (coin != nullptr) {
                 if (coin->in_playing()) {
-                    this->target_plane = coin->idx;
+                    this->target_plane = coin->get_index();
                     this->agent->play("Hide", 1);
                 }
             }
@@ -130,7 +131,7 @@ namespace {
             bool updated = false;            
             
             if (coin != nullptr) {
-                this->tooltip->set_text(" %s ", coin->name.c_str());
+                this->tooltip->set_text(" %s ", coin->name());
                 this->tooltip->set_text_color(coin->in_playing() ? BLACK : GREY);
                 updated = true;
             }
@@ -179,7 +180,7 @@ namespace {
             this->set_window_size(1200, 0);
             GameFont::fontsize(21);
 
-            this->splash = this->push_plane(new TamerPlane(this));
+            this->splash = this->push_plane(new JrPlane(this));
 
             this->push_plane(new LayerPlane());
             this->push_plane(new TrackPlane());

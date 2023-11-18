@@ -1,8 +1,8 @@
 #include "pinhole.hpp"
 
 #include <gydm_stem/graphics/text.hpp>
+#include <gydm_stem/graphics/geometry.hpp>
 
-#include <SDL2/SDL2_gfxPrimitives.h>
 #include <filesystem>
 #include <vector>
 
@@ -106,12 +106,10 @@ public:
             float sx = x + this->screen_x;
             float sy = y + this->screen_y;
             float sb = sy + this->screen_height;
-            uint8_t r, g, b;
-
-            RGB_From_Hexadecimal(pinhole_color, &r, &g, &b);
-            aalineRGBA(renderer, px, py, px, pte, r, g, b, 0xFFU);
-            aalineRGBA(renderer, px, pbs, px, pb, r, g, b, 0xFFU);
-            aalineRGBA(renderer, sx, sy, sx, sb, r, g, b, 0xFFU);
+            
+            game_draw_line(renderer, px, py, px, pte, pinhole_color);
+            game_draw_line(renderer, px, pbs, px, pb, pinhole_color);
+            game_draw_line(renderer, sx, sy, sx, sb, pinhole_color);
 
             for (auto light : this->lights) {
                 if (light.x < this->pinhole_x) {
@@ -123,10 +121,9 @@ public:
                     lines_intersect(cx, cy, px, pm,  sx, sy, sx, sb, flnull_f, &pmy, flnull_f);
                     lines_intersect(cx, cy, px, pbs, sx, sy, sx, sb, flnull_f, &pby, flnull_f);
 
-                    RGB_From_Hexadecimal(light.color, &r, &g, &b);
-                    aalineRGBA(renderer, cx, cy, sx, pty, r, g, b, 0xFFU);
-                    aalineRGBA(renderer, cx, cy, sx, pmy, r, g, b, 0xFFU);
-                    aalineRGBA(renderer, cx, cy, sx, pby, r, g, b, 0xFFU);
+                    game_draw_line(renderer, cx, cy, sx, pty, light.color);
+                    game_draw_line(renderer, cx, cy, sx, pmy, light.color);
+                    game_draw_line(renderer, cx, cy, sx, pby, light.color);
                 }
             }
         }

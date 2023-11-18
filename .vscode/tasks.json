@@ -29,7 +29,7 @@
             "command": "raco",
             "type": "cppbuild",
             "problemMatcher": [ "$gcc" ],
-            "args": [ "wisemon", "-d", "cc" ],
+            "args": [ "wisemon", "-d", "cc", "${workspaceFolder}/BigBang.cpp" ],
             "options": { "cwd": "${workspaceFolder}" },
             "group": { "kind": "build", "isDefault": false },
             "windows": { "problemMatcher": ["$msCompile"] }
@@ -41,7 +41,19 @@
             "detail": "构建和调试 青少计算机科学",
             "command": "raco",
             "problemMatcher": [ "$gcc" ],
-            "args": [ "wisemon", "-d", "cc-dbg" ],
+            "args": [ "wisemon", "-d", "cc-dbg", "${workspaceFolder}/BigBang.cpp" ],
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": { "kind": "build", "isDefault": false },
+            "windows": { "problemMatcher": ["$msCompile"] }
+        },
+        
+        {
+            "type": "cppbuild",
+            "label": "Tamer[Debug]",
+            "detail": "构建和调试 Tamer",
+            "command": "raco",
+            "problemMatcher": [ "$gcc" ],
+            "args": [ "wisemon", "-d", "cc-dbg", "${workspaceFolder}/tamer/Tamer.cpp" ],
             "options": { "cwd": "${workspaceFolder}" },
             "group": { "kind": "build", "isDefault": false },
             "windows": { "problemMatcher": ["$msCompile"] }
