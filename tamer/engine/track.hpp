@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../../digitama/gydm_stem/game.hpp"
 #include "../../digitama/gydm_stem/bang.hpp"
 
@@ -16,13 +18,11 @@ namespace WarGrey::STEM {
         void update(uint64_t interval, uint32_t count, uint64_t uptime) override;
 
     public:
-        void on_mission_start(float width, float height) override;
-
-    public:
         bool can_select(IMatter *m) override;
         bool can_select_multiple() override;
 
     protected:
+        void on_mission_start(float width, float height) override;
         void after_select(IMatter *m, bool yes) override;
         void on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) override;
 

@@ -1,10 +1,10 @@
 #lang scribble/report
 
-@require{literacy.rkt}
+@require{portfolios/literacy.rkt}
 @require{portfolios/bibentry.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title[#:hide-version? #true]{青少计算机科学}
+@handbook-title[#:hide-version? #true #:properties tamer:tex:prop]{青少计算机科学}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-smart-table[]

@@ -1,11 +1,9 @@
 #include "../digitama/gydm_stem/game.hpp"
 #include "../village/splash.hpp"
 
+#include "engine/text.hpp"
 #include "engine/layer.hpp"
 #include "engine/track.hpp"
-
-#include <vector>
-#include <filesystem>
 
 using namespace WarGrey::STEM;
 
@@ -182,6 +180,7 @@ namespace {
 
             this->splash = this->push_plane(new JrPlane(this));
 
+            this->push_plane(new TextPlane());
             this->push_plane(new LayerPlane());
             this->push_plane(new TrackPlane());
         }

@@ -62,7 +62,7 @@
   在计算机图形学中，屏幕坐标系通常会让@tech{Y轴}朝@litchar{下}，
   且只显示第一象限的内容。
 
- @centered{@make-cartesian-demo[0.75]}}
+ @centered{@tamer-image[#:scale 0.75 @make-cartesian-demo[]]}}
 
  @item{在创建基本图形@tech{对象}时，应假设它位于坐标原点，
   之后可根据需要将它们@handbook-defterm[#:origin "Translate"]{平移}到舞台的其他位置。}

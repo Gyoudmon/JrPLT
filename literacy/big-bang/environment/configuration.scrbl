@@ -140,7 +140,10 @@ Python 上，自然是降维打击。
 执行以下命令安装 Pygame：
 
 @itemlist[#:style 'compact
-          @commandline{python -m pip install pygame}]
+          @commandline{python -m pip install --pre pygame}]
+
+Python 版本太新会导致没有新版本的可用的 Pygame，
+因此要添加@DFlag{pre}选项。
 
 本来，PySDL2 是个更好的选项，但这个库问题太多了，它的开发者和维护者都相当业余的样子。
 因此重新启用 Pygame。

@@ -41,4 +41,9 @@
           (hasheq 1015
                   (list "安装 Python 开发软件"
                         "初次了解盘符和文件系统"
-                        "练习使用 cd、ls、mkdir、rmdir 命令"))))
+                        "练习使用 cd、ls、mkdir、rmdir 命令"))
+          
+          20231119
+          (hasheq 1015
+                  (list "了解等号(=)的三重理解"
+                        "使用 git 命令从教师机下载课程源码"))))

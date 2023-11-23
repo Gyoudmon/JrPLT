@@ -54,16 +54,34 @@ zoom用来共享 Michael 的屏幕。
 
  @item{请完成《函数与对象》第二页第一题；预习第二页剩下的题目，这是下节课的重点。}]
 
-@handbook-lesson{printf 函数}
+@handbook-lesson{main 函数}
 
 @period-desc[
  #:goals function-object-goals
- #:datetime ["2023-11-12" "14:45" "16:15"]]
+ #:datetime ["2023-11-19" "14:45" "16:15"]]
 
-上周因为 Michael 笔记本没电顺延一次课。
+今天这节课学的东西还挺多的，
+部分原因是因为，
+代码都是我发给 Michael 的，
+并没有让他自己写。
+因此，课后要多加练习。
 
-我的电脑不被 zoom 支持，固无法安装。
-今天主要是我看着 Michael 的桌面，
-这个方式也不错。
+让 Michael 共享屏幕，
+我看着屏幕才发现他一直心不在焉、鼠标乱点一气，
+我问啥就顺着我的问题随口一答。
+这个状态不太好。
+
+即使是面对面教学，也会有同学表现出这样的“多动”，
+这个是 C++ 的问题，
+刚开始确实比较枯燥，
+容易劝退人。
+熬过最初的阶段后面会有趣很多的。
+
+@handbook-action{课后作业}
+
+@itemlist[
+ #:style 'ordered
+ 
+ @item{复习本节课的代码，自己认真抄写一遍，保证能运行。}]
 
 @handbook-reference[]

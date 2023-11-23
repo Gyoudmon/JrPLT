@@ -1,6 +1,6 @@
 #include <gydm_stem/game.hpp>
 
-// #include "village/splash.hpp"
+#include "village/splash.hpp"
 
 #include "village/pltmos/stream.hpp"
 #include "village/scsmos/schematics/optics/pinhole.hpp"
@@ -38,7 +38,7 @@ namespace {
             this->set_window_size(1200, 0);
             GameFont::fontsize(21);
 
-            // this->splash = this->push_plane(new JrPlane(this));
+            this->splash = this->push_plane(new JrPlane(this));
 
             this->push_plane(new StreamPlane());
             this->push_plane(new PinholePlane());
