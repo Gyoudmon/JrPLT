@@ -1,6 +1,3 @@
 [submodule "big-bang.cpp"]
 	path = digitama/gydm_stem
 	url = https://github.com/Gyoudmon/big-bang.cpp
-[submodule "digitama/big-bang-py"]
-	path = digitama/big-bang-py
-	url = https://github.com/Gyoudmon/big-bang.py
