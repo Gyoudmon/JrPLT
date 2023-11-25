@@ -5,13 +5,14 @@ using namespace WarGrey::STEM;
 /*************************************************************************************************/
 static const double gliding_duration = 0.618;
 
-static std::vector<std::string> predefined_texts = { "Sphinx", "x", "0", "O", "em", "ch" };
+static std::vector<std::string> predefined_texts = { "Sphinx", "ex", "0", "O", "em", "ch" };
 
 /*************************************************************************************************/
 void WarGrey::STEM::TextPlane::construct(float width, float height) {
     this->the_name("Tamer");
 
     this->style = make_highlight_dimension_style(24U, 8U, 4U, 0);
+    this->style.label_xfraction = 1.0F;
     this->style.label_font = GameFont::monospace();
     this->style.number_font = this->style.label_font;
 }
@@ -56,16 +57,16 @@ void WarGrey::STEM::TextPlane::after_select(IMatter *m, bool yes) {
         auto lbl = dynamic_cast<Labellet*>(m);
 
         if (lbl != nullptr) {
-            this->style.label_font->feed_text_extent(lbl->c_str(), &this->text_metrics);
+            TextMetrics text_metrics = this->style.label_font->get_text_metrics(lbl->c_str());
             
-            this->metrics[0]->set_value(this->text_metrics.width);
-            this->metrics[1]->set_value(this->text_metrics.height);
-            this->metrics[2]->set_value(this->text_metrics.ascent);
-            this->metrics[3]->set_value(this->text_metrics.descent);
-            this->metrics[4]->set_value(this->text_metrics.tspace);
-            this->metrics[5]->set_value(this->text_metrics.rspace);
-            this->metrics[6]->set_value(this->text_metrics.bspace);
-            this->metrics[7]->set_value(this->text_metrics.lspace);
+            this->metrics[0]->set_value(text_metrics.width);
+            this->metrics[1]->set_value(text_metrics.height);
+            this->metrics[2]->set_value(text_metrics.ascent);
+            this->metrics[3]->set_value(text_metrics.descent);
+            this->metrics[4]->set_value(text_metrics.tspace);
+            this->metrics[5]->set_value(text_metrics.rspace);
+            this->metrics[6]->set_value(text_metrics.bspace);
+            this->metrics[7]->set_value(text_metrics.lspace);
         }
     }
 }

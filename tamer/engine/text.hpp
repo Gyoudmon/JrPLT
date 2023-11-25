@@ -31,7 +31,6 @@ namespace WarGrey::STEM {
         std::vector<Dimensionlet*> metrics;
 
     private:
-        WarGrey::STEM::TextMetrics text_metrics;
         DimensionStyle style;
     };
 }
