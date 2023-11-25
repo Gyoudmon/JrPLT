@@ -1,5 +1,8 @@
+#ifdef _USE_EXTERNAL_INCLUDING
+#include <gydm_stem/game.hpp>
+#else
 #include "../digitama/gydm_stem/game.hpp"
-// #include <gydm_stem/game.hpp>
+#endif
 
 #include <vector>
 #include <filesystem>

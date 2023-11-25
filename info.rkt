@@ -28,6 +28,8 @@
 (define sdl2+config
   '((config SDL2)
     (lib gydm_stem)
+    
+    (macro _USE_EXTERNAL_INCLUDING)
 
     [#:release
      (include "digitama/gydm_stem/compiled/native/release/usr/include")
