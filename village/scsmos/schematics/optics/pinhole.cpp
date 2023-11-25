@@ -1,7 +1,7 @@
 #include "pinhole.hpp"
 
 #include <gydm_stem/graphics/text.hpp>
-#include <gydm_stem/graphics/geometry.hpp>
+#include <gydm_stem/graphics/brush.hpp>
 
 #include <filesystem>
 #include <vector>
@@ -64,7 +64,7 @@ public:
     }
 
     void draw(SDL_Renderer* renderer, float x, float y, float Width, float Height) override {
-        game_fill_rect(renderer, x, y, Width, Height, this->background_color);
+        Brush::fill_rect(renderer, x, y, Width, Height, this->background_color);
         
         for (auto light : this->lights) {
             float cx = light.x - 1.0F;
@@ -79,7 +79,7 @@ public:
                     SDL_Texture* origin = SDL_GetRenderTarget(renderer);
 
                     SDL_SetRenderTarget(renderer, light.texture->self());
-                    game_fill_rect(renderer, 0.0F, 0.0F, this->width, this->height, BLACK, 0.0);
+                    Brush::fill_rect(renderer, 0.0F, 0.0F, this->width, this->height, BLACK, 0.0);
 
                     if (light.length > 0.0F) {
                         RGB_SetRenderDrawColor(renderer, light.color, 0.1618);
@@ -90,10 +90,10 @@ public:
                     light.dirty = false;
                 }
 
-                game_render_texture(renderer, light.texture->self(), x, y, Width, Height);
+                Brush::stamp(renderer, light.texture->self(), x, y, Width, Height);
             }
 
-            game_fill_circle(renderer, x + cx, y + cy, light_dot_radius, light.color, 0.8);
+            Brush::fill_circle(renderer, x + cx, y + cy, light_dot_radius, light.color, 0.8);
         }
 
         /* draw pinhole and screen */ {
@@ -107,9 +107,9 @@ public:
             float sy = y + this->screen_y;
             float sb = sy + this->screen_height;
             
-            game_draw_line(renderer, px, py, px, pte, pinhole_color);
-            game_draw_line(renderer, px, pbs, px, pb, pinhole_color);
-            game_draw_line(renderer, sx, sy, sx, sb, pinhole_color);
+            Brush::draw_line(renderer, px, py, px, pte, pinhole_color);
+            Brush::draw_line(renderer, px, pbs, px, pb, pinhole_color);
+            Brush::draw_line(renderer, sx, sy, sx, sb, pinhole_color);
 
             for (auto light : this->lights) {
                 if (light.x < this->pinhole_x) {
@@ -121,9 +121,9 @@ public:
                     lines_intersect(cx, cy, px, pm,  sx, sy, sx, sb, flnull_f, &pmy, flnull_f);
                     lines_intersect(cx, cy, px, pbs, sx, sy, sx, sb, flnull_f, &pby, flnull_f);
 
-                    game_draw_line(renderer, cx, cy, sx, pty, light.color);
-                    game_draw_line(renderer, cx, cy, sx, pmy, light.color);
-                    game_draw_line(renderer, cx, cy, sx, pby, light.color);
+                    Brush::draw_line(renderer, cx, cy, sx, pty, light.color);
+                    Brush::draw_line(renderer, cx, cy, sx, pmy, light.color);
+                    Brush::draw_line(renderer, cx, cy, sx, pby, light.color);
                 }
             }
         }
