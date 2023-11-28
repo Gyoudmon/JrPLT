@@ -21,7 +21,7 @@
 
 @handbook-scenario{知识点}
 
-@handbook-action{重点知识}
+@handbook-action{难点知识}
 
 @itemlist[
  #:style 'ordered
@@ -46,12 +46,6 @@
   具体到每一个@tech{函数}，它负责@emph{处理}一定的@emph{输入}数据，
   完事后也很可能会产生一定的@emph{输出}数据。
   在这个过程中，所有的数据都以@tech{变量}或@tech{常量}的形式存在。}
-]
-
-@handbook-action{难点知识}
-
-@itemlist[
- #:style 'ordered
 
  @item{@handbook-defterm[#:origin "Class"]{类}即自定义@tech{类型}，
   它封装了一系列相关联的@tech{变量}和@tech{函数}。

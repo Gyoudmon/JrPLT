@@ -84,4 +84,20 @@ zoom用来共享 Michael 的屏幕。
  
  @item{复习本节课的代码，自己认真抄写一遍，保证能运行。}]
 
+
+@handbook-lesson{同步课程源码}
+
+@period-desc[
+ #:goals function-object-goals
+ #:datetime ["2023-11-26" "14:45" "16:15"]]
+
+今天比较顺畅。
+同步我的课程代码之后，
+就可以在VSCode里按正常流程写代码了。
+
+Michael 输入代码的速度相当可以了，
+对代码的结构的接受程度也比较高。
+“代码的输入技巧”这部分内容不需要在唠叨太多了，
+下节课开始讲解这段代码。
+
 @handbook-reference[]
