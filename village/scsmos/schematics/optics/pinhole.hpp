@@ -1,6 +1,6 @@
 #pragma once // 确保只被 include 一次
 
-#include <gydm_stem/bang.hpp>
+#include <gydm_stem/game.hpp>
 
 #include "../../scsm.hpp"
 

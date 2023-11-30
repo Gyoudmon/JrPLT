@@ -20,34 +20,29 @@
 ;   additional shared objects, in which case the mentioned problem above
 ;   is avoided.
 
-(define sdl2-config
-  '((config SDL2)
-    (include [windows "C:\\opt\\GYDMstem\\include"])
-    (libpath [windows "C:\\opt\\GYDMstem\\lib"])))
+(define sdl2-config '((config SDL2)))
 
 (define sdl2+config
   '((config SDL2)
     (lib gydm_stem)
     
     (macro _USE_EXTERNAL_INCLUDING)
-
-    [#:release
-     (include "digitama/gydm_stem/compiled/native/release/usr/include")
-     (libpath "digitama/gydm_stem/compiled/native/release/usr/lib")]
     
     [#:debug
-     (include "digitama/gydm_stem/compiled/native/debug/usr/include")
-     (libpath "digitama/gydm_stem/compiled/native/debug/usr/lib")]
-
-    (include [windows "C:\\opt\\GYDMstem\\include"])
-    (libpath [windows "C:\\opt\\GYDMstem\\lib"])))
+     (libpath "digitama/gydm_stem/compiled/native/debug/lib")]))
 
 (define native-compiled-subpath '())
 (define native-compiled-bindir '())
-(define native-compiled-incdir '("usr" "include"))
-(define native-compiled-libdir '("usr" "lib"))
+(define native-compiled-libdir '())
 (define native-compiled-release '("release"))
 (define native-compiled-debug '("debug"))
+
+(define native-destination-drive "C:")
+(define native-destination-subroot '("opt" "GYDMstem"))
+(define native-destination-release '())
+(define native-destination-debug '("debug"))
+(define native-destination-incdir '("include"))
+(define native-destination-libdir '("lib"))
 
 (define native-launcher-names
   `(["digitama/gydm_stem/gydm_stem.cpp" so ,@sdl2-config]

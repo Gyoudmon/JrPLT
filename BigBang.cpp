@@ -4,6 +4,7 @@
 
 #include "village/pltmos/stream.hpp"
 #include "village/scsmos/schematics/optics/pinhole.hpp"
+#include "village/scsmos/schematics/optics/chromaticity.hpp"
 
 using namespace WarGrey::STEM;
 using namespace WarGrey::PLT;
@@ -42,6 +43,7 @@ namespace {
 
             this->push_plane(new StreamPlane());
             this->push_plane(new PinholePlane());
+            this->push_plane(new ChromaticityDiagramPlane());
         }
 
     protected:

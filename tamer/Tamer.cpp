@@ -4,7 +4,7 @@
 #include "engine/text.hpp"
 #include "engine/layer.hpp"
 #include "engine/track.hpp"
-#include "engine/chromaticity.hpp"
+#include "engine/plot.hpp"
 
 using namespace WarGrey::STEM;
 
@@ -184,7 +184,7 @@ namespace {
             this->push_plane(new TextPlane());
             this->push_plane(new LayerPlane());
             this->push_plane(new TrackPlane());
-            this->push_plane(new ChromaticityDiagramPlane());
+            this->push_plane(new PlotPlane());
         }
 
     protected:
