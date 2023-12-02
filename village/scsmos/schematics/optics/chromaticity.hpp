@@ -7,7 +7,7 @@
 #include <vector>
 
 namespace WarGrey::SCSM {
-    class ChromaticityDiagramPlane : public WarGrey::SCSM::TheSCSMPlane {
+    class __lambda__ ChromaticityDiagramPlane : public WarGrey::SCSM::TheSCSMPlane {
     public:
         ChromaticityDiagramPlane() : TheSCSMPlane("色度图", 0xFFFFFFU) {}
         virtual ~ChromaticityDiagramPlane() {}
