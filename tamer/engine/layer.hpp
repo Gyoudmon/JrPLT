@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../digitama/gydm_stem/game.hpp"
 #include "../../digitama/gydm_stem/bang.hpp"
 
 #include <vector>

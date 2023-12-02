@@ -3,6 +3,7 @@
 
 #include "engine/text.hpp"
 #include "engine/layer.hpp"
+#include "engine/gallery.hpp"
 #include "engine/track.hpp"
 #include "engine/plot.hpp"
 
@@ -181,6 +182,7 @@ namespace {
 
             this->splash = this->push_plane(new JrPlane(this));
 
+            this->push_plane(new GalleryPlane());
             this->push_plane(new TextPlane());
             this->push_plane(new LayerPlane());
             this->push_plane(new TrackPlane());
