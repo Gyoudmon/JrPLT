@@ -67,5 +67,6 @@
     ["literacy/portfolios/mengwanli.scrbl" "孟万里" xelatex #px"Portfolios/tamer.tex"]
     ["literacy/portfolios/michael.scrbl" "Michael" xelatex #px"Portfolios/tamer.tex"]
     ["literacy/portfolios/sungongcheng.scrbl" "孙功铖" xelatex #px"Portfolios/tamer.tex"]
-    ["literacy/portfolios/sunyirong.scrbl" "孙艺溶" xelatex #px"Portfolios/tamer.tex"]
-    ["literacy/portfolios/wuchang.scrbl" "吴玚" xelatex #px"Portfolios/tamer.tex"]))
+    ["literacy/portfolios/wuchang.scrbl" "吴玚" xelatex #px"Portfolios/tamer.tex"]
+
+    ["literacy/portfolios/sunyirong.scrbl" "孙艺溶" xelatex #px"Portfolios/tamer.tex"  #:explicitly-make]))

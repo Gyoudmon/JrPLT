@@ -64,20 +64,23 @@
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-appendix[#:index-section? #true #:numbered? #true
- (book-bib-entry #:date "2020"  #:edition "1st"
+ (book-bib-entry #:date "2020"
                  "DTC" "Don't teach coding: until you read this book"
                  (list "Lindsey D. Handley" "Stephen R. Foster")
                  "Jossey Bass")
+ (book-bib-entry #:date "2017" #:url "https://doi.org/10.7551/mitpress/10655.001.0001"
+                 "CL" "Coding Literacy: How Computer Programming Is Changing Writing"
+                 "Annette Vee" "The MIT Press")
  (book-bib-entry #:date "1997"
                  "CnC" "Computability and Complexity: From a Programming Perspective"
                  "Neil D. Jones" "The MIT Press")
- (book-bib-entry #:date "2013" #:edition "1st"
+ (book-bib-entry #:date "2013"
                  "RoR" "Realm of Racket: Learn to Program, One Game at a Time!"
                  (list "Forrest Bice" "Rose DeMaio" "Spencer Florence" "Feng-Yun Mimi Lin" "Scott Lindeman"
                        "Nicole Nussbaum" "Eric Peterson" "Ryan Plessner" "David Van Horn" "Matthias Felleisen"
                        "Conrad Barski, MD")
                  "No Starch Press")
- (book-bib-entry #:date "2011" #:edition "1st"
+ (book-bib-entry #:date "2011"
                  "LoL" "Land of Lisp: Learn to Program in Lisp, One Game at a Time!"
                  "Conrad Barski, MD" "No Starch Press")
  (book-bib-entry #:date "2012" #:edition "2nd"

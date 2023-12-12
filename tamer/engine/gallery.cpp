@@ -10,21 +10,44 @@ static const float raft_width = raft_height * 4.0F;
 void WarGrey::STEM::GalleryPlane::load(float width, float height) {
     TheBigBang::load(width, height);
 
+    this->load_for_house(width, height);
     this->load_for_raft(width, height);
 }
 
 void WarGrey::STEM::GalleryPlane::reflow(float width, float height) {
     TheBigBang::reflow(width, height);
 
+    this->reflow_for_house(width, height);
     this->reflow_for_raft(width, height);
+}
+
+/*************************************************************************************************/
+void WarGrey::STEM::GalleryPlane::load_for_house(float width, float height) {
+    this->garden = this->insert(new Ellipselet(100, 40, PALEGREEN, KHAKI));               // 苍绿色院子
+    
+    this->roof = this->insert(new Trianglet(128.0F, -90.0F, DEEPSKYBLUE, ROYALBLUE));     // 深空蓝屋顶
+    this->wall = this->insert(new Rectanglet(100, 90, WHITESMOKE, SNOW));                 // 白色墙壁
+    this->door = this->insert(new Rectanglet(21, 42, KHAKI, DARKKHAKI));                  // 卡其色门
+    this->lock = this->insert(new Circlet(3, CHOCOLATE));                                 // 巧克力色门锁
+    this->window = this->insert(new RoundedSquarelet(32, -0.15F, LIGHTSKYBLUE, SKYBLUE)); // 天蓝色窗户
+}
+
+void WarGrey::STEM::GalleryPlane::reflow_for_house(float width, float height) {
+    this->move_to(this->roof, width * 0.25F, height * 0.75F, MatterAnchor::CB);
+    this->move_to(this->wall, this->roof, MatterAnchor::CB, MatterAnchor::CT);
+    this->move_to(this->door, this->wall, MatterAnchor::LB, MatterAnchor::LB, 12.0F);
+    this->move_to(this->lock, this->door, MatterAnchor::RC, MatterAnchor::RC, -3.0F);
+    this->move_to(this->window, this->wall, MatterAnchor::CC, MatterAnchor::LC);
+
+    this->move_to(this->garden, this->wall, MatterAnchor::CC, MatterAnchor::CT);
 }
 
 /*************************************************************************************************/
 void WarGrey::STEM::GalleryPlane::load_for_raft(float width, float height) {
     this->sea = this->insert(new Ellipselet(raft_width * 1.618F, raft_height, DEEPSKYBLUE));
-                
+
     this->mast = this->insert(new Rectanglet(4.0F, raft_width, BURLYWOOD, SADDLEBROWN));
-    this->flag = this->insert(new Trianglet(raft_height * 0.618F, ROYALBLUE, DODGERBLUE));
+    this->flag = this->insert(new Trianglet(raft_height * 0.618F, 0.0F, ROYALBLUE, DODGERBLUE));
 
     this->post = this->insert(new RoundedRectanglet(raft_height * 0.618F, raft_height * 2.0F, -0.45F, BURLYWOOD, BURLYWOOD));
     this->paddle = this->insert(new Linelet(raft_width * 0.618F, raft_height * 2.0F, BROWN));
@@ -48,7 +71,7 @@ void WarGrey::STEM::GalleryPlane::load_for_raft(float width, float height) {
 }
 
 void WarGrey::STEM::GalleryPlane::reflow_for_raft(float width, float height) {
-    this->move_to(this->sea, width * 0.75F, height * 0.75F, MatterAnchor::CT);
+    this->move_to(this->sea, width * 0.75F, height * 0.80F, MatterAnchor::CT);
                 
     this->move_to(this->raft, this->sea, MatterAnchor::CT, MatterAnchor::CC);
     this->move_to(this->caption, this->raft, MatterAnchor::CC, MatterAnchor::CC);

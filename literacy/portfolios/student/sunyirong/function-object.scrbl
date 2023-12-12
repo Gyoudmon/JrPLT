@@ -143,7 +143,7 @@ C++ 代码里奇怪的符号太多，对初学者是个极大的考验。
 下节课我还是打算从“编舞台剧”的角度逼着他们写作、翻译，
 这个坎不克服了，后面会很麻烦。
 
-@handbook-lesson{方程与函数}
+@handbook-lesson[#:tag "syr:equation_function"]{方程与函数}
 
 @period-desc[
  #:goals function-object-goals 

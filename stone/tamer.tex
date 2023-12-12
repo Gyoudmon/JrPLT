@@ -24,7 +24,14 @@
   colframe=green,colback=green!42,
   colupper=blue}
 
+\newtcbox{\quitBox}[1][]{tcbox raise base,nobeforeafter,
+  rounded corners=all,size=small,
+  colframe=red,colback=red!42,
+  colupper=white}
+
 \newcommand{\langTag}[1]{\langBox{\uppercase{\scriptsize{#1}}}}
 \newcommand{\disTag}[1]{\tagBox{\footnotesize{#1}}}
+
 \newcommand{\tldrTag}[1]{\noindent\shortBox{\footnotesize{#1}}}
 \newcommand{\deepTag}[1]{\noindent\detailBox{\footnotesize{#1}}}
+\newcommand{\quitTag}[1]{\noindent\quitBox{\footnotesize{#1}}}

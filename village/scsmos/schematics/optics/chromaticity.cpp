@@ -18,7 +18,7 @@ void WarGrey::SCSM::ChromaticityDiagramPlane::load(float width, float height) {
     this->set_background(0x000000U);
 
     for (float deg = 0.0F; deg < 360.0F; deg += delta_deg) {
-        this->hues.push_back(this->insert(new Circlet(hue_radius, deg)));
+        this->hues.push_back(this->insert(new Circlet(hue_radius, RGBA::HSV(deg))));
     }
 
     this->primaries.push_back(this->insert(new Ellipselet(primary_radius, 0xFF0000U)));

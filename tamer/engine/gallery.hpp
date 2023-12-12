@@ -18,7 +18,10 @@ namespace WarGrey::STEM {
             }
 
         private:
+            void load_for_house(float width, float height);
             void load_for_raft(float width, float height);
+
+            void reflow_for_house(float width, float height);
             void reflow_for_raft(float width, float height);
 
         private: // objects for composing a raft
@@ -31,5 +34,13 @@ namespace WarGrey::STEM {
             WarGrey::STEM::IShapelet* post;
             WarGrey::STEM::IShapelet* paddle;
             WarGrey::STEM::IShapelet* sea;
+
+        private: // objects for composing a house
+            WarGrey::STEM::IShapelet* roof;
+            WarGrey::STEM::IShapelet* wall;
+            WarGrey::STEM::IShapelet* door;
+            WarGrey::STEM::IShapelet* lock;
+            WarGrey::STEM::IShapelet* window;
+            WarGrey::STEM::IShapelet* garden;
     };
 }

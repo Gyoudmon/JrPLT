@@ -72,7 +72,7 @@
        (nested #:style 'vertical-inset
                (para (emph "课程主题：")
                      (list (seclink (format "portfolios/discipline/~a.scrbl" discipline) (speak discipline))
-                           (racketparenfont"-")
+                           (racketparenfont "-")
                            (seclink (format "portfolios/discipline/~a/~a.scrbl" discipline topic) (speak topic))))
 
                (para (emph "所属班级：")
@@ -108,6 +108,29 @@
        (nested #:style 'vertical-inset
                (para (emph "时间戳：") date)))]))
 
+(define-syntax (final-desc stx)
+  (syntax-parse stx #:datum-literals []
+    [(_ (~alt (~once (~seq #:type type))
+              (~once (~seq #:date date))
+              (~optional (~seq #:parent-opinion cwords) #:defaults ([cwords #'#false]))
+              (~optional (~seq #:student-opinion swords) #:defaults ([swords #'#false]))
+              (~optional (~seq #:teacher-opinion mywords) #:defaults ([mywords #'#false]))
+              (~optional (~seq #:conflicts conflicts) #:defaults ([conflicts #'#false]))) ...)
+     (syntax/loc stx
+       (nested #:style 'vertical-inset
+               (para (emph "服务终止时间：") date)
+               (para (emph "服务终止类型：") type)
+               (or (and cwords (para (emph "学生家长意见：") cwords)) null)
+               (or (and swords (para (emph "学生本人意见：") swords)) null)
+               (or (and mywords (para (emph "主教老师意见：") mywords)) null)
+               (or (and conflicts (list (para (emph "关键矛盾："))
+                                        (itemlist #:style 'ordered
+                                                  (for/list ([conflict (if (list? conflicts)
+                                                                           (in-list conflicts)
+                                                                           (in-value conflicts))])
+                                                    (item (desc conflict))))))
+                   null)))]))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (tamer-indexed-block-hide-chapter-index #true)
 
@@ -125,6 +148,8 @@
 (define tag:C++ (elem #:style "langTag" "C++"))
 (define tag:Python (elem #:style "langTag" "Python"))
 (define tag:Scratch (elem #:style "langTag" "Scratch"))
+
+(define tag:Quit (elem #:style "quitTag" "退课"))
 
 (define tag:CT (elem #:style "disTag" "计算思维"))
 (define tag:BP (elem #:style "disTag" "基础训练"))
