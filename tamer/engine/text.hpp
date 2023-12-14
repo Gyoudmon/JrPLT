@@ -8,7 +8,7 @@
 namespace WarGrey::STEM {
     class TextPlane : public TheBigBang {
     public:
-        TextPlane() : TheBigBang("Text Metrics") { }
+        TextPlane() : TheBigBang("Text Metrics") { this->the_name("Tamer"); }
 
     public:  // 覆盖游戏基本方法
         void construct(float width, float height) override;

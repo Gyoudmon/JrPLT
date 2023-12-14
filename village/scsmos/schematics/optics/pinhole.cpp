@@ -2,6 +2,7 @@
 
 #include <gydm_stem/graphics/text.hpp>
 #include <gydm_stem/graphics/brush.hpp>
+#include <gydm_stem/graphics/color.hpp>
 
 #include <filesystem>
 #include <vector>
@@ -36,7 +37,7 @@ static const uint32_t colors_for_edit[] = { GREEN, GRAY,  GRAY,  GREEN, GREEN, G
 /*************************************************************************************************/
 class LightSource {
 public:
-    LightSource(float x, float y, uint32_t rgb)
+    LightSource(float x, float y, const RGBA& rgb)
         : x(x), y(y), length(0.0F)
         , color(rgb), dirty(true) {}
 
@@ -44,7 +45,7 @@ public:
     float x;
     float y;
     float length;
-    uint32_t color;
+    RGBA color;
 
 public:
     bool dirty;
@@ -79,10 +80,12 @@ public:
                     SDL_Texture* origin = SDL_GetRenderTarget(renderer);
 
                     SDL_SetRenderTarget(renderer, light.texture->self());
-                    Brush::fill_rect(renderer, 0.0F, 0.0F, this->width, this->height, BLACK, 0.0);
+                    Brush::fill_rect(renderer, 0.0F, 0.0F, this->width, this->height, transparent);
 
                     if (light.length > 0.0F) {
-                        RGB_SetRenderDrawColor(renderer, light.color, 0.1618);
+                        RGBA alt_color = RGBA(light.color, 0.1618);
+
+                        SDL_SetRenderDrawColor(renderer, alt_color.R(), alt_color.G(), alt_color.B(), alt_color.A());
                         this->draw_light_area(renderer, cx, cy, light.length);
                     }
 
@@ -93,7 +96,7 @@ public:
                 Brush::stamp(renderer, light.texture->self(), x, y, Width, Height);
             }
 
-            Brush::fill_circle(renderer, x + cx, y + cy, light_dot_radius, light.color, 0.8);
+            Brush::fill_circle(renderer, x + cx, y + cy, light_dot_radius, RGBA(light.color, 0.8));
         }
 
         /* draw pinhole and screen */ {

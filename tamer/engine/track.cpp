@@ -153,7 +153,7 @@ void WarGrey::STEM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, int sides,
 
     this->feed_matter_location(bracer, &x, &y, MatterAnchor::LT);
             
-    this->set_pen_color(bracer, random_uniform(0.0, 360.0));
+    this->set_pen_color(bracer, RGBA::HSV(random_uniform(0.0, 360.0)));
 
     for (int s = 0; s < sides; s ++) {
         this->pen_up(bracer);
@@ -167,7 +167,7 @@ void WarGrey::STEM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, int sides,
         double parallel = flsqrt(meridian * meridian * factor); 
 
         this->pen_up(bracer);
-        this->set_pen_color(bracer, random_uniform(0.0, 360.0));
+        this->set_pen_color(bracer, RGBA::HSV(random_uniform(0.0, 360.0)));
         this->move_to(bracer, x, y, MatterAnchor::LT); // moving doesn't change the heading
         this->set_heading(bracer, direction, true);
         this->move(bracer, meridian);

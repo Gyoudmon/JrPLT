@@ -9,8 +9,6 @@ static std::vector<std::string> predefined_texts = { "Sphinx", "ex", "0", "O", "
 
 /*************************************************************************************************/
 void WarGrey::STEM::TextPlane::construct(float width, float height) {
-    this->the_name("Tamer");
-
     this->style = make_highlight_dimension_style(24U, 8U, 4U, 0);
     this->style.label_xfraction = 1.0F;
     this->style.label_font = GameFont::monospace();
@@ -21,8 +19,9 @@ void WarGrey::STEM::TextPlane::load(float width, float height) {
     TheBigBang::load(width, height);
 
     for (auto t : predefined_texts) {
-        this->texts.push_back(this->insert(new Labellet(GameFont::Tooltip(FontSize::xx_large),
-                                            ROYALBLUE, "%s", t.c_str())));
+        this->texts.push_back(
+            this->insert(new Labellet(GameFont::Tooltip(FontSize::xx_large),
+                            ROYALBLUE, "%s", t.c_str())));
     }
 
     this->metrics.push_back(this->insert(new Dimensionlet(this->style, "pt", "Width")));
