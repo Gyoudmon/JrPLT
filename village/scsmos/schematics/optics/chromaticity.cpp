@@ -99,15 +99,20 @@ bool WarGrey::SCSM::ChromaticityDiagramPlane::update_tooltip(IMatter* m, float x
         this->no_selected();
         updated = true;
     } else if (cc != nullptr) {
-        RGBA c;
+        IMatter* prev = nullptr;
+        RGBA c = this->get_background();
 
-        for (size_t idx = 0; idx < this->primaries.size(); idx ++) {
-            float cx, cy;
-            
-            this->feed_matter_location(this->primaries[idx], &cx, &cy, MatterAnchor::CC);
+        while (true) {
+            prev = this->find_matter(gx, gy, prev);
 
-            if (point_distance(gx, gy, cx, cy) <= primary_radius) {
-                c = c + this->primaries[idx]->get_brush_color();
+            if (prev == nullptr) {
+                break;
+            } else {
+                cc = dynamic_cast<Ellipselet*>(prev);
+
+                if (cc != nullptr) {
+                    c = c + cc->get_brush_color();
+                }
             }
         }
 
