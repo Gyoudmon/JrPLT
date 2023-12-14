@@ -437,7 +437,7 @@ bool WarGrey::SCSM::PinholePlane::can_select(IMatter* m) {
         || ((this->state == GameState::Edit)
             && (m == this->labview))
         || ((menu != nullptr)
-            && (menu->get_text_color() == GREEN));
+            && (menu->get_foreground_color() == GREEN));
 }
 
 void WarGrey::SCSM::PinholePlane::on_tap(IMatter* matter, float x, float y) {
@@ -459,7 +459,7 @@ void WarGrey::SCSM::PinholePlane::on_tap(IMatter* matter, float x, float y) {
 void WarGrey::SCSM::PinholePlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {
     if (!pressed) {
         if (this->instructions.find(key) != this->instructions.end()) {
-            if (this->instructions[key]->get_text_color() == GREEN) {
+            if (this->instructions[key]->get_foreground_color() == GREEN) {
                 switch(key) {
                 case ILLU_KEY: this->switch_game_state(GameState::Auto); break;
                 case STOP_KEY: this->switch_game_state(GameState::Stop); break;
