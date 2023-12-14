@@ -115,25 +115,25 @@ bool WarGrey::SCSM::ChromaticityDiagramPlane::update_tooltip(IMatter* m, float x
         this->tooltip->set_background_color(GHOSTWHITE);
         updated = true;
     } else if (m == this->chroma_dia) {
-        uint32_t hex = this->chroma_dia->get_color_at(x, y, is_shift_pressed());
+        RGBA c = this->chroma_dia->get_color_at(x, y, is_shift_pressed());
 
-        if (hex > 0U) {
+        if (!c.is_black()) {
             double co_x, co_y;
 
-            this->chroma_dia->feed_color_location(hex, nullptr, nullptr, &co_x, &co_y);
+            this->chroma_dia->feed_color_location(c, nullptr, nullptr, &co_x, &co_y);
             
             switch (this->chroma_dia->get_standard()) {
                 case CIE_Standard::Primary: {
                     this->tooltip->set_text(" CIE Primary: %06X (%.3lf, %.3lf, %.3lf) ",
-                        hex, co_x, co_y, 1.0 - co_x - co_y);
+                        c.rgb(), co_x, co_y, 1.0 - co_x - co_y);
                  }; break;
                 case CIE_Standard::D65: {
                     this->tooltip->set_text(" CIE sRGB-D65: %06X (%.3lf, %.3lf, %.3lf) ",
-                        hex, co_x, co_y, 1.0 - co_x - co_y);
+                        c.rgb(), co_x, co_y, 1.0 - co_x - co_y);
                  }; break;
             }
 
-            this->tooltip->set_background_color(hex);
+            this->tooltip->set_background_color(c);
             updated = true;
         }
     }
