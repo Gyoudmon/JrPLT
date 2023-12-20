@@ -15,6 +15,7 @@
 @include-section{portfolios/class.scrbl}
 @include-section{portfolios/discipline.scrbl}
 @include-section{portfolios/student.scrbl}
+@include-section{portfolios/lost.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @texbook-appendix{附录}

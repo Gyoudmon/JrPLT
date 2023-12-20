@@ -14,10 +14,6 @@
 
 @include-section{student/sunyirong/self.scrbl}
 
-@handbook-part-section{档案封存}
-
-@include-section{student/sunyirong/over.scrbl}
-
 @handbook-part-section{课程简介}
 
 @include-section{discipline/big-bang.scrbl}

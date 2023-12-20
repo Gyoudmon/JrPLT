@@ -63,10 +63,10 @@
     ["literacy/Disciplines.scrbl" xelatex #px"Portfolios/*.(png|gv)"]
     
     ["literacy/portfolios/dingjiaqi.scrbl" "丁嘉琪" xelatex #px"Portfolios/tamer.tex"]
-    ["literacy/portfolios/huajiaze.scrbl" "华佳泽" xelatex #px"Portfolios/tamer.tex"]
     ["literacy/portfolios/mengwanli.scrbl" "孟万里" xelatex #px"Portfolios/tamer.tex"]
     ["literacy/portfolios/michael.scrbl" "Michael" xelatex #px"Portfolios/tamer.tex"]
     ["literacy/portfolios/sungongcheng.scrbl" "孙功铖" xelatex #px"Portfolios/tamer.tex"]
     ["literacy/portfolios/wuchang.scrbl" "吴玚" xelatex #px"Portfolios/tamer.tex"]
 
+    ["literacy/portfolios/huajiaze.scrbl" "华佳泽" xelatex #px"Portfolios/tamer.tex" #:explicitly-make]
     ["literacy/portfolios/sunyirong.scrbl" "孙艺溶" xelatex #px"Portfolios/tamer.tex" #:explicitly-make]))

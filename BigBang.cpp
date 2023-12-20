@@ -3,6 +3,7 @@
 #include "village/splash.hpp"
 
 #include "village/pltmos/stream.hpp"
+#include "village/scsmos/motion/lottery.hpp"
 #include "village/scsmos/schematics/optics/pinhole.hpp"
 #include "village/scsmos/schematics/optics/chromaticity.hpp"
 
@@ -42,6 +43,7 @@ namespace {
             this->splash = this->push_plane(new JrPlane(this));
 
             this->push_plane(new StreamPlane());
+            this->push_plane(new LotteryPlane());
             this->push_plane(new PinholePlane());
             this->push_plane(new ChromaticityDiagramPlane());
         }
