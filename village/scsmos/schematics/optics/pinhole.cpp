@@ -9,7 +9,6 @@
 
 using namespace WarGrey::SCSM;
 using namespace WarGrey::STEM;
-using namespace std::filesystem;
 
 /*************************************************************************************************/
 static const int default_frame_rate = 24;
