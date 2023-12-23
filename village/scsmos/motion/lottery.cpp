@@ -16,7 +16,8 @@ static const float machine_radius = 256.0F;
 static const float winning_slot_height = 8.0F;
 
 static const double gravity_accelaration = 0.618;
-static const double fan_delta_speed = -0.382;
+static const double terminal_speed = 24.0;
+static const double fan_delta_range = 1.0;
 static const double gliding_duration = 1.0;
 
 /*************************************************************************************************/
@@ -90,6 +91,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::load_balls(float width, float height) 
     this->load_tip("剩余红球", this->red_top, CRIMSON);
     this->load_tip("剩余蓝球", this->blue_top, ROYALBLUE);
     this->load_tip("已出号码", this->current_winning_slot, FORESTGREEN);
+    this->load_tip("助力次数", 0U, CHOCOLATE);
     
     for (size_t idx = 1; idx <= this->red_top; idx ++) {
         this->red_balls[idx] = this->insert(new TwoColorLotteryPlane::Ballet(idx, TCLMColor::Red));
@@ -180,6 +182,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::prepare(const std::map<size_t, TwoColo
 
 void WarGrey::SCSM::TwoColorLotteryPlane::sally(const std::map<size_t, TwoColorLotteryPlane::Ballet*>& balls) {
     for (auto ball : balls) {
+        ball.second->set_terminal_speed(terminal_speed, terminal_speed);
         ball.second->set_speed(0.0, 0.0);
         ball.second->set_delta_speed(0.0, gravity_accelaration);
     }
@@ -195,6 +198,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::hide(const std::map<size_t, TwoColorLo
 void WarGrey::SCSM::TwoColorLotteryPlane::play() {
     if (this->current_winning_slot < this->winning_numbers.size()) {
         this->picking_timestamp = current_inexact_milliseconds();
+        this->tips[3]->set_value(0.0);
 
         if (this->current_winning_slot < this->red_count) {
             if (this->current_winning_slot > 0) {
@@ -222,6 +226,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::reset() {
     this->tips[0]->set_value(double(this->red_balls.size()));
     this->tips[1]->set_value(double(this->blue_balls.size()));
     this->tips[2]->set_value(0.0);
+    this->tips[3]->set_value(0.0);
 
     this->current_winning_slot = 0;
     for (auto number : this->winning_numbers) {
@@ -318,25 +323,31 @@ void WarGrey::SCSM::TwoColorLotteryPlane::spot_ball(TwoColorLotteryPlane::Ballet
 }
 
 void WarGrey::SCSM::TwoColorLotteryPlane::apply_forces(TwoColorLotteryPlane::Ballet* ball, float cx, float cy, float radius, bool no_fan) {
+    double fan_dy = 0.0;
     float bx, by, distance;
     double dx, dy;
 
     this->feed_matter_location(ball, &bx, &by, MatterAnchor::CC);
     distance = point_distance(bx, by, cx, cy);
 
-    if (distance > radius) {
-        double theta = vector_direction(double(cx - bx), double(cy - by));
+    if (!no_fan) {
+        double now = current_inexact_milliseconds();
 
-        orthogonal_decomposition(double(distance - radius), theta, &dx, &dy);
-        
-        // this->move(ball, -dx, -dy); // this makes the ball eventually do circular motion
-        ball->add_speed(dx, dy);
+        if ((now - this->picking_timestamp) >= this->fan_frequency) {
+            fan_dy = -random_uniform(0.1, fan_delta_range);
+            this->picking_timestamp = now;
+            this->tips[3]->set_value(this->tips[3]->get_value() + 1.0);
+        }
     }
 
-    if (!no_fan) {
-        if ((current_inexact_milliseconds() - this->picking_timestamp) >= this->fan_frequency) {
-            ball->add_speed(0.0, fan_delta_speed);
-        }
+    if (distance > radius) {
+        double theta = vector_direction(double(cx - bx), double(cy - by));
+        double friction_loss = random_uniform(0.8, 1.0);
+
+        orthogonal_decomposition(double(distance - radius) * friction_loss, theta, &dx, &dy);
+        
+        // this->move(ball, -dx, -dy); // this makes the ball eventually do circular motion
+        ball->add_speed(dx, dy + fan_dy);
     }
 }
 

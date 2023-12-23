@@ -18,7 +18,7 @@ namespace WarGrey::SCSM {
         class Ballet;
 
     public:
-        TwoColorLotteryPlane(uint8_t red_top = 16U, uint8_t blue_top = 8U, size_t red_count = 6, size_t blue_count = 2, double fan_frequency = 6000.0)
+        TwoColorLotteryPlane(uint8_t red_top = 16U, uint8_t blue_top = 8U, size_t red_count = 6, size_t blue_count = 2, double fan_frequency = 4000.0)
             : TheSCSMPlane("双色球摇奖机"), fan_frequency(fan_frequency)
             ,red_top(red_top), blue_top(blue_top), red_count(red_count), blue_count(blue_count) {}
 
@@ -79,7 +79,7 @@ namespace WarGrey::SCSM {
     private:
         double fan_frequency;
         double picking_timestamp;
-
+        
     private:
         uint8_t red_top;
         uint8_t blue_top;
