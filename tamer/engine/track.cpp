@@ -29,7 +29,7 @@ void WarGrey::STEM::TrackPlane::load(float width, float height) {
     this->bracers.push_back(this->insert(new Zin()));
 
     for (auto bracer : this->bracers) {
-        this->bind_canvas(bracer, this->track, 0.5F, 0.9F, true);
+        this->bind_canvas(bracer, this->track, { 0.5F, 0.9F }, true);
     }
 }
 

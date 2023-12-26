@@ -2,7 +2,7 @@
 
 #include <gydm_stem/graphics/text.hpp>
 #include <gydm_stem/graphics/brush.hpp>
-#include <gydm_stem/graphics/color.hpp>
+#include <gydm_stem/physics/color/rgba.hpp>
 
 #include <filesystem>
 #include <vector>

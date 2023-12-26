@@ -1,9 +1,10 @@
 #include "lottery.hpp"
 
+#include <gydm_stem/datum/time.hpp>
+
 #include <gydm_stem/graphics/text.hpp>
 #include <gydm_stem/graphics/brush.hpp>
-#include <gydm_stem/graphics/color.hpp>
-#include <gydm_stem/datum/time.hpp>
+#include <gydm_stem/physics/color/rgba.hpp>
 
 using namespace WarGrey::SCSM;
 using namespace WarGrey::STEM;
@@ -346,7 +347,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::apply_forces(TwoColorLotteryPlane::Bal
 
         orthogonal_decomposition(double(distance - radius) * friction_loss, theta, &dx, &dy);
         
-        // this->move(ball, -dx, -dy); // this makes the ball eventually do circular motion
+        // this->move(ball, -dx, -dy); // this makes the ball eventually do semi-circular motion
         ball->add_speed(dx, dy + fan_dy);
     }
 }

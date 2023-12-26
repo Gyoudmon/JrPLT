@@ -89,6 +89,10 @@
  (book-bib-entry #:date "2012" #:url "https://natureofcode.com/book/"
                  "NoC" "The Nature of Code"
                  "Daniel Shiffman" #false)
+ (book-bib-entry #:date "2017" #:edition "3rd" #:url "https://doi.org/10.1016/B978-0-12-800645-0.50026-9"
+                 "PBR" "Physically Based Rendering: From Theory to Impplementation"
+                 (list "Matt Pharr" "Wenzel Jakob" "Greg Humphreys")
+                 "The MIT Press")
  (book-bib-entry #:date "2019" #:edition "3rd"
                  "GEA" "Game Engine Architecture"
                  "Jason Gregory" "CRC Press")

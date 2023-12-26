@@ -84,10 +84,10 @@ void WarGrey::PLT::StreamPlane::reflow(float width, float height) {
     this->move_to(this->ground, width * 0.5F, height * 0.32F, MatterAnchor::CC);
     this->move_to(this->underground, width * 0.5F, height, MatterAnchor::CB);
 
-    this->move_to(this->char_pipe, this->ground, char_pos, 0.5F, MatterAnchor::CC);
-    this->move_to(this->line_pipe, this->ground, line_pos, 0.5F, MatterAnchor::CC);
-    this->move_to(this->char_sign, this->ground, char_pos - 0.07F, 0.00F, MatterAnchor::CB);
-    this->move_to(this->line_sign, this->ground, line_pos + 0.07F, 0.00F, MatterAnchor::CB);
+    this->move_to(this->char_pipe, this->ground, { char_pos, 0.5F }, MatterAnchor::CC);
+    this->move_to(this->line_pipe, this->ground, { line_pos, 0.5F }, MatterAnchor::CC);
+    this->move_to(this->char_sign, this->ground, { char_pos - 0.07F, 0.00F }, MatterAnchor::CB);
+    this->move_to(this->line_sign, this->ground, { line_pos + 0.07F, 0.00F }, MatterAnchor::CB);
 
     this->move_to(this->char_filter, this->char_pipe, MatterAnchor::CB, MatterAnchor::CT, 0.0F, distance);
     this->move_to(this->line_filter, this->line_pipe, MatterAnchor::CB, MatterAnchor::CT, 0.0F, distance);
