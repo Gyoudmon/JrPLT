@@ -1,14 +1,14 @@
 #include "pinhole.hpp"
 
-#include <gydm_stem/graphics/text.hpp>
-#include <gydm_stem/graphics/brush.hpp>
-#include <gydm_stem/physics/color/rgba.hpp>
+#include <gydm/graphics/text.hpp>
+#include <gydm/graphics/brush.hpp>
+#include <gydm/physics/color/rgba.hpp>
 
 #include <filesystem>
 #include <vector>
 
-using namespace WarGrey::SCSM;
 using namespace WarGrey::STEM;
+using namespace GYDM;
 
 /*************************************************************************************************/
 static const int default_frame_rate = 24;
@@ -52,7 +52,7 @@ public:
 };
 
 /*************************************************************************************************/
-class WarGrey::SCSM::PinholePlane::Pinholet : public WarGrey::STEM::IGraphlet {
+class WarGrey::STEM::PinholePlane::Pinholet : public GYDM::IGraphlet {
 public:
     Pinholet(float width, float height) : width(width), height(height) {}
     virtual ~Pinholet() {}
@@ -378,7 +378,7 @@ private:
 };
 
 /*************************************************************************************************/
-void WarGrey::SCSM::PinholePlane::load(float width, float height) {
+void WarGrey::STEM::PinholePlane::load(float width, float height) {
     TheSCSMPlane::load(width, height);
 
     this->load_labview(width, height);
@@ -387,7 +387,7 @@ void WarGrey::SCSM::PinholePlane::load(float width, float height) {
     this->set_local_fps(default_frame_rate);
 }
 
-void WarGrey::SCSM::PinholePlane::load_labview(float width, float height) {
+void WarGrey::STEM::PinholePlane::load_labview(float width, float height) {
     float board_height = height - this->get_titlebar_height() * 2.0F;
     float board_width = width - this->get_titlebar_height();
 
@@ -396,7 +396,7 @@ void WarGrey::SCSM::PinholePlane::load_labview(float width, float height) {
     this->labview->set_screen(0.7F, 128.0F);
 }
 
-void WarGrey::SCSM::PinholePlane::load_instructions(float width, float height) {
+void WarGrey::STEM::PinholePlane::load_instructions(float width, float height) {
     this->instructions[ILLU_KEY] = this->insert(new Labellet(GameFont::monospace(), "%c. 正常发光", ILLU_KEY));
     this->instructions[STOP_KEY] = this->insert(new Labellet(GameFont::monospace(), "%c. 停止发光", STOP_KEY));
     this->instructions[EDIT_KEY] = this->insert(new Labellet(GameFont::monospace(), "%c. 编辑光源", EDIT_KEY));
@@ -405,31 +405,31 @@ void WarGrey::SCSM::PinholePlane::load_instructions(float width, float height) {
     this->instructions[PACE_KEY] = this->insert(new Labellet(GameFont::monospace(), "%c. 单步跟踪", PACE_KEY));
 }
 
-void WarGrey::SCSM::PinholePlane::reflow(float width, float height) {
+void WarGrey::STEM::PinholePlane::reflow(float width, float height) {
     TheSCSMPlane::reflow(width, height);
 
-    this->move_to(this->labview, width * 0.5F, (height + this->get_titlebar_height()) * 0.5F, MatterAnchor::CC);
+    this->move_to(this->labview, Position(width * 0.5F, (height + this->get_titlebar_height()) * 0.5F), MatterAnchor::CC);
     
-    this->move_to(this->instructions[ordered_keys[0]], 0.0F, height, MatterAnchor::LB);
+    this->move_to(this->instructions[ordered_keys[0]], Position(0.0F, height), MatterAnchor::LB);
     for (int idx = 1; idx < sizeof(ordered_keys) / sizeof(char); idx ++) {
         this->move_to(this->instructions[ordered_keys[idx]],
-                    this->instructions[ordered_keys[idx - 1]], MatterAnchor::RB,
-                    MatterAnchor::LB, 16.0F);
+                        Position(this->instructions[ordered_keys[idx - 1]], MatterAnchor::RB),
+                        MatterAnchor::LB, 16.0F);
     }
 }
 
-void WarGrey::SCSM::PinholePlane::on_mission_start(float width, float height) {
+void WarGrey::STEM::PinholePlane::on_mission_start(float width, float height) {
     this->switch_game_state(GameState::Edit);
 }
 
-void WarGrey::SCSM::PinholePlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
+void WarGrey::STEM::PinholePlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
     if (this->state == GameState::Auto) {
         this->pace_forward();
     }
 }
 
 /*************************************************************************************************/
-bool WarGrey::SCSM::PinholePlane::can_select(IMatter* m) {
+bool WarGrey::STEM::PinholePlane::can_select(IMatter* m) {
     Labellet* menu = dynamic_cast<Labellet*>(m);
 
     return m == this->agent
@@ -439,7 +439,7 @@ bool WarGrey::SCSM::PinholePlane::can_select(IMatter* m) {
             && (menu->get_foreground_color() == GREEN));
 }
 
-void WarGrey::SCSM::PinholePlane::on_tap(IMatter* matter, float x, float y) {
+void WarGrey::STEM::PinholePlane::on_tap(IMatter* matter, float x, float y) {
     if (matter == this->labview) {
         if (this->state == GameState::Edit) {
             this->labview->add_light_source(x, y);
@@ -455,7 +455,7 @@ void WarGrey::SCSM::PinholePlane::on_tap(IMatter* matter, float x, float y) {
     }
 }
 
-void WarGrey::SCSM::PinholePlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {
+void WarGrey::STEM::PinholePlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {
     if (!pressed) {
         if (this->instructions.find(key) != this->instructions.end()) {
             if (this->instructions[key]->get_foreground_color() == GREEN) {
@@ -486,14 +486,14 @@ void WarGrey::SCSM::PinholePlane::on_char(char key, uint16_t modifiers, uint8_t 
 }
 
 /*************************************************************************************************/
-void WarGrey::SCSM::PinholePlane::pace_forward() {
+void WarGrey::STEM::PinholePlane::pace_forward() {
     if (!this->labview->pace_forward()) {
         this->switch_game_state(GameState::Stop);
     }
 }
 
 /*************************************************************************************************/
-void WarGrey::SCSM::PinholePlane::switch_game_state(GameState new_state) {
+void WarGrey::STEM::PinholePlane::switch_game_state(GameState new_state) {
     if (this->state != new_state) {
         switch (new_state) {
         case GameState::Auto: {
@@ -516,7 +516,7 @@ void WarGrey::SCSM::PinholePlane::switch_game_state(GameState new_state) {
     }
 }
 
-void WarGrey::SCSM::PinholePlane::update_instructions_state(const uint32_t* colors) {
+void WarGrey::STEM::PinholePlane::update_instructions_state(const uint32_t* colors) {
     for (size_t idx = 0; idx < sizeof(ordered_keys) / sizeof(char);  idx ++) {
         this->instructions[ordered_keys[idx]]->set_text_color(colors[idx]);
     }

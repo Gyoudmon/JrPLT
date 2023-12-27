@@ -1,9 +1,9 @@
-#include "../../digitama/gydm_stem/wormhole/checksum/crc32.hpp"
-#include "../../digitama/gydm_stem/wormhole/checksum/ipv4.hpp"
+#include "../../digitama/gydm/wormhole/checksum/crc32.hpp"
+#include "../../digitama/gydm/wormhole/checksum/ipv4.hpp"
 
-#include "../../digitama/gydm_stem/datum/string.hpp"
+#include "../../digitama/gydm/datum/string.hpp"
 
-using namespace WarGrey::STEM;
+using namespace GYDM;
 
 /*************************************************************************************************/
 static void checksum_ipv4_set(uint8_t* header, size_t size, size_t chksum_idx) {

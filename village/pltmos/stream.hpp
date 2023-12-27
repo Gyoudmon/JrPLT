@@ -1,6 +1,6 @@
 #pragma once // 确保只被 include 一次
 
-#include <gydm_stem/game.hpp>
+#include <gydm/game.hpp>
 
 #include <fstream>
 #include <deque>
@@ -9,7 +9,7 @@
 
 namespace WarGrey::PLT {
     /******************************************* 声明游戏物体 ******************************************/
-    class __lambda__ StreamSprite : public WarGrey::STEM::Sprite {
+    class __lambda__ StreamSprite : public GYDM::Sprite {
     public:
         StreamSprite(const char* action, float width = 0.0F, float ratio = 3.0F);
 
@@ -40,40 +40,40 @@ namespace WarGrey::PLT {
         void update(uint64_t count, uint32_t interval, uint64_t uptime) override;
 
     public:
-        bool can_select(WarGrey::STEM::IMatter* m) override;
-        void after_select(WarGrey::STEM::IMatter* m, bool yes) override;
+        bool can_select(GYDM::IMatter* m) override;
+        void after_select(GYDM::IMatter* m, bool yes) override;
 
     public:
-        bool update_tooltip(WarGrey::STEM::IMatter* m, float x, float y, float gx, float gy) override;
+        bool update_tooltip(GYDM::IMatter* m, float x, float y, float gx, float gy) override;
 
     protected:
         void on_mission_start(float width, float height) override;
 
     private:
-        bool update_pipe_status(std::ifstream& in, WarGrey::STEM::MarioVPipe* pipe, WarGrey::STEM::MarioPipeColor closed_color);
+        bool update_pipe_status(std::ifstream& in, GYDM::MarioVPipe* pipe, GYDM::MarioPipeColor closed_color);
         bool update_progress(std::ifstream& in, const char* message);
         void agent_rest();
 
     private: // 本游戏世界中的物体
-        WarGrey::STEM::MarioGroundAtlas* ground;
-        WarGrey::STEM::MarioGroundAtlas* underground;
+        GYDM::MarioGroundAtlas* ground;
+        GYDM::MarioGroundAtlas* underground;
         WarGrey::PLT::StreamSprite* char_port;
         WarGrey::PLT::StreamSprite* line_port;
         WarGrey::PLT::StreamSprite* char_fall;
         WarGrey::PLT::StreamSprite* line_fall;
-        WarGrey::STEM::Labellet* char_label;
-        WarGrey::STEM::Labellet* line_label;
-        WarGrey::STEM::Sprite* char_cloud;
-        WarGrey::STEM::Sprite* line_cloud;
-        WarGrey::STEM::Sprite* char_sign;
-        WarGrey::STEM::Sprite* line_sign;
-        WarGrey::STEM::Sprite* char_filter;
-        WarGrey::STEM::Sprite* line_filter;
-        WarGrey::STEM::MarioVPipe* char_pipe;
-        WarGrey::STEM::MarioVPipe* line_pipe;
-        std::deque<WarGrey::STEM::Labellet*> chars;
-        std::deque<WarGrey::STEM::Labellet*> line_chars;
-        std::deque<WarGrey::STEM::Labellet*> lines;
+        GYDM::Labellet* char_label;
+        GYDM::Labellet* line_label;
+        GYDM::Sprite* char_cloud;
+        GYDM::Sprite* line_cloud;
+        GYDM::Sprite* char_sign;
+        GYDM::Sprite* line_sign;
+        GYDM::Sprite* char_filter;
+        GYDM::Sprite* line_filter;
+        GYDM::MarioVPipe* char_pipe;
+        GYDM::MarioVPipe* line_pipe;
+        std::deque<GYDM::Labellet*> chars;
+        std::deque<GYDM::Labellet*> line_chars;
+        std::deque<GYDM::Labellet*> lines;
 
     private:
         std::string stream_source;

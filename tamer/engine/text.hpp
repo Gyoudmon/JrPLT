@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../../digitama/gydm_stem/bang.hpp"
+#include "../../digitama/gydm/bang.hpp"
 
 #include <vector>
 
 /*************************************************************************************************/
-namespace WarGrey::STEM {
-    class TextPlane : public TheBigBang {
+namespace GYDM {
+    class TextPlane : public GYDM::TheBigBang {
     public:
         TextPlane() : TheBigBang("Text Metrics") { this->the_name("Tamer"); }
 

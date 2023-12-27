@@ -1,11 +1,11 @@
 #include "stream.hpp"
 
-#include <gydm_stem/bang.hpp>
-#include <gydm_stem/graphics/text.hpp>
+#include <gydm/bang.hpp>
+#include <gydm/graphics/text.hpp>
 
 #include <filesystem>
 
-using namespace WarGrey::STEM;
+using namespace GYDM;
 using namespace WarGrey::PLT;
 
 using namespace std::filesystem;
@@ -81,26 +81,26 @@ void WarGrey::PLT::StreamPlane::reflow(float width, float height) {
     float char_pos = 0.25F;
     float line_pos = 1.0F - char_pos;
 
-    this->move_to(this->ground, width * 0.5F, height * 0.32F, MatterAnchor::CC);
-    this->move_to(this->underground, width * 0.5F, height, MatterAnchor::CB);
+    this->move_to(this->ground, Position(width * 0.5F, height * 0.32F), MatterAnchor::CC);
+    this->move_to(this->underground, Position(width * 0.5F, height), MatterAnchor::CB);
 
-    this->move_to(this->char_pipe, this->ground, { char_pos, 0.5F }, MatterAnchor::CC);
-    this->move_to(this->line_pipe, this->ground, { line_pos, 0.5F }, MatterAnchor::CC);
-    this->move_to(this->char_sign, this->ground, { char_pos - 0.07F, 0.00F }, MatterAnchor::CB);
-    this->move_to(this->line_sign, this->ground, { line_pos + 0.07F, 0.00F }, MatterAnchor::CB);
+    this->move_to(this->char_pipe, Position(this->ground, { char_pos, 0.5F }), MatterAnchor::CC);
+    this->move_to(this->line_pipe, Position(this->ground, { line_pos, 0.5F }), MatterAnchor::CC);
+    this->move_to(this->char_sign, Position(this->ground, { char_pos - 0.07F, 0.00F }), MatterAnchor::CB);
+    this->move_to(this->line_sign, Position(this->ground, { line_pos + 0.07F, 0.00F }), MatterAnchor::CB);
 
-    this->move_to(this->char_filter, this->char_pipe, MatterAnchor::CB, MatterAnchor::CT, 0.0F, distance);
-    this->move_to(this->line_filter, this->line_pipe, MatterAnchor::CB, MatterAnchor::CT, 0.0F, distance);
-    this->move_to(this->char_label, this->char_filter, MatterAnchor::RC, MatterAnchor::LC);
-    this->move_to(this->line_label, this->line_filter, MatterAnchor::LC, MatterAnchor::RC);
+    this->move_to(this->char_filter, Position(this->char_pipe, MatterAnchor::CB), MatterAnchor::CT, 0.0F, distance);
+    this->move_to(this->line_filter, Position(this->line_pipe, MatterAnchor::CB), MatterAnchor::CT, 0.0F, distance);
+    this->move_to(this->char_label, Position(this->char_filter, MatterAnchor::RC), MatterAnchor::LC);
+    this->move_to(this->line_label, Position(this->line_filter, MatterAnchor::LC), MatterAnchor::RC);
 
-    this->move_to(this->char_fall, this->char_pipe, MatterAnchor::CT, MatterAnchor::CB);
-    this->move_to(this->line_fall, this->line_pipe, MatterAnchor::CT, MatterAnchor::CB);
+    this->move_to(this->char_fall, Position(this->char_pipe, MatterAnchor::CT), MatterAnchor::CB);
+    this->move_to(this->line_fall, Position(this->line_pipe, MatterAnchor::CT), MatterAnchor::CB);
     
-    this->move_to(this->char_port, this->char_fall, MatterAnchor::CT, MatterAnchor::CC);
-    this->move_to(this->line_port, this->line_fall, MatterAnchor::CT, MatterAnchor::CC);
-    this->move_to(this->char_cloud, this->char_fall, MatterAnchor::CT, MatterAnchor::CC);
-    this->move_to(this->line_cloud, this->line_fall, MatterAnchor::CT, MatterAnchor::CC);
+    this->move_to(this->char_port, Position(this->char_fall, MatterAnchor::CT), MatterAnchor::CC);
+    this->move_to(this->line_port, Position(this->line_fall, MatterAnchor::CT), MatterAnchor::CC);
+    this->move_to(this->char_cloud, Position(this->char_fall, MatterAnchor::CT), MatterAnchor::CC);
+    this->move_to(this->line_cloud, Position(this->line_fall, MatterAnchor::CT), MatterAnchor::CC);
 }
 
 void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
@@ -116,7 +116,7 @@ void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64
         } else {
             auto chlet = this->insert(new Labellet(GameFont::monospace(), CHOCOLATE, "%c", ch));
 
-            this->move_to(chlet, this->char_pipe, MatterAnchor::CB, MatterAnchor::CT, 0.0F, -CHAR_FALL_SPEED);
+            this->move_to(chlet, Position(this->char_pipe, MatterAnchor::CB), MatterAnchor::CT, 0.0F, -CHAR_FALL_SPEED);
             chlet->set_velocity(CHAR_FALL_SPEED, 90.0F);
             this->chars.push_back(chlet);
         }
@@ -135,7 +135,7 @@ void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64
 
     for (auto chlet : this->chars) {
         if (this->is_colliding(chlet, this->char_filter)) {
-            this->move_to(chlet, this->char_filter, MatterAnchor::CB, MatterAnchor::CT, 0.0F, -CHAR_FALL_SPEED);
+            this->move_to(chlet, Position(this->char_filter, MatterAnchor::CB), MatterAnchor::CT, 0.0F, -CHAR_FALL_SPEED);
         }
     }
 
@@ -151,7 +151,7 @@ void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64
         } else {
             auto chlet = this->insert(new Labellet(GameFont::monospace(), CHOCOLATE, "%c", ch));
 
-            this->move_to(chlet, this->line_pipe, MatterAnchor::CB, MatterAnchor::CT, 0.0F, -LINE_CHAR_FALL_SPEED);
+            this->move_to(chlet, Position(this->line_pipe, MatterAnchor::CB), MatterAnchor::CT, 0.0F, -LINE_CHAR_FALL_SPEED);
             chlet->set_velocity(LINE_CHAR_FALL_SPEED, 90.0F);
             this->line_chars.push_back(chlet);
         }
@@ -180,7 +180,7 @@ void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64
 
                     this->stream_buffer.clear();
                     this->lines.push_back(linelet);
-                    this->move_to(linelet, this->line_filter, MatterAnchor::CB, MatterAnchor::CT, 0.0F, -LINE_FALL_SPEED);
+                    this->move_to(linelet, Position(this->line_filter, MatterAnchor::CB), MatterAnchor::CT, 0.0F, -LINE_FALL_SPEED);
                     linelet->set_velocity(LINE_FALL_SPEED, 90.0F);
                 }
             } else {

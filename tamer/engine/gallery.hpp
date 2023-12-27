@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../../digitama/gydm_stem/bang.hpp"
+#include "../../digitama/gydm/bang.hpp"
 
 /*************************************************************************************************/
-namespace WarGrey::STEM {
-    class GalleryPlane : public WarGrey::STEM::TheBigBang {
+namespace GYDM {
+    class GalleryPlane : public GYDM::TheBigBang {
         public:
             GalleryPlane() : TheBigBang("Gallery") { this->the_name("Tamer"); }
 
@@ -13,7 +13,7 @@ namespace WarGrey::STEM {
             void reflow(float width, float height) override;
 
         public:
-            bool can_select(WarGrey::STEM::IMatter* m) override {
+            bool can_select(GYDM::IMatter* m) override {
                 return true;
             }
 
@@ -25,22 +25,22 @@ namespace WarGrey::STEM {
             void reflow_for_raft(float width, float height);
 
         private: // objects for composing a raft
-            WarGrey::STEM::Labellet* caption;
-            WarGrey::STEM::IShapelet* raft;
-            WarGrey::STEM::IShapelet* bow;
-            WarGrey::STEM::IShapelet* stern;
-            WarGrey::STEM::IShapelet* flag;
-            WarGrey::STEM::IShapelet* mast;
-            WarGrey::STEM::IShapelet* post;
-            WarGrey::STEM::IShapelet* paddle;
-            WarGrey::STEM::IShapelet* sea;
+            GYDM::Labellet* caption;
+            GYDM::IShapelet* raft;
+            GYDM::IShapelet* bow;
+            GYDM::IShapelet* stern;
+            GYDM::IShapelet* flag;
+            GYDM::IShapelet* mast;
+            GYDM::IShapelet* post;
+            GYDM::IShapelet* paddle;
+            GYDM::IShapelet* sea;
 
         private: // objects for composing a house
-            WarGrey::STEM::IShapelet* roof;
-            WarGrey::STEM::IShapelet* wall;
-            WarGrey::STEM::IShapelet* door;
-            WarGrey::STEM::IShapelet* lock;
-            WarGrey::STEM::IShapelet* window;
-            WarGrey::STEM::IShapelet* garden;
+            GYDM::IShapelet* roof;
+            GYDM::IShapelet* wall;
+            GYDM::IShapelet* door;
+            GYDM::IShapelet* lock;
+            GYDM::IShapelet* window;
+            GYDM::IShapelet* garden;
     };
 }

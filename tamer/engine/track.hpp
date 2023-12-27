@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../../digitama/gydm_stem/bang.hpp"
+#include "../../digitama/gydm/bang.hpp"
 
 #include <vector>
 
 /*************************************************************************************************/
-namespace WarGrey::STEM {
-    class TrackPlane : public TheBigBang {
+namespace GYDM {
+    class TrackPlane : public GYDM::TheBigBang {
     public:
         TrackPlane() : TheBigBang("Track") { }
 

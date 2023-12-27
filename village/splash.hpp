@@ -1,14 +1,14 @@
 #ifdef _USE_EXTERNAL_INCLUDING
-#include <gydm_stem/game.hpp>
+#include <gydm/game.hpp>
 #else
-#include "../digitama/gydm_stem/game.hpp"
+#include "../digitama/gydm/game.hpp"
 #endif
 
 #include <vector>
 #include <filesystem>
 
 /*************************************************************************************************/
-namespace WarGrey::STEM {
+namespace GYDM {
     class JrPlane : public Plane {
     public:
         JrPlane(Cosmos* master) : Plane("青少计算机科学"), master(master) {}
@@ -21,11 +21,11 @@ namespace WarGrey::STEM {
         void on_mission_start(float width, float height) override;
 
     public:
-        bool can_select(WarGrey::STEM::IMatter* m) override;
-        void on_tap(WarGrey::STEM::IMatter* m, float x, float y) override;
+        bool can_select(GYDM::IMatter* m) override;
+        void on_tap(GYDM::IMatter* m, float x, float y) override;
 
     protected:
-        bool update_tooltip(WarGrey::STEM::IMatter* m, float local_x, float local_y, float global_x, float global_y) override;
+        bool update_tooltip(GYDM::IMatter* m, float local_x, float local_y, float global_x, float global_y) override;
 
     private:
         void load_for_demo(float width, float height);
@@ -35,25 +35,25 @@ namespace WarGrey::STEM {
         void reflow_plot(float width, float height);
     
     private:
-        WarGrey::STEM::Linkmon* agent;
-        WarGrey::STEM::Labellet* title;
-        WarGrey::STEM::Labellet* tooltip;
+        GYDM::Linkmon* agent;
+        GYDM::Labellet* title;
+        GYDM::Labellet* tooltip;
         std::vector<Sprite*> coins;
         std::vector<Labellet*> names;
-        WarGrey::STEM::Tuxmon* tux;
+        GYDM::Tuxmon* tux;
 
     private: // for lambda demos
-        // WarGrey::STEM::ConveyerBeltlet* conveyer;
+        // GYDM::ConveyerBeltlet* conveyer;
 
     private: // for the plot
-        WarGrey::STEM::PlanetCuteAtlas* stage;
-        WarGrey::STEM::Citizen* host;
-        WarGrey::STEM::Citizen* wife;
-        WarGrey::STEM::Citizen* concubine;
-        WarGrey::STEM::Citizen* handsome;
+        GYDM::PlanetCuteAtlas* stage;
+        GYDM::Citizen* host;
+        GYDM::Citizen* wife;
+        GYDM::Citizen* concubine;
+        GYDM::Citizen* handsome;
         
     private:
-        WarGrey::STEM::Cosmos* master;
+        GYDM::Cosmos* master;
         int target_plane = 0;
     };
 }

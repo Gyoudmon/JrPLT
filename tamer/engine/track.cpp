@@ -1,17 +1,17 @@
 #include "track.hpp"
 
-using namespace WarGrey::STEM;
+using namespace GYDM;
 
 /*************************************************************************************************/
 static double gliding_duration = 0.2;
 
 /*************************************************************************************************/
-void WarGrey::STEM::TrackPlane::construct(float width, float height) {
+void GYDM::TrackPlane::construct(float width, float height) {
     this->the_name("Tamer");
     this->style = make_highlight_dimension_style(24U, 8U, 2);
 }
 
-void WarGrey::STEM::TrackPlane::load(float width, float height) {
+void GYDM::TrackPlane::load(float width, float height) {
     this->track = this->insert(new Tracklet(width, height));
 
     TheBigBang::load(width, height);
@@ -33,13 +33,13 @@ void WarGrey::STEM::TrackPlane::load(float width, float height) {
     }
 }
 
-void WarGrey::STEM::TrackPlane::reflow(float width, float height) {
+void GYDM::TrackPlane::reflow(float width, float height) {
     TheBigBang::reflow(width, height);
 
-    this->move_to(this->variable, width, 0.0F, MatterAnchor::RT, -8.0F, 8.0F);
+    this->move_to(this->variable, { width, 0.0F }, MatterAnchor::RT, -8.0F, 8.0F);
 }
 
-void WarGrey::STEM::TrackPlane::update(uint64_t interval, uint32_t count, uint64_t uptime) {
+void GYDM::TrackPlane::update(uint64_t interval, uint32_t count, uint64_t uptime) {
     if (is_shift_pressed()) {
         for (auto bracer : this->bracers) {
             bracer->try_switch_mode(BracerMode::Run);
@@ -51,19 +51,19 @@ void WarGrey::STEM::TrackPlane::update(uint64_t interval, uint32_t count, uint64
     }
 }
 
-void WarGrey::STEM::TrackPlane::on_mission_start(float width, float height) {
+void GYDM::TrackPlane::on_mission_start(float width, float height) {
     this->run_bracers_at_random(false);
 }
 
-bool WarGrey::STEM::TrackPlane::can_select(IMatter *m) {
+bool GYDM::TrackPlane::can_select(IMatter *m) {
     return isinstance(m, Citizen) || (this->agent == m);
 }
 
-bool WarGrey::STEM::TrackPlane::can_select_multiple() {
+bool GYDM::TrackPlane::can_select_multiple() {
     return is_shift_pressed();
 }
 
-void WarGrey::STEM::TrackPlane::after_select(IMatter *m, bool yes) {
+void GYDM::TrackPlane::after_select(IMatter *m, bool yes) {
     if (!yes) {
         if (isinstance(m, Citizen)) {
             if (!this->is_colliding_with_mouse(m)) {
@@ -75,7 +75,7 @@ void WarGrey::STEM::TrackPlane::after_select(IMatter *m, bool yes) {
     this->heading = m->get_heading(false);
 }
 
-void WarGrey::STEM::TrackPlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {
+void GYDM::TrackPlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {
     if (pressed) {
         switch (key) {
         case 'c': this->track->erase(); break;
@@ -86,7 +86,7 @@ void WarGrey::STEM::TrackPlane::on_char(char key, uint16_t modifiers, uint8_t re
     }
 }
 
-bool WarGrey::STEM::TrackPlane::update_tooltip(IMatter *m, float lx, float ly, float gx, float gy) {
+bool GYDM::TrackPlane::update_tooltip(IMatter *m, float lx, float ly, float gx, float gy) {
     bool updated = false;
 
     if (isinstance(m, Citizen)) {
@@ -97,7 +97,7 @@ bool WarGrey::STEM::TrackPlane::update_tooltip(IMatter *m, float lx, float ly, f
     return updated;
 }
 
-void WarGrey::STEM::TrackPlane::run_bracers_at_random(bool drawing) {
+void GYDM::TrackPlane::run_bracers_at_random(bool drawing) {
     IMatter* selected = this->find_next_selected_matter();
 
     if (selected == nullptr) {
@@ -114,7 +114,7 @@ void WarGrey::STEM::TrackPlane::run_bracers_at_random(bool drawing) {
     }
 }
 
-void WarGrey::STEM::TrackPlane::run_bracers_in_direction() {
+void GYDM::TrackPlane::run_bracers_in_direction() {
     size_t selected = this->count_selected();
     float length = 72.0F;
 
@@ -127,7 +127,7 @@ void WarGrey::STEM::TrackPlane::run_bracers_in_direction() {
     }
 }
 
-void WarGrey::STEM::TrackPlane::run_bracers_in_8_ways() {
+void GYDM::TrackPlane::run_bracers_in_8_ways() {
     IMatter* selected = this->find_next_selected_matter();
 
     if (selected == nullptr) {
@@ -144,7 +144,7 @@ void WarGrey::STEM::TrackPlane::run_bracers_in_8_ways() {
     }
 }
 
-void WarGrey::STEM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, int sides, int rounds, double gapsize) {
+void GYDM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, int sides, int rounds, double gapsize) {
     double meridian = double(rounds * gapsize);
     double rad = degrees_to_radians(360.0 / sides);
     double factor = 2.0 - 2.0 * flcos(rad); 
@@ -157,7 +157,7 @@ void WarGrey::STEM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, int sides,
 
     for (int s = 0; s < sides; s ++) {
         this->pen_up(bracer);
-        this->move_to(bracer, x, y, MatterAnchor::LT); // moving doesn't change the heading
+        this->move_to(bracer, { x, y }, MatterAnchor::LT); // moving doesn't change the heading
         this->pen_down(bracer);
         this->glide(gliding_duration, bracer, meridian);
         this->turn(bracer, rad, true);
@@ -168,7 +168,7 @@ void WarGrey::STEM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, int sides,
 
         this->pen_up(bracer);
         this->set_pen_color(bracer, RGBA::HSV(random_uniform(0.0, 360.0)));
-        this->move_to(bracer, x, y, MatterAnchor::LT); // moving doesn't change the heading
+        this->move_to(bracer, { x, y }, MatterAnchor::LT); // moving doesn't change the heading
         this->set_heading(bracer, direction, true);
         this->move(bracer, meridian);
         this->pen_down(bracer);
@@ -182,7 +182,7 @@ void WarGrey::STEM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, int sides,
         meridian -= gapsize;
     }
 
-    this->move_to(bracer, x, y, MatterAnchor::LT);
+    this->move_to(bracer, { x, y }, MatterAnchor::LT);
     this->stamp(bracer);
     this->pen_up(bracer);
 }

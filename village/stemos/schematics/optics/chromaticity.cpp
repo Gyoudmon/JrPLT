@@ -1,7 +1,7 @@
 #include "chromaticity.hpp"
 
+using namespace GYDM;
 using namespace WarGrey::STEM;
-using namespace WarGrey::SCSM;
 
 /*************************************************************************************************/
 static const size_t hue_count = 36U;
@@ -12,7 +12,7 @@ static const float primary_radius = 64.0F;
 static const float chromaticity_size = 380.0F;
 
 /*************************************************************************************************/
-void WarGrey::SCSM::ChromaticityDiagramPlane::load(float width, float height) {
+void WarGrey::STEM::ChromaticityDiagramPlane::load(float width, float height) {
     float delta_deg = 360.0F / float(hue_count);
 
     this->set_background(0x000000U);
@@ -33,7 +33,7 @@ void WarGrey::SCSM::ChromaticityDiagramPlane::load(float width, float height) {
     TheBigBang::load(width, height);
 }
 
-void WarGrey::SCSM::ChromaticityDiagramPlane::reflow(float width, float height) {
+void WarGrey::STEM::ChromaticityDiagramPlane::reflow(float width, float height) {
     float cx = width * 0.5F;
     float cy = height * 0.55F;
     float x, y;
@@ -42,15 +42,15 @@ void WarGrey::SCSM::ChromaticityDiagramPlane::reflow(float width, float height) 
     
     for (auto c : this->hues) {
         circle_point(wheel_radius, float(c->get_brush_color().hue()) - 90.0F, &x, &y, false);
-        this->move_to(c, cx + x, cy + y, MatterAnchor::CC);
+        this->move_to(c, Position(cx + x, cy + y), MatterAnchor::CC);
     }
 
     circle_point(wheel_radius, -90.0F, &x, &y, false);
     this->reflow_primaries(cx + x, cy + y + (primary_radius + hue_radius) * 1.618F);
-    this->move_to(this->chroma_dia, width * 0.5F, height * 0.618F, MatterAnchor::CC);
+    this->move_to(this->chroma_dia, Position(width * 0.5F, height * 0.618F), MatterAnchor::CC);
 }
 
-void WarGrey::SCSM::ChromaticityDiagramPlane::update(uint64_t interval, uint32_t count, uint64_t uptime) {
+void WarGrey::STEM::ChromaticityDiagramPlane::update(uint64_t interval, uint32_t count, uint64_t uptime) {
     if (is_shift_pressed()) {
         this->chroma_dia->set_pseudo_primary_triangle_alpha(0.32);
     } else {
@@ -58,13 +58,13 @@ void WarGrey::SCSM::ChromaticityDiagramPlane::update(uint64_t interval, uint32_t
     }
 }
 
-bool WarGrey::SCSM::ChromaticityDiagramPlane::can_select(IMatter* m) {
+bool WarGrey::STEM::ChromaticityDiagramPlane::can_select(IMatter* m) {
     return (dynamic_cast<Circlet*>(m) != nullptr)
             || (m == this->agent)
             || (m == this->chroma_dia);
 }
 
-void WarGrey::SCSM::ChromaticityDiagramPlane::after_select(IMatter* m, bool yes) {
+void WarGrey::STEM::ChromaticityDiagramPlane::after_select(IMatter* m, bool yes) {
     if (yes) {
         auto com = dynamic_cast<Circlet*>(m);
 
@@ -85,7 +85,7 @@ void WarGrey::SCSM::ChromaticityDiagramPlane::after_select(IMatter* m, bool yes)
     }
 }
 
-bool WarGrey::SCSM::ChromaticityDiagramPlane::update_tooltip(IMatter* m, float x, float y, float gx, float gy) {
+bool WarGrey::STEM::ChromaticityDiagramPlane::update_tooltip(IMatter* m, float x, float y, float gx, float gy) {
     bool updated = false;
     auto com = dynamic_cast<Circlet*>(m);
     auto cc = dynamic_cast<Ellipselet*>(m);
@@ -146,10 +146,10 @@ bool WarGrey::SCSM::ChromaticityDiagramPlane::update_tooltip(IMatter* m, float x
     return updated;
 }
 
-void WarGrey::SCSM::ChromaticityDiagramPlane::reflow_primaries(float x, float y) {
+void WarGrey::STEM::ChromaticityDiagramPlane::reflow_primaries(float x, float y) {
     float cc_off = primary_radius * 0.5F;
     
-    this->move_to(this->primaries[0], x, y, MatterAnchor::CB, 0.0F, cc_off);
-    this->move_to(this->primaries[1], this->primaries[0], MatterAnchor::CB, MatterAnchor::RC, cc_off);
-    this->move_to(this->primaries[2], this->primaries[1], MatterAnchor::CC, MatterAnchor::LC);
+    this->move_to(this->primaries[0], Position(x, y), MatterAnchor::CB, 0.0F, cc_off);
+    this->move_to(this->primaries[1], Position(this->primaries[0], MatterAnchor::CB), MatterAnchor::RC, cc_off);
+    this->move_to(this->primaries[2], Position(this->primaries[1], MatterAnchor::CC), MatterAnchor::LC);
 }

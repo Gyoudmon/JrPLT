@@ -1,15 +1,15 @@
-#include <gydm_stem/game.hpp>
+#include <gydm/game.hpp>
 
 #include "village/splash.hpp"
 
 #include "village/pltmos/stream.hpp"
-#include "village/scsmos/motion/lottery.hpp"
-#include "village/scsmos/schematics/optics/pinhole.hpp"
-#include "village/scsmos/schematics/optics/chromaticity.hpp"
+#include "village/stemos/motion/lottery.hpp"
+#include "village/stemos/schematics/optics/pinhole.hpp"
+#include "village/stemos/schematics/optics/chromaticity.hpp"
 
-using namespace WarGrey::STEM;
+using namespace GYDM;
 using namespace WarGrey::PLT;
-using namespace WarGrey::SCSM;
+using namespace WarGrey::STEM;
 
 /*************************************************************************************************/
 namespace {

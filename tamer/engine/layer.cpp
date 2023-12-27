@@ -1,13 +1,13 @@
 #include "layer.hpp"
 
-using namespace WarGrey::STEM;
+using namespace GYDM;
 
 /*************************************************************************************************/
 static float radius = 80.0F;
 static double gliding_duration = 0.618;
 
 /*************************************************************************************************/
-void WarGrey::STEM::LayerPlane::load(float width, float height) {
+void GYDM::LayerPlane::load(float width, float height) {
     TheBigBang::load(width, height);
 
     for (int n = 3; n < 13; n++) {
@@ -15,15 +15,15 @@ void WarGrey::STEM::LayerPlane::load(float width, float height) {
     }
 }
 
-void WarGrey::STEM::LayerPlane::on_mission_start(float width, float height) {
+void GYDM::LayerPlane::on_mission_start(float width, float height) {
     this->move_shapes_at_random();
 }
 
-bool WarGrey::STEM::LayerPlane::can_select(IMatter* m) {
+bool GYDM::LayerPlane::can_select(IMatter* m) {
     return isinstance(m, RegularPolygonlet) || (this->agent == m);
 }
 
-void WarGrey::STEM::LayerPlane::after_select(IMatter* m, bool yes) {
+void GYDM::LayerPlane::after_select(IMatter* m, bool yes) {
     if (!yes) {
         if (isinstance(m, RegularPolygonlet)) {
             if (!this->is_colliding_with_mouse(m)) {
@@ -33,7 +33,7 @@ void WarGrey::STEM::LayerPlane::after_select(IMatter* m, bool yes) {
     }
 }
 
-void WarGrey::STEM::LayerPlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {
+void GYDM::LayerPlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {
     if (pressed) {
         switch (key) {
         case 'f': {
@@ -55,7 +55,7 @@ void WarGrey::STEM::LayerPlane::on_char(char key, uint16_t modifiers, uint8_t re
     }
 }
 
-void WarGrey::STEM::LayerPlane::move_shapes_at_random() {
+void GYDM::LayerPlane::move_shapes_at_random() {
     for (auto shape : this->shapes) {
         this->glide_to_random_location(gliding_duration, shape);
     }

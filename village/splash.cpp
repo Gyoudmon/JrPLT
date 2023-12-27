@@ -1,6 +1,6 @@
 #include "splash.hpp"
 
-using namespace WarGrey::STEM;
+using namespace GYDM;
 
 /*************************************************************************************************/
 static const char* unknown_task_name = "冒险越来越深入了";
@@ -50,7 +50,7 @@ namespace {
 }
 
 /*********************************************************************************************/
-void WarGrey::STEM::JrPlane::load(float width, float height) {
+void GYDM::JrPlane::load(float width, float height) {
     this->title = this->insert(new Labellet(GameFont::Title(), BLACK, this->name()));
             
     this->agent = this->insert(new Linkmon());
@@ -82,11 +82,11 @@ void WarGrey::STEM::JrPlane::load(float width, float height) {
     this->load_for_plot(width, height);
 }
 
-void WarGrey::STEM::JrPlane::load_for_demo(float width, float height) {
+void GYDM::JrPlane::load_for_demo(float width, float height) {
     // this->conveyer = this->insert(new ConveyerBeltlet(32.0F, 128.0F, 120.0));
 }
 
-void WarGrey::STEM::JrPlane::load_for_plot(float width, float height) {
+void GYDM::JrPlane::load_for_plot(float width, float height) {
     this->stage = this->insert(new StageAtlas(xtile_count + 2, ytile_count + 2));
     this->host = this->insert(new Joshua("邹忌"));
     this->wife = this->insert(new Estelle("妻"));
@@ -97,39 +97,39 @@ void WarGrey::STEM::JrPlane::load_for_plot(float width, float height) {
     this->set_bubble_margin(8.0F, 4.0F);
 }
         
-void WarGrey::STEM::JrPlane::reflow(float width, float height) {
-    this->move_to(this->title, this->agent, MatterAnchor::RB, MatterAnchor::LB);
+void GYDM::JrPlane::reflow(float width, float height) {
+    this->move_to(this->title, Position(this->agent, MatterAnchor::RB), MatterAnchor::LB);
             
     for (int idx = 0; idx < this->coins.size(); idx ++) {
         if (idx == 0) {
-            this->move_to(this->coins[idx], this->agent, MatterAnchor::LB, MatterAnchor::LT);
+            this->move_to(this->coins[idx], Position(this->agent, MatterAnchor::LB), MatterAnchor::LT);
         } else {
-            this->move_to(this->coins[idx], this->coins[idx - 1], MatterAnchor::RC, MatterAnchor::LC);
+            this->move_to(this->coins[idx], Position(this->coins[idx - 1], MatterAnchor::RC), MatterAnchor::LC);
         }
     }
 
     if (this->coins.size() == 0) {
-        this->move_to(this->tux, this->agent, MatterAnchor::LB, MatterAnchor::LT);
+        this->move_to(this->tux, Position(this->agent, MatterAnchor::LB), MatterAnchor::LT);
     } else {
-        this->move_to(this->tux, this->coins[0], MatterAnchor::LB, MatterAnchor::LT);
+        this->move_to(this->tux, Position(this->coins[0], MatterAnchor::LB), MatterAnchor::LT);
     }
 
     this->reflow_demo(width, height);
     this->reflow_plot(width, height);
 }
 
-void WarGrey::STEM::JrPlane::reflow_demo(float width, float height) {
+void GYDM::JrPlane::reflow_demo(float width, float height) {
 }
 
-void WarGrey::STEM::JrPlane::reflow_plot(float width, float height) {
-    this->move_to(this->stage, width * 0.5, height, MatterAnchor::CB);
+void GYDM::JrPlane::reflow_plot(float width, float height) {
+    this->move_to(this->stage, Position(width * 0.5, height), MatterAnchor::CB);
     this->stage->move_to_logic_tile(this->host, xtile_count / 2, ytile_count / 2, MatterAnchor::CB, MatterAnchor::CB);
     this->stage->move_to_logic_tile(this->wife, 0, -3, MatterAnchor::CB, MatterAnchor::CB);
     this->stage->move_to_logic_tile(this->concubine, 0, -1, MatterAnchor::CB, MatterAnchor::CB);
     this->stage->move_to_logic_tile(this->handsome, -1, 0, MatterAnchor::CB, MatterAnchor::CB);
 }
 
-void WarGrey::STEM::JrPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
+void GYDM::JrPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
     if (this->coins.size() > 0) {
         float tux_lx, tux_rx, stars_rx;
 
@@ -156,21 +156,21 @@ void WarGrey::STEM::JrPlane::update(uint64_t count, uint32_t interval, uint64_t 
     }
 }
 
-void WarGrey::STEM::JrPlane::on_mission_start(float width, float height) {
+void GYDM::JrPlane::on_mission_start(float width, float height) {
     this->agent->play_greeting(1);
 
     this->tux->set_border_strategy(BorderStrategy::IGNORE);
     this->tux->set_velocity(2.0, 0.0);
 }
 
-bool WarGrey::STEM::JrPlane::can_select(IMatter* m) {
+bool GYDM::JrPlane::can_select(IMatter* m) {
     return isinstance(m, Coinlet)
             || isinstance(m, Citizen)
             || (m == this->tux)
             || (m == this->agent);
 }
 
-void WarGrey::STEM::JrPlane::on_tap(IMatter* m, float x, float y) {
+void GYDM::JrPlane::on_tap(IMatter* m, float x, float y) {
     auto coin = dynamic_cast<Coinlet*>(m);
     auto citizen = dynamic_cast<Citizen*>(m);
 
@@ -195,7 +195,7 @@ void WarGrey::STEM::JrPlane::on_tap(IMatter* m, float x, float y) {
     }
 }
 
-bool WarGrey::STEM::JrPlane::update_tooltip(IMatter* m, float local_x, float local_y, float global_x, float global_y) {
+bool GYDM::JrPlane::update_tooltip(IMatter* m, float local_x, float local_y, float global_x, float global_y) {
     auto coin = dynamic_cast<Coinlet*>(m);
     bool updated = false;            
             

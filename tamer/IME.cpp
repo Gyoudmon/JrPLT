@@ -1,11 +1,11 @@
-#include "../digitama/gydm_stem/game.hpp"
-#include "../digitama/gydm_stem/bang.hpp"
+#include "../digitama/gydm/game.hpp"
+#include "../digitama/gydm/bang.hpp"
 
-using namespace WarGrey::STEM;
+using namespace GYDM;
 
 /*************************************************************************************************/
 namespace {
-    class IMEPlane : public TheBigBang {
+    class IMEPlane : public GYDM::TheBigBang {
     public:
         IMEPlane(Cosmos* master) : TheBigBang("IME") {
             this->the_name("Tamer");
@@ -22,8 +22,8 @@ namespace {
         void reflow(float width, float height) override {
             TheBigBang::reflow(width, height);
 
-            this->move_to(this->message, this->agent, MatterAnchor::LB, MatterAnchor::LT);
-            this->move_to(this->ime_msg, width, height, MatterAnchor::RB);
+            this->move_to(this->message, { this->agent, MatterAnchor::LB }, MatterAnchor::LT);
+            this->move_to(this->ime_msg, { width, height }, MatterAnchor::RB);
         }
 
         void on_enter(IPlane* from) override {

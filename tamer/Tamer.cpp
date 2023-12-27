@@ -1,4 +1,4 @@
-#include "../digitama/gydm_stem/game.hpp"
+#include "../digitama/gydm/game.hpp"
 #include "../village/splash.hpp"
 
 #include "engine/text.hpp"
@@ -7,7 +7,7 @@
 #include "engine/track.hpp"
 #include "engine/plot.hpp"
 
-using namespace WarGrey::STEM;
+using namespace GYDM;
 
 /*************************************************************************************************/
 namespace {
@@ -52,20 +52,20 @@ namespace {
         }
         
         void reflow(float width, float height) override {
-            this->move_to(this->title, this->agent, MatterAnchor::RB, MatterAnchor::LB);
+            this->move_to(this->title, { this->agent, MatterAnchor::RB }, MatterAnchor::LB);
             
             for (int idx = 0; idx < this->coins.size(); idx ++) {
                 if (idx == 0) {
-                    this->move_to(this->coins[idx], this->agent, MatterAnchor::LB, MatterAnchor::LT);
+                    this->move_to(this->coins[idx], { this->agent, MatterAnchor::LB }, MatterAnchor::LT);
                 } else {
-                    this->move_to(this->coins[idx], this->coins[idx - 1], MatterAnchor::RC, MatterAnchor::LC);
+                    this->move_to(this->coins[idx], { this->coins[idx - 1], MatterAnchor::RC }, MatterAnchor::LC);
                 }
             }
 
             if (this->coins.size() == 0) {
-                this->move_to(this->tux, this->agent, MatterAnchor::LB, MatterAnchor::LT);
+                this->move_to(this->tux, { this->agent, MatterAnchor::LB }, MatterAnchor::LT);
             } else {
-                this->move_to(this->tux, this->coins[0], MatterAnchor::LB, MatterAnchor::LT);
+                this->move_to(this->tux, { this->coins[0], MatterAnchor::LB }, MatterAnchor::LT);
             }
         }
 

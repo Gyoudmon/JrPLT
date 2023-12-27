@@ -1,13 +1,13 @@
 #include "lottery.hpp"
 
-#include <gydm_stem/datum/time.hpp>
+#include <gydm/datum/time.hpp>
 
-#include <gydm_stem/graphics/text.hpp>
-#include <gydm_stem/graphics/brush.hpp>
-#include <gydm_stem/physics/color/rgba.hpp>
+#include <gydm/graphics/text.hpp>
+#include <gydm/graphics/brush.hpp>
+#include <gydm/physics/color/rgba.hpp>
 
-using namespace WarGrey::SCSM;
 using namespace WarGrey::STEM;
+using namespace GYDM;
 
 /*************************************************************************************************/
 static const float winning_font_size = 96.0F;
@@ -26,7 +26,7 @@ static const char PLAY_KEY = 'p';
 static const char RSET_KEY = 'r';
 
 /*************************************************************************************************/
-class WarGrey::SCSM::TwoColorLotteryPlane::Ballet : public Ellipselet {
+class WarGrey::STEM::TwoColorLotteryPlane::Ballet : public Ellipselet {
 public:
     Ballet(size_t number, TCLMColor type)
         : Ellipselet(ball_radius, RGBA::HSV(random_uniform(0.0, 360.0)))
@@ -58,7 +58,7 @@ private:
 };
 
 /*************************************************************************************************/
-void WarGrey::SCSM::TwoColorLotteryPlane::load(float width, float height) {
+void WarGrey::STEM::TwoColorLotteryPlane::load(float width, float height) {
     TheSCSMPlane::load(width, height);
 
     this->machine = this->insert(new RegularPolygonlet(6, machine_radius, GOLDENROD));
@@ -71,24 +71,24 @@ void WarGrey::SCSM::TwoColorLotteryPlane::load(float width, float height) {
     this->load_winning_numbers(width, height);
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::reflow(float width, float height) {
+void WarGrey::STEM::TwoColorLotteryPlane::reflow(float width, float height) {
     TheSCSMPlane::reflow(width, height);
     
-    this->move_to(this->machine, width * 0.5F, height * 0.618F, MatterAnchor::CC);
-    this->move_to(this->window, this->machine, MatterAnchor::CC, MatterAnchor::CC);
-    this->move_to(this->inlet, this->window, MatterAnchor::CT, MatterAnchor::CB);
-    this->move_to(this->outlet, this->machine, MatterAnchor::RB, MatterAnchor::RB);
-    this->move_to(this->winning_slot, this->machine, MatterAnchor::CB, MatterAnchor::CT, 0.0F, ball_radius * 3.0F);
+    this->move_to(this->machine, Position(width * 0.5F, height * 0.618F), MatterAnchor::CC);
+    this->move_to(this->window, Position(this->machine, MatterAnchor::CC), MatterAnchor::CC);
+    this->move_to(this->inlet, Position(this->window, MatterAnchor::CT), MatterAnchor::CB);
+    this->move_to(this->outlet, Position(this->machine, MatterAnchor::RB), MatterAnchor::RB);
+    this->move_to(this->winning_slot, Position(this->machine, MatterAnchor::CB), MatterAnchor::CT, 0.0F, ball_radius * 3.0F);
 
     this->reflow_winning_numbers(width, height);
 
-    this->move_to(this->tips[0], width, 0.0F, MatterAnchor::RT);
+    this->move_to(this->tips[0], Position(width, 0.0F), MatterAnchor::RT);
     for (size_t idx = 1; idx < this->tips.size(); idx ++) {
-        this->move_to(this->tips[idx], this->tips[idx - 1], MatterAnchor::RB, MatterAnchor::RT, 0.0F, 2.0F);
+        this->move_to(this->tips[idx], Position(this->tips[idx - 1], MatterAnchor::RB), MatterAnchor::RT, 0.0F, 2.0F);
     }
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::load_balls(float width, float height) {
+void WarGrey::STEM::TwoColorLotteryPlane::load_balls(float width, float height) {
     this->load_tip("剩余红球", this->red_top, CRIMSON);
     this->load_tip("剩余蓝球", this->blue_top, ROYALBLUE);
     this->load_tip("已出号码", this->current_winning_slot, FORESTGREEN);
@@ -103,7 +103,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::load_balls(float width, float height) 
     }
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::load_winning_numbers(float width, float height) {
+void WarGrey::STEM::TwoColorLotteryPlane::load_winning_numbers(float width, float height) {
     for (size_t idx = 0; idx < this->red_count; idx ++) {
         Labellet* red_number = this->insert(new Labellet(GameFont::monospace(winning_font_size), GHOSTWHITE, "00"));
 
@@ -119,7 +119,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::load_winning_numbers(float width, floa
     }
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::load_tip(const char* label, size_t value, uint32_t label_bgc) {
+void WarGrey::STEM::TwoColorLotteryPlane::load_tip(const char* label, size_t value, uint32_t label_bgc) {
     DimensionStyle style = make_highlight_dimension_style(generic_font_size(FontSize::x_large), 3, 0);
 
     style.label_background_color = label_bgc;
@@ -127,18 +127,18 @@ void WarGrey::SCSM::TwoColorLotteryPlane::load_tip(const char* label, size_t val
     this->tips.back()->set_value(double(value));
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::reflow_winning_numbers(float width, float height) {
-    this->move_to(this->winning_numbers[0], this->agent, MatterAnchor::LB, MatterAnchor::LT);
+void WarGrey::STEM::TwoColorLotteryPlane::reflow_winning_numbers(float width, float height) {
+    this->move_to(this->winning_numbers[0], Position(this->agent, MatterAnchor::LB), MatterAnchor::LT);
     for (size_t idx = 1; idx < this->winning_numbers.size(); idx ++) {
-        this->move_to(this->winning_numbers[idx], this->winning_numbers[idx - 1], MatterAnchor::RC, MatterAnchor::LC);        
+        this->move_to(this->winning_numbers[idx], Position(this->winning_numbers[idx - 1], MatterAnchor::RC), MatterAnchor::LC);
     }
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::on_mission_start(float width, float height) {
+void WarGrey::STEM::TwoColorLotteryPlane::on_mission_start(float width, float height) {
     this->switch_game_state(TCLMState::Reset);
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
+void WarGrey::STEM::TwoColorLotteryPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
     float cx, cy, window_size;
 
     this->feed_matter_location(this->window, &cx, &cy, MatterAnchor::CC);
@@ -168,7 +168,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::update(uint64_t count, uint32_t interv
     }
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::prepare(const std::map<size_t, TwoColorLotteryPlane::Ballet*>& balls) {
+void WarGrey::STEM::TwoColorLotteryPlane::prepare(const std::map<size_t, TwoColorLotteryPlane::Ballet*>& balls) {
     float cx, cy, apothem, window_size;
 
     this->feed_matter_location(this->window, &cx, &cy, MatterAnchor::CC);
@@ -181,7 +181,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::prepare(const std::map<size_t, TwoColo
     }
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::sally(const std::map<size_t, TwoColorLotteryPlane::Ballet*>& balls) {
+void WarGrey::STEM::TwoColorLotteryPlane::sally(const std::map<size_t, TwoColorLotteryPlane::Ballet*>& balls) {
     for (auto ball : balls) {
         ball.second->set_terminal_speed(terminal_speed, terminal_speed);
         ball.second->set_speed(0.0, 0.0);
@@ -189,14 +189,14 @@ void WarGrey::SCSM::TwoColorLotteryPlane::sally(const std::map<size_t, TwoColorL
     }
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::hide(const std::map<size_t, TwoColorLotteryPlane::Ballet*>& balls) {
+void WarGrey::STEM::TwoColorLotteryPlane::hide(const std::map<size_t, TwoColorLotteryPlane::Ballet*>& balls) {
     for (auto ball : balls) {
         ball.second->show(false);
         ball.second->motion_stop();
     }
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::play() {
+void WarGrey::STEM::TwoColorLotteryPlane::play() {
     if (this->current_winning_slot < this->winning_numbers.size()) {
         this->picking_timestamp = current_inexact_milliseconds();
         this->tips[3]->set_value(0.0);
@@ -220,7 +220,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::play() {
     }
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::reset() {
+void WarGrey::STEM::TwoColorLotteryPlane::reset() {
     this->red_balls.merge(this->win_red_balls);
     this->blue_balls.merge(this->win_blue_balls);
 
@@ -243,7 +243,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::reset() {
     }
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::update_balls(const std::map<size_t, Ballet*>& balls, std::vector<Ballet*>& lucky_balls, float cx, float cy, float distance, bool motion_only) {
+void WarGrey::STEM::TwoColorLotteryPlane::update_balls(const std::map<size_t, Ballet*>& balls, std::vector<Ballet*>& lucky_balls, float cx, float cy, float distance, bool motion_only) {
     for (auto ball : balls) {
         if (ball.second->visible()) {
             this->apply_forces(ball.second, cx, cy, distance, motion_only);
@@ -257,7 +257,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::update_balls(const std::map<size_t, Ba
     }
 }
 
-bool WarGrey::SCSM::TwoColorLotteryPlane::select(const std::vector<TwoColorLotteryPlane::Ballet*>& balls) {
+bool WarGrey::STEM::TwoColorLotteryPlane::select(const std::vector<TwoColorLotteryPlane::Ballet*>& balls) {
     size_t top = balls.size();
     bool okay = false;
 
@@ -272,7 +272,7 @@ bool WarGrey::SCSM::TwoColorLotteryPlane::select(const std::vector<TwoColorLotte
     return okay;
 }
 
-bool WarGrey::SCSM::TwoColorLotteryPlane::pick(TwoColorLotteryPlane::Ballet* ball) {
+bool WarGrey::STEM::TwoColorLotteryPlane::pick(TwoColorLotteryPlane::Ballet* ball) {
     bool okay = false;
 
     if (ball != nullptr) {
@@ -294,7 +294,7 @@ bool WarGrey::SCSM::TwoColorLotteryPlane::pick(TwoColorLotteryPlane::Ballet* bal
         default: /* do nothing */;
         }
 
-        this->move_to(ball, this->outlet, MatterAnchor::CC, MatterAnchor::CC);
+        this->move_to(ball, Position(this->outlet, MatterAnchor::CC), MatterAnchor::CC);
         this->winning_numbers[this->current_winning_slot]->set_text("%02u", ball->number());
         this->winning_numbers[this->current_winning_slot]->set_foreground_color(GHOSTWHITE);
         this->current_winning_slot += 1;
@@ -306,8 +306,8 @@ bool WarGrey::SCSM::TwoColorLotteryPlane::pick(TwoColorLotteryPlane::Ballet* bal
 
             this->feed_matter_location(this->outlet, &sx, &y0, MatterAnchor::LB);
             this->feed_matter_location(this->winning_slot, &ex, &ey, MatterAnchor::LB);
-            this->glide(gliding_duration, ball, 0.0F, ey - y0);
-            this->glide(gliding_duration, ball, ex - sx + slot_width * float(this->current_winning_slot), 0.0F);
+            this->glide(gliding_duration, ball, Vector(0.0F, ey - y0));
+            this->glide(gliding_duration, ball, Vector(ex - sx + slot_width * float(this->current_winning_slot), 0.0F));
         }
     }
 
@@ -315,15 +315,15 @@ bool WarGrey::SCSM::TwoColorLotteryPlane::pick(TwoColorLotteryPlane::Ballet* bal
 }
 
 /*************************************************************************************************/
-void WarGrey::SCSM::TwoColorLotteryPlane::spot_ball(TwoColorLotteryPlane::Ballet* ball, float cx, float cy, float apothem) {
+void WarGrey::STEM::TwoColorLotteryPlane::spot_ball(TwoColorLotteryPlane::Ballet* ball, float cx, float cy, float apothem) {
     float bx = random_uniform(cx - apothem, cx + apothem);
     float by = random_uniform(cy - apothem, cy);
 
-    this->move_to(ball, bx, by, MatterAnchor::CC);
+    this->move_to(ball, Position(bx, by), MatterAnchor::CC);
     ball->motion_stop();
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::apply_forces(TwoColorLotteryPlane::Ballet* ball, float cx, float cy, float radius, bool no_fan) {
+void WarGrey::STEM::TwoColorLotteryPlane::apply_forces(TwoColorLotteryPlane::Ballet* ball, float cx, float cy, float radius, bool no_fan) {
     double fan_dy = 0.0;
     float bx, by, distance;
     double dx, dy;
@@ -353,7 +353,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::apply_forces(TwoColorLotteryPlane::Bal
 }
 
 /*************************************************************************************************/
-bool WarGrey::SCSM::TwoColorLotteryPlane::can_select(IMatter* m) {
+bool WarGrey::STEM::TwoColorLotteryPlane::can_select(IMatter* m) {
     auto button = dynamic_cast<Ellipselet*>(m);
     auto ball = dynamic_cast<Ballet*>(m);
 
@@ -361,7 +361,7 @@ bool WarGrey::SCSM::TwoColorLotteryPlane::can_select(IMatter* m) {
             || ((button != nullptr) && (ball == nullptr));
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::on_tap(IMatter* matter, float x, float y) {
+void WarGrey::STEM::TwoColorLotteryPlane::on_tap(IMatter* matter, float x, float y) {
     if (matter == this->inlet) {
         this->on_char(PLAY_KEY, 0, 1, false);
     } else if (matter == this->outlet) {
@@ -369,7 +369,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::on_tap(IMatter* matter, float x, float
     }
 }
 
-void WarGrey::SCSM::TwoColorLotteryPlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {
+void WarGrey::STEM::TwoColorLotteryPlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {
     if (!pressed) {
         switch(key) {
         case PLAY_KEY: this->switch_game_state(TCLMState::Play); break;
@@ -380,7 +380,7 @@ void WarGrey::SCSM::TwoColorLotteryPlane::on_char(char key, uint16_t modifiers, 
 }
 
 /*************************************************************************************************/
-void WarGrey::SCSM::TwoColorLotteryPlane::switch_game_state(TCLMState new_state) {
+void WarGrey::STEM::TwoColorLotteryPlane::switch_game_state(TCLMState new_state) {
     switch (new_state) {
     case TCLMState::Play: {
         this->agent->play_get_artsy(8);
