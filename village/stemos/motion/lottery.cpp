@@ -139,11 +139,12 @@ void WarGrey::STEM::TwoColorLotteryPlane::on_mission_start(float width, float he
 }
 
 void WarGrey::STEM::TwoColorLotteryPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
-    float cx, cy, window_size;
+    Dot dot = this->get_matter_location(this->window, MatterAnchor::CC);
+    Box box = window->get_bounding_box();
+    float cx = dot.x;
+    float cy = dot.y;
+    float window_size = box.width();
 
-    this->feed_matter_location(this->window, &cx, &cy, MatterAnchor::CC);
-    this->window->feed_extent(0.0F, 0.0F, &window_size);
-        
     if (this->state == TCLMState::Play) {
         double distance = window_size * 0.5F - ball_radius;
         std::vector<TwoColorLotteryPlane::Ballet*> lucky_balls;
@@ -169,11 +170,12 @@ void WarGrey::STEM::TwoColorLotteryPlane::update(uint64_t count, uint32_t interv
 }
 
 void WarGrey::STEM::TwoColorLotteryPlane::prepare(const std::map<size_t, TwoColorLotteryPlane::Ballet*>& balls) {
-    float cx, cy, apothem, window_size;
-
-    this->feed_matter_location(this->window, &cx, &cy, MatterAnchor::CC);
-    this->window->feed_extent(0.0F, 0.0F, &window_size);
-    apothem = (window_size * 0.5F - ball_radius) * flsqrt(2.0F) * 0.5F;
+    Dot dot = this->get_matter_location(this->window, MatterAnchor::CC);
+    Box box = window->get_bounding_box();
+    float cx = dot.x;
+    float cy = dot.y;
+    float window_size = box.width();
+    float apothem = (window_size * 0.5F - ball_radius) * flsqrt(2.0F) * 0.5F;
 
     for (auto ball : balls) {
         ball.second->show(true);
@@ -301,11 +303,14 @@ bool WarGrey::STEM::TwoColorLotteryPlane::pick(TwoColorLotteryPlane::Ballet* bal
         this->tips[2]->set_value(double(this->current_winning_slot));
 
         /* moving the winning ball */ {
+            Dot odot = this->get_matter_location(this->outlet, MatterAnchor::LB);
+            Dot wdot = this->get_matter_location(this->winning_slot, MatterAnchor::LB);
             float slot_width = ball_radius * 2.0F;
-            float y0, sx, ey, ex;
+            float sx = odot.x;
+            float y0 = odot.y;
+            float ex = wdot.x;
+            float ey = wdot.y;
 
-            this->feed_matter_location(this->outlet, &sx, &y0, MatterAnchor::LB);
-            this->feed_matter_location(this->winning_slot, &ex, &ey, MatterAnchor::LB);
             this->glide(gliding_duration, ball, Vector(0.0F, ey - y0));
             this->glide(gliding_duration, ball, Vector(ex - sx + slot_width * float(this->current_winning_slot), 0.0F));
         }
@@ -324,12 +329,12 @@ void WarGrey::STEM::TwoColorLotteryPlane::spot_ball(TwoColorLotteryPlane::Ballet
 }
 
 void WarGrey::STEM::TwoColorLotteryPlane::apply_forces(TwoColorLotteryPlane::Ballet* ball, float cx, float cy, float radius, bool no_fan) {
+    Dot b = this->get_matter_location(ball, MatterAnchor::CC);
     double fan_dy = 0.0;
-    float bx, by, distance;
+    float distance;
     double dx, dy;
 
-    this->feed_matter_location(ball, &bx, &by, MatterAnchor::CC);
-    distance = point_distance(bx, by, cx, cy);
+    distance = point_distance(b.x, b.y, cx, cy);
 
     if (!no_fan) {
         double now = current_inexact_milliseconds();
@@ -342,10 +347,10 @@ void WarGrey::STEM::TwoColorLotteryPlane::apply_forces(TwoColorLotteryPlane::Bal
     }
 
     if (distance > radius) {
-        double theta = vector_direction(double(cx - bx), double(cy - by));
+        double theta = vector_direction(double(cx - b.x), double(cy - b.y));
         double friction_loss = random_uniform(0.8, 1.0);
 
-        orthogonal_decomposition(double(distance - radius) * friction_loss, theta, &dx, &dy);
+        orthogonal_decompose(double(distance - radius) * friction_loss, theta, &dx, &dy);
         
         // this->move(ball, -dx, -dy); // this makes the ball eventually do semi-circular motion
         ball->add_speed(dx, dy + fan_dy);

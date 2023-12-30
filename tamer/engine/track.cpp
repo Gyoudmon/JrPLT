@@ -149,15 +149,13 @@ void GYDM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, int sides, int roun
     double rad = degrees_to_radians(360.0 / sides);
     double factor = 2.0 - 2.0 * flcos(rad); 
     double direction = bracer->get_heading();
-    float x, y;
-
-    this->feed_matter_location(bracer, &x, &y, MatterAnchor::LT);
+    Position dot = this->get_matter_location(bracer, MatterAnchor::LT);
             
     this->set_pen_color(bracer, RGBA::HSV(random_uniform(0.0, 360.0)));
 
     for (int s = 0; s < sides; s ++) {
         this->pen_up(bracer);
-        this->move_to(bracer, { x, y }, MatterAnchor::LT); // moving doesn't change the heading
+        this->move_to(bracer, dot, MatterAnchor::LT); // moving doesn't change the heading
         this->pen_down(bracer);
         this->glide(gliding_duration, bracer, meridian);
         this->turn(bracer, rad, true);
@@ -168,7 +166,7 @@ void GYDM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, int sides, int roun
 
         this->pen_up(bracer);
         this->set_pen_color(bracer, RGBA::HSV(random_uniform(0.0, 360.0)));
-        this->move_to(bracer, { x, y }, MatterAnchor::LT); // moving doesn't change the heading
+        this->move_to(bracer, dot, MatterAnchor::LT); // moving doesn't change the heading
         this->set_heading(bracer, direction, true);
         this->move(bracer, meridian);
         this->pen_down(bracer);
@@ -182,7 +180,7 @@ void GYDM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, int sides, int roun
         meridian -= gapsize;
     }
 
-    this->move_to(bracer, { x, y }, MatterAnchor::LT);
+    this->move_to(bracer, dot, MatterAnchor::LT);
     this->stamp(bracer);
     this->pen_up(bracer);
 }

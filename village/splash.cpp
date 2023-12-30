@@ -37,14 +37,14 @@ namespace {
 
     protected:
         void on_tilemap_load(shared_texture_t atlas) override {
-            float tile_width, tile_height, top_offset;
+            Margin margin = this->get_map_overlay();
+            float tile_width, tile_height;
 
             PlanetCuteAtlas::on_tilemap_load(atlas);
             this->reset();
 
             this->feed_map_tile_location(0, &tile_width, &tile_height, MatterAnchor::RB);
-            this->feed_map_overlay(&top_offset);
-            this->create_logic_grid(xtile_count, ytile_count, tile_width, tile_height - top_offset);
+            this->create_logic_grid(xtile_count, ytile_count, Margin(tile_height - margin.top, tile_width));
         }
     };
 }
@@ -131,18 +131,16 @@ void GYDM::JrPlane::reflow_plot(float width, float height) {
 
 void GYDM::JrPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
     if (this->coins.size() > 0) {
-        float tux_lx, tux_rx, stars_rx;
+        Dot tux_rb = this->get_matter_location(this->tux, MatterAnchor::RB);
+        Dot star_rb = this->get_matter_location(this->coins.back(), MatterAnchor::RB);
 
-        this->feed_matter_location(this->tux, &tux_rx, nullptr, MatterAnchor::RB);
-        this->feed_matter_location(this->coins.back(), &stars_rx, nullptr, MatterAnchor::RB);
-
-        if (tux_rx >= stars_rx) {
-            this->feed_matter_location(this->tux, &tux_lx, nullptr, MatterAnchor::CB);
+        if (tux_rb.x >= star_rb.x) {
+            Dot tux_cb = this->get_matter_location(this->tux, MatterAnchor::CB);
             
-            if (tux_lx < stars_rx) {
+            if (tux_cb.x < star_rb.x) {
                 this->tux->play("skid");
             } else {
-                this->move(this->tux, - tux_rx, 0.0F);
+                this->move(this->tux, Vector(- tux_rb.x, 0.0F));
                 this->tux->play("walk");
             }
         }

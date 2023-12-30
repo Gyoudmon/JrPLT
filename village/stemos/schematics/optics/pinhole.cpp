@@ -58,9 +58,8 @@ public:
     virtual ~Pinholet() {}
 
 public:
-    void feed_extent(float x, float y, float* width = nullptr, float* height = nullptr) override {
-        SET_BOX(width, this->width + 1.0F);
-        SET_BOX(height, this->height + 1.0F);
+    Box get_bounding_box() override {
+        return { this->width + 1.0F, this->height + 1.0F };
     }
 
     void draw(SDL_Renderer* renderer, float x, float y, float Width, float Height) override {
@@ -319,7 +318,7 @@ private:
         float sx = this->screen_x;
         float sy = this->screen_y;
         float sb = sy + this->screen_height;
-        float pix, six, ptt, ptb, st, stt, stb;
+        float pix, six, ptt, ptb, st;
         std::vector<float> xs = { x0, width };
 
         // 与孔阑有交点

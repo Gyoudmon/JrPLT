@@ -71,18 +71,18 @@ namespace {
 
         void update(uint64_t count, uint32_t interval, uint64_t uptime) override {
             if (this->coins.size() > 0) {
-                float tux_lx, tux_rx, stars_rx;
+                Dot tux_rb, star_rb;
+     
+                tux_rb = this->get_matter_location(this->tux, MatterAnchor::RB);
+                star_rb = this->get_matter_location(this->coins.back(), MatterAnchor::RB);
 
-                this->feed_matter_location(this->tux, &tux_rx, nullptr, MatterAnchor::RB);
-                this->feed_matter_location(this->coins.back(), &stars_rx, nullptr, MatterAnchor::RB);
-
-                if (tux_rx >= stars_rx) {
-                    this->feed_matter_location(this->tux, &tux_lx, nullptr, MatterAnchor::CB);
+                if (tux_rb.x >= star_rb.x) {
+                    Dot tux_cb = this->get_matter_location(this->tux, MatterAnchor::CB);
             
-                    if (tux_lx < stars_rx) {
+                    if (tux_cb.x < star_rb.x) {
                         this->tux->play("skid");
                     } else {
-                        this->move(this->tux, - tux_rx, 0.0F);
+                        this->move(this->tux, - tux_rb.x, 0.0F);
                         this->tux->play("walk");
                     }
                 }

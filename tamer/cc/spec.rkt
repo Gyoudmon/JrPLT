@@ -2,8 +2,8 @@
 
 (require digimon/spec)
 
-(require "cc/chksum.rkt")
-(require "cc/asnder.rkt")
+(require "chksum.rkt")
+(require "asnder.rkt")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define ipv4-headers
