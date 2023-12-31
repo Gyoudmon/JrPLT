@@ -43,7 +43,7 @@ namespace {
             this->splash = this->push_plane(new JrPlane(this));
 
             this->push_plane(new StreamPlane());
-            this->push_plane(new TwoColorLotteryPlane());
+            this->push_plane(new LotteryPlane());
             this->push_plane(new PinholePlane());
             this->push_plane(new ChromaticityDiagramPlane());
         }

@@ -77,7 +77,7 @@ void WarGrey::PLT::StreamPlane::load(float width, float height) {
 }
 
 void WarGrey::PLT::StreamPlane::reflow(float width, float height) {
-    float distance = generic_font_size(FontSize::xx_large) * 4.0F;
+    Vector distance(0.0F, generic_font_size(FontSize::xx_large) * 4.0F);
     float char_pos = 0.25F;
     float line_pos = 1.0F - char_pos;
 
@@ -89,8 +89,8 @@ void WarGrey::PLT::StreamPlane::reflow(float width, float height) {
     this->move_to(this->char_sign, Position(this->ground, { char_pos - 0.07F, 0.00F }), MatterAnchor::CB);
     this->move_to(this->line_sign, Position(this->ground, { line_pos + 0.07F, 0.00F }), MatterAnchor::CB);
 
-    this->move_to(this->char_filter, Position(this->char_pipe, MatterAnchor::CB), MatterAnchor::CT, 0.0F, distance);
-    this->move_to(this->line_filter, Position(this->line_pipe, MatterAnchor::CB), MatterAnchor::CT, 0.0F, distance);
+    this->move_to(this->char_filter, Position(this->char_pipe, MatterAnchor::CB), MatterAnchor::CT, distance);
+    this->move_to(this->line_filter, Position(this->line_pipe, MatterAnchor::CB), MatterAnchor::CT, distance);
     this->move_to(this->char_label, Position(this->char_filter, MatterAnchor::RC), MatterAnchor::LC);
     this->move_to(this->line_label, Position(this->line_filter, MatterAnchor::LC), MatterAnchor::RC);
 
@@ -104,6 +104,9 @@ void WarGrey::PLT::StreamPlane::reflow(float width, float height) {
 }
 
 void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
+    Vector charoff = { 0.0F, -CHAR_FALL_SPEED };
+    Vector lineoff = { 0.0F, -LINE_CHAR_FALL_SPEED };
+
     /***************************************** chars *********************************************/
     if (this->char_port->in_playing()) {
         auto ch = this->charin.get();
@@ -116,7 +119,7 @@ void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64
         } else {
             auto chlet = this->insert(new Labellet(GameFont::monospace(), CHOCOLATE, "%c", ch));
 
-            this->move_to(chlet, Position(this->char_pipe, MatterAnchor::CB), MatterAnchor::CT, 0.0F, -CHAR_FALL_SPEED);
+            this->move_to(chlet, Position(this->char_pipe, MatterAnchor::CB), MatterAnchor::CT, charoff);
             chlet->set_velocity(CHAR_FALL_SPEED, 90.0F);
             this->chars.push_back(chlet);
         }
@@ -135,7 +138,7 @@ void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64
 
     for (auto chlet : this->chars) {
         if (this->is_colliding(chlet, this->char_filter)) {
-            this->move_to(chlet, Position(this->char_filter, MatterAnchor::CB), MatterAnchor::CT, 0.0F, -CHAR_FALL_SPEED);
+            this->move_to(chlet, Position(this->char_filter, MatterAnchor::CB), MatterAnchor::CT, charoff);
         }
     }
 
@@ -151,7 +154,7 @@ void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64
         } else {
             auto chlet = this->insert(new Labellet(GameFont::monospace(), CHOCOLATE, "%c", ch));
 
-            this->move_to(chlet, Position(this->line_pipe, MatterAnchor::CB), MatterAnchor::CT, 0.0F, -LINE_CHAR_FALL_SPEED);
+            this->move_to(chlet, Position(this->line_pipe, MatterAnchor::CB), MatterAnchor::CT, lineoff);
             chlet->set_velocity(LINE_CHAR_FALL_SPEED, 90.0F);
             this->line_chars.push_back(chlet);
         }
@@ -180,7 +183,7 @@ void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64
 
                     this->stream_buffer.clear();
                     this->lines.push_back(linelet);
-                    this->move_to(linelet, Position(this->line_filter, MatterAnchor::CB), MatterAnchor::CT, 0.0F, -LINE_FALL_SPEED);
+                    this->move_to(linelet, Position(this->line_filter, MatterAnchor::CB), MatterAnchor::CT, lineoff);
                     linelet->set_velocity(LINE_FALL_SPEED, 90.0F);
                 }
             } else {

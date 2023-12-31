@@ -149,7 +149,7 @@ bool WarGrey::STEM::ChromaticityDiagramPlane::update_tooltip(IMatter* m, float x
 void WarGrey::STEM::ChromaticityDiagramPlane::reflow_primaries(float x, float y) {
     float cc_off = primary_radius * 0.5F;
     
-    this->move_to(this->primaries[0], Position(x, y), MatterAnchor::CB, 0.0F, cc_off);
-    this->move_to(this->primaries[1], Position(this->primaries[0], MatterAnchor::CB), MatterAnchor::RC, cc_off);
+    this->move_to(this->primaries[0], Position(x, y), MatterAnchor::CB, { 0.0F, cc_off });
+    this->move_to(this->primaries[1], Position(this->primaries[0], MatterAnchor::CB), MatterAnchor::RC, { cc_off, 0.0F });
     this->move_to(this->primaries[2], Position(this->primaries[1], MatterAnchor::CC), MatterAnchor::LC);
 }

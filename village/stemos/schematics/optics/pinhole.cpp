@@ -378,7 +378,7 @@ private:
 
 /*************************************************************************************************/
 void WarGrey::STEM::PinholePlane::load(float width, float height) {
-    TheSCSMPlane::load(width, height);
+    TheSTEMPlane::load(width, height);
 
     this->load_labview(width, height);
     this->load_instructions(width, height);
@@ -405,7 +405,7 @@ void WarGrey::STEM::PinholePlane::load_instructions(float width, float height) {
 }
 
 void WarGrey::STEM::PinholePlane::reflow(float width, float height) {
-    TheSCSMPlane::reflow(width, height);
+    TheSTEMPlane::reflow(width, height);
 
     this->move_to(this->labview, Position(width * 0.5F, (height + this->get_titlebar_height()) * 0.5F), MatterAnchor::CC);
     
@@ -413,7 +413,7 @@ void WarGrey::STEM::PinholePlane::reflow(float width, float height) {
     for (int idx = 1; idx < sizeof(ordered_keys) / sizeof(char); idx ++) {
         this->move_to(this->instructions[ordered_keys[idx]],
                         Position(this->instructions[ordered_keys[idx - 1]], MatterAnchor::RB),
-                        MatterAnchor::LB, 16.0F);
+                        MatterAnchor::LB, { 16.0F, 0.0F } );
     }
 }
 

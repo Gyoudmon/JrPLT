@@ -39,7 +39,7 @@ void GYDM::TextPlane::reflow(float width, float height) {
 
     this->move_to(this->metrics[0], { this->agent, MatterAnchor::LB }, MatterAnchor::LT);
     for (int idx = 1; idx < this->metrics.size(); idx ++) {
-        this->move_to(this->metrics[idx], { this->metrics[idx - 1], MatterAnchor::LB }, MatterAnchor::LT, 0.0F, 2.0F);
+        this->move_to(this->metrics[idx], { this->metrics[idx - 1], MatterAnchor::LB }, MatterAnchor::LT, { 0.0F, 2.0F });
     }
 }
 

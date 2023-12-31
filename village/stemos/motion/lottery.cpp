@@ -6,14 +6,14 @@
 #include <gydm/graphics/brush.hpp>
 #include <gydm/physics/color/rgba.hpp>
 
-using namespace WarGrey::STEM;
 using namespace GYDM;
+using namespace WarGrey::STEM;
 
 /*************************************************************************************************/
 static const float winning_font_size = 96.0F;
 
 static const float ball_radius = 24.0F;
-static const float machine_radius = 256.0F;
+static const float machine_radius = 300.0F;
 static const float winning_slot_height = 8.0F;
 
 static const double gravity_accelaration = 0.618;
@@ -22,21 +22,17 @@ static const double fan_delta_range = 1.0;
 static const double gliding_duration = 1.0;
 
 /*************************************************************************************************/
-static const char PLAY_KEY = 'p';
+static const char PLAY_KEY = 's';
 static const char RSET_KEY = 'r';
 
 /*************************************************************************************************/
-class WarGrey::STEM::TwoColorLotteryPlane::Ballet : public Ellipselet {
+class WarGrey::STEM::LotteryPlane::Ballet : public Ellipselet {
 public:
-    Ballet(size_t number, TCLMColor type)
-        : Ellipselet(ball_radius, RGBA::HSV(random_uniform(0.0, 360.0)))
-        , No(number), ball_type(type) {}
-
+    Ballet(size_t number) : Ellipselet(ball_radius, RGBA::HSV(random_uniform(0.0, 360.0))), No(number) {}
     virtual ~Ballet() noexcept {}
 
 public:
     size_t number() const { return this->No; }
-    TCLMColor type() const { return this->ball_type; }
 
 protected:
     void fill_shape(SDL_Renderer* renderer, int width, int height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override {
@@ -54,12 +50,20 @@ protected:
 
 private:
     size_t No;
-    TCLMColor ball_type;
 };
 
 /*************************************************************************************************/
-void WarGrey::STEM::TwoColorLotteryPlane::load(float width, float height) {
-    TheSCSMPlane::load(width, height);
+WarGrey::STEM::LotteryPlane::LotteryPlane(const std::vector<uint8_t>& numbers
+    , const std::vector<BallGroup>& groups, double fan_frequency)
+    : TheSTEMPlane("摇奖机"), fan_frequency(fan_frequency), ball_numbers(numbers), ball_groups(groups) {
+        this->ball_count = 0;
+        for (auto group : groups) {
+            this->ball_count += group.count;
+        }
+}
+
+void WarGrey::STEM::LotteryPlane::load(float width, float height) {
+    TheSTEMPlane::load(width, height);
 
     this->machine = this->insert(new RegularPolygonlet(6, machine_radius, GOLDENROD));
     this->window = this->insert(new Circlet(machine_radius * flcos(pi_f / 6.0F) * 0.85F, SNOW));
@@ -71,119 +75,86 @@ void WarGrey::STEM::TwoColorLotteryPlane::load(float width, float height) {
     this->load_winning_numbers(width, height);
 }
 
-void WarGrey::STEM::TwoColorLotteryPlane::reflow(float width, float height) {
-    TheSCSMPlane::reflow(width, height);
+void WarGrey::STEM::LotteryPlane::reflow(float width, float height) {
+    TheBigBang::reflow(width, height);
     
     this->move_to(this->machine, Position(width * 0.5F, height * 0.618F), MatterAnchor::CC);
     this->move_to(this->window, Position(this->machine, MatterAnchor::CC), MatterAnchor::CC);
     this->move_to(this->inlet, Position(this->window, MatterAnchor::CT), MatterAnchor::CB);
     this->move_to(this->outlet, Position(this->machine, MatterAnchor::RB), MatterAnchor::RB);
-    this->move_to(this->winning_slot, Position(this->machine, MatterAnchor::CB), MatterAnchor::CT, 0.0F, ball_radius * 3.0F);
+    this->move_to(this->winning_slot, Position(this->machine, MatterAnchor::CB), MatterAnchor::CT, { 0.0F, ball_radius * 3.0F });
 
     this->reflow_winning_numbers(width, height);
+}
 
-    this->move_to(this->tips[0], Position(width, 0.0F), MatterAnchor::RT);
-    for (size_t idx = 1; idx < this->tips.size(); idx ++) {
-        this->move_to(this->tips[idx], Position(this->tips[idx - 1], MatterAnchor::RB), MatterAnchor::RT, 0.0F, 2.0F);
+void WarGrey::STEM::LotteryPlane::load_balls(float width, float height) {
+    for (size_t No : this->ball_numbers) {
+        this->all_balls[No] = this->insert(new LotteryPlane::Ballet(No));
     }
 }
 
-void WarGrey::STEM::TwoColorLotteryPlane::load_balls(float width, float height) {
-    this->load_tip("剩余红球", this->red_top, CRIMSON);
-    this->load_tip("剩余蓝球", this->blue_top, ROYALBLUE);
-    this->load_tip("已出号码", this->current_winning_slot, FORESTGREEN);
-    this->load_tip("助力次数", 0U, CHOCOLATE);
-    
-    for (size_t idx = 1; idx <= this->red_top; idx ++) {
-        this->red_balls[idx] = this->insert(new TwoColorLotteryPlane::Ballet(idx, TCLMColor::Red));
-    }
+void WarGrey::STEM::LotteryPlane::load_winning_numbers(float width, float height) {
+    for (auto group : this->ball_groups) {
+        for (size_t i = 0; i < group.count; i ++) {
+            Labellet* ball_number = this->insert(new Labellet(GameFont::monospace(winning_font_size), GHOSTWHITE, "00"));
+            Labellet* ball_label = this->insert(new Labellet(GameFont::Tooltip(FontSize::large), LIGHTGRAY, "%d 等奖", group.id));
 
-    for (size_t idx = 1; idx <= this->blue_top; idx ++) {
-        this->blue_balls[idx] = this->insert(new TwoColorLotteryPlane::Ballet(idx, TCLMColor::Blue));
+            ball_number->set_background_color(group.color);
+            this->winning_numbers.push_back(ball_number);
+            this->winning_labels.push_back(ball_label);
+        }
     }
 }
 
-void WarGrey::STEM::TwoColorLotteryPlane::load_winning_numbers(float width, float height) {
-    for (size_t idx = 0; idx < this->red_count; idx ++) {
-        Labellet* red_number = this->insert(new Labellet(GameFont::monospace(winning_font_size), GHOSTWHITE, "00"));
-
-        red_number->set_background_color(CRIMSON);
-        this->winning_numbers.push_back(red_number);
-    }
-
-    for (size_t idx = 0; idx < this->blue_count; idx ++) {
-        Labellet* blue_number = this->insert(new Labellet(GameFont::monospace(winning_font_size), GHOSTWHITE, "00"));
-
-        blue_number->set_background_color(ROYALBLUE);
-        this->winning_numbers.push_back(blue_number);
-    }
-}
-
-void WarGrey::STEM::TwoColorLotteryPlane::load_tip(const char* label, size_t value, uint32_t label_bgc) {
-    DimensionStyle style = make_highlight_dimension_style(generic_font_size(FontSize::x_large), 3, 0);
-
-    style.label_background_color = label_bgc;
-    this->tips.push_back(this->insert(new Dimensionlet(style, "个", label)));
-    this->tips.back()->set_value(double(value));
-}
-
-void WarGrey::STEM::TwoColorLotteryPlane::reflow_winning_numbers(float width, float height) {
+void WarGrey::STEM::LotteryPlane::reflow_winning_numbers(float width, float height) {
     this->move_to(this->winning_numbers[0], Position(this->agent, MatterAnchor::LB), MatterAnchor::LT);
     for (size_t idx = 1; idx < this->winning_numbers.size(); idx ++) {
-        this->move_to(this->winning_numbers[idx], Position(this->winning_numbers[idx - 1], MatterAnchor::RC), MatterAnchor::LC);
+        this->move_to(this->winning_numbers[idx],
+                        Position(this->winning_numbers[idx - 1], MatterAnchor::RC),
+                        MatterAnchor::LC, { 2.0F, 0.0F });
+    }
+
+    for (size_t idx = 0; idx < this->winning_labels.size(); idx ++) {
+        this->move_to(this->winning_labels[idx],
+                        Position(this->winning_numbers[idx], MatterAnchor::CB),
+                        MatterAnchor::CB);
     }
 }
 
-void WarGrey::STEM::TwoColorLotteryPlane::on_mission_start(float width, float height) {
+void WarGrey::STEM::LotteryPlane::on_mission_start(float width, float height) {
     this->switch_game_state(TCLMState::Reset);
 }
 
-void WarGrey::STEM::TwoColorLotteryPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
-    Dot dot = this->get_matter_location(this->window, MatterAnchor::CC);
-    Box box = window->get_bounding_box();
-    float cx = dot.x;
-    float cy = dot.y;
-    float window_size = box.width();
-
+void WarGrey::STEM::LotteryPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
+    Box box = this->window->get_bounding_box();
+    Dot O = this->get_matter_location(this->window, MatterAnchor::CC);
+    
     if (this->state == TCLMState::Play) {
-        double distance = window_size * 0.5F - ball_radius;
-        std::vector<TwoColorLotteryPlane::Ballet*> lucky_balls;
+        double distance = box.width() * 0.5F - ball_radius;
+        std::vector<LotteryPlane::Ballet*> lucky_balls;
 
-        switch (this->substate) {
-        case TCLMSubState::PlayRed: {
-            this->update_balls(this->red_balls, lucky_balls,
-                cx, cy, distance,
-                this->current_winning_slot >= this->red_count);
-        }; break;
-        case TCLMSubState::PlayBlue: {
-            this->update_balls(this->blue_balls, lucky_balls,
-                cx, cy, distance,
-                this->current_winning_slot >= this->winning_numbers.size());
-        }; break;
-        default: /* do nothing */;
-        }
+        this->update_balls(this->all_balls, lucky_balls, O, distance,
+            this->current_winning_slot >= this->winning_numbers.size());
         
         if (this->select(lucky_balls)) {
             this->picking_timestamp = current_inexact_milliseconds();
+            this->prepare(this->all_balls);
         }
     }
 }
 
-void WarGrey::STEM::TwoColorLotteryPlane::prepare(const std::map<size_t, TwoColorLotteryPlane::Ballet*>& balls) {
+void WarGrey::STEM::LotteryPlane::prepare(const std::map<size_t, LotteryPlane::Ballet*>& balls) {
     Dot dot = this->get_matter_location(this->window, MatterAnchor::CC);
-    Box box = window->get_bounding_box();
-    float cx = dot.x;
-    float cy = dot.y;
-    float window_size = box.width();
-    float apothem = (window_size * 0.5F - ball_radius) * flsqrt(2.0F) * 0.5F;
+    Box box = this->window->get_bounding_box();
+    float apothem = (box.width() * 0.5F - ball_radius) * flsqrt(2.0F) * 0.5F;
 
     for (auto ball : balls) {
         ball.second->show(true);
-        this->spot_ball(ball.second, cx, cy, apothem);
+        this->spot_ball(ball.second, dot, apothem);
     }
 }
 
-void WarGrey::STEM::TwoColorLotteryPlane::sally(const std::map<size_t, TwoColorLotteryPlane::Ballet*>& balls) {
+void WarGrey::STEM::LotteryPlane::sally(const std::map<size_t, LotteryPlane::Ballet*>& balls) {
     for (auto ball : balls) {
         ball.second->set_terminal_speed(terminal_speed, terminal_speed);
         ball.second->set_speed(0.0, 0.0);
@@ -191,75 +162,39 @@ void WarGrey::STEM::TwoColorLotteryPlane::sally(const std::map<size_t, TwoColorL
     }
 }
 
-void WarGrey::STEM::TwoColorLotteryPlane::hide(const std::map<size_t, TwoColorLotteryPlane::Ballet*>& balls) {
-    for (auto ball : balls) {
-        ball.second->show(false);
-        ball.second->motion_stop();
-    }
-}
-
-void WarGrey::STEM::TwoColorLotteryPlane::play() {
+void WarGrey::STEM::LotteryPlane::play() {
     if (this->current_winning_slot < this->winning_numbers.size()) {
         this->picking_timestamp = current_inexact_milliseconds();
-        this->tips[3]->set_value(0.0);
-
-        if (this->current_winning_slot < this->red_count) {
-            if (this->current_winning_slot > 0) {
-                this->prepare(this->red_balls);
-            }
-
-            this->sally(this->red_balls);
-            this->substate = TCLMSubState::PlayRed;
-        } else  {
-            if (this->current_winning_slot > 0) {
-                this->prepare(this->blue_balls);
-            }
-
-            this->hide(this->red_balls);
-            this->sally(this->blue_balls);
-            this->substate = TCLMSubState::PlayBlue;
-        }
+        this->sally(this->all_balls);
     }
 }
 
-void WarGrey::STEM::TwoColorLotteryPlane::reset() {
-    this->red_balls.merge(this->win_red_balls);
-    this->blue_balls.merge(this->win_blue_balls);
-
-    this->tips[0]->set_value(double(this->red_balls.size()));
-    this->tips[1]->set_value(double(this->blue_balls.size()));
-    this->tips[2]->set_value(0.0);
-    this->tips[3]->set_value(0.0);
-
+void WarGrey::STEM::LotteryPlane::reset() {
+    this->all_balls.merge(this->win_balls);
+    
     this->current_winning_slot = 0;
     for (auto number : this->winning_numbers) {
         number->set_text_alpha(0.0);
     }
 
-    if (this->red_count > 0) {
-        this->prepare(this->red_balls);
-        this->hide(this->blue_balls);
-    } else {
-        this->hide(this->red_balls);
-        this->prepare(this->blue_balls);
+    if (this->ball_count > 0) {
+        this->prepare(this->all_balls);
     }
 }
 
-void WarGrey::STEM::TwoColorLotteryPlane::update_balls(const std::map<size_t, Ballet*>& balls, std::vector<Ballet*>& lucky_balls, float cx, float cy, float distance, bool motion_only) {
+void WarGrey::STEM::LotteryPlane::update_balls(const std::map<size_t, Ballet*>& balls, std::vector<Ballet*>& lucky_balls, const Dot& O, float distance, bool motion_only) {
     for (auto ball : balls) {
-        if (ball.second->visible()) {
-            this->apply_forces(ball.second, cx, cy, distance, motion_only);
+        this->apply_forces(ball.second, O, distance, motion_only);
 
-            if (!motion_only) {
-                if (this->is_colliding(ball.second, this->inlet)) {
-                    lucky_balls.push_back(ball.second);
-                }
+        if (!motion_only) {
+            if (this->is_colliding(ball.second, this->inlet)) {
+                lucky_balls.push_back(ball.second);
             }
         }
     }
 }
 
-bool WarGrey::STEM::TwoColorLotteryPlane::select(const std::vector<TwoColorLotteryPlane::Ballet*>& balls) {
+bool WarGrey::STEM::LotteryPlane::select(const std::vector<LotteryPlane::Ballet*>& balls) {
     size_t top = balls.size();
     bool okay = false;
 
@@ -274,45 +209,31 @@ bool WarGrey::STEM::TwoColorLotteryPlane::select(const std::vector<TwoColorLotte
     return okay;
 }
 
-bool WarGrey::STEM::TwoColorLotteryPlane::pick(TwoColorLotteryPlane::Ballet* ball) {
+bool WarGrey::STEM::LotteryPlane::pick(LotteryPlane::Ballet* ball) {
     bool okay = false;
 
     if (ball != nullptr) {
         size_t No = ball->number();
 
-        switch (ball->type()) {
-        case TCLMColor::Red: {
-            this->red_balls.erase(No);
-            this->win_red_balls[No] = ball;
-            this->tips[0]->set_value(double(this->red_balls.size()));
+        if (this->all_balls.find(No) != this->all_balls.end()) {
+            this->all_balls.erase(No);
+            this->win_balls[No] = ball;
             okay = true;
-        }; break;
-        case TCLMColor::Blue: {
-            this->blue_balls.erase(No);
-            this->win_blue_balls[No] = ball;
-            this->tips[1]->set_value(double(this->blue_balls.size()));
-            okay = true;
-        }; break;
-        default: /* do nothing */;
-        }
 
-        this->move_to(ball, Position(this->outlet, MatterAnchor::CC), MatterAnchor::CC);
-        this->winning_numbers[this->current_winning_slot]->set_text("%02u", ball->number());
-        this->winning_numbers[this->current_winning_slot]->set_foreground_color(GHOSTWHITE);
-        this->current_winning_slot += 1;
-        this->tips[2]->set_value(double(this->current_winning_slot));
+            this->move_to(ball, Position(this->outlet, MatterAnchor::CC), MatterAnchor::CC);
+            this->winning_numbers[this->current_winning_slot]->set_text("%02u", ball->number());
+            this->winning_numbers[this->current_winning_slot]->set_foreground_color(GHOSTWHITE);
+            this->current_winning_slot += 1;
+        
+            /* moving the winning ball */ {
+                float slot_width = ball_radius * 2.0F;
+                Dot out = this->get_matter_location(this->outlet, MatterAnchor::LB);
+                Dot end = this->get_matter_location(this->winning_slot, MatterAnchor::LB);
+                Vector v(out, end);
 
-        /* moving the winning ball */ {
-            Dot odot = this->get_matter_location(this->outlet, MatterAnchor::LB);
-            Dot wdot = this->get_matter_location(this->winning_slot, MatterAnchor::LB);
-            float slot_width = ball_radius * 2.0F;
-            float sx = odot.x;
-            float y0 = odot.y;
-            float ex = wdot.x;
-            float ey = wdot.y;
-
-            this->glide(gliding_duration, ball, Vector(0.0F, ey - y0));
-            this->glide(gliding_duration, ball, Vector(ex - sx + slot_width * float(this->current_winning_slot), 0.0F));
+                this->glide(gliding_duration, ball, Vector(0.0F, v.y));
+                this->glide(gliding_duration, ball, Vector(v.x + slot_width * float(this->current_winning_slot), 0.0F));
+            }
         }
     }
 
@@ -320,45 +241,43 @@ bool WarGrey::STEM::TwoColorLotteryPlane::pick(TwoColorLotteryPlane::Ballet* bal
 }
 
 /*************************************************************************************************/
-void WarGrey::STEM::TwoColorLotteryPlane::spot_ball(TwoColorLotteryPlane::Ballet* ball, float cx, float cy, float apothem) {
-    float bx = random_uniform(cx - apothem, cx + apothem);
-    float by = random_uniform(cy - apothem, cy);
+void WarGrey::STEM::LotteryPlane::spot_ball(LotteryPlane::Ballet* ball, const Dot& O, float apothem) {
+    // 号码球的初始位置随机出现在摇奖机上部
+    float bx = random_uniform(O.x - apothem, O.x + apothem);
+    float by = random_uniform(O.y - apothem, O.y);
 
     this->move_to(ball, Position(bx, by), MatterAnchor::CC);
     ball->motion_stop();
 }
 
-void WarGrey::STEM::TwoColorLotteryPlane::apply_forces(TwoColorLotteryPlane::Ballet* ball, float cx, float cy, float radius, bool no_fan) {
-    Dot b = this->get_matter_location(ball, MatterAnchor::CC);
+void WarGrey::STEM::LotteryPlane::apply_forces(LotteryPlane::Ballet* ball, const Dot& O, float radius, bool no_fan) {
     double fan_dy = 0.0;
-    float distance;
-    double dx, dy;
-
-    distance = point_distance(b.x, b.y, cx, cy);
-
+    Dot B = this->get_matter_location(ball, MatterAnchor::CC);
+    float distance = point_distance(B.x, B.y, O.x, O.y);
+    
     if (!no_fan) {
         double now = current_inexact_milliseconds();
 
         if ((now - this->picking_timestamp) >= this->fan_frequency) {
             fan_dy = -random_uniform(0.1, fan_delta_range);
             this->picking_timestamp = now;
-            this->tips[3]->set_value(this->tips[3]->get_value() + 1.0);
         }
     }
 
     if (distance > radius) {
-        double theta = vector_direction(double(cx - b.x), double(cy - b.y));
+        // 奖球反弹，运动轨迹由弹力、重力和支持力共同决定，摩擦损耗随机
+        double theta = vector_direction(double(O.x - B.x), double(O.y - B.y));
+        double elasticity = double(distance - radius);
         double friction_loss = random_uniform(0.8, 1.0);
-
-        orthogonal_decompose(double(distance - radius) * friction_loss, theta, &dx, &dy);
+        double dx, dy;
         
-        // this->move(ball, -dx, -dy); // this makes the ball eventually do semi-circular motion
+        orthogonal_decompose(elasticity * friction_loss, theta, &dx, &dy);
         ball->add_speed(dx, dy + fan_dy);
     }
 }
 
 /*************************************************************************************************/
-bool WarGrey::STEM::TwoColorLotteryPlane::can_select(IMatter* m) {
+bool WarGrey::STEM::LotteryPlane::can_select(IMatter* m) {
     auto button = dynamic_cast<Ellipselet*>(m);
     auto ball = dynamic_cast<Ballet*>(m);
 
@@ -366,7 +285,7 @@ bool WarGrey::STEM::TwoColorLotteryPlane::can_select(IMatter* m) {
             || ((button != nullptr) && (ball == nullptr));
 }
 
-void WarGrey::STEM::TwoColorLotteryPlane::on_tap(IMatter* matter, float x, float y) {
+void WarGrey::STEM::LotteryPlane::on_tap(IMatter* matter, float x, float y) {
     if (matter == this->inlet) {
         this->on_char(PLAY_KEY, 0, 1, false);
     } else if (matter == this->outlet) {
@@ -374,7 +293,7 @@ void WarGrey::STEM::TwoColorLotteryPlane::on_tap(IMatter* matter, float x, float
     }
 }
 
-void WarGrey::STEM::TwoColorLotteryPlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {
+void WarGrey::STEM::LotteryPlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {
     if (!pressed) {
         switch(key) {
         case PLAY_KEY: this->switch_game_state(TCLMState::Play); break;
@@ -385,7 +304,7 @@ void WarGrey::STEM::TwoColorLotteryPlane::on_char(char key, uint16_t modifiers, 
 }
 
 /*************************************************************************************************/
-void WarGrey::STEM::TwoColorLotteryPlane::switch_game_state(TCLMState new_state) {
+void WarGrey::STEM::LotteryPlane::switch_game_state(TCLMState new_state) {
     switch (new_state) {
     case TCLMState::Play: {
         this->agent->play_get_artsy(8);

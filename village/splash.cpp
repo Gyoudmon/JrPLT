@@ -94,7 +94,7 @@ void GYDM::JrPlane::load_for_plot(float width, float height) {
     this->handsome = this->insert(new Olivier("徐公"));
 
     this->stage->scale(0.75F);
-    this->set_bubble_margin(8.0F, 4.0F);
+    this->set_bubble_margin({ 4.0F, 8.0F });
 }
         
 void GYDM::JrPlane::reflow(float width, float height) {

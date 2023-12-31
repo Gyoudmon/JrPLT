@@ -36,7 +36,7 @@ void GYDM::TrackPlane::load(float width, float height) {
 void GYDM::TrackPlane::reflow(float width, float height) {
     TheBigBang::reflow(width, height);
 
-    this->move_to(this->variable, { width, 0.0F }, MatterAnchor::RT, -8.0F, 8.0F);
+    this->move_to(this->variable, { width, 0.0F }, MatterAnchor::RT, { -8.0F, 8.0F });
 }
 
 void GYDM::TrackPlane::update(uint64_t interval, uint32_t count, uint64_t uptime) {

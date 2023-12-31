@@ -10,9 +10,9 @@ namespace WarGrey::STEM {
     enum class GameState { Auto, Stop, Edit, _ };
 
     /** 声明游戏宇宙 **/
-    class __lambda__ PinholePlane : public WarGrey::STEM::TheSCSMPlane {
+    class __lambda__ PinholePlane : public WarGrey::STEM::TheSTEMPlane {
     public:
-        PinholePlane(float gridsize = 8.0F) : TheSCSMPlane("小孔成像") {}
+        PinholePlane(float gridsize = 8.0F) : TheSTEMPlane("小孔成像") {}
         virtual ~PinholePlane() {}
 
     public:    // 覆盖游戏基本方法

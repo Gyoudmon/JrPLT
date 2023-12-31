@@ -35,8 +35,8 @@ void GYDM::GalleryPlane::load_for_house(float width, float height) {
 void GYDM::GalleryPlane::reflow_for_house(float width, float height) {
     this->move_to(this->roof, { width * 0.25F, height * 0.75F }, MatterAnchor::CB);
     this->move_to(this->wall, { this->roof, MatterAnchor::CB }, MatterAnchor::CT);
-    this->move_to(this->door, { this->wall, MatterAnchor::LB }, MatterAnchor::LB, 12.0F);
-    this->move_to(this->lock, { this->door, MatterAnchor::RC }, MatterAnchor::RC, -3.0F);
+    this->move_to(this->door, { this->wall, MatterAnchor::LB }, MatterAnchor::LB, { 12.0F, 0.0F });
+    this->move_to(this->lock, { this->door, MatterAnchor::RC }, MatterAnchor::RC, { -3.0F, 0.0F });
     this->move_to(this->window, { this->wall, MatterAnchor::CC }, MatterAnchor::LC);
 
     this->move_to(this->garden, { this->wall, MatterAnchor::CC }, MatterAnchor::CT);
@@ -77,9 +77,9 @@ void GYDM::GalleryPlane::reflow_for_raft(float width, float height) {
     this->move_to(this->caption, { this->raft, MatterAnchor::CC }, MatterAnchor::CC);
     this->move_to(this->bow, { this->raft, MatterAnchor::LC }, MatterAnchor::RC);
     this->move_to(this->stern, { this->raft, MatterAnchor::RC }, MatterAnchor::LC);
-    this->move_to(this->post, { this->raft, MatterAnchor::RB }, MatterAnchor::RB, -raft_height);
-    this->move_to(this->paddle, { this->post, MatterAnchor::CC }, MatterAnchor::CC, raft_height);
+    this->move_to(this->post, { this->raft, MatterAnchor::RB }, MatterAnchor::RB, { -raft_height, 0.0F });
+    this->move_to(this->paddle, { this->post, MatterAnchor::CC }, MatterAnchor::CC, { raft_height, 0.0F });
 
-    this->move_to(this->mast, { this->raft, MatterAnchor::LB }, MatterAnchor::LB, raft_height);
-    this->move_to(this->flag, { this->mast, MatterAnchor::RT }, MatterAnchor::LT, 0.0F, raft_height * 0.25F);
+    this->move_to(this->mast, { this->raft, MatterAnchor::LB }, MatterAnchor::LB, { raft_height, 0.0F });
+    this->move_to(this->flag, { this->mast, MatterAnchor::RT }, MatterAnchor::LT, { 0.0F, raft_height * 0.25F });
 }

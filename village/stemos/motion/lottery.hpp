@@ -1,7 +1,5 @@
 #pragma once // 确保只被 include 一次
 
-#include <gydm/game.hpp>
-
 #include "../stem.hpp"
 
 #include <map>
@@ -9,20 +7,40 @@
 
 namespace WarGrey::STEM {
     enum class TCLMState { Play, Reset };
-    enum class TCLMSubState { PlayRed, PlayBlue };
-    enum class TCLMColor { Red, Blue };
+
+    struct BallGroup {
+        size_t id;
+        size_t count;
+        uint32_t color;
+    };
+
+    // 所有参与抽奖的号码
+    static std::vector<uint8_t> all_ball_numbers = {
+        1, 2, 3,
+        5, 6, 7, 8, 9, 10, 11, 12, 13,
+        15, 16, 17, 18, 19, 20, 21, 22, 23,
+        25, 26, 27, 28, 29, 30, 31, 32, 33,
+        35, 36, 37,
+        39, 40, 41, 42, 43 
+    };
+
+    static std::vector<WarGrey::STEM::BallGroup> all_ball_groups = {
+        { 3, 5, 0xEE0000U },
+        { 2, 3, 0x0000FFU },
+        { 1, 1, 0x00AA00U }
+    };
 
     /** 声明游戏宇宙 **/
-    class __lambda__ TwoColorLotteryPlane : public WarGrey::STEM::TheSCSMPlane {
+    class __lambda__ LotteryPlane : public WarGrey::STEM::TheSTEMPlane {
     private:
         class Ballet;
 
     public:
-        TwoColorLotteryPlane(uint8_t red_top = 16U, uint8_t blue_top = 8U, size_t red_count = 6, size_t blue_count = 2, double fan_frequency = 4000.0)
-            : TheSCSMPlane("双色球摇奖机"), fan_frequency(fan_frequency)
-            ,red_top(red_top), blue_top(blue_top), red_count(red_count), blue_count(blue_count) {}
+        LotteryPlane(const std::vector<uint8_t>& numbers = all_ball_numbers,
+                const std::vector<WarGrey::STEM::BallGroup>& groups = all_ball_groups,
+                double fan_frequency = 4000.0);
 
-        virtual ~TwoColorLotteryPlane() noexcept {}
+        virtual ~LotteryPlane() noexcept {}
 
     public:    // 覆盖游戏基本方法
         void load(float width, float height) override;
@@ -40,50 +58,44 @@ namespace WarGrey::STEM {
     private:
         void load_balls(float width, float height);
         void load_winning_numbers(float width, float height);
-        void load_tip(const char* label, size_t value, uint32_t label_bgc);
         void reflow_winning_numbers(float width, float height);
         
     private:
-        void prepare(const std::map<size_t, WarGrey::STEM::TwoColorLotteryPlane::Ballet*>& balls);
-        void sally(const std::map<size_t, WarGrey::STEM::TwoColorLotteryPlane::Ballet*>& balls);
-        void hide(const std::map<size_t, WarGrey::STEM::TwoColorLotteryPlane::Ballet*>& balls);
+        void prepare(const std::map<size_t, WarGrey::STEM::LotteryPlane::Ballet*>& balls);
+        void sally(const std::map<size_t, WarGrey::STEM::LotteryPlane::Ballet*>& balls);
         void play();
         void reset();
         
     private:
         void switch_game_state(WarGrey::STEM::TCLMState new_state);
-        void spot_ball(WarGrey::STEM::TwoColorLotteryPlane::Ballet* ball, float cx, float cy, float apothem);
-        void update_balls(const std::map<size_t, Ballet*>& balls, std::vector<Ballet*>& lucky_balls, float cx, float cy, float apothem, bool motion_only);
-        bool select(const std::vector<WarGrey::STEM::TwoColorLotteryPlane::Ballet*>& balls);
-        bool pick(WarGrey::STEM::TwoColorLotteryPlane::Ballet* ball);
-        void apply_forces(WarGrey::STEM::TwoColorLotteryPlane::Ballet* ball, float cx, float cy, float radius, bool no_fan);
+        void spot_ball(WarGrey::STEM::LotteryPlane::Ballet* ball, const GYDM::Dot& O, float apothem);
+        void update_balls(const std::map<size_t, Ballet*>& balls, std::vector<Ballet*>& lucky_balls, const GYDM::Dot& O, float apothem, bool motion_only);
+        bool select(const std::vector<WarGrey::STEM::LotteryPlane::Ballet*>& balls);
+        bool pick(WarGrey::STEM::LotteryPlane::Ballet* ball);
+        void apply_forces(WarGrey::STEM::LotteryPlane::Ballet* ball, const GYDM::Dot& O, float radius, bool no_fan);
         
     private: // 游戏操作
         std::vector<GYDM::Labellet*> winning_numbers;
-        std::vector<GYDM::Dimensionlet*> tips;
-        std::map<size_t, WarGrey::STEM::TwoColorLotteryPlane::Ballet*> red_balls;
-        std::map<size_t, WarGrey::STEM::TwoColorLotteryPlane::Ballet*> blue_balls;
-        std::map<size_t, WarGrey::STEM::TwoColorLotteryPlane::Ballet*> win_red_balls;
-        std::map<size_t, WarGrey::STEM::TwoColorLotteryPlane::Ballet*> win_blue_balls;
+        std::vector<GYDM::Labellet*> winning_labels;
+        std::map<size_t, WarGrey::STEM::LotteryPlane::Ballet*> all_balls;
+        std::map<size_t, WarGrey::STEM::LotteryPlane::Ballet*> win_balls;
         GYDM::IShapelet* machine;
         GYDM::IShapelet* window;
         GYDM::IShapelet* inlet;
         GYDM::IShapelet* outlet;
         GYDM::IShapelet* winning_slot;
-        size_t current_winning_slot = 0;
-
+        
     private: // 游戏状态
         WarGrey::STEM::TCLMState state = TCLMState::Reset;
-        WarGrey::STEM::TCLMSubState substate = TCLMSubState::PlayRed;
+        size_t current_winning_slot = 0;
 
     private:
         double fan_frequency;
         double picking_timestamp;
         
     private:
-        uint8_t red_top;
-        uint8_t blue_top;
-        size_t red_count;
-        size_t blue_count;
+        std::vector<uint8_t> ball_numbers;
+        std::vector<WarGrey::STEM::BallGroup> ball_groups;
+        size_t ball_count;
     };
 }
