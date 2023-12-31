@@ -13,15 +13,15 @@
 @itemlist[
  #:style 'ordered
 
- @item{理解模块化。}
+ @item{理解模块化}
 
- @item{了解类的继承。}
+ @item{了解类的继承}
  
- @item{理解屏幕坐标系。}
+ @item{理解屏幕坐标系}
  
- @item{掌握基本几何图形的数学表示和@tech{对象}表示。}
+ @item{掌握基本几何图形的数学表示和@tech{对象}表示}
  
- @item{掌握基本图形的平移和组合。}]
+ @item{掌握基本图形的平移和组合}]
 
 @handbook-scenario{知识点}
 

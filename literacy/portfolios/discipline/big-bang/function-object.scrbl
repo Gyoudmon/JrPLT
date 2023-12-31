@@ -9,13 +9,13 @@
 @itemlist[
  #:style 'ordered
 
- @item{理解函数和对象。}
+ @item{理解函数和对象}
  
- @item{理解变量和常量。}
+ @item{理解变量和常量}
  
- @item{理解类型和值。}
+ @item{理解类型和值}
  
- @item{了解函数在数学和编程中的异同。}
+ @item{了解函数在数学和编程中的异同}
  
 ]
 
@@ -41,10 +41,7 @@
   @handbook-defterm[#:origin "Type"]{类型}则用于提示“@focus{如何解读}这个内容”。}
  
  @item{字面上看，@handbook-defterm[#:origin "Function"]{函数}即“功能”，表示计算机要做的事。
-  
-  计算机做事遵循@handbook-defterm[#:origin "Input-Process-Output" #:abbr "IPO"]{输入-处理-输出}模式。
-  具体到每一个@tech{函数}，它负责@emph{处理}一定的@emph{输入}数据，
-  完事后也很可能会产生一定的@emph{输出}数据。
+  每一个@tech{函数}都满足@tech{输入-处理-输出}模型。
   在这个过程中，所有的数据都以@tech{变量}或@tech{常量}的形式存在。}
 
  @item{@handbook-defterm[#:origin "Class"]{类}即自定义@tech{类型}，

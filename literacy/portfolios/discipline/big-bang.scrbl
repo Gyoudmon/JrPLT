@@ -20,5 +20,6 @@
 @include-section{big-bang/shell.scrbl}
 @include-section{big-bang/function-object.scrbl}
 @include-section{big-bang/big-bang.scrbl}
+@include-section{big-bang/agent.scrbl}
 
 @handbook-reference[]

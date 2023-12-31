@@ -7,5 +7,6 @@
 @include-section{shell.scrbl}
 @include-section{function-object.scrbl}
 @include-section{big-bang.scrbl}
+@include-section{agent.scrbl}
 
 @handbook-reference[]

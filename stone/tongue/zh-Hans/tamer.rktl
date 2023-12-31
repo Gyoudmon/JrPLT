@@ -6,4 +6,5 @@
  (big-bang . "宇宙大爆炸")
  (scratch . "科学编程")
  (shell . "Shell")
- (function-object . "函数与对象"))
+ (function-object . "函数与对象")
+ (agent . "智能体和环境"))
