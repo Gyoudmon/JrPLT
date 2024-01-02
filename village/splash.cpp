@@ -28,7 +28,7 @@ namespace {
                 for (int c = 0; c < this->map_col; c ++) {
                     if ((r == 0) || (c == 0)
                             || (r == this->map_row - 1)
-                            || (c = this->map_col - 1)) {
+                            || (c == this->map_col - 1)) {
                         this->set_tile_type(r, c, GroundBlockType::Grass);
                     }
                 }
@@ -38,13 +38,13 @@ namespace {
     protected:
         void on_tilemap_load(shared_texture_t atlas) override {
             Margin margin = this->get_map_overlay();
-            float tile_width, tile_height;
+            Dot tile_rb;
 
             PlanetCuteAtlas::on_tilemap_load(atlas);
             this->reset();
 
-            this->feed_map_tile_location(0, &tile_width, &tile_height, MatterAnchor::RB);
-            this->create_logic_grid(xtile_count, ytile_count, Margin(tile_height - margin.top, tile_width));
+            tile_rb = this->get_map_tile_location(0, MatterAnchor::RB);
+            this->create_logic_grid(xtile_count, ytile_count, Margin(tile_rb.y - margin.top, tile_rb.x));
         }
     };
 }
@@ -56,7 +56,7 @@ void GYDM::JrPlane::load(float width, float height) {
     this->agent = this->insert(new Linkmon());
     this->agent->scale(-1.0F, 1.0F);
     this->set_sentry_sprite(this->agent);
-            
+
     for (int idx = 0; idx < advent_days; idx ++) {
         const char* task_name = this->master->plane_name(idx + 1);
                 
