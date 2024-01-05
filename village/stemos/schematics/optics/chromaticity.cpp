@@ -103,7 +103,7 @@ bool WarGrey::STEM::ChromaticityDiagramPlane::update_tooltip(IMatter* m, float x
         RGBA c = this->get_background();
 
         while (true) {
-            prev = this->find_matter(gx, gy, prev);
+            prev = this->find_matter( { gx, gy }, prev);
 
             if (prev == nullptr) {
                 break;
