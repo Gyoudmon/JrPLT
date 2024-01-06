@@ -19,5 +19,5 @@ void GYDM::PlotPlane::reflow(float width, float height) {
 void GYDM::PlotPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
     this->history_day ++;
 
-    this->history->push_back_datum(double(this->history_day), random_uniform(1.0, double(history_day)));
+    this->history->push_back_datum(float(this->history_day), random_uniform(1.0F, float(this->history_day)));
 }

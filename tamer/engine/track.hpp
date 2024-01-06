@@ -32,7 +32,7 @@ namespace GYDM {
         void run_bracers_at_random(bool drawing);
         void run_bracers_in_direction();
         void run_bracers_in_8_ways();
-        void run_bracer_in_8_ways(IMatter* bracer, int sides, int rounds, double gapsize);
+        void run_bracer_in_8_ways(IMatter* bracer, size_t sides, size_t rounds, double gapsize);
 
     private:
         std::vector<Bracer*> bracers;

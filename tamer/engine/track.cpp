@@ -144,7 +144,7 @@ void GYDM::TrackPlane::run_bracers_in_8_ways() {
     }
 }
 
-void GYDM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, int sides, int rounds, double gapsize) {
+void GYDM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, size_t sides, size_t rounds, double gapsize) {
     double meridian = double(rounds * gapsize);
     double rad = degrees_to_radians(360.0 / sides);
     double factor = 2.0 - 2.0 * flcos(rad); 
@@ -153,7 +153,7 @@ void GYDM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, int sides, int roun
             
     this->set_pen_color(bracer, RGBA::HSV(random_uniform(0.0, 360.0)));
 
-    for (int s = 0; s < sides; s ++) {
+    for (size_t s = 0; s < sides; s ++) {
         this->pen_up(bracer);
         this->move_to(bracer, dot, MatterAnchor::LT); // moving doesn't change the heading
         this->pen_down(bracer);
@@ -172,7 +172,7 @@ void GYDM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, int sides, int roun
         this->pen_down(bracer);
         this->turn(bracer, (pi - rad) * 0.5, true);
 
-        for (int s = 0; s < sides; s ++) {
+        for (size_t s = 0; s < sides; s ++) {
             this->turn(bracer, rad, true);
             this->glide(gliding_duration, bracer, parallel);
         }
