@@ -17,7 +17,7 @@
  
  @item{认识@tech{输入-处理-输出}模型}
  
- @item{理解布尔类型和分支结构}]
+ @item{理解布尔类型和条件语句}]
 
 @handbook-scenario{知识点}
 
@@ -28,6 +28,14 @@
 
  @item{@handbook-defterm[#:origin "Boolean Type" #:abbr "bool"]{布尔类型}是一种
   只有@litchar{true}和@litchar{false}两种值的数据@tech{类型}。}
+                                                   
+ @item{@handbook-defterm[#:origin "Conditional Statement"]{条件语句}又称@handbook-defterm{分支语言}，
+  是程序语言提供用来做决策的基本语句。
+  通俗地说，程序有能力根据条件的不同执行不同的代码，
+  从而让用户觉得“这个程序很聪明”。
+  
+  最常见的条件由@tech{布尔类型}指示，
+  其值@litchar{true}和@litchar{false}分别各自对应一条代码分支。}
 
 ]
  
