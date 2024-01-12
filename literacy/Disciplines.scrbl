@@ -20,4 +20,4 @@
 @include-section{portfolios/faq.scrbl}
 @include-section{big-bang/environment.scrbl}
 
-@handbook-appendix[#:index-section? #false #:numbered? #true bibentries]
+@handbook-appendix[#:index-section? #true #:numbered? #true bibentries]

@@ -60,7 +60,9 @@
     ["literacy/Metrics.scrbl" xelatex #:explicitly-make]
 
     ["literacy/Portfolios.scrbl" xelatex #px"Portfolios/*.(png|gv)"]
-    ["literacy/Disciplines.scrbl" xelatex #px"Portfolios/*.(png|gv)"]
+    ["literacy/Disciplines.scrbl" xelatex #px"2023/*.(png|gv)"]
+    
+    ["literacy/lookback/2023.scrbl" "居-2023" xelatex #px"Portfolios/*.(png|gv)"]
     
     ["literacy/portfolios/dingjiaqi.scrbl" "丁嘉琪" xelatex #px"Portfolios/tamer.tex"]
     ["literacy/portfolios/mengwanli.scrbl" "孟万里" xelatex #px"Portfolios/tamer.tex"]
