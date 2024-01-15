@@ -11,6 +11,7 @@
 
 @include-section{2023/brief.scrbl}
 @include-section{2023/scratch.scrbl}
+@include-section{2023/linguisteen.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-appendix[#:index-section? #false #:numbered? #true #:racket-bibentries? #false]

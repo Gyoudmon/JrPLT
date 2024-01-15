@@ -59,16 +59,16 @@
   '(["literacy/TheBigBang.scrbl" xelatex]
     ["literacy/Metrics.scrbl" xelatex #:explicitly-make]
 
-    ["literacy/Portfolios.scrbl" xelatex #px"Portfolios/*.(png|gv)"]
-    ["literacy/Disciplines.scrbl" xelatex #px"2023/*.(png|gv)"]
+    ["literacy/Portfolios.scrbl" xelatex #px"Portfolios[/\\\\].*[.](png|gv)$"]
+    ["literacy/Disciplines.scrbl" xelatex #px"Portfolios[/\\\\].*[.](png|gv)$"]
     
-    ["literacy/lookback/2023.scrbl" "居-2023" xelatex #px"Portfolios/*.(png|gv)"]
+    ["literacy/lookback/2023.scrbl" "居-2023" xelatex #px"2023[/\\\\].*[.](png|gv)$"]
     
-    ["literacy/portfolios/dingjiaqi.scrbl" "丁嘉琪" xelatex #px"Portfolios/tamer.tex"]
-    ["literacy/portfolios/mengwanli.scrbl" "孟万里" xelatex #px"Portfolios/tamer.tex"]
-    ["literacy/portfolios/michael.scrbl" "Michael" xelatex #px"Portfolios/tamer.tex"]
-    ["literacy/portfolios/sungongcheng.scrbl" "孙功铖" xelatex #px"Portfolios/tamer.tex"]
-    ["literacy/portfolios/wuchang.scrbl" "吴玚" xelatex #px"Portfolios/tamer.tex"]
+    ["literacy/portfolios/dingjiaqi.scrbl" "丁嘉琪" xelatex #px"Portfolios[/\\\\]tamer.tex$"]
+    ["literacy/portfolios/mengwanli.scrbl" "孟万里" xelatex #px"Portfolios[/\\\\]tamer.tex"]
+    ["literacy/portfolios/michael.scrbl" "Michael" xelatex #px"Portfolios[/\\\\]tamer.tex"]
+    ["literacy/portfolios/sungongcheng.scrbl" "孙功铖" xelatex #px"Portfolios[/\\\\]tamer.tex"]
+    ["literacy/portfolios/wuchang.scrbl" "吴玚" xelatex #px"Portfolios[/\\\\]tamer.tex"]
 
-    ["literacy/portfolios/huajiaze.scrbl" "华佳泽" xelatex #px"Portfolios/tamer.tex" #:explicitly-make]
-    ["literacy/portfolios/sunyirong.scrbl" "孙艺溶" xelatex #px"Portfolios/tamer.tex" #:explicitly-make]))
+    ["literacy/portfolios/huajiaze.scrbl" "华佳泽" xelatex #px"Portfolios[/\\\\]tamer.tex" #:explicitly-make]
+    ["literacy/portfolios/sunyirong.scrbl" "孙艺溶" xelatex #px"Portfolios[/\\\\]tamer.tex" #:explicitly-make]))
