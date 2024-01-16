@@ -60,7 +60,7 @@
           
           (define-values (mark-max-width _h _d _s) (send dc get-text-extent (~integer linen) mark-font #true))
           (define x-start (+ dx mark-max-width 1ch))
-          (define x-range (- (+ dx flwidth) x-start mark-max-width))
+          (define x-range (- (+ dx flwidth) (* x-start 2.0)))
           (define y-start (- (+ dy flheight) 1ex 1em))
           (define y-range (- y-start dy 1ex))
           (define date-interval (- secn sec0))
