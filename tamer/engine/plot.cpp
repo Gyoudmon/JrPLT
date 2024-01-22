@@ -13,7 +13,7 @@ void GYDM::PlotPlane::load(float width, float height) {
 void GYDM::PlotPlane::reflow(float width, float height) {
     TheBigBang::reflow(width, height);
     
-    this->move_to(this->history, { width * 0.5F, height * 0.5F }, MatterAnchor::CC);
+    this->move_to(this->history, { width * 0.5F, height * 0.5F }, MatterPort::CC);
 }
 
 void GYDM::PlotPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {

@@ -27,7 +27,7 @@ void GYDM::LayerPlane::after_select(IMatter* m, bool yes) {
     if (!yes) {
         if (isinstance(m, RegularPolygonlet)) {
             if (!this->is_colliding_with_mouse(m)) {
-                this->glide_to_mouse(gliding_duration, m, MatterAnchor::CC);
+                this->glide_to_mouse(gliding_duration, m, MatterPort::CC);
             }
         }
     }

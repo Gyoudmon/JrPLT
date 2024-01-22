@@ -22,8 +22,8 @@ namespace {
         void reflow(float width, float height) override {
             TheBigBang::reflow(width, height);
 
-            this->move_to(this->message, { this->agent, MatterAnchor::LB }, MatterAnchor::LT);
-            this->move_to(this->ime_msg, { width, height }, MatterAnchor::RB);
+            this->move_to(this->message, { this->agent, MatterPort::LB }, MatterPort::LT);
+            this->move_to(this->ime_msg, { width, height }, MatterPort::RB);
         }
 
         void on_enter(IPlane* from) override {
@@ -33,16 +33,16 @@ namespace {
     protected:
         void on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) override {
             if (pressed) {
-                this->message->set_text(MatterAnchor::LT, "you pressed '%c'", key);
+                this->message->set_text(MatterPort::LT, "you pressed '%c'", key);
             }
         }
 
         void on_text(const char* text, size_t size, bool entire) override {
-            this->ime_msg->set_text(MatterAnchor::RB, "%s", text);
+            this->ime_msg->set_text(MatterPort::RB, "%s", text);
         }
 
         void on_editing_text(const char* text, int pos, int span) override {
-            this->ime_msg->set_text(MatterAnchor::RB, "%s", text);
+            this->ime_msg->set_text(MatterPort::RB, "%s", text);
         }
 
     private:

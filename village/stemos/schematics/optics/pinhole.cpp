@@ -1,7 +1,5 @@
 #include "pinhole.hpp"
 
-#include <gydm/graphics/text.hpp>
-#include <gydm/graphics/brush.hpp>
 #include <gydm/physics/color/rgba.hpp>
 
 #include <filesystem>
@@ -62,39 +60,39 @@ public:
         return { this->width + 1.0F, this->height + 1.0F };
     }
 
-    void draw(SDL_Renderer* renderer, float x, float y, float Width, float Height) override {
-        Brush::fill_rect(renderer, x, y, Width, Height, this->background_color);
+    void draw(dc_t* dc, float x, float y, float Width, float Height) override {
+        dc->fill_rect(x, y, Width, Height, this->background_color);
         
         for (auto light : this->lights) {
             float cx = light.x - 1.0F;
             float cy = light.y - 1.0F;
 
             if (light.texture.use_count() == 0) {
-                light.texture = std::make_shared<Texture>(game_blank_image(renderer, this->width, this->height));
+                light.texture = std::make_shared<Texture>(dc->create_blank_image(this->width, this->height));
             }
 
             if (light.texture->okay()) {
                 if (light.dirty) {
-                    SDL_Texture* origin = SDL_GetRenderTarget(renderer);
+                    SDL_Texture* origin = dc->get_target();
 
-                    SDL_SetRenderTarget(renderer, light.texture->self());
-                    Brush::fill_rect(renderer, 0.0F, 0.0F, this->width, this->height, transparent);
+                    dc->set_target(light.texture->self());
+                    dc->fill_rect(0.0F, 0.0F, this->width, this->height, transparent);
 
                     if (light.length > 0.0F) {
                         RGBA alt_color = RGBA(light.color, 0.1618);
 
-                        SDL_SetRenderDrawColor(renderer, alt_color.R(), alt_color.G(), alt_color.B(), alt_color.A());
-                        this->draw_light_area(renderer, cx, cy, light.length);
+                        dc->set_draw_color(alt_color);
+                        this->draw_light_area(dc, cx, cy, light.length);
                     }
 
-                    SDL_SetRenderTarget(renderer, origin);
+                    dc->set_target(origin);
                     light.dirty = false;
                 }
 
-                Brush::stamp(renderer, light.texture->self(), x, y, Width, Height);
+                dc->stamp(light.texture->self(), x, y, Width, Height);
             }
 
-            Brush::fill_circle(renderer, x + cx, y + cy, light_dot_radius, RGBA(light.color, 0.8));
+            dc->fill_circle(x + cx, y + cy, light_dot_radius, RGBA(light.color, 0.8));
         }
 
         /* draw pinhole and screen */ {
@@ -108,9 +106,9 @@ public:
             float sy = y + this->screen_y;
             float sb = sy + this->screen_height;
             
-            Brush::draw_line(renderer, px, py, px, pte, pinhole_color);
-            Brush::draw_line(renderer, px, pbs, px, pb, pinhole_color);
-            Brush::draw_line(renderer, sx, sy, sx, sb, pinhole_color);
+            dc->draw_line(px, py, px, pte, pinhole_color);
+            dc->draw_line(px, pbs, px, pb, pinhole_color);
+            dc->draw_line(sx, sy, sx, sb, pinhole_color);
 
             for (auto light : this->lights) {
                 if (light.x < this->pinhole_x) {
@@ -122,9 +120,9 @@ public:
                     lines_intersect(cx, cy, px, pm,  sx, sy, sx, sb, flnull_f, &pmy, flnull_f);
                     lines_intersect(cx, cy, px, pbs, sx, sy, sx, sb, flnull_f, &pby, flnull_f);
 
-                    Brush::draw_line(renderer, cx, cy, sx, pty, light.color);
-                    Brush::draw_line(renderer, cx, cy, sx, pmy, light.color);
-                    Brush::draw_line(renderer, cx, cy, sx, pby, light.color);
+                    dc->draw_line(cx, cy, sx, pty, light.color);
+                    dc->draw_line(cx, cy, sx, pmy, light.color);
+                    dc->draw_line(cx, cy, sx, pby, light.color);
                 }
             }
         }
@@ -278,7 +276,7 @@ public:
     }
 
 private:
-    void draw_light_area(SDL_Renderer* renderer, int cx, int cy, int radius) {
+    void draw_light_area(dc_t* dc, int cx, int cy, int radius) {
         float flx = float(cx);
         float fly = float(cy);
         int err = 2 - 2 * radius;
@@ -288,14 +286,14 @@ private:
         do {
             float self_x = flx - x;
             
-            SDL_RenderDrawLineF(renderer, flx + x, cy,     flx + x, fly - y); // Q II
+            SDL_RenderDrawLineF(dc->self(), flx + x, cy,     flx + x, fly - y); // Q II
 
             if (self_x < this->pinhole_x) {
-                SDL_RenderDrawLineF(renderer,   flx + x, fly + y, self_x, fly + y); // Q III, Q IV
-                SDL_RenderDrawLineF(renderer,   flx,     fly - y, self_x, fly - y); // Q I
+                SDL_RenderDrawLineF(dc->self(),   flx + x, fly + y, self_x, fly + y); // Q III, Q IV
+                SDL_RenderDrawLineF(dc->self(),   flx,     fly - y, self_x, fly - y); // Q I
             } else {
-                this->draw_light_line(renderer, flx,     fly - y, self_x, fly - y, flx, fly); // Q I
-                this->draw_light_line(renderer, flx + x, fly + y, self_x, fly + y, flx, fly); // Q III, Q IV
+                this->draw_light_line(dc, flx,     fly - y, self_x, fly - y, flx, fly); // Q I
+                this->draw_light_line(dc, flx + x, fly + y, self_x, fly + y, flx, fly); // Q III, Q IV
             }
 
             radius = err;
@@ -309,7 +307,7 @@ private:
         } while (x < 0);
     }
 
-    void draw_light_line(SDL_Renderer* renderer, float x0, float y0, float rx, float y, float ox, float oy) {
+    void draw_light_line(dc_t* dc, float x0, float y0, float rx, float y, float ox, float oy) {
         float px = this->pinhole_x;
         float py = this->pinhole_y;
         float pte = py + (this->pinhole_height - this->pinhole_size) * 0.5F;
@@ -345,7 +343,7 @@ private:
         }
 
         for (int idx = 0; idx < xs.size() - 1; idx += 2) {
-            SDL_RenderDrawLineF(renderer, xs[idx], y, xs[idx + 1], y);
+            SDL_RenderDrawLineF(dc->self(), xs[idx], y, xs[idx + 1], y);
         }
     }
 
@@ -407,13 +405,13 @@ void WarGrey::STEM::PinholePlane::load_instructions(float width, float height) {
 void WarGrey::STEM::PinholePlane::reflow(float width, float height) {
     TheSTEMPlane::reflow(width, height);
 
-    this->move_to(this->labview, Position(width * 0.5F, (height + this->get_titlebar_height()) * 0.5F), MatterAnchor::CC);
+    this->move_to(this->labview, Position(width * 0.5F, (height + this->get_titlebar_height()) * 0.5F), MatterPort::CC);
     
-    this->move_to(this->instructions[ordered_keys[0]], Position(0.0F, height), MatterAnchor::LB);
+    this->move_to(this->instructions[ordered_keys[0]], Position(0.0F, height), MatterPort::LB);
     for (int idx = 1; idx < sizeof(ordered_keys) / sizeof(char); idx ++) {
         this->move_to(this->instructions[ordered_keys[idx]],
-                        Position(this->instructions[ordered_keys[idx - 1]], MatterAnchor::RB),
-                        MatterAnchor::LB, { 16.0F, 0.0F } );
+                        Position(this->instructions[ordered_keys[idx - 1]], MatterPort::RB),
+                        MatterPort::LB, { 16.0F, 0.0F } );
     }
 }
 

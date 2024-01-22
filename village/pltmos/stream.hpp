@@ -14,7 +14,7 @@ namespace WarGrey::PLT {
         StreamSprite(const char* action, float width = 0.0F, float ratio = 3.0F);
 
     public:
-        void construct(SDL_Renderer* renderer) override;
+        void construct(GYDM::dc_t* dc) override;
 
     public:
         void close();

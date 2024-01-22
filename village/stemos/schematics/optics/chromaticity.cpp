@@ -42,12 +42,12 @@ void WarGrey::STEM::ChromaticityDiagramPlane::reflow(float width, float height) 
     
     for (auto c : this->hues) {
         circle_point(wheel_radius, float(c->get_brush_color().hue()) - 90.0F, &x, &y, false);
-        this->move_to(c, Position(cx + x, cy + y), MatterAnchor::CC);
+        this->move_to(c, Position(cx + x, cy + y), MatterPort::CC);
     }
 
     circle_point(wheel_radius, -90.0F, &x, &y, false);
     this->reflow_primaries(cx + x, cy + y + (primary_radius + hue_radius) * 1.618F);
-    this->move_to(this->chroma_dia, Position(width * 0.5F, height * 0.618F), MatterAnchor::CC);
+    this->move_to(this->chroma_dia, Position(width * 0.5F, height * 0.618F), MatterPort::CC);
 }
 
 void WarGrey::STEM::ChromaticityDiagramPlane::update(uint64_t interval, uint32_t count, uint64_t uptime) {
@@ -149,7 +149,7 @@ bool WarGrey::STEM::ChromaticityDiagramPlane::update_tooltip(IMatter* m, float x
 void WarGrey::STEM::ChromaticityDiagramPlane::reflow_primaries(float x, float y) {
     float cc_off = primary_radius * 0.5F;
     
-    this->move_to(this->primaries[0], Position(x, y), MatterAnchor::CB, { 0.0F, cc_off });
-    this->move_to(this->primaries[1], Position(this->primaries[0], MatterAnchor::CB), MatterAnchor::RC, { cc_off, 0.0F });
-    this->move_to(this->primaries[2], Position(this->primaries[1], MatterAnchor::CC), MatterAnchor::LC);
+    this->move_to(this->primaries[0], Position(x, y), MatterPort::CB, { 0.0F, cc_off });
+    this->move_to(this->primaries[1], Position(this->primaries[0], MatterPort::CB), MatterPort::RC, { cc_off, 0.0F });
+    this->move_to(this->primaries[2], Position(this->primaries[1], MatterPort::CC), MatterPort::LC);
 }

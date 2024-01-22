@@ -36,7 +36,7 @@ void GYDM::TrackPlane::load(float width, float height) {
 void GYDM::TrackPlane::reflow(float width, float height) {
     TheBigBang::reflow(width, height);
 
-    this->move_to(this->variable, { width, 0.0F }, MatterAnchor::RT, { -8.0F, 8.0F });
+    this->move_to(this->variable, { width, 0.0F }, MatterPort::RT, { -8.0F, 8.0F });
 }
 
 void GYDM::TrackPlane::update(uint64_t interval, uint32_t count, uint64_t uptime) {
@@ -67,7 +67,7 @@ void GYDM::TrackPlane::after_select(IMatter *m, bool yes) {
     if (!yes) {
         if (isinstance(m, Citizen)) {
             if (!this->is_colliding_with_mouse(m)) {
-                this->glide_to_mouse(gliding_duration, m, MatterAnchor::CC);
+                this->glide_to_mouse(gliding_duration, m, MatterPort::CC);
             }
         }
     }
@@ -149,13 +149,13 @@ void GYDM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, size_t sides, size_
     double rad = degrees_to_radians(360.0 / sides);
     double factor = 2.0 - 2.0 * flcos(rad); 
     double direction = bracer->get_heading();
-    Position dot = this->get_matter_location(bracer, MatterAnchor::LT);
+    Position dot = this->get_matter_location(bracer, MatterPort::LT);
             
     this->set_pen_color(bracer, RGBA::HSV(random_uniform(0.0, 360.0)));
 
     for (size_t s = 0; s < sides; s ++) {
         this->pen_up(bracer);
-        this->move_to(bracer, dot, MatterAnchor::LT); // moving doesn't change the heading
+        this->move_to(bracer, dot, MatterPort::LT); // moving doesn't change the heading
         this->pen_down(bracer);
         this->glide(gliding_duration, bracer, meridian);
         this->turn(bracer, rad, true);
@@ -166,7 +166,7 @@ void GYDM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, size_t sides, size_
 
         this->pen_up(bracer);
         this->set_pen_color(bracer, RGBA::HSV(random_uniform(0.0, 360.0)));
-        this->move_to(bracer, dot, MatterAnchor::LT); // moving doesn't change the heading
+        this->move_to(bracer, dot, MatterPort::LT); // moving doesn't change the heading
         this->set_heading(bracer, direction, true);
         this->move(bracer, meridian);
         this->pen_down(bracer);
@@ -180,7 +180,7 @@ void GYDM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, size_t sides, size_
         meridian -= gapsize;
     }
 
-    this->move_to(bracer, dot, MatterAnchor::LT);
+    this->move_to(bracer, dot, MatterPort::LT);
     this->stamp(bracer);
     this->pen_up(bracer);
 }

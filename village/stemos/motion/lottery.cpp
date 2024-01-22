@@ -2,8 +2,6 @@
 
 #include <gydm/datum/time.hpp>
 
-#include <gydm/graphics/text.hpp>
-#include <gydm/graphics/brush.hpp>
 #include <gydm/physics/color/rgba.hpp>
 
 using namespace GYDM;
@@ -35,17 +33,16 @@ public:
     size_t number() const { return this->No; }
 
 protected:
-    void fill_shape(SDL_Renderer* renderer, int width, int height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override {
+    void fill_shape(dc_t* dc, int width, int height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override {
         shared_font_t font = GameFont::monospace(ball_radius);
         std::string label = make_nstring("%02u", No);
         int lbl_width, lbl_height;
 
-        Ellipselet::fill_shape(renderer, width, height, r, g, b, a);
+        Ellipselet::fill_shape(dc, width, height, r, g, b, a);
         font->feed_text_extent(label.c_str(), &lbl_width, &lbl_height);
-        Pen::draw_blended_text(font, renderer, BLACK,
-                                (float(width) - float(lbl_width)) * 0.5F,
-                                (float(height) - float(lbl_height)) * 0.618F,
-                                label);
+        dc->draw_blended_text(label, font, 
+            (float(width) - float(lbl_width)) * 0.5F, (float(height) - float(lbl_height)) * 0.618F,
+            BLACK);
     }
 
 private:
@@ -78,11 +75,11 @@ void WarGrey::STEM::LotteryPlane::load(float width, float height) {
 void WarGrey::STEM::LotteryPlane::reflow(float width, float height) {
     TheBigBang::reflow(width, height);
     
-    this->move_to(this->machine, Position(width * 0.5F, height * 0.618F), MatterAnchor::CC);
-    this->move_to(this->window, Position(this->machine, MatterAnchor::CC), MatterAnchor::CC);
-    this->move_to(this->inlet, Position(this->window, MatterAnchor::CT), MatterAnchor::CB);
-    this->move_to(this->outlet, Position(this->machine, MatterAnchor::RB), MatterAnchor::RB);
-    this->move_to(this->winning_slot, Position(this->machine, MatterAnchor::CB), MatterAnchor::CT, { 0.0F, ball_radius * 3.0F });
+    this->move_to(this->machine, Position(width * 0.5F, height * 0.618F), MatterPort::CC);
+    this->move_to(this->window, Position(this->machine, MatterPort::CC), MatterPort::CC);
+    this->move_to(this->inlet, Position(this->window, MatterPort::CT), MatterPort::CB);
+    this->move_to(this->outlet, Position(this->machine, MatterPort::RB), MatterPort::RB);
+    this->move_to(this->winning_slot, Position(this->machine, MatterPort::CB), MatterPort::CT, { 0.0F, ball_radius * 3.0F });
 
     this->reflow_winning_numbers(width, height);
 }
@@ -107,17 +104,17 @@ void WarGrey::STEM::LotteryPlane::load_winning_numbers(float width, float height
 }
 
 void WarGrey::STEM::LotteryPlane::reflow_winning_numbers(float width, float height) {
-    this->move_to(this->winning_numbers[0], Position(this->agent, MatterAnchor::LB), MatterAnchor::LT);
+    this->move_to(this->winning_numbers[0], Position(this->agent, MatterPort::LB), MatterPort::LT);
     for (size_t idx = 1; idx < this->winning_numbers.size(); idx ++) {
         this->move_to(this->winning_numbers[idx],
-                        Position(this->winning_numbers[idx - 1], MatterAnchor::RC),
-                        MatterAnchor::LC, { 2.0F, 0.0F });
+                        Position(this->winning_numbers[idx - 1], MatterPort::RC),
+                        MatterPort::LC, { 2.0F, 0.0F });
     }
 
     for (size_t idx = 0; idx < this->winning_labels.size(); idx ++) {
         this->move_to(this->winning_labels[idx],
-                        Position(this->winning_numbers[idx], MatterAnchor::CB),
-                        MatterAnchor::CB);
+                        Position(this->winning_numbers[idx], MatterPort::CB),
+                        MatterPort::CB);
     }
 }
 
@@ -127,7 +124,7 @@ void WarGrey::STEM::LotteryPlane::on_mission_start(float width, float height) {
 
 void WarGrey::STEM::LotteryPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
     Box box = this->window->get_bounding_box();
-    Dot O = this->get_matter_location(this->window, MatterAnchor::CC);
+    Dot O = this->get_matter_location(this->window, MatterPort::CC);
     
     if (this->state == TCLMState::Play) {
         double distance = box.width() * 0.5F - ball_radius;
@@ -144,7 +141,7 @@ void WarGrey::STEM::LotteryPlane::update(uint64_t count, uint32_t interval, uint
 }
 
 void WarGrey::STEM::LotteryPlane::prepare(const std::map<size_t, LotteryPlane::Ballet*>& balls) {
-    Dot dot = this->get_matter_location(this->window, MatterAnchor::CC);
+    Dot dot = this->get_matter_location(this->window, MatterPort::CC);
     Box box = this->window->get_bounding_box();
     float apothem = (box.width() * 0.5F - ball_radius) * flsqrt(2.0F) * 0.5F;
 
@@ -220,15 +217,15 @@ bool WarGrey::STEM::LotteryPlane::pick(LotteryPlane::Ballet* ball) {
             this->win_balls[No] = ball;
             okay = true;
 
-            this->move_to(ball, Position(this->outlet, MatterAnchor::CC), MatterAnchor::CC);
+            this->move_to(ball, Position(this->outlet, MatterPort::CC), MatterPort::CC);
             this->winning_numbers[this->current_winning_slot]->set_text("%02u", ball->number());
             this->winning_numbers[this->current_winning_slot]->set_foreground_color(GHOSTWHITE);
             this->current_winning_slot += 1;
         
             /* moving the winning ball */ {
                 float slot_width = ball_radius * 2.0F;
-                Dot out = this->get_matter_location(this->outlet, MatterAnchor::LB);
-                Dot end = this->get_matter_location(this->winning_slot, MatterAnchor::LB);
+                Dot out = this->get_matter_location(this->outlet, MatterPort::LB);
+                Dot end = this->get_matter_location(this->winning_slot, MatterPort::LB);
                 Vector v(out, end);
 
                 this->glide(gliding_duration, ball, Vector(0.0F, v.y));
@@ -246,13 +243,13 @@ void WarGrey::STEM::LotteryPlane::spot_ball(LotteryPlane::Ballet* ball, const Do
     float bx = random_uniform(O.x - apothem, O.x + apothem);
     float by = random_uniform(O.y - apothem, O.y);
 
-    this->move_to(ball, Position(bx, by), MatterAnchor::CC);
+    this->move_to(ball, Position(bx, by), MatterPort::CC);
     ball->motion_stop();
 }
 
 void WarGrey::STEM::LotteryPlane::apply_forces(LotteryPlane::Ballet* ball, const Dot& O, float radius, bool no_fan) {
     double fan_dy = 0.0;
-    Dot B = this->get_matter_location(ball, MatterAnchor::CC);
+    Dot B = this->get_matter_location(ball, MatterPort::CC);
     float distance = point_distance(B.x, B.y, O.x, O.y);
     
     if (!no_fan) {

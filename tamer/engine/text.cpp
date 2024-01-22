@@ -37,9 +37,9 @@ void GYDM::TextPlane::load(float width, float height) {
 void GYDM::TextPlane::reflow(float width, float height) {
     TheBigBang::reflow(width, height);
 
-    this->move_to(this->metrics[0], { this->agent, MatterAnchor::LB }, MatterAnchor::LT);
+    this->move_to(this->metrics[0], { this->agent, MatterPort::LB }, MatterPort::LT);
     for (int idx = 1; idx < this->metrics.size(); idx ++) {
-        this->move_to(this->metrics[idx], { this->metrics[idx - 1], MatterAnchor::LB }, MatterAnchor::LT, { 0.0F, 2.0F });
+        this->move_to(this->metrics[idx], { this->metrics[idx - 1], MatterPort::LB }, MatterPort::LT, { 0.0F, 2.0F });
     }
 }
 

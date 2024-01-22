@@ -52,20 +52,20 @@ namespace {
         }
         
         void reflow(float width, float height) override {
-            this->move_to(this->title, { this->agent, MatterAnchor::RB }, MatterAnchor::LB);
+            this->move_to(this->title, { this->agent, MatterPort::RB }, MatterPort::LB);
             
             for (int idx = 0; idx < this->coins.size(); idx ++) {
                 if (idx == 0) {
-                    this->move_to(this->coins[idx], { this->agent, MatterAnchor::LB }, MatterAnchor::LT);
+                    this->move_to(this->coins[idx], { this->agent, MatterPort::LB }, MatterPort::LT);
                 } else {
-                    this->move_to(this->coins[idx], { this->coins[idx - 1], MatterAnchor::RC }, MatterAnchor::LC);
+                    this->move_to(this->coins[idx], { this->coins[idx - 1], MatterPort::RC }, MatterPort::LC);
                 }
             }
 
             if (this->coins.size() == 0) {
-                this->move_to(this->tux, { this->agent, MatterAnchor::LB }, MatterAnchor::LT);
+                this->move_to(this->tux, { this->agent, MatterPort::LB }, MatterPort::LT);
             } else {
-                this->move_to(this->tux, { this->coins[0], MatterAnchor::LB }, MatterAnchor::LT);
+                this->move_to(this->tux, { this->coins[0], MatterPort::LB }, MatterPort::LT);
             }
         }
 
@@ -73,11 +73,11 @@ namespace {
             if (this->coins.size() > 0) {
                 Dot tux_rb, star_rb;
      
-                tux_rb = this->get_matter_location(this->tux, MatterAnchor::RB);
-                star_rb = this->get_matter_location(this->coins.back(), MatterAnchor::RB);
+                tux_rb = this->get_matter_location(this->tux, MatterPort::RB);
+                star_rb = this->get_matter_location(this->coins.back(), MatterPort::RB);
 
                 if (tux_rb.x >= star_rb.x) {
-                    Dot tux_cb = this->get_matter_location(this->tux, MatterAnchor::CB);
+                    Dot tux_cb = this->get_matter_location(this->tux, MatterPort::CB);
             
                     if (tux_cb.x < star_rb.x) {
                         this->tux->play("skid");

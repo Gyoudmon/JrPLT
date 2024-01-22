@@ -1,7 +1,6 @@
 #include "stream.hpp"
 
 #include <gydm/bang.hpp>
-#include <gydm/graphics/text.hpp>
 
 #include <filesystem>
 
@@ -81,26 +80,26 @@ void WarGrey::PLT::StreamPlane::reflow(float width, float height) {
     float char_pos = 0.25F;
     float line_pos = 1.0F - char_pos;
 
-    this->move_to(this->ground, Position(width * 0.5F, height * 0.32F), MatterAnchor::CC);
-    this->move_to(this->underground, Position(width * 0.5F, height), MatterAnchor::CB);
+    this->move_to(this->ground, Position(width * 0.5F, height * 0.32F), MatterPort::CC);
+    this->move_to(this->underground, Position(width * 0.5F, height), MatterPort::CB);
 
-    this->move_to(this->char_pipe, Position(this->ground, { char_pos, 0.5F }), MatterAnchor::CC);
-    this->move_to(this->line_pipe, Position(this->ground, { line_pos, 0.5F }), MatterAnchor::CC);
-    this->move_to(this->char_sign, Position(this->ground, { char_pos - 0.07F, 0.00F }), MatterAnchor::CB);
-    this->move_to(this->line_sign, Position(this->ground, { line_pos + 0.07F, 0.00F }), MatterAnchor::CB);
+    this->move_to(this->char_pipe, Position(this->ground, { char_pos, 0.5F }), MatterPort::CC);
+    this->move_to(this->line_pipe, Position(this->ground, { line_pos, 0.5F }), MatterPort::CC);
+    this->move_to(this->char_sign, Position(this->ground, { char_pos - 0.07F, 0.00F }), MatterPort::CB);
+    this->move_to(this->line_sign, Position(this->ground, { line_pos + 0.07F, 0.00F }), MatterPort::CB);
 
-    this->move_to(this->char_filter, Position(this->char_pipe, MatterAnchor::CB), MatterAnchor::CT, distance);
-    this->move_to(this->line_filter, Position(this->line_pipe, MatterAnchor::CB), MatterAnchor::CT, distance);
-    this->move_to(this->char_label, Position(this->char_filter, MatterAnchor::RC), MatterAnchor::LC);
-    this->move_to(this->line_label, Position(this->line_filter, MatterAnchor::LC), MatterAnchor::RC);
+    this->move_to(this->char_filter, Position(this->char_pipe, MatterPort::CB), MatterPort::CT, distance);
+    this->move_to(this->line_filter, Position(this->line_pipe, MatterPort::CB), MatterPort::CT, distance);
+    this->move_to(this->char_label, Position(this->char_filter, MatterPort::RC), MatterPort::LC);
+    this->move_to(this->line_label, Position(this->line_filter, MatterPort::LC), MatterPort::RC);
 
-    this->move_to(this->char_fall, Position(this->char_pipe, MatterAnchor::CT), MatterAnchor::CB);
-    this->move_to(this->line_fall, Position(this->line_pipe, MatterAnchor::CT), MatterAnchor::CB);
+    this->move_to(this->char_fall, Position(this->char_pipe, MatterPort::CT), MatterPort::CB);
+    this->move_to(this->line_fall, Position(this->line_pipe, MatterPort::CT), MatterPort::CB);
     
-    this->move_to(this->char_port, Position(this->char_fall, MatterAnchor::CT), MatterAnchor::CC);
-    this->move_to(this->line_port, Position(this->line_fall, MatterAnchor::CT), MatterAnchor::CC);
-    this->move_to(this->char_cloud, Position(this->char_fall, MatterAnchor::CT), MatterAnchor::CC);
-    this->move_to(this->line_cloud, Position(this->line_fall, MatterAnchor::CT), MatterAnchor::CC);
+    this->move_to(this->char_port, Position(this->char_fall, MatterPort::CT), MatterPort::CC);
+    this->move_to(this->line_port, Position(this->line_fall, MatterPort::CT), MatterPort::CC);
+    this->move_to(this->char_cloud, Position(this->char_fall, MatterPort::CT), MatterPort::CC);
+    this->move_to(this->line_cloud, Position(this->line_fall, MatterPort::CT), MatterPort::CC);
 }
 
 void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
@@ -119,7 +118,7 @@ void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64
         } else {
             auto chlet = this->insert(new Labellet(GameFont::monospace(), CHOCOLATE, "%c", ch));
 
-            this->move_to(chlet, Position(this->char_pipe, MatterAnchor::CB), MatterAnchor::CT, charoff);
+            this->move_to(chlet, Position(this->char_pipe, MatterPort::CB), MatterPort::CT, charoff);
             chlet->set_velocity(CHAR_FALL_SPEED, 90.0F);
             this->chars.push_back(chlet);
         }
@@ -138,7 +137,7 @@ void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64
 
     for (auto chlet : this->chars) {
         if (this->is_colliding(chlet, this->char_filter)) {
-            this->move_to(chlet, Position(this->char_filter, MatterAnchor::CB), MatterAnchor::CT, charoff);
+            this->move_to(chlet, Position(this->char_filter, MatterPort::CB), MatterPort::CT, charoff);
         }
     }
 
@@ -154,7 +153,7 @@ void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64
         } else {
             auto chlet = this->insert(new Labellet(GameFont::monospace(), CHOCOLATE, "%c", ch));
 
-            this->move_to(chlet, Position(this->line_pipe, MatterAnchor::CB), MatterAnchor::CT, lineoff);
+            this->move_to(chlet, Position(this->line_pipe, MatterPort::CB), MatterPort::CT, lineoff);
             chlet->set_velocity(LINE_CHAR_FALL_SPEED, 90.0F);
             this->line_chars.push_back(chlet);
         }
@@ -183,7 +182,7 @@ void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64
 
                     this->stream_buffer.clear();
                     this->lines.push_back(linelet);
-                    this->move_to(linelet, Position(this->line_filter, MatterAnchor::CB), MatterAnchor::CT, lineoff);
+                    this->move_to(linelet, Position(this->line_filter, MatterPort::CB), MatterPort::CT, lineoff);
                     linelet->set_velocity(LINE_FALL_SPEED, 90.0F);
                 }
             } else {
@@ -384,8 +383,8 @@ void WarGrey::PLT::StreamPlane::agent_rest() {
 WarGrey::PLT::StreamSprite::StreamSprite(const char* action, float width, float ratio)
     : Sprite(WATERFALL_PATH), action(action), width(width), ratio(ratio) {}
 
-void WarGrey::PLT::StreamSprite::construct(SDL_Renderer* renderer) {
-    Sprite::construct(renderer);
+void WarGrey::PLT::StreamSprite::construct(GYDM::dc_t* dc) {
+    Sprite::construct(dc);
 
     this->switch_to_costume(this->action);
     

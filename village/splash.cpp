@@ -43,7 +43,7 @@ namespace {
             PlanetCuteAtlas::on_tilemap_load(atlas);
             this->reset();
 
-            tile_rb = this->get_map_tile_location(0, MatterAnchor::RB);
+            tile_rb = this->get_map_tile_location(0, MatterPort::RB);
             this->create_logic_grid(xtile_count, ytile_count, Margin(tile_rb.y - margin.top, tile_rb.x));
         }
     };
@@ -98,20 +98,20 @@ void GYDM::JrPlane::load_for_plot(float width, float height) {
 }
         
 void GYDM::JrPlane::reflow(float width, float height) {
-    this->move_to(this->title, Position(this->agent, MatterAnchor::RB), MatterAnchor::LB);
+    this->move_to(this->title, Position(this->agent, MatterPort::RB), MatterPort::LB);
             
     for (int idx = 0; idx < this->coins.size(); idx ++) {
         if (idx == 0) {
-            this->move_to(this->coins[idx], Position(this->agent, MatterAnchor::LB), MatterAnchor::LT);
+            this->move_to(this->coins[idx], Position(this->agent, MatterPort::LB), MatterPort::LT);
         } else {
-            this->move_to(this->coins[idx], Position(this->coins[idx - 1], MatterAnchor::RC), MatterAnchor::LC);
+            this->move_to(this->coins[idx], Position(this->coins[idx - 1], MatterPort::RC), MatterPort::LC);
         }
     }
 
     if (this->coins.size() == 0) {
-        this->move_to(this->tux, Position(this->agent, MatterAnchor::LB), MatterAnchor::LT);
+        this->move_to(this->tux, Position(this->agent, MatterPort::LB), MatterPort::LT);
     } else {
-        this->move_to(this->tux, Position(this->coins[0], MatterAnchor::LB), MatterAnchor::LT);
+        this->move_to(this->tux, Position(this->coins[0], MatterPort::LB), MatterPort::LT);
     }
 
     this->reflow_demo(width, height);
@@ -122,20 +122,20 @@ void GYDM::JrPlane::reflow_demo(float width, float height) {
 }
 
 void GYDM::JrPlane::reflow_plot(float width, float height) {
-    this->move_to(this->stage, Position(width * 0.5, height), MatterAnchor::CB);
-    this->stage->move_to_logic_tile(this->host, xtile_count / 2, ytile_count / 2, MatterAnchor::CB, MatterAnchor::CB);
-    this->stage->move_to_logic_tile(this->wife, 0, -3, MatterAnchor::CB, MatterAnchor::CB);
-    this->stage->move_to_logic_tile(this->concubine, 0, -1, MatterAnchor::CB, MatterAnchor::CB);
-    this->stage->move_to_logic_tile(this->handsome, -1, 0, MatterAnchor::CB, MatterAnchor::CB);
+    this->move_to(this->stage, Position(width * 0.5, height), MatterPort::CB);
+    this->stage->move_to_logic_tile(this->host, xtile_count / 2, ytile_count / 2, MatterPort::CB, MatterPort::CB);
+    this->stage->move_to_logic_tile(this->wife, 0, -3, MatterPort::CB, MatterPort::CB);
+    this->stage->move_to_logic_tile(this->concubine, 0, -1, MatterPort::CB, MatterPort::CB);
+    this->stage->move_to_logic_tile(this->handsome, -1, 0, MatterPort::CB, MatterPort::CB);
 }
 
 void GYDM::JrPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
     if (this->coins.size() > 0) {
-        Dot tux_rb = this->get_matter_location(this->tux, MatterAnchor::RB);
-        Dot star_rb = this->get_matter_location(this->coins.back(), MatterAnchor::RB);
+        Dot tux_rb = this->get_matter_location(this->tux, MatterPort::RB);
+        Dot star_rb = this->get_matter_location(this->coins.back(), MatterPort::RB);
 
         if (tux_rb.x >= star_rb.x) {
-            Dot tux_cb = this->get_matter_location(this->tux, MatterAnchor::CB);
+            Dot tux_cb = this->get_matter_location(this->tux, MatterPort::CB);
             
             if (tux_cb.x < star_rb.x) {
                 this->tux->play("skid");
