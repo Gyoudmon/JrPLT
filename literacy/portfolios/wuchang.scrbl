@@ -17,6 +17,7 @@
 @handbook-part-section{课程简介}
 
 @include-section{discipline/big-bang.scrbl}
+@include-section{discipline/stema.scrbl}
 
 @handbook-part-section{班级简介}
 
