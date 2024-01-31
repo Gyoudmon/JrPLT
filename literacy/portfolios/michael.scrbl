@@ -10,7 +10,7 @@
 @$tex:setcounter['page 1]
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-part-section{学生档案}
+@handbook-part-section{学生点评}
 
 @include-section{student/michael/self.scrbl}
 
