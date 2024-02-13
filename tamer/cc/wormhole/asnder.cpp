@@ -1,10 +1,10 @@
 
-#include "../../digitama/gydm/wormhole/jargon/asn_der.hpp"
+#include "../../../digitama/gydm/wormhole/jargon/asn_der.hpp"
 
-#include "../../digitama/gydm/datum/fixnum.hpp"
-#include "../../digitama/gydm/datum/flonum.hpp"
-#include "../../digitama/gydm/datum/natural.hpp"
-#include "../../digitama/gydm/datum/enum.hpp"
+#include "../../../digitama/gydm/datum/fixnum.hpp"
+#include "../../../digitama/gydm/datum/flonum.hpp"
+#include "../../../digitama/gydm/datum/natural.hpp"
+#include "../../../digitama/gydm/datum/enum.hpp"
 
 using namespace GYDM;
 

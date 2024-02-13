@@ -24,6 +24,18 @@
         },
 
         {
+            "label": "一键调试",
+            "detail": "调试当前活动文件",
+            "command": "raco",
+            "type": "cppbuild",
+            "args": [ "wisemon", "-d", "cc-dbg", "${file}" ],
+            "problemMatcher": [ "$gcc" ],
+            "group": { "kind": "build", "isDefault": true },
+            "options": { "cwd": "${fileDirname}" },
+            "windows": { "problemMatcher": ["$msCompile"] }
+        },
+
+        {
             "label": "宇宙大爆炸[Release]",
             "detail": "构建和运行 青少计算机科学",
             "command": "raco",

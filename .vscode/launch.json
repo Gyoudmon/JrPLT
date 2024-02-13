@@ -22,6 +22,25 @@
         },
 
         {
+            "name": "一键编译/调试 main 函数",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}/compiled/native/debug/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "internalConsoleOptions": "openOnSessionStart",
+            "MIMode": "lldb",
+            "preLaunchTask": "一键调试",
+
+            "windows": {
+                "program": "${fileDirname}/compiled/native/debug/${fileBasenameNoExtension}.exe",
+                "type": "cppvsdbg"
+            }
+        },
+
+        {
             "name": "宇宙大爆炸",
             "type": "cppdbg",
             "request": "launch",

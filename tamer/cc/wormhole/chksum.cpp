@@ -1,7 +1,7 @@
-#include "../../digitama/gydm/wormhole/checksum/crc32.hpp"
-#include "../../digitama/gydm/wormhole/checksum/ipv4.hpp"
+#include "../../../digitama/gydm/wormhole/checksum/crc32.hpp"
+#include "../../../digitama/gydm/wormhole/checksum/ipv4.hpp"
 
-#include "../../digitama/gydm/datum/string.hpp"
+#include "../../../digitama/gydm/datum/string.hpp"
 
 using namespace GYDM;
 
