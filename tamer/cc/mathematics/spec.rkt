@@ -140,6 +140,19 @@
           (expect-is (inst matrix-equal/2d Flonum) mtx4x3.cpp (matrix-map exact->inexact mtx4x3.rkt)))))
 
     (describe "Basic Operation" #:do
+      (context "Arithmetic Operators" #:do
+        (it "can do addition [+, +=]" #:do
+          (expect-is (inst matrix-equal Integer)
+                     (matrix_add_subtract mtx4x3.cpp mtx4x3.cpp #true)
+                     (matrix+ mtx4x3.rkt mtx4x3.rkt)))
+        (it "can do subtract [-, -=]" #:do
+          (expect-satisfy matrix_is_zero (matrix_add_subtract mtx4x3.cpp mtx4x3.cpp #false)))
+        (it "can do multiplication with scalar [*, *=]" #:do
+          (expect-satisfy matrix_is_zero (matrix_scale mtx4x3.cpp 0.0 #true))
+          (expect-is (inst matrix-equal Flonum) (matrix_scale mtx4x3.cpp 1.0 #true) (matrix-map real->double-flonum mtx4x3.rkt))
+          (expect-is (inst matrix-equal Number) (matrix_scale mtx4x3.cpp 2.0 #true) (matrix-scale mtx4x3.rkt 2.0)))
+        (it "can do division [/, /=]" #:do
+          (expect-is (inst matrix-equal Number) (matrix_scale mtx4x3.cpp 2.0 #false) (matrix-scale mtx4x3.rkt 0.5))))
       (context "Trace" #:do
         (it-tame-matrix/tr random-entries 1)
         (it-tame-matrix/tr random-entries 2)

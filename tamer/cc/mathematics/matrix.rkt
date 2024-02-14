@@ -134,6 +134,14 @@
   (define-matrix matrix_is_symmetric (_fun _Matrix_ptr -> _bool))
   (define-matrix matrix_is_skew_symmetric (_fun _Matrix_ptr -> _bool))
 
+  (define-matrix matrix_add_subtract
+    (_fun _Matrix_ptr _Matrix_ptr _bool -> _Matrix_ptr)
+    #:wrap delete-matrix)
+  
+  (define-matrix matrix_scale
+    (_fun _Matrix_ptr _float _bool -> _Matrix_ptr)
+    #:wrap delete-matrix)
+
   (define-matrix matrix_trace
     (_fun [src : (_list i _int)] [_size = (integer-sqrt (length src))]
           [fx : (_ptr o _int64)] [fl : (_ptr o _double)] [dl : (_ptr o _double)]
@@ -183,6 +191,9 @@
 
  [matrix-data (-> CppMatrix (Listof Real))]
  [matrix-data2d (-> CppMatrix (Listof (Listof Flonum)))]
+
+ [matrix_add_subtract (-> FxMatrix FxMatrix Boolean FxMatrix)]
+ [matrix_scale (-> FxMatrix Flonum Boolean FlMatrix)]
 
  [matrix_trace (-> (Listof Integer) (Values Integer Flonum Flonum))]
  [matrix_determinant (-> (Listof Integer) (Values Integer Flonum Flonum))]

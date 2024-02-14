@@ -8,7 +8,6 @@
 using namespace GYDM;
 
 /*************************************************************************************************/
-
 namespace GYDM {
     template<typename T>
     std::vector<std::vector<T>> make_vector2d(size_t R, size_t C, T datum) {
@@ -127,6 +126,31 @@ extern "C" {
         self->extract(v2d, order, order);
 
         return array1d_fill_from_array2d(dest2D, order, order, v2d, order, order);
+    }
+
+    /*********************************************************************************************/
+    __ffi__ FxMatrix4x3* matrix_add_subtract(FxMatrix4x3* lhs, FxMatrix4x3* rhs, bool forward) {
+        FxMatrix4x3 self(lhs);
+
+        if (forward) {
+            self += (*rhs);
+        } else {
+            self -= (*rhs);
+        }
+
+        return new FxMatrix4x3(self);
+    }
+
+    __ffi__ FlMatrix4x3* matrix_scale(FxMatrix4x3* lhs, float rhs, bool forward) {
+        FlMatrix4x3 self(lhs);
+
+        if (forward) {
+            self *= rhs;
+        } else {
+            self /= rhs;
+        }
+
+        return new FlMatrix4x3(self);
     }
 
     __ffi__ bool matrix_trace(int* src, size_t order, long long* fx_tr, double* fl_tr, double* dl_tr) {
