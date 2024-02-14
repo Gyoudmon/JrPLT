@@ -317,7 +317,7 @@
       (expect-fl= float-det double-det 0.1 "float is as less precise as double"))))
 
 (define-context (it-tame-matrix/det/overflow order)
-  (let* ([fxentries (build-list (* order order) (λ [i] (random 128 256)))]
+  (let* ([fxentries (build-list (* order order) (λ [i] (random 256 512)))]
          [flentries (map exact->inexact fxentries)]
          [mtx.rkt (list->matrix order order fxentries)]
          [fxdet (matrix-determinant mtx.rkt)]
@@ -326,9 +326,9 @@
     #:do
     (let-values/spec ([(fixnum-det flonum-det) (matrix_overflow_determinant fxentries)])
       (it ["can't not hold the intermediate fixnum products (~a != ~a)" fixnum-det fxdet] #:do
-        (expect-!= fixnum-det fxdet "we have trouble in finding the determinant for fixnum matrix"))
+        (expect-!= fixnum-det fxdet))
       (it ["can't not hold the intermediate flonum products (~a != ~a)" flonum-det fldet] #:do  
-        (expect-fl!= flonum-det fldet 0.1 "we have trouble in finding the determinant for flonum matrix")))))
+        (expect-fl!= flonum-det fldet 0.1)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define random-entries : (Listof Integer)
