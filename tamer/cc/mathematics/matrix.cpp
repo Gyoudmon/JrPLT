@@ -20,6 +20,26 @@ namespace GYDM {
 
         return v2d;
     }
+
+    template<size_t N>
+    void matrix_traces(int* src, size_t nn, long long* fx, double* fl, double* dl) {
+        (*fx) = SquareMatrix<N, int>(src, nn).trace();
+        (*fl) = SquareMatrix<N, float>(src, nn).trace();
+        (*dl) = SquareMatrix<N, double>(src, nn).trace();
+    }
+
+    template<size_t N>
+    void matrix_determinants(int* src, size_t nn, long long* fx, double* fl, double* dl) {
+        (*fx) = SquareMatrix<N, int>(src, nn).determinant();
+        (*fl) = SquareMatrix<N, float>(src, nn).determinant();
+        (*dl) = SquareMatrix<N, double>(src, nn).determinant();
+    }
+
+    template<size_t N>
+    void matrix_overflow_determinants(int* src, size_t nn, int* fx, float* fl) {
+        (*fx) = SquareMatrix<N, int, int>(src, nn).determinant();
+        (*fl) = SquareMatrix<N, float, float>(src, nn).determinant();
+    }
 }
 
 extern "C" {
@@ -29,6 +49,10 @@ extern "C" {
 
     __ffi__ FxMatrix4x4* make_square_fxmatrix(int* src, size_t N) {
         return new FxMatrix4x4(src, N);
+    }
+
+    __ffi__ FxMatrix<4, 3>* make_rectangular_fxmatrix(int* src2D, size_t R, size_t C) {
+        return new FxMatrix<4, 3>(src2D, R * C);
     }
 
     __ffi__ FlMatrix4x4* make_square_flmatrix_via_vector(int* src2D, size_t order) {
@@ -87,8 +111,17 @@ extern "C" {
 
         return total;
     }
+
+    __ffi__ size_t fxmatrix_data2d_via_triangle(FxMatrix4x3* self, float* dest2d, size_t R, size_t C) {
+        auto shadow = self->diagonal();
+
+        self->lower_triangle(&shadow);
+        self->upper_triangle(&shadow);
+
+        return shadow.extract(dest2d, R * C);
+    }
     
-    __ffi__ size_t flmatrix_data2d_via_vector(FxMatrix4x4* self, float* dest2D, size_t order) {
+    __ffi__ size_t flmatrix_data2d_via_vector(FlMatrix4x4* self, float* dest2D, size_t order) {
         auto v2d = make_vector2d(order, order, 0.0F);
 
         self->extract(v2d, order, order);
@@ -96,56 +129,48 @@ extern "C" {
         return array1d_fill_from_array2d(dest2D, order, order, v2d, order, order);
     }
 
-    __ffi__ int fxmatrix_trace(int* src, size_t order) {
+    __ffi__ bool matrix_trace(int* src, size_t order, long long* fx_tr, double* fl_tr, double* dl_tr) {
         size_t nn = order * order;
 
         switch (order) {
-        case 1: { FxSquareMatrix<1> m1x1(src, nn); return m1x1.trace(); }
-        case 2: { FxSquareMatrix<2> m2x2(src, nn); return m2x2.trace(); }
-        case 3: { FxSquareMatrix<3> m3x3(src, nn); return m3x3.trace(); }
-        case 4: { FxSquareMatrix<4> m4x4(src, nn); return m4x4.trace(); }
-        case 5: { FxSquareMatrix<5> m5x5(src, nn); return m5x5.trace(); }
-        default: return -1;
+        case 1: matrix_traces<1>(src, nn, fx_tr, fl_tr, dl_tr); break;
+        case 2: matrix_traces<2>(src, nn, fx_tr, fl_tr, dl_tr); break;
+        case 3: matrix_traces<3>(src, nn, fx_tr, fl_tr, dl_tr); break;
+        case 4: matrix_traces<4>(src, nn, fx_tr, fl_tr, dl_tr); break;
+        case 5: matrix_traces<5>(src, nn, fx_tr, fl_tr, dl_tr); break;
+        case 6: matrix_traces<6>(src, nn, fx_tr, fl_tr, dl_tr); break;
+        default: return false;
         }
+
+        return true;
     }
 
-    __ffi__ int fxmatrix_determinant(int* src, size_t order) {
+    __ffi__ bool matrix_determinant(int* src, size_t order, long long* fx_det, double* fl_det, double* dl_det) {
         size_t nn = order * order;
 
         switch (order) {
-        case 1: { FxSquareMatrix<1> m1x1(src, nn); return m1x1.determinant(); }
-        case 2: { FxSquareMatrix<2> m2x2(src, nn); return m2x2.determinant(); }
-        case 3: { FxSquareMatrix<3> m3x3(src, nn); return m3x3.determinant(); }
-        case 4: { FxSquareMatrix<4> m4x4(src, nn); return m4x4.determinant(); }
-        case 5: { FxSquareMatrix<5> m5x5(src, nn); return m5x5.determinant(); }
-        default: return -1;
+        case 1: matrix_determinants<1>(src, nn, fx_det, fl_det, dl_det); break;
+        case 2: matrix_determinants<2>(src, nn, fx_det, fl_det, dl_det); break;
+        case 3: matrix_determinants<3>(src, nn, fx_det, fl_det, dl_det); break;
+        case 4: matrix_determinants<4>(src, nn, fx_det, fl_det, dl_det); break;
+        case 5: matrix_determinants<5>(src, nn, fx_det, fl_det, dl_det); break;
+        case 6: matrix_determinants<6>(src, nn, fx_det, fl_det, dl_det); break;
+        default: return false;
         }
+
+        return true;
     }
 
-    __ffi__ float flmatrix_trace(float* src, size_t order) {
+    __ffi__ bool matrix_overflow_determinant(int* src, size_t order, int* fx_det, float* fl_det) {
         size_t nn = order * order;
 
         switch (order) {
-        case 1: { FlSquareMatrix<1> m1x1(src, nn); return m1x1.trace(); }
-        case 2: { FlSquareMatrix<2> m2x2(src, nn); return m2x2.trace(); }
-        case 3: { FlSquareMatrix<3> m3x3(src, nn); return m3x3.trace(); }
-        case 4: { FlSquareMatrix<4> m4x4(src, nn); return m4x4.trace(); }
-        case 5: { FlSquareMatrix<5> m5x5(src, nn); return m5x5.trace(); }
-        default: return -1;
+        case 5: matrix_overflow_determinants<5>(src, nn, fx_det, fl_det); break;
+        case 6: matrix_overflow_determinants<6>(src, nn, fx_det, fl_det); break;
+        default: return false;
         }
-    }
 
-    __ffi__ float flmatrix_determinant(float* src, size_t order) {
-        size_t nn = order * order;
-
-        switch (order) {
-        case 1: { FlSquareMatrix<1> m1x1(src, nn); return m1x1.determinant(); }
-        case 2: { FlSquareMatrix<2> m2x2(src, nn); return m2x2.determinant(); }
-        case 3: { FlSquareMatrix<3> m3x3(src, nn); return m3x3.determinant(); }
-        case 4: { FlSquareMatrix<4> m4x4(src, nn); return m4x4.determinant(); }
-        case 5: { FlSquareMatrix<5> m5x5(src, nn); return m5x5.determinant(); }
-        default: return -1;
-        }
+        return true;
     }
 
     /*********************************************************************************************/
@@ -159,6 +184,10 @@ extern "C" {
 
     __ffi__ bool matrix_is_zero(MatrixTop* self) {
         return self->is_zero_matrix();
+    }
+
+    __ffi__ bool matrix_is_square(MatrixTop* self) {
+        return self->is_square_matrix();
     }
 
     __ffi__ bool matrix_is_diagonal(MatrixTop* self) {

@@ -4,7 +4,6 @@
 (provide (all-from-out math/matrix))
 
 (require digimon/spec)
-(require digimon/format)
 (require digimon/predicate)
 
 (require math/array)
@@ -60,12 +59,25 @@
       (lambda [entries]
         (define order (length entries))
         
-        (define (make-square-flmatrix)
+        (define (make-flmatrix)
           (define _array2d (_array/list _int #| <= yes, it's int |# order order))
           (define-matrix make_square_flmatrix_via_vector (_fun _array2d [_size = order] -> _Matrix_ptr) #:wrap delete-matrix)
           make_square_flmatrix_via_vector)
         
-        ((hash-ref! λs order make-square-flmatrix) entries))))
+        ((hash-ref! λs order make-flmatrix) entries))))
+
+  (define make-rectangular-fxmatrix
+    (let ([λs (make-hash)])
+      (lambda [entries]
+        (define R (length entries))
+        (define C (length (car entries)))
+        
+        (define (make-fxmatrix)
+          (define _array2d (_array/list _int R C))
+          (define-matrix make_rectangular_fxmatrix (_fun _array2d [_size = R] [_size = C] -> _Matrix_ptr) #:wrap delete-matrix)
+          make_rectangular_fxmatrix)
+        
+        ((hash-ref! λs (cons R C) make-fxmatrix) entries))))
 
   (define-matrix matrix_shape
     (_fun _Matrix_ptr
@@ -97,13 +109,15 @@
       (define-values (S R C) (matrix_shape mtx))
       (define _array2d (_array/list _float R C))
       
-      (if (matrix_is_fixnum mtx)
-          (let ()
-            (define-matrix fxmatrix_data2d_row_by_row (_fun _Matrix_ptr [dest2D : (_ptr o _array2d)] _size -> _size -> dest2D))
-            (fxmatrix_data2d_row_by_row mtx R))
-          (let ()
-            (define-matrix flmatrix_data2d_via_vector (_fun _Matrix_ptr [dest2D : (_ptr o _array2d)] _size -> _size -> dest2D))
-            (flmatrix_data2d_via_vector mtx R)))))
+      (cond [(not (= R C))
+             (define-matrix fxmatrix_data2d_via_triangle (_fun _Matrix_ptr [dest2D : (_ptr o _array2d)] _size _size -> _size -> dest2D))
+             (fxmatrix_data2d_via_triangle mtx R C)]
+            [(matrix_is_flonum mtx)
+             (define-matrix flmatrix_data2d_via_vector (_fun _Matrix_ptr [dest2D : (_ptr o _array2d)] _size -> _size -> dest2D))
+             (flmatrix_data2d_via_vector mtx R)]
+            [else
+             (define-matrix fxmatrix_data2d_row_by_row (_fun _Matrix_ptr [dest2D : (_ptr o _array2d)] _size -> _size -> dest2D))
+             (fxmatrix_data2d_row_by_row mtx R)])))
 
   (define-matrix matrix_desc (_fun _Matrix_ptr -> _string))
   (define-matrix fxmatrix_equal (_fun _Matrix_ptr _Matrix_ptr -> _bool))
@@ -111,6 +125,7 @@
   (define-matrix matrix_is_fixnum (_fun _Matrix_ptr -> _bool))
   (define-matrix matrix_is_flonum (_fun _Matrix_ptr -> _bool))
   (define-matrix matrix_is_zero (_fun _Matrix_ptr -> _bool))
+  (define-matrix matrix_is_square (_fun _Matrix_ptr -> _bool))
   (define-matrix matrix_is_diagonal (_fun _Matrix_ptr -> _bool))
   (define-matrix matrix_is_scalar (_fun _Matrix_ptr -> _bool))
   (define-matrix matrix_is_lower_triangular (_fun _Matrix_ptr -> _bool))
@@ -119,10 +134,23 @@
   (define-matrix matrix_is_symmetric (_fun _Matrix_ptr -> _bool))
   (define-matrix matrix_is_skew_symmetric (_fun _Matrix_ptr -> _bool))
 
-  (define-matrix fxmatrix_trace (_fun [src : (_list i _int)] [_size = (integer-sqrt (length src))] -> _int))
-  (define-matrix flmatrix_trace (_fun [src : (_list i _float)] [_size = (integer-sqrt (length src))] -> _float))
-  (define-matrix fxmatrix_determinant (_fun [src : (_list i _int)] [_size = (integer-sqrt (length src))] -> _int))
-  (define-matrix flmatrix_determinant (_fun [src : (_list i _float)] [_size = (integer-sqrt (length src))] -> _float)))
+  (define-matrix matrix_trace
+    (_fun [src : (_list i _int)] [_size = (integer-sqrt (length src))]
+          [fx : (_ptr o _int64)] [fl : (_ptr o _double)] [dl : (_ptr o _double)]
+          -> [ok : _bool]
+          -> (values fx fl dl)))
+
+  (define-matrix matrix_determinant
+    (_fun [src : (_list i _int)] [_size = (integer-sqrt (length src))]
+          [fx : (_ptr o _int64)] [fl : (_ptr o _double)] [dl : (_ptr o _double)]
+          -> [ok : _bool]
+          -> (values fx fl dl)))
+
+  (define-matrix matrix_overflow_determinant
+    (_fun [src : (_list i _int)] [_size = (integer-sqrt (length src))]
+          [fx : (_ptr o _int)] [fl : (_ptr o _float)]
+          -> [ok : _bool]
+          -> (values fx fl))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-type CppMatrix (U FxMatrix FlMatrix))
@@ -136,6 +164,7 @@
  [make_square_fxmatrix_with_diagonal (-> (Listof Integer) FxMatrix)]
  [make_diagonal_fxmatrix (-> Integer FxMatrix)]
  [make-square-flmatrix (-> (Listof (Listof Integer)) FlMatrix)]
+ [make-rectangular-fxmatrix (-> (Listof (Listof Integer)) FxMatrix)]
  [matrix_desc (-> FxMatrix String)]
  
  [fxmatrix_equal (-> FxMatrix FxMatrix Boolean)]
@@ -143,6 +172,7 @@
  [matrix_is_fixnum (-> CppMatrix Boolean : FxMatrix)]
  [matrix_is_flonum (-> CppMatrix Boolean : FlMatrix)]
  [matrix_is_zero (-> CppMatrix Boolean)]
+ [matrix_is_square (-> CppMatrix Boolean)]
  [matrix_is_diagonal (-> CppMatrix Boolean)]
  [matrix_is_scalar (-> CppMatrix Boolean)]
  [matrix_is_lower_triangular (-> CppMatrix Boolean)]
@@ -154,10 +184,9 @@
  [matrix-data (-> CppMatrix (Listof Real))]
  [matrix-data2d (-> CppMatrix (Listof (Listof Flonum)))]
 
- [fxmatrix_trace (-> (Listof Integer) Integer)]
- [fxmatrix_determinant (-> (Listof Integer) Integer)]
- [flmatrix_trace (-> (Listof Flonum) Flonum)]
- [flmatrix_determinant (-> (Listof Flonum) Flonum)])
+ [matrix_trace (-> (Listof Integer) (Values Integer Flonum Flonum))]
+ [matrix_determinant (-> (Listof Integer) (Values Integer Flonum Flonum))]
+ [matrix_overflow_determinant (-> (Listof Integer) (Values Integer Flonum))])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define matrix-format : Spec-Issue-Format
@@ -166,8 +195,10 @@
           [else (fallback-format para)])))
 
 (define matrix-racket->cpp : (-> (Matrix Integer) FxMatrix)
-  (lambda [smtx]
-    (make_square_fxmatrix (matrix->list smtx))))
+  (lambda [mtx]
+    (if (square-matrix? mtx)
+        (make_square_fxmatrix (matrix->list mtx))
+        (make-rectangular-fxmatrix (matrix->list* mtx)))))
 
 (define #:forall (T) matrix-equal : (-> CppMatrix (U CppMatrix (Matrix T) (Listof T)) Boolean)
   (lambda [lhs rhs]
@@ -256,29 +287,61 @@
     (expect-is flmatrix_equal given expected)
     (expect-satisfy-any (negate zero?) (matrix-data given) "we might have trouble in extracting flonum matrix data as an 1D-Array")
     (expect-satisfy-any (negate listof-zero?) (matrix-data2d given) "we might have trouble in extracting flonum matrix data as a 2D-Array")
-    (expect-is matrix-equal given expected "we might have trouble in extracting flonum matrix data as an 1D-Array row by row")
+    (expect-is matrix-equal given expected "we might have trouble in extracting flonum matrix data as an 1D-Array")
     (expect-is matrix-equal/2d given expected "we might have trouble in extracting flonum matrix data as a 2D-Array via std::vector")))
 
-(define-behavior (it-tame-matrix/tr entries)
-  (let* ([order (integer-sqrt (length entries))]
-         [expected (matrix-trace (list->matrix order order entries))]
-         [given ((if (exact-integer? (car entries)) fxmatrix_trace flmatrix_trace) entries)])
-    #:it ["should be ~a if given ~a" expected entries]
-    #:do (expect-= given expected)))
+(define-behavior (it-tame-matrix/tr pool order)
+  (let* ([fxentries (take-right pool (* order order))]
+         [flentries (map exact->inexact fxentries)]
+         [mtx.rkt (list->matrix order order fxentries)]
+         [fxtr (matrix-trace mtx.rkt)]
+         [fltr (real->double-flonum fxtr)])
+    #:it ["should return ~a if given ~a" fxtr (matrix->list* mtx.rkt)]
+    #:do
+    (let-values ([(fixnum-tr double-tr float-tr) (matrix_trace fxentries)])
+      (expect-= fixnum-tr fxtr "we have trouble in finding the trace for fixnum matrix")
+      (expect-fl= double-tr fltr 0.1 "we have trouble in finding the trace for flonum matrix")
+      (expect-fl= float-tr double-tr 0.1 "float is as less precise as double"))))
 
-(define-behavior (it-tame-matrix/det entries)
-  (let* ([order (integer-sqrt (length entries))]
-         [expected (matrix-determinant (list->matrix order order entries))]
-         [given ((if (exact-integer? (car entries)) fxmatrix_determinant flmatrix_derterminant) entries)])
-    #:it ["should be ~a if given ~a" expected entries]
-    #:do (expect-= given expected)))
+(define-behavior (it-tame-matrix/det pool order)
+  (let* ([fxentries (take pool (* order order))]
+         [flentries (map exact->inexact fxentries)]
+         [mtx.rkt (list->matrix order order fxentries)]
+         [fxdet (matrix-determinant mtx.rkt)]
+         [fldet (real->double-flonum fxdet)])
+    #:it ["should return ~a if given ~a" fxdet (matrix->list* mtx.rkt)]
+    #:do
+    (let-values ([(fixnum-det float-det double-det) (matrix_determinant fxentries)])
+      (expect-= fixnum-det fxdet "we have trouble in finding the determinant for fixnum matrix")
+      (expect-fl= double-det fldet 0.1 "we have trouble in finding the determinant for flonum matrix")
+      (expect-fl= float-det double-det 0.1 "float is as less precise as double"))))
+
+(define-context (it-tame-matrix/det/overflow order)
+  (let* ([fxentries (build-list (* order order) (λ [i] (random 128 256)))]
+         [flentries (map exact->inexact fxentries)]
+         [mtx.rkt (list->matrix order order fxentries)]
+         [fxdet (matrix-determinant mtx.rkt)]
+         [fldet (real->double-flonum fxdet)])
+    #:desc ["Overflow, with ~a" (matrix->list* mtx.rkt)]
+    #:do
+    (let-values/spec ([(fixnum-det flonum-det) (matrix_overflow_determinant fxentries)])
+      (it ["can't not hold the intermediate fixnum products (~a != ~a)" fixnum-det fxdet] #:do
+        (expect-!= fixnum-det fxdet "we have trouble in finding the determinant for fixnum matrix"))
+      (it ["can't not hold the intermediate flonum products (~a != ~a)" flonum-det fldet] #:do  
+        (expect-fl!= flonum-det fldet 0.1 "we have trouble in finding the determinant for flonum matrix")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define random-entries : (Listof Integer)
-  (build-list 32 (λ [i] (random 256))))
+  (build-list 64 (λ [i] (random 256))))
 
-(define mtx4x4 : (Matrix Integer)
+(define natural-entries : (Listof Integer) (range 64))
+
+(define mtx4x4.rkt : (Matrix Integer)
   (list->matrix 4 4 (take random-entries 16)))
 
+(define mtx4x3.rkt : (Matrix Integer)
+  (list->matrix 4 3 (take random-entries 12)))
+
 (define mtx0 (make_null_square_fxmatrix))
-(define rmtx (matrix-racket->cpp mtx4x4))
+(define mtx4x4.cpp (matrix-racket->cpp mtx4x4.rkt))
+(define mtx4x3.cpp (matrix-racket->cpp mtx4x3.rkt))
