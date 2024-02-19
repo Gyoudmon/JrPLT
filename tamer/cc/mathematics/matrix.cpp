@@ -1,8 +1,6 @@
 #include <vector>
 
 #include "../../../digitama/gydm/datum/array.hpp"
-
-#define OVERRIDE override
 #include "../../../digitama/gydm/physics/algebra/matrix.hpp"
 
 using namespace GYDM;
@@ -35,9 +33,9 @@ namespace GYDM {
     }
 
     template<size_t N>
-    void matrix_overflow_determinants(int* src, size_t nn, int* fx, float* fl) {
-        (*fx) = SquareMatrix<N, int, int>(src, nn).determinant();
-        (*fl) = SquareMatrix<N, float, float>(src, nn).determinant();
+    void matrix_overflow_determinants(int* src, size_t nn, short* fx, float* fl) {
+        (*fx) = SquareMatrix<N, short>(src, nn).determinant();
+        (*fl) = SquareMatrix<N, float>(src, nn).determinant();
     }
 }
 
@@ -131,7 +129,7 @@ extern "C" {
     /*********************************************************************************************/
     __ffi__ FxMatrix4x3* matrix_add_subtract(FxMatrix4x3* lhs, FxMatrix4x3* rhs, bool forward) {
         FxMatrix4x3 self(lhs);
-
+        
         if (forward) {
             self += (*rhs);
         } else {
@@ -185,7 +183,7 @@ extern "C" {
         return true;
     }
 
-    __ffi__ bool matrix_overflow_determinant(int* src, size_t order, int* fx_det, float* fl_det) {
+    __ffi__ bool matrix_overflow_determinant(int* src, size_t order, short* fx_det, float* fl_det) {
         size_t nn = order * order;
 
         switch (order) {

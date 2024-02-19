@@ -156,7 +156,7 @@
 
   (define-matrix matrix_overflow_determinant
     (_fun [src : (_list i _int)] [_size = (integer-sqrt (length src))]
-          [fx : (_ptr o _int)] [fl : (_ptr o _float)]
+          [fx : (_ptr o _short)] [fl : (_ptr o _float)]
           -> [ok : _bool]
           -> (values fx fl))))
 

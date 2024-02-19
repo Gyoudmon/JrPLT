@@ -57,18 +57,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define typesettings
   '(["literacy/TheBigBang.scrbl" xelatex]
-    ["literacy/Metrics.scrbl" xelatex #:explicitly-make]
-
-    ["literacy/Portfolios.scrbl" xelatex]
     ["literacy/Disciplines.scrbl" xelatex]
     
     ["literacy/lookback/2023.scrbl" "居-2023" xelatex]
-    
-    ["literacy/portfolios/dingjiaqi.scrbl" "丁嘉琪" xelatex]
-    ["literacy/portfolios/mengwanli.scrbl" "孟万里" xelatex]
-    ["literacy/portfolios/michael.scrbl" "Michael" xelatex]
-    ["literacy/portfolios/sungongcheng.scrbl" "孙功铖" xelatex]
-    ["literacy/portfolios/wuchang.scrbl" "吴玚" xelatex]
 
-    ["literacy/portfolios/huajiaze.scrbl" "华佳泽" xelatex #:explicitly-make]
-    ["literacy/portfolios/sunyirong.scrbl" "孙艺溶" xelatex #:explicitly-make]))
+    ["literacy/Metrics.scrbl" xelatex #:explicitly-make]
+    ["literacy/Portfolios.scrbl" xelatex #:explicitly-make]))
