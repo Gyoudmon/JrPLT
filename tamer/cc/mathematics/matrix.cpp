@@ -31,12 +31,6 @@ namespace GYDM {
         (*fl) = SquareMatrix<N, float>(src, nn).determinant();
         (*dl) = SquareMatrix<N, double>(src, nn).determinant();
     }
-
-    template<size_t N>
-    void matrix_overflow_determinants(int* src, size_t nn, short* fx, float* fl) {
-        (*fx) = SquareMatrix<N, short>(src, nn).determinant();
-        (*fl) = SquareMatrix<N, float>(src, nn).determinant();
-    }
 }
 
 extern "C" {
@@ -48,8 +42,8 @@ extern "C" {
         return new FxMatrix4x4(src, N);
     }
 
-    __ffi__ FxMatrix<4, 3>* make_rectangular_fxmatrix(int* src2D, size_t R, size_t C) {
-        return new FxMatrix<4, 3>(src2D, R * C);
+    __ffi__ FxMatrix3x4* make_rectangular_fxmatrix(int* src2D, size_t R, size_t C) {
+        return new FxMatrix<3, 4>(src2D, R * C);
     }
 
     __ffi__ FlMatrix4x4* make_square_flmatrix_via_vector(int* src2D, size_t order) {
@@ -92,14 +86,14 @@ extern "C" {
         return self->extract(dest, size);
     }
 
-    __ffi__ size_t flmatrix_data(FlMatrix4x4* self, float* dest, size_t size) {
+    __ffi__ size_t flmatrix_data(FlMatrix4x4* self, double* dest, size_t size) {
         return self->extract(dest, size);
     }
 
-    __ffi__ size_t fxmatrix_data2d_row_by_row(FxMatrix4x4* self, float* dest2d, size_t order) {
+    __ffi__ size_t fxmatrix_data2d_row_by_row(FxMatrix4x4* self, double* dest2d, size_t order) {
         size_t stride = self->column_size();
         size_t total = 0;
-        float* dest0 = dest2d;
+        double* dest0 = dest2d;
         
         for (size_t r = 0; r < self->row_size(); r ++) {
             total += self->extract_row(r, dest0, stride);
@@ -109,7 +103,7 @@ extern "C" {
         return total;
     }
 
-    __ffi__ size_t fxmatrix_data2d_via_triangle(FxMatrix4x3* self, float* dest2d, size_t R, size_t C) {
+    __ffi__ size_t fxmatrix_data2d_via_triangle(FxMatrix3x4* self, double* dest2d, size_t R, size_t C) {
         auto shadow = self->diagonal();
 
         self->lower_triangle(&shadow);
@@ -118,7 +112,7 @@ extern "C" {
         return shadow.extract(dest2d, R * C);
     }
     
-    __ffi__ size_t flmatrix_data2d_via_vector(FlMatrix4x4* self, float* dest2D, size_t order) {
+    __ffi__ size_t flmatrix_data2d_via_vector(FlMatrix4x4* self, double* dest2D, size_t order) {
         auto v2d = make_vector2d(order, order, 0.0F);
 
         self->extract(v2d, order, order);
@@ -127,8 +121,8 @@ extern "C" {
     }
 
     /*********************************************************************************************/
-    __ffi__ FxMatrix4x3* matrix_add_subtract(FxMatrix4x3* lhs, FxMatrix4x3* rhs, bool forward) {
-        FxMatrix4x3 self(lhs);
+    __ffi__ FxMatrix3x4* matrix_add_subtract(FxMatrix3x4* lhs, FxMatrix3x4* rhs, bool forward) {
+        FxMatrix3x4 self(lhs);
         
         if (forward) {
             self += (*rhs);
@@ -136,11 +130,11 @@ extern "C" {
             self -= (*rhs);
         }
 
-        return new FxMatrix4x3(self);
+        return new FxMatrix3x4(self);
     }
 
-    __ffi__ FlMatrix4x3* matrix_scale(FxMatrix4x3* lhs, float rhs, bool forward) {
-        FlMatrix4x3 self(lhs);
+    __ffi__ FlMatrix3x4* matrix_scale(FxMatrix3x4* lhs, double rhs, bool forward) {
+        FlMatrix3x4 self(lhs);
 
         if (forward) {
             self *= rhs;
@@ -148,7 +142,14 @@ extern "C" {
             self /= rhs;
         }
 
-        return new FlMatrix4x3(self);
+        return new FlMatrix3x4(self);
+    }
+
+    __ffi__ FlMatrix3x4* matrix_multiply(int* lhs2D, int* rhs2D, size_t M, size_t N, size_t P) {
+        FlMatrix<3, 2> lhs(lhs2D, M * N);
+        FlMatrix<2, 4> rhs(rhs2D, N * P);
+
+        return new FlMatrix3x4(lhs * rhs);
     }
 
     __ffi__ bool matrix_trace(int* src, size_t order, long long* fx_tr, double* fl_tr, double* dl_tr) {
@@ -183,16 +184,19 @@ extern "C" {
         return true;
     }
 
-    __ffi__ bool matrix_overflow_determinant(int* src, size_t order, short* fx_det, float* fl_det) {
-        size_t nn = order * order;
+    /*********************************************************************************************/
+    __ffi__ bool matrix_lu_decomposite(int* src, size_t size, MatrixTop** destL, MatrixTop** destU) {
+        FxMatrix4x4 A(src, size);
+        auto L = new Matrix<4, 4, double>();
+        auto U = new Matrix<4, 4, double>();
+        bool okay = A.LU_decomposite(L, U);
 
-        switch (order) {
-        case 5: matrix_overflow_determinants<5>(src, nn, fx_det, fl_det); break;
-        case 6: matrix_overflow_determinants<6>(src, nn, fx_det, fl_det); break;
-        default: return false;
-        }
+        // let the caller delete L and U even when the decomposition failed
 
-        return true;
+        (*destL) = L;
+        (*destU) = U;
+
+        return okay;
     }
 
     /*********************************************************************************************/
@@ -240,6 +244,14 @@ extern "C" {
         return self->is_skew_symmetric_matrix();
     }
 
+    __ffi__ bool matrix_is_row_echelon_form(MatrixTop* self) {
+        return self->is_row_echelon_form();
+    }
+
+    __ffi__ bool matrix_is_row_canonical_form(MatrixTop* self) {
+        return self->is_row_canonical_form();
+    }
+
     __ffi__ bool fxmatrix_equal(FxMatrix4x4* m1, FxMatrix4x4* m2) {
         return m1->operator==(*m2);
     }
@@ -249,10 +261,10 @@ extern "C" {
     }
 
     /*********************************************************************************************/
-    __ffi__ const char* matrix_desc(MatrixTop* self) {
+    __ffi__ const char* matrix_desc(MatrixTop* self, bool one_line) {
         static std::string desc;
         
-        desc = self->desc(true);
+        desc = self->desc(one_line);
 
         return desc.c_str();
     }

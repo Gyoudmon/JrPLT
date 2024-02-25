@@ -30,6 +30,8 @@
   (define-ffi-definer define-matrix matrix.dylib)
 
   (define _Matrix_ptr (_cpointer 'MatrixTop))
+  
+  (define _fla4x4 (_array/vector _double* 4 4))
 
   (define-matrix destroy_matrix (_fun _Matrix_ptr -> _void) #:wrap (deallocator))
   (define delete-matrix (allocator destroy_matrix))
@@ -92,7 +94,7 @@
           -> (take dest1D actual-size)))
   
   (define-matrix flmatrix_data
-    (_fun _Matrix_ptr [dest2D : (_list o _float buffer-size)] [buffer-size : _size]
+    (_fun _Matrix_ptr [dest2D : (_list o _double* buffer-size)] [buffer-size : _size]
           -> [actual-size : _size]
           -> (take dest2D actual-size)))
 
@@ -107,7 +109,7 @@
   (define matrix-data2d
     (lambda [mtx]
       (define-values (S R C) (matrix_shape mtx))
-      (define _array2d (_array/list _float R C))
+      (define _array2d (_array/list _double* R C))
       
       (cond [(not (= R C))
              (define-matrix fxmatrix_data2d_via_triangle (_fun _Matrix_ptr [dest2D : (_ptr o _array2d)] _size _size -> _size -> dest2D))
@@ -119,7 +121,7 @@
              (define-matrix fxmatrix_data2d_row_by_row (_fun _Matrix_ptr [dest2D : (_ptr o _array2d)] _size -> _size -> dest2D))
              (fxmatrix_data2d_row_by_row mtx R)])))
 
-  (define-matrix matrix_desc (_fun _Matrix_ptr -> _string))
+  (define-matrix matrix_desc (_fun _Matrix_ptr _bool -> _string))
   (define-matrix fxmatrix_equal (_fun _Matrix_ptr _Matrix_ptr -> _bool))
   (define-matrix flmatrix_equal (_fun _Matrix_ptr _Matrix_ptr -> _bool))
   (define-matrix matrix_is_fixnum (_fun _Matrix_ptr -> _bool))
@@ -133,14 +135,32 @@
   (define-matrix matrix_is_identity (_fun _Matrix_ptr -> _bool))
   (define-matrix matrix_is_symmetric (_fun _Matrix_ptr -> _bool))
   (define-matrix matrix_is_skew_symmetric (_fun _Matrix_ptr -> _bool))
+  
+  (define-matrix matrix_is_row_echelon_form (_fun _Matrix_ptr -> _bool))
+  (define-matrix matrix_is_row_canonical_form (_fun _Matrix_ptr -> _bool))
 
   (define-matrix matrix_add_subtract
     (_fun _Matrix_ptr _Matrix_ptr _bool -> _Matrix_ptr)
     #:wrap delete-matrix)
   
   (define-matrix matrix_scale
-    (_fun _Matrix_ptr _float _bool -> _Matrix_ptr)
+    (_fun _Matrix_ptr _double* _bool -> _Matrix_ptr)
     #:wrap delete-matrix)
+
+  (define matrix-multiply
+    (let ([λs (make-hash)])
+      (lambda [lhs rhs]
+        (define M (vector-length lhs))
+        (define N (vector-length rhs))
+        (define P (vector-length (vector-ref rhs 0)))
+        
+        (define (multiply)
+          (define _array2d/lhs (_array/vector _int M N))
+          (define _array2d/rhs (_array/vector _int N P))
+          (define-matrix matrix_multiply (_fun _array2d/lhs _array2d/rhs [_size = M] [_size = N] [_size = P] -> _Matrix_ptr) #:wrap delete-matrix)
+          matrix_multiply)
+        
+        ((hash-ref! λs (list M N P) multiply) lhs rhs))))
 
   (define-matrix matrix_trace
     (_fun [src : (_list i _int)] [_size = (integer-sqrt (length src))]
@@ -154,11 +174,12 @@
           -> [ok : _bool]
           -> (values fx fl dl)))
 
-  (define-matrix matrix_overflow_determinant
-    (_fun [src : (_list i _int)] [_size = (integer-sqrt (length src))]
-          [fx : (_ptr o _short)] [fl : (_ptr o _float)]
+  (define-matrix matrix_lu_decomposite
+    (_fun [src : (_list i _int)] [_size = (length src)]
+          [L : (_ptr o (make-ctype/release _Matrix_ptr delete-matrix))]
+          [U : (_ptr o (make-ctype/release _Matrix_ptr delete-matrix))]
           -> [ok : _bool]
-          -> (values fx fl))))
+          -> (values ok L U))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-type CppMatrix (U FxMatrix FlMatrix))
@@ -173,7 +194,8 @@
  [make_diagonal_fxmatrix (-> Integer FxMatrix)]
  [make-square-flmatrix (-> (Listof (Listof Integer)) FlMatrix)]
  [make-rectangular-fxmatrix (-> (Listof (Listof Integer)) FxMatrix)]
- [matrix_desc (-> FxMatrix String)]
+ [matrix_desc (-> CppMatrix Boolean String)]
+ [matrix_shape (-> CppMatrix (Values Index Index Index))]
  
  [fxmatrix_equal (-> FxMatrix FxMatrix Boolean)]
  [flmatrix_equal (-> FlMatrix FlMatrix Boolean)]
@@ -188,21 +210,26 @@
  [matrix_is_identity (-> CppMatrix Boolean)]
  [matrix_is_symmetric (-> CppMatrix Boolean)]
  [matrix_is_skew_symmetric (-> CppMatrix Boolean)]
+ [matrix_is_row_echelon_form (-> CppMatrix Boolean)]
+ [matrix_is_row_canonical_form (-> CppMatrix Boolean)]
 
+ [fxmatrix_data (-> FxMatrix Index (Listof Integer))]
  [matrix-data (-> CppMatrix (Listof Real))]
  [matrix-data2d (-> CppMatrix (Listof (Listof Flonum)))]
 
  [matrix_add_subtract (-> FxMatrix FxMatrix Boolean FxMatrix)]
- [matrix_scale (-> FxMatrix Flonum Boolean FlMatrix)]
+ [matrix_scale (-> FxMatrix Real Boolean FlMatrix)]
+ [matrix-multiply (-> (Vectorof (Vectorof Integer)) (Vectorof (Vectorof Integer)) FlMatrix)]
 
  [matrix_trace (-> (Listof Integer) (Values Integer Flonum Flonum))]
  [matrix_determinant (-> (Listof Integer) (Values Integer Flonum Flonum))]
- [matrix_overflow_determinant (-> (Listof Integer) (Values Integer Flonum))])
+
+ [matrix_lu_decomposite (-> (Listof Integer) (Values Boolean FlMatrix FlMatrix))])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define matrix-format : Spec-Issue-Format
   (lambda [para fallback-format]
-    (cond [(fxmatrix? para) (matrix_desc para)]
+    (cond [(fxmatrix? para) (matrix_desc para #true)]
           [else (fallback-format para)])))
 
 (define matrix-racket->cpp : (-> (Matrix Integer) FxMatrix)
@@ -210,6 +237,11 @@
     (if (square-matrix? mtx)
         (make_square_fxmatrix (matrix->list mtx))
         (make-rectangular-fxmatrix (matrix->list* mtx)))))
+
+(define matrix-cpp->racket : (-> FxMatrix (Matrix Integer))
+  (lambda [mtx]
+    (define-values (s r c) (matrix_shape mtx))
+    (list->matrix r c (fxmatrix_data mtx s))))
 
 (define #:forall (T) matrix-equal : (-> CppMatrix (U CppMatrix (Matrix T) (Listof T)) Boolean)
   (lambda [lhs rhs]
@@ -327,19 +359,16 @@
       (expect-fl= double-det fldet 0.1 "we have trouble in finding the determinant for flonum matrix")
       (expect-fl= float-det double-det 0.1 "float is as less precise as double"))))
 
-(define-context (it-tame-matrix/det/overflow order)
-  (let* ([fxentries (build-list (* order order) (λ [i] (random 256 512)))]
-         [flentries (map exact->inexact fxentries)]
-         [mtx.rkt (list->matrix order order fxentries)]
-         [fxdet (matrix-determinant mtx.rkt)]
-         [fldet (real->double-flonum fxdet)])
-    #:desc ["Overflow, with ~a" (matrix->list* mtx.rkt)]
+(define-behavior (it-tame-matrix/LUD mtx.rkt)
+  (let*-values ([(L U) (matrix-lu (matrix-map real->double-flonum mtx.rkt) (λ [] #false))])
+    #:it
+    ["should fail if given ~a" (matrix->list* mtx.rkt)] #:when (not L)
+    ["should return triangular matrices L and U if given ~a" (matrix->list* mtx.rkt)]
     #:do
-    (let-values/spec ([(fixnum-det flonum-det) (matrix_overflow_determinant fxentries)])
-      (it ["can't not hold the intermediate fixnum products (~a != ~a)" fixnum-det fxdet] #:do
-        (expect-!= fixnum-det fxdet))
-      (it ["can't not hold the intermediate flonum products (~a != ~a)" flonum-det fldet] #:do  
-        (expect-fl!= flonum-det fldet 0.1)))))
+    (let-values ([(okay? Lpp Upp) (matrix_lu_decomposite (matrix->list mtx.rkt))])
+      (cond [(not L) (expect-false okay?)]
+            [else (begin (expect-is (inst matrix-equal Flonum) Lpp L "failed to construct the lower triangular matrix")
+                         (expect-is (inst matrix-equal Flonum) Upp U "failed to construct the upper triangular matrix"))]))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define random-entries : (Listof Integer)
@@ -350,9 +379,9 @@
 (define mtx4x4.rkt : (Matrix Integer)
   (list->matrix 4 4 (take random-entries 16)))
 
-(define mtx4x3.rkt : (Matrix Integer)
-  (list->matrix 4 3 (take random-entries 12)))
+(define mtx3x4.rkt : (Matrix Integer)
+  (list->matrix 3 4 (take random-entries 12)))
 
 (define mtx0 (make_null_square_fxmatrix))
 (define mtx4x4.cpp (matrix-racket->cpp mtx4x4.rkt))
-(define mtx4x3.cpp (matrix-racket->cpp mtx4x3.rkt))
+(define mtx3x4.cpp (matrix-racket->cpp mtx3x4.rkt))

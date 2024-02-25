@@ -10,7 +10,7 @@
 (define-feature prelude #:do
   (describe "Matrix" #:do
     (describe "Property" #:do
-      (context ["Default Constructor: ~a" (matrix_desc mtx0)] #:do
+      (context ["Default Constructor: ~a" (matrix_desc mtx0 #true)] #:do
         (it "should be a zero matrix" #:do
           (expect-satisfy matrix_is_zero mtx0))
         (it "should be a diagonal matrix" #:do
@@ -26,9 +26,13 @@
         (it "should be a symmetic matrix" #:do
           (expect-satisfy matrix_is_symmetric mtx0))
         (it "should be a skew symmetric matrix" #:do
-          (expect-satisfy matrix_is_skew_symmetric mtx0)))
+          (expect-satisfy matrix_is_skew_symmetric mtx0))
+        (it "should be in row echelon form" #:do
+          (expect-satisfy matrix_is_row_echelon_form mtx0))
+        (it "should be in row canonical form" #:do
+          (expect-satisfy matrix_is_row_canonical_form mtx0)))
 
-      (context ["Random Matrix: ~a" (matrix_desc mtx4x4.cpp)] #:do
+      (context ["Random Matrix: ~a" (matrix_desc mtx4x4.cpp #true)] #:do
         (it "should not be a diagonal matrix" #:do
           (expect-dissatisfy matrix_is_diagonal mtx4x4.cpp))
         (it "should not be an identity matrix" #:do
@@ -42,11 +46,15 @@
         (it "should not be a symmetic matrix" #:do
           (expect-dissatisfy matrix_is_symmetric mtx4x4.cpp))
         (it "should not be a skew symmetric matrix" #:do
-          (expect-dissatisfy matrix_is_skew_symmetric mtx4x4.cpp)))
+          (expect-dissatisfy matrix_is_skew_symmetric mtx4x4.cpp))
+        (it "should not be in row echelon form" #:do
+          (expect-dissatisfy matrix_is_row_echelon_form mtx4x4.cpp))
+        (it "should not be in row canonical form" #:do
+          (expect-dissatisfy matrix_is_row_canonical_form mtx4x4.cpp)))
 
       (describe "Diagonal Matrix" #:do
         (let ([lmtx (matrix-racket->cpp (matrix-lower-triangle mtx4x4.rkt))])
-          (context ["Lower/Left Triangular Matrix: ~a" (matrix_desc lmtx)] #:do
+          (context ["Lower/Left Triangular Matrix: ~a" (matrix_desc lmtx #true)] #:do
             (it "should not be a diagonal matrix" #:do
               (expect-dissatisfy matrix_is_diagonal lmtx))
             (it "should not be an identity matrix" #:do
@@ -60,10 +68,14 @@
             (it "should not be a symmetic matrix" #:do
               (expect-dissatisfy matrix_is_symmetric lmtx))
             (it "should not be a skew symmetric matrix" #:do
-              (expect-dissatisfy matrix_is_skew_symmetric lmtx))))
+              (expect-dissatisfy matrix_is_skew_symmetric lmtx))
+            (it "should not be in row echelon form" #:do
+              (expect-dissatisfy matrix_is_row_echelon_form lmtx))
+            (it "should not be in row canonical form" #:do
+              (expect-dissatisfy matrix_is_row_canonical_form lmtx))))
                 
         (let ([umtx (matrix-racket->cpp (matrix-upper-triangle mtx4x4.rkt))])
-          (context ["Upper/Right Triangular Matrix: ~a" (matrix_desc umtx)] #:do
+          (context ["Upper/Right Triangular Matrix: ~a" (matrix_desc umtx #true)] #:do
             (it "should not be a diagonal matrix" #:do
               (expect-dissatisfy matrix_is_diagonal umtx))
             (it "should not be an identity matrix" #:do
@@ -77,10 +89,14 @@
             (it "should not be a symmetic matrix" #:do
               (expect-dissatisfy matrix_is_symmetric umtx))
             (it "should not be a skew symmetric matrix" #:do
-              (expect-dissatisfy matrix_is_skew_symmetric umtx))))
+              (expect-dissatisfy matrix_is_skew_symmetric umtx))
+            (it "should be in row echelon form" #:do
+              (expect-satisfy matrix_is_row_echelon_form umtx))
+            (it "should not be in row canonical form" #:do
+              (expect-dissatisfy matrix_is_row_canonical_form umtx))))
                 
         (let ([dmtx1 (make_diagonal_fxmatrix 1)])
-          (context ["Diagonal Matrix: ~a" (matrix_desc dmtx1)] #:do
+          (context ["Diagonal Matrix: ~a" (matrix_desc dmtx1 #true)] #:do
             (it "should not be a zero matrix" #:do
               (expect-dissatisfy matrix_is_zero dmtx1))
             (it "should be a diagonal matrix" #:do
@@ -96,10 +112,14 @@
             (it "should be a symmetic matrix" #:do
               (expect-satisfy matrix_is_symmetric dmtx1))
             (it "should not be a skew symmetric matrix" #:do
-              (expect-dissatisfy matrix_is_skew_symmetric dmtx1))))
+              (expect-dissatisfy matrix_is_skew_symmetric dmtx1))
+            (it "should be in row echelon form" #:do
+              (expect-satisfy matrix_is_row_echelon_form dmtx1))
+            (it "should be in row canonical form" #:do
+              (expect-satisfy matrix_is_row_canonical_form dmtx1))))
 
         (let ([dmtx2 (make_diagonal_fxmatrix 2)])
-          (context ["Diagonal Matrix: ~a" (matrix_desc dmtx2)] #:do
+          (context ["Diagonal Matrix: ~a" (matrix_desc dmtx2 #true)] #:do
             (it "should not be a zero matrix" #:do
               (expect-isnt fxmatrix_equal dmtx2 mtx0))
             (it "should be a diagonal matrix" #:do
@@ -115,7 +135,11 @@
             (it "should be a symmetic matrix" #:do
               (expect-satisfy matrix_is_symmetric dmtx2))
             (it "should not be a skew symmetric matrix" #:do
-              (expect-dissatisfy matrix_is_skew_symmetric dmtx2))))))
+              (expect-dissatisfy matrix_is_skew_symmetric dmtx2))
+            (it "should be in row echelon form" #:do
+              (expect-satisfy matrix_is_row_echelon_form dmtx2))
+            (it "should not be in row canonical form" #:do
+              (expect-dissatisfy matrix_is_row_canonical_form dmtx2))))))
 
     (describe "Entry Data" #:do
       (context "Make a 4x4 Fixnum Matrix, Giving Diagonal" #:do
@@ -133,26 +157,40 @@
         (it-tame-flmatrix/entries (take random-entries 4))
         (it-tame-flmatrix/entries random-entries))
 
-      (context ["Miscellaneous with ~a" (matrix_desc mtx4x3.cpp)] #:do
+      (context ["Miscellaneous with ~a" (matrix_desc mtx3x4.cpp #true)] #:do
         (it "should not a square matrix" #:do
-          (expect-dissatisfy matrix_is_square mtx4x3.cpp))
+          (expect-dissatisfy matrix_is_square mtx3x4.cpp))
         (it "could also be viewed as a diagonal plus two triangles" #:do
-          (expect-is (inst matrix-equal/2d Flonum) mtx4x3.cpp (matrix-map exact->inexact mtx4x3.rkt)))))
+          (expect-is (inst matrix-equal/2d Flonum) mtx3x4.cpp (matrix-map exact->inexact mtx3x4.rkt)))))
 
     (describe "Basic Operation" #:do
       (context "Arithmetic Operators" #:do
         (it "can do addition [+, +=]" #:do
           (expect-is (inst matrix-equal Integer)
-                     (matrix_add_subtract mtx4x3.cpp mtx4x3.cpp #true)
-                     (matrix+ mtx4x3.rkt mtx4x3.rkt)))
+                     (matrix_add_subtract mtx3x4.cpp mtx3x4.cpp #true)
+                     (matrix+ mtx3x4.rkt mtx3x4.rkt)))
         (it "can do subtract [-, -=]" #:do
-          (expect-satisfy matrix_is_zero (matrix_add_subtract mtx4x3.cpp mtx4x3.cpp #false)))
-        (it "can do multiplication with scalar [*, *=]" #:do
-          (expect-satisfy matrix_is_zero (matrix_scale mtx4x3.cpp 0.0 #true))
-          (expect-is (inst matrix-equal Flonum) (matrix_scale mtx4x3.cpp 1.0 #true) (matrix-map real->double-flonum mtx4x3.rkt))
-          (expect-is (inst matrix-equal Number) (matrix_scale mtx4x3.cpp 2.0 #true) (matrix-scale mtx4x3.rkt 2.0)))
-        (it "can do division [/, /=]" #:do
-          (expect-is (inst matrix-equal Number) (matrix_scale mtx4x3.cpp 2.0 #false) (matrix-scale mtx4x3.rkt 0.5))))
+          (expect-satisfy matrix_is_zero (matrix_add_subtract mtx3x4.cpp mtx3x4.cpp #false)))
+        (it "can do scalar multiplication [*, *=]" #:do
+          (expect-satisfy matrix_is_zero (matrix_scale mtx3x4.cpp 0.0 #true))
+          (expect-is (inst matrix-equal Flonum) (matrix_scale mtx3x4.cpp 1.0 #true) (matrix-map real->double-flonum mtx3x4.rkt))
+          (expect-is (inst matrix-equal Number) (matrix_scale mtx3x4.cpp 2.0 #true) (matrix-scale mtx3x4.rkt 2.0)))
+        (it "can do scalar division [/, /=]" #:do
+          (expect-is (inst matrix-equal Number) (matrix_scale mtx3x4.cpp 2.0 #false) (matrix-scale mtx3x4.rkt 0.5)))
+        (let ([mtx3x2 (list->matrix 3 2 (take random-entries 6))]
+              [mtx2x4 (list->matrix 2 4 (take-right random-entries 8))])
+          (it "can do multiplication [*]" #:do
+            (expect-is (inst matrix-equal Flonum)
+                       (matrix-multiply (matrix->vector* mtx3x2) (matrix->vector* mtx2x4))
+                       (matrix-map real->double-flonum (matrix* mtx3x2 mtx2x4))))))
+      (context "Row Operation" #:do)
+      (context "LU Decomposition" #:do
+        (it-tame-matrix/LUD (matrix-cpp->racket mtx0))
+        (it-tame-matrix/LUD mtx4x4.rkt)
+        (it-tame-matrix/LUD (matrix [[2  3  1  5]
+                                     [6 13  5 19]
+                                     [2 19 10 23]
+                                     [4 10 11 31]])))
       (context "Trace" #:do
         (it-tame-matrix/tr random-entries 1)
         (it-tame-matrix/tr random-entries 2)
@@ -173,9 +211,7 @@
         (it-tame-matrix/det random-entries 3)
         (it-tame-matrix/det random-entries 4)
         (it-tame-matrix/det random-entries 5)
-        (it-tame-matrix/det random-entries 6)
-
-        (it-tame-matrix/det/overflow 5)))))
+        (it-tame-matrix/det random-entries 6)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main
