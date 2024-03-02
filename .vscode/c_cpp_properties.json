@@ -9,12 +9,13 @@
                 "/opt/GYDMstem/include"
             ],
             "defines": [
+                "__racket__",
                 "__macosx__",
                 "__lambda__=",
                 "__ffi__=",
+                "Flonum=double",
                 "DECLSPEC=",
-                "SDLCALL=",
-                "__racket__"
+                "SDLCALL="
             ],
             "macFrameworkPath": [
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
@@ -35,12 +36,13 @@
                 "C:\\opt\\GYDMstem\\include"
             ],
             "defines": [
+                "__racket__",
                 "__windows__",
                 "__lambda__=__declspec(dllexport)",
                 "__ffi__=__declspec(dllexport)",
+                "Flonum=double",
                 "DECLSPEC=",
-                "SDLCALL=",
-                "__racket__"
+                "SDLCALL="
             ]
         }
     ],

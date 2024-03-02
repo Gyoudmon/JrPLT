@@ -4,33 +4,39 @@ using namespace GYDM;
 
 /*************************************************************************************************/
 namespace GYDM {
+    typedef square_matrix<4, double> tamer_matrix_4x4;
+
     template<size_t N>
     void matrix_traces(int* src, size_t nn, long long* fx, double* fl, double* dl) {
-        (*fx) = SquareMatrix<N, int>(src, nn).trace();
-        (*fl) = SquareMatrix<N, float>(src, nn).trace();
-        (*dl) = SquareMatrix<N, double>(src, nn).trace();
+        (*fx) = square_matrix<N, int>(src, nn).trace();
+        (*fl) = square_matrix<N, float>(src, nn).trace();
+        (*dl) = square_matrix<N, double>(src, nn).trace();
     }
 
     template<size_t N>
     void matrix_determinants(int* src, size_t nn, long long* fx, double* fl, double* dl) {
-        (*fx) = SquareMatrix<N, int>(src, nn).determinant();
-        (*fl) = SquareMatrix<N, float>(src, nn).determinant();
-        (*dl) = SquareMatrix<N, double>(src, nn).determinant();
+        (*fx) = square_matrix<N, int>(src, nn).determinant();
+        (*fl) = square_matrix<N, float>(src, nn).determinant();
+        (*dl) = square_matrix<N, double>(src, nn).determinant();
     }
 }
 
 extern "C" {
-    __ffi__ FlMatrix4x4* make_square_flmatrix(double* src, size_t N) {
-        return new FlMatrix4x4(src, N);
+    __ffi__ tamer_matrix_4x4* make_square_flmatrix(double* src, size_t N) {
+        return new tamer_matrix_4x4(src, N);
     }
 
     /*********************************************************************************************/
-    __ffi__ size_t flmatrix_data(FlMatrix4x4* self, double* dest, size_t size) {
-        return self->extract(dest, size);
+    __ffi__ tamer_matrix_4x4* flmatrix_permutation_expand(const pi_matrix_1x4* self) {
+        auto pmtx = new tamer_matrix_4x4();
+
+        pmtx->fill_row_permutation(self);
+
+        return pmtx;
     }
 
-    __ffi__ FlMatrix4x4* flmatrix_multiply(const FlMatrix4x4* lhs, const FlMatrix4x4* rhs) {
-        return new FlMatrix4x4((*lhs) * (*rhs));
+    __ffi__ tamer_matrix_4x4* flmatrix_multiply(const tamer_matrix_4x4* lhs, const tamer_matrix_4x4* rhs) {
+        return new tamer_matrix_4x4((*lhs) * (*rhs));
     }
     
     /*********************************************************************************************/
@@ -68,9 +74,9 @@ extern "C" {
 
     /*********************************************************************************************/
     __ffi__ bool flmatrix_lu_decomposite(double* src, size_t size, MatrixTop** destL, MatrixTop** destU) {
-        Matrix<4, 4, double> A(src, size);
-        auto L = new Matrix<4, 4, double>();
-        auto U = new Matrix<4, 4, double>();
+        tamer_matrix_4x4 A(src, size);
+        auto L = new tamer_matrix_4x4();
+        auto U = new tamer_matrix_4x4();
         bool okay = A.LU_decomposite(L, U);
 
         // let the caller delete L and U even when the decomposition failed
@@ -82,10 +88,10 @@ extern "C" {
     }
 
     __ffi__ bool flmatrix_lup_decomposite(double* src, size_t size, MatrixTop** destL, MatrixTop** destU, MatrixTop** destP) {
-        Matrix<4, 4, double> A(src, size);
-        auto L = new Matrix<4, 4, double>();
-        auto U = new Matrix<4, 4, double>();
-        auto P = new Matrix<4, 4, double>();
+        tamer_matrix_4x4 A(src, size);
+        auto L = new tamer_matrix_4x4();
+        auto U = new tamer_matrix_4x4();
+        auto P = new pi_matrix_1x4();
         bool okay = A.LUP_decomposite(L, U, P);
 
         // let the caller delete L and U even when the decomposition failed
@@ -98,7 +104,7 @@ extern "C" {
     }
 
     /*********************************************************************************************/
-    __ffi__ bool flmatrix_equal(FlMatrix4x4* m1, FlMatrix4x4* m2, double epsilon) {
+    __ffi__ bool flmatrix_equal(const tamer_matrix_4x4* m1, const tamer_matrix_4x4* m2, double epsilon) {
         if (epsilon <= 0.0) {
             return m1->operator==(*m2);
         } else {

@@ -29,50 +29,17 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (define-ffi-definer define-matrix (digimon-ffi-lib "flmatrix"))
 
-  (define _fla4x4 (_array/vector _double* 4 4))
+  (define _flonum _double*)
 
   (define-matrix make_square_flmatrix
-    (_fun [src : (_list i _double*)]
+    (_fun [src : (_list i _flonum)]
           [_size = (length src)]
           -> _Matrix_ptr)
     #:wrap delete-matrix)
 
-  (define-matrix flmatrix_data
-    (_fun _Matrix_ptr [dest : (_list o _double* buffer-size)] [buffer-size : _size]
-          -> [actual-size : _size]
-          -> (take dest actual-size)))
-
-  (define flmatrix-data
-    (lambda [mtx]
-      (define-values (size R C) (matrix_shape mtx))
-
-      (flmatrix_data mtx size)))
-
-  (define flmatrix-data2d
-    (lambda [mtx]
-      (define-values (S R C) (matrix_shape mtx))
-      (define _array2d (_array/list _double* R C))
-
-      (define-matrix flmatrix_data (_fun _Matrix_ptr [dest2D : (_ptr o _array2d)] [buffer-size : _size] -> _size -> dest2D))
-      (flmatrix_data mtx S)))
-
-  (define-matrix flmatrix_multiply (_fun _Matrix_ptr _Matrix_ptr -> _Matrix_ptr) #:wrap delete-matrix)
   (define-matrix flmatrix_equal (_fun _Matrix_ptr _Matrix_ptr _double* -> _bool))
-
-  (define flmatrix-multiply
-    (let ([λs (make-hash)])
-      (lambda [lhs rhs]
-        (define M (vector-length lhs))
-        (define N (vector-length rhs))
-        (define P (vector-length (vector-ref rhs 0)))
-        
-        (define (multiply)
-          (define _array2d/lhs (_array/vector _int M N))
-          (define _array2d/rhs (_array/vector _int N P))
-          (define-matrix flmatrix_multiply (_fun _array2d/lhs _array2d/rhs [_size = M] [_size = N] [_size = P] -> _Matrix_ptr) #:wrap delete-matrix)
-          flmatrix_multiply)
-        
-        ((hash-ref! λs (list M N P) multiply) lhs rhs))))
+  (define-matrix flmatrix_multiply (_fun _Matrix_ptr _Matrix_ptr -> _Matrix_ptr) #:wrap delete-matrix)
+  (define-matrix flmatrix_permutation_expand (_fun _Matrix_ptr -> _Matrix_ptr) #:wrap delete-matrix)
 
   (define-matrix flmatrix_trace
     (_fun [src : (_list i _int)] [_size = (integer-sqrt (length src))]
@@ -87,14 +54,14 @@
           -> (values fx fl dl)))
 
   (define-matrix flmatrix_lu_decomposite
-    (_fun [src : (_list i _double*)] [_size = (length src)]
+    (_fun [src : (_list i _flonum)] [_size = (length src)]
           [L : (_ptr o _Matrix_gc_ptr)]
           [U : (_ptr o _Matrix_gc_ptr)]
           -> [ok : _bool]
           -> (values ok L U)))
 
   (define-matrix flmatrix_lup_decomposite
-    (_fun [src : (_list i _double*)] [_size = (length src)]
+    (_fun [src : (_list i _flonum)] [_size = (length src)]
           [L : (_ptr o _Matrix_gc_ptr)]
           [U : (_ptr o _Matrix_gc_ptr)]
           [P : (_ptr o _Matrix_gc_ptr)]
@@ -107,11 +74,8 @@
  [make_square_flmatrix (-> (Listof Real) CppMatrix)]
 
  [flmatrix_equal (-> CppMatrix CppMatrix Real Boolean)]
- 
- [flmatrix-data (-> CppMatrix (Listof Flonum))]
- [flmatrix-data2d (-> CppMatrix (Listof (Listof Flonum)))]
-
  [flmatrix_multiply (-> CppMatrix CppMatrix CppMatrix)]
+ [flmatrix_permutation_expand (-> CppMatrix CppMatrix)]
  
  [flmatrix_trace (-> (Listof Integer) (Values Integer Flonum Flonum))]
  [flmatrix_determinant (-> (Listof Integer) (Values Integer Flonum Flonum))]
@@ -124,17 +88,17 @@
   (lambda [mtx]
     (make_square_flmatrix (matrix->list mtx))))
 
-(define flmatrix-equal : (->* (CppMatrix (U CppMatrix (Matrix Real))) (Flonum) Boolean)
-  (lambda [m1 m2 [epsilon 0.000001]]
-    (flmatrix_equal m1
-                    (cond [(cpp_matrix? m2) m2]
-                          [else (matrix-racket->cpp m2)])
-                    epsilon)))
+(define flmatrix-equal : (->* (CppMatrix CppMatrix) (Flonum) Boolean)
+  (lambda [m1 m2 [epsilon 0.0001]]
+    (flmatrix_equal m1 m2 epsilon)))
 
-(define flmatrix-lupd-factors : (-> CppMatrix (List CppMatrix CppMatrix CppMatrix) Boolean)
-  (lambda [A factors]
-    (flmatrix-equal (flmatrix_multiply (car factors) A)
-                    (flmatrix_multiply (cadr factors) (caddr factors)))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define-spec-boolean-expectation (lu-factors [A : CppMatrix] [L : CppMatrix] [U : CppMatrix])
+  (flmatrix-equal A (flmatrix_multiply L U)))
+
+(define-spec-boolean-expectation (lup-factors [A : CppMatrix] [L : CppMatrix] [U : CppMatrix] [P : CppMatrix])
+  (flmatrix-equal (flmatrix_multiply (flmatrix_permutation_expand P) A)
+                  (flmatrix_multiply L U)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-behavior (it-tame-matrix/LUD mtx.rkt)
@@ -145,9 +109,9 @@
     #:do
     (let-values ([(okay? Lpp Upp) (flmatrix_lu_decomposite (matrix->list mtx.rkt))])
       (if (and Lrkt)
-          (begin (expect-is flmatrix-equal Lpp Lrkt "failed to construct the lower triangular matrix")
-                 (expect-is flmatrix-equal Upp Urkt "failed to construct the upper triangular matrix")
-                 (expect-is flmatrix-equal (matrix-racket->cpp mtx.rkt) (flmatrix_multiply Lpp Upp) "A != LU"))
+          (begin (expect-is flmatrix-equal Lpp (matrix-racket->cpp Lrkt) "failed to construct the lower triangular matrix")
+                 (expect-is flmatrix-equal Upp (matrix-racket->cpp Urkt) "failed to construct the upper triangular matrix")
+                 (expect-lu-factors (matrix-racket->cpp mtx.rkt) Lpp Upp "A != LU"))
           (expect-false okay?)))))
 
 (define-behavior (it-tame-matrix/LUPD mtx.rkt)
@@ -157,10 +121,7 @@
     ["should return triangular matrices L and U plus a permutation matrix if given ~a" (matrix->list* mtx.rkt)]
     #:do
     (when (and okay?)
-      (expect-is flmatrix-lupd-factors
-                 (matrix-racket->cpp mtx.rkt)
-                 (list P L U)
-                 "PA != LU"))))
+      (expect-lup-factors (matrix-racket->cpp mtx.rkt) L U P "PA != LU"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-behavior (it-tame-matrix/tr pool order)

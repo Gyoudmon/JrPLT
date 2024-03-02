@@ -1,6 +1,6 @@
 #lang scribble/acmart @manuscript @nonacm @screen @timestamp
 
-@require{../portfolios/literacy.rkt}
+@require{../disciplines/literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-title[#:author "居振梁"]{2023 年度回顾}

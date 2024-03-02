@@ -1,6 +1,6 @@
 #lang scribble/base
 
-@require{../../portfolios/literacy.rkt}
+@require{../../disciplines/literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-story{个人工作概况}

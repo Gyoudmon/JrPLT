@@ -9,7 +9,7 @@
 本课程取名为@tech{宇宙大爆炸}是顺应了宇宙发展“从无到有”的自然规律。
 
 @tamer-figure!["d:bigbang" "宇宙大爆炸 主界面"]{
- @stone-image["Portfolios/Disciplines/big-bang.png" #:scale 0.28]}
+ @stone-image["Disciplines/Disciplines/big-bang.png" #:scale 0.28]}
 
 @tamer-figure-ref{d:bigbang}是@tech{宇宙大爆炸}的主界面。
 其中，企鹅是 @tech{Linux} 操作系统的吉祥物，

@@ -1,6 +1,6 @@
 #lang scribble/base
 
-@require{../../portfolios/literacy.rkt}
+@require{../../disciplines/literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-story{青少计算机科学教育}

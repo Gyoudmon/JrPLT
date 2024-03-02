@@ -1,6 +1,6 @@
 #lang scribble/base
 
-@require{../../portfolios/literacy.rkt}
+@require{../../disciplines/literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-story[#:tag "scratch2023"]{Scratch 教育}

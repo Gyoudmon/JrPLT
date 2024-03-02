@@ -84,5 +84,4 @@
 (define matrix-format : Spec-Issue-Format
   (lambda [para fallback-format]
     (cond [(cpp_matrix? para) (matrix-desc para)]
-          [(listof? para cpp_matrix?) (string-join (map matrix-desc para) "\n")]
           [else (fallback-format para)])))

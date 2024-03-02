@@ -20,48 +20,48 @@ namespace GYDM {
 }
 
 extern "C" {
-    __ffi__ FxMatrix4x4* make_null_square_fxmatrix() {
-        return new FxMatrix4x4();
+    __ffi__ Matrix* make_null_square_fxmatrix() {
+        return new Matrix(fxmatrix_4x4());
     }
 
-    __ffi__ FxMatrix4x4* make_square_fxmatrix(int* src, size_t N) {
-        return new FxMatrix4x4(src, N);
+    __ffi__ Matrix* make_square_fxmatrix(int* src, size_t N) {
+        return new Matrix(fxmatrix_4x4(src, N));
     }
 
-    __ffi__ FxMatrix4x4* make_square_fxmatrix_via_vector(int* src2d, size_t order) {
-        auto fxm = new FxMatrix4x4();
+    __ffi__ Matrix* make_square_fxmatrix_via_vector(int* src2d, size_t order) {
+        fxmatrix_4x4 fxm;
         auto v2d = make_vector2d(order, order, 1);
         
         array2d_fill_from_array1d(v2d, order, order, src2d, order, order);
 
         switch (order) {
-        case 1:  fxm->fill(FxSquareMatrix<1>(v2d, order, order)); break;
-        case 2:  fxm->fill(FxSquareMatrix<2>(v2d, order, order)); break;
-        case 3:  fxm->fill(FxSquareMatrix<3>(v2d, order, order)); break;
-        default: fxm->fill(FxMatrix4x4(v2d, order, order));
+        case 1:  fxm.fill(fxsmatrix<1>(v2d, order, order)); break;
+        case 2:  fxm.fill(fxmatrix_2x2(v2d, order, order)); break;
+        case 3:  fxm.fill(fxmatrix_3x3(v2d, order, order)); break;
+        default: fxm.fill(fxmatrix_4x4(v2d, order, order));
         }
 
-        return fxm;
+        return new Matrix(fxm);
     }
 
-    __ffi__ FxMatrix3x4* make_rectangular_fxmatrix(int* src2D, size_t R, size_t C) {
-        return new FxMatrix<3, 4>(src2D, R * C);
+    __ffi__ Matrix* make_rectangular_fxmatrix(int* src2D, size_t R, size_t C) {
+        return new Matrix(fxmatrix_3x4(src2D, R * C));
     }
 
-    __ffi__ FxMatrix4x4* make_diagonal_fxmatrix(int scalar) {
-        return new FxMatrix4x4(scalar);
+    __ffi__ Matrix* make_diagonal_fxmatrix(int scalar) {
+        return new Matrix(fxmatrix_4x4(scalar));
     }
 
-    __ffi__ FxMatrix4x4* make_square_fxmatrix_with_diagonal(int* src, size_t N) {
-        auto mtx = new FxMatrix4x4();
+    __ffi__ Matrix* make_square_fxmatrix_with_diagonal(int* src, size_t N) {
+        fxmatrix_4x4 mtx;
         
-        mtx->fill_diagonal(src, N);
+        mtx.fill_diagonal(src, N);
 
-        return mtx;
+        return new Matrix(mtx);
     }
 
     /*********************************************************************************************/
-    __ffi__ size_t fxmatrix_data_row_by_row(FxMatrix4x4* self, int* dest, size_t order) {
+    __ffi__ size_t fxmatrix_data_row_by_row(fxmatrix_4x4* self, int* dest, size_t order) {
         size_t stride = self->column_size();
         size_t total = 0;
         int* dest0 = dest;
@@ -74,7 +74,7 @@ extern "C" {
         return total;
     }
     
-    __ffi__ size_t fxmatrix_data2d_via_vector(FxMatrix4x4* self, int* dest2d, size_t order) {
+    __ffi__ size_t fxmatrix_data2d_via_vector(Matrix* self, int* dest2d, size_t order) {
         auto v2d = make_vector2d(order, order, 0.0F);
 
         self->extract(v2d, order, order);
@@ -82,7 +82,7 @@ extern "C" {
         return array1d_fill_from_array2d(dest2d, order, order, v2d, order, order);
     }
 
-    __ffi__ size_t fxmatrix_rectangular_data2d(FxMatrix3x4* self, int* dest2d, size_t R, size_t C) {
+    __ffi__ size_t fxmatrix_rectangular_data2d(fxmatrix_3x4* self, int* dest2d, size_t R, size_t C) {
         auto shadow = self->diagonal();
 
         self->lower_triangle(&shadow);
@@ -92,8 +92,9 @@ extern "C" {
     }
 
     /*********************************************************************************************/
-    __ffi__ FxMatrix3x4* fxmatrix_add_subtract(FxMatrix3x4* lhs, FxMatrix3x4* rhs, bool forward) {
-        FxMatrix3x4 self(lhs);
+    /*
+    __ffi__ Matrix* fxmatrix_add_subtract(Matrix* lhs, Matrix* rhs, bool forward) {
+        fxmatrix_3x4 self(lhs);
         
         if (forward) {
             self += (*rhs);
@@ -101,11 +102,11 @@ extern "C" {
             self -= (*rhs);
         }
 
-        return new FxMatrix3x4(self);
+        return new Matrix(self);
     }
 
-    __ffi__ FxMatrix3x4* fxmatrix_scale(FxMatrix3x4* lhs, int rhs, bool forward) {
-        FxMatrix3x4 self(lhs);
+    __ffi__ Matrix* fxmatrix_scale(Matrix* lhs, int rhs, bool forward) {
+        fxmatrix_3x4 self(lhs);
 
         if (forward) {
             self *= rhs;
@@ -113,18 +114,19 @@ extern "C" {
             self /= rhs;
         }
 
-        return new FxMatrix3x4(self);
+        return new Matrix(self);
     }
 
-    __ffi__ FxMatrix3x4* fxmatrix_multiply(int* lhs2D, int* rhs2D, size_t M, size_t N, size_t P) {
-        FxMatrix<3, 2> lhs(lhs2D, M * N);
-        FxMatrix<2, 4> rhs(rhs2D, N * P);
+    __ffi__ Matrix* fxmatrix_multiply(int* lhs2D, int* rhs2D, size_t M, size_t N, size_t P) {
+        fxmatrix<3, 2> lhs(lhs2D, M * N);
+        fxmatrix<2, 4> rhs(rhs2D, N * P);
 
-        return new FxMatrix3x4(lhs * rhs);
+        return new Matrix(lhs * rhs);
     }
+    */
 
     /*********************************************************************************************/
-    __ffi__ bool fxmatrix_equal(FxMatrix4x4* m1, FxMatrix4x4* m2) {
+    __ffi__ bool fxmatrix_equal(Matrix* m1, Matrix* m2) {
         return m1->operator==(*m2);
     }
 }

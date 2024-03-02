@@ -20,14 +20,14 @@
           (it-tame-matrix/LUPD null-mtx)
           (it-tame-matrix/LUPD mtx4x4.rkt)
           (it-tame-matrix/LUPD lup-mtx)))
-      #;(context "Trace" #:do
+      (context "Trace" #:do
         (it-tame-matrix/tr random-entries 1)
         (it-tame-matrix/tr random-entries 2)
         (it-tame-matrix/tr random-entries 3)
         (it-tame-matrix/tr random-entries 4)
         (it-tame-matrix/tr random-entries 5)
         (it-tame-matrix/tr random-entries 6))
-      #;(context "Determinant" #:do
+      (context "Determinant" #:do
         (it-tame-matrix/det natural-entries 1)
         (it-tame-matrix/det natural-entries 2)
         (it-tame-matrix/det natural-entries 3)

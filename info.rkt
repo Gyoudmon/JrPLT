@@ -61,5 +61,4 @@
     
     ["literacy/lookback/2023.scrbl" "居-2023" xelatex]
 
-    ["literacy/Metrics.scrbl" xelatex #:explicitly-make]
-    ["literacy/Portfolios.scrbl" xelatex #:explicitly-make]))
+    ["literacy/Metrics.scrbl" xelatex #:explicitly-make]))
