@@ -58,6 +58,7 @@
 (define typesettings
   '(["literacy/TheBigBang.scrbl" xelatex]
     ["literacy/Disciplines.scrbl" xelatex]
+    ["literacy/Engine.scrbl" xelatex]
     
     ["literacy/lookback/2023.scrbl" "居-2023" xelatex]
 

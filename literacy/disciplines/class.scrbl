@@ -4,7 +4,7 @@
 
 @handbook-part{班级简介}
 
-@graphviz[(digimon-path 'stone "Portfolios/class.gv") #:size 4.2]
+@graphviz[(digimon-path 'stone "Disciplines/class.gv") #:size 4.2]
 
 @include-section{class/lambda-girl.scrbl}
 @include-section{class/pioneer.scrbl}

@@ -92,21 +92,28 @@ extern "C" {
     }
 
     /*********************************************************************************************/
-    /*
     __ffi__ Matrix* fxmatrix_add_subtract(Matrix* lhs, Matrix* rhs, bool forward) {
-        fxmatrix_3x4 self(lhs);
+        fxmatrix_3x4 self;
+        fxmatrix_3x4 mrhs;
+
+        lhs->extract(self);
+        rhs->extract(mrhs);
         
         if (forward) {
-            self += (*rhs);
+            self += mrhs;
         } else {
-            self -= (*rhs);
+            self -= mrhs;
         }
 
         return new Matrix(self);
     }
 
     __ffi__ Matrix* fxmatrix_scale(Matrix* lhs, int rhs, bool forward) {
-        fxmatrix_3x4 self(lhs);
+        fxmatrix_3x4 self;
+
+        lhs->extract_diagonal(self);
+        // lhs->extract_lower_triangle(self);
+        // lhs->extract_upper_triangle(self);
 
         if (forward) {
             self *= rhs;
@@ -123,7 +130,6 @@ extern "C" {
 
         return new Matrix(lhs * rhs);
     }
-    */
 
     /*********************************************************************************************/
     __ffi__ bool fxmatrix_equal(Matrix* m1, Matrix* m2) {

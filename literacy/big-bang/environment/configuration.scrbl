@@ -68,14 +68,16 @@ Windows 学员可以用@exec{where.exe}（后缀@exec{.exe}不能省略）命令
 
 @handbook-action{添加与课程相关的其他路径}
 
-以下几个路径在安装了必要软件之后就会存在，
+以下几个路径在安装了必要软件之后就会存在(如果找不到说明你没安装相关软件)，
 因此在添加的时候可以直接点@tamer-figure-ref{path}右边
 的@onscreen{Browse}(@onscreen{浏览})来定位路径。
 
 @itemlist[
  @item{C:\Program Files\Git\mingw64\bin}
  @item{C:\Program Files\Git\usr\bin}
+ @item{C:\Program Files\CodeBlocks\MinGW\bin}
  @item{C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build}
+ @item{C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build}
  ]
 
 下面这个路径只能自己输入了，
