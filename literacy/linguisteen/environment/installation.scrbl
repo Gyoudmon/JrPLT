@@ -7,7 +7,7 @@
 
 @(define figure-scale 0.20)
 
-@graphviz[(digimon-path 'stone "Disciplines/software.gv") #:size 5.0]
+@tamer-figure!["cpp-apps" "C++ 课程建议软件"]{@graphviz[(digimon-path 'stone "Disciplines/software.gv") #:size 4.2]}
 
 本章推荐的软件均为学生学习所需。
 教师可根据需要自己安装其他软件，比如“小熊猫C++”、各类在线测评(OJ)系统,

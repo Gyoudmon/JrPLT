@@ -1,57 +1,69 @@
-#lang scribble/sigplan @nocopyright @onecolumn
+#lang scribble/book
 
 @require{literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title[#:author @author{WarGrey Gyoudmon Ju}]{面向青少年程序设计的STEM游戏引擎的设计与开发}
+@handbook-title[#:subtitle "跨学科方法" #:hide-version? #true]{不只是C++的计算思维}
 
-@abstract{There should be the abstract of this paper.}
+@texbook-frontmatter[]
 
-@; https://dl.acm.org/ccs
-@(category "500" "Social and professional topics" "Computer education" "K-12 education")
+@handbook-preface-section{序}
 
-@keywords{编程教育, 计算思维, 跨学科学习, 游戏引擎}
+假设存在一个包罗万象的程序语言，
+那我们学习任何一门具体的程序语言时会碰到的东西
+也一定能在学习这个假想的语言时碰到。
+如果一定要从语言角度来回答“如何学习编程，并能适应智能时代”，
+那就是学习这个包罗万象的假想语言，
+并知道如何将它翻译成稳定的具体的可(编译)执行的代码。
+
+已知的语言光谱至少包含数以百计的常用语言。
+选择何种语言入门编程在实践上没有技巧，
+全靠机缘巧合(比如你碰巧遇到了擅长某某语言的启蒙老师)；
+但理论上说，某些语言确实比另一些语言更适合用来入门。
+综合多方因素考虑，
+本书重点着墨的语言分别趋近语言光谱的两个端点：
+机器端和数学端。
+
+具体来说，
+本书以 C++ 为主线教授程序语言和程序设计，
+会援引 Racket 和其他语言，
+或作为历史见证，
+或作为辅助工具，
+或只是出于写作本书的便利。
+特别地，
+本书第四部分《函数式编程》专为对@emph{数学}、
+@emph{计算机科学}和@emph{程序语言理论}感兴趣的读者准备，
+该部分章节以 Racket 为主线，
+也会援引其他学术型语言。
+想知道 Python 的位置吗？
+它会以出其不意的形式登场，
+在那之前请先好好打基础(嘘)。
+
+知识是网状结构，
+但书只能以树形结构组织。因此，
+对本书章节标题的理解应该是“本章节以此话题为主线”，
+而不应该理解为“本章节只讲这个主题”,
+也不应该理解为“只有本章节才讲这个主题”。
+读者应铭记于心：
+@focus{跨学科和对比学习是贯穿全书的暗线}。
 
 @handbook-smart-table[]
 
+@texbook-mainmatter[]
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-acknowledgement[]
+@include-section{linguisteen/greetings.scrbl}
+@include-section{linguisteen/typesystem.scrbl}
+@include-section{linguisteen/nature.scrbl}
+@include-section{linguisteen/lambda.scrbl}
+@include-section{linguisteen/goodbye.scrbl}
 
-我从一个软件工程师转变成一名科学老师的契机很偶然。
-那天在路口撞到了一条横穿马路的狗，为开事故证明路过一个很少经过的路口，
-发现了本市唯一的一家STEM教育公司。
-于是，我内心深处的某种东西被激活了。
+@texbook-appendix{附录}
 
-少有人走的路必定孤独。
-在信念方面，我首先要感谢的人是我自己，
-即便与这份事业直接相关的其他人都不真正理解我在干嘛，
-我仍然有一颗能沉下来把这件事做好的心。
-因为，在中学阶段我就发现自己是那个只能淋雨的人。
-其次，是感谢我活跃着的开源圈子： Racket 语言社区。
-在那里我接触到了很多关于程序语言理论、编程教育方面专业又前卫，然而依然谦虚的资料和观点。
-此外，圈子里同样在践行着理想但靠谱的教育理念的朋友和陌生人也时常会在闲聊时让我感觉不再孤单，
-这是很珍贵的激励因素。
-
-心不变，但是需要一些技巧。
-在沟通方面，我与客户家长之间似乎隔着一道天堑。
-而打破这道壁垒的，是同事的耐心和支持。
-
-青少年和成年人遇到的入门困境大同小异，
-但是针对青少年的解决方案往往很不一样。
-在教学实施方面，学生显然是最重要的人。
-他们让我学会了从孩子的角度思考问题、
-理论和技术应该朝哪个方向发力；
-他们的收获、困惑，以及其他情绪亦会以最直白的方式呈现。
-
-最后，特别感谢一个特殊的学生。
-她是我的科学课代表，也是最早的一批学生里最跟我合拍的一位。
-聪明、懂事，帮我解决了不少课堂问题，
-且颜值超高，就是没有时间跟我学真正适应这个时代的东西。
-非主流的教育实践，家长和学生因不理解而退课并不稀奇，
-自她之后，再失去谁都不会让我失落了。
+@include-section{linguisteen/environment.scrbl}
+@include-section{linguisteen/answers.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-appendix[#:index-section? #false #:numbered? #false
+@handbook-appendix[#:index-section? #true #:numbered? #true #:title-localization? #true
  (book-bib-entry #:date "2020"
                  "DTC" "Don't teach coding: until you read this book"
                  (list "Lindsey D. Handley" "Stephen R. Foster")
@@ -97,4 +109,8 @@
  (book-bib-entry #:date "2018"
                  "CJLH" "The Combridge Handbook of Japanese Linguistics"
                  (editor "Yoko Hasegawa")
-                 "Cambridge University Press")]
+                 "Cambridge University Press")
+ (url-bib-entry #"ST" "什么是科学思维？如何建立科学思维？"
+                "https://b23.tv/WvDw04W"
+                #:author (list "芳斯塔芙" "鬼谷藏龙")
+                #:date "2023")]
