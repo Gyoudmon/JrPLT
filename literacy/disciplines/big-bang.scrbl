@@ -2,16 +2,15 @@
 
 @require{../literacy.rkt}
 
-@handbook-portfolio-story{宇宙大爆炸}
+@handbook-part{宇宙大爆炸}
 
 @tamer-deftech{宇宙大爆炸}是青少计算机科学后续所有课程的基础。
 学完本课程之后，学生将对程序语言、程序设计和计算思维有个初步的了解。
 本课程取名为@tech{宇宙大爆炸}是顺应了宇宙发展“从无到有”的自然规律。
 
-@tamer-figure!["d:bigbang" "宇宙大爆炸 主界面"]{
- @stone-image["Disciplines/Disciplines/big-bang.png" #:scale 0.28]}
+@centered{@stone-image["Disciplines/Disciplines/big-bang.png" #:scale 0.28]}
 
-@tamer-figure-ref{d:bigbang}是@tech{宇宙大爆炸}的主界面。
+这是@tech{宇宙大爆炸}的主界面。
 其中，企鹅是 @tech{Linux} 操作系统的吉祥物，
 这个系统是信息学奥赛唯一指定的参赛系统；
 鱼币是企鹅的食物，大部分鱼币代表学生作品，

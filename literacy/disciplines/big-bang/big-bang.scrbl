@@ -1,8 +1,8 @@
 #lang scribble/base
 
-@require{../../literacy.rkt}
-@require{../../../share/stone/shape.rkt}
-@require{../../../share/stone/anchor.rkt}
+@require{../literacy.rkt}
+@require{../../share/stone/shape.rkt}
+@require{../../share/stone/anchor.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

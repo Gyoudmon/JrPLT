@@ -1,6 +1,6 @@
 #lang scribble/base
 
-@require{../../literacy.rkt}
+@require{../literacy.rkt}
 
 @handbook-portfolio-story{函数与对象}
 

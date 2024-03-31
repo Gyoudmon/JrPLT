@@ -4,7 +4,7 @@
 @require{disciplines/bibentry.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title[#:hide-version? #true #:properties tamer:tex:prop]{青少计算机科学}
+@handbook-title[#:hide-version? #true #:subtitle "课程重难点"]{青少计算机科学}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-smart-table[]
@@ -12,12 +12,13 @@
 @$tex:setcounter['page 1]
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@include-section{disciplines/discipline.scrbl}
+@include-section{disciplines/big-bang.scrbl}
+@include-section{disciplines/stema.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @texbook-appendix{附录}
 
+@include-section{linguisteen/environment.scrbl}
 @include-section{disciplines/faq.scrbl}
-@include-section{big-bang/environment.scrbl}
 
-@handbook-appendix[#:index-section? #true #:numbered? #true bibentries]
+@handbook-appendix[#:index-section? #true #:numbered? #true #:title-localization? #true bibentries]
