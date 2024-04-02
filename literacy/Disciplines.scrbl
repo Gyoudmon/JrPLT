@@ -4,7 +4,11 @@
 @require{disciplines/bibentry.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title[#:hide-version? #true #:subtitle "课程重难点"]{青少计算机科学}
+@handbook-title[
+ #:documentclass '(ctexrep [heading . #true] [fontset . macnew])
+ #:subtitle "课程重难点"
+ #:hide-version? #true
+ ]{青少计算机科学}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-smart-table[]

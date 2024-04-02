@@ -3,7 +3,14 @@
 @require{literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title[#:λtitle title #:author @author{WarGrey Gyoudmon Ju}]{面向青少年程序设计的STEM游戏引擎的设计与开发}
+@handbook-title[
+ #:λtitle title
+ #:tex-CJK? #true
+ #:author @author[#:orcid "https://orcid.org/0009-0009-0375-2359"
+                  ; #:affiliation (affiliation #:institution "ZhenJiang" #:country "China") ; sigplan requires `country`
+                  #:email "juzhenliang@gmail.com"]{WarGrey Gyoudmon Ju}
+ ]{面向青少年程序设计的STEM游戏引擎的设计与开发}
+
 @authorsaddresses{}
 
 @include-abstract{bang/abstract_zh.scrbl}
@@ -96,7 +103,7 @@
                  "郑辉" "电子工业出版社")
  (book-bib-entry #:date "2022"
                  "6kids" "少儿计算思维养成记：六个孩子的编程学习笔记"
-                 (list "包若宁" "卜文远" "傅鼎荃" "魏文珊" "张秦汉" "卜东波") "机械工业出版社")
+                 (list "包若宁" "卜文远" "傅鼎荃" "魏文珊" "张秦汉" "卜东波") "机械工业出版社")
  (book-bib-entry #:date "2015" #:edition "8th"
                  "SE:APA" "Software Engineering: A Practitioner's Approach"
                  (list "Roger S. Pressman" "Bruce R. Maxim")

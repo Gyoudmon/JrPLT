@@ -1,4 +1,4 @@
-#lang scribble/acmart
+#lang scribble/manual
 
 @require{../literacy.rkt}
 

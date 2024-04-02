@@ -3,7 +3,11 @@
 @require{literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title[#:subtitle "跨学科方法" #:hide-version? #true]{不只是C++的计算思维}
+@handbook-title[
+ #:documentclass '(ctexbook [heading . #true] [fontset . fandol])
+ #:subtitle "跨学科方法"
+ #:hide-version? #true
+ ]{不只是C++的计算思维}
 
 @texbook-frontmatter[]
 
@@ -101,7 +105,7 @@
                  "郑辉" "电子工业出版社")
  (book-bib-entry #:date "2022"
                  "6kids" "少儿计算思维养成记：六个孩子的编程学习笔记"
-                 (list "包若宁" "卜文远" "傅鼎荃" "魏文珊" "张秦汉" "卜东波") "机械工业出版社")
+                 (list "包若宁" "卜文远" "傅鼎荃" "魏文珊" "张秦汉" "卜东波") "机械工业出版社")
  (book-bib-entry #:date "2015" #:edition "8th"
                  "SE:APA" "Software Engineering: A Practitioner's Approach"
                  (list "Roger S. Pressman" "Bruce R. Maxim")
