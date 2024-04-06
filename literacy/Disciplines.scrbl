@@ -25,4 +25,4 @@
 @include-section{linguisteen/environment.scrbl}
 @include-section{disciplines/faq.scrbl}
 
-@handbook-appendix[#:index-section? #true #:numbered? #true #:title-localization? #true bibentries]
+@handbook-appendix[#:numbered? #true bibentries]

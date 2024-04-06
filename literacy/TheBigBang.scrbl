@@ -3,15 +3,21 @@
 @require{literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title[
- #:λtitle title
- #:tex-CJK? #true
- #:author @author[#:orcid "https://orcid.org/0009-0009-0375-2359"
-                  ; #:affiliation (affiliation #:institution "ZhenJiang" #:country "China") ; sigplan requires `country`
-                  #:email "juzhenliang@gmail.com"]{WarGrey Gyoudmon Ju}
- ]{面向青少年程序设计的STEM游戏引擎的设计与开发}
+@(define about-me @affiliation[
+ #:country "Earth" #| sigplan requires `country` |#
+ #:institution "PLT & STEM Education"])
 
-@authorsaddresses{}
+@(define mk-author
+   (lambda names
+     (apply author
+            #:affiliation about-me
+            #:email (email "juzhenliang@gmail.com")
+            #:orcid "https://orcid.org/0009-0009-0375-2359"
+            names)))
+
+@;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+@handbook-title[#:λtitle title #:author mk-author #:tex-bib "bang/bang.bib.tex"]{面向青少年程序设计的STEM游戏引擎的设计与开发}
+@authorsaddresses[]
 
 @include-abstract{bang/abstract_zh.scrbl}
 
@@ -21,11 +27,12 @@
 @ccsdesc[#:number 300]{Software and its engineering~Interactive games}
 @ccsdesc[#:number 100]{Human-centered computing~Graphical user interfaces}
 
-@keywords{编程教育, 计算思维, 跨学科学习, 游戏引擎}
+@keywords{编程教育, 跨学科学习, 项目式学习, 游戏引擎}
 
 @handbook-smart-table[]
 
 @include-section{bang/introduction.scrbl}
+@include-section{bang/future.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @acks{
@@ -40,7 +47,7 @@
  即便与这份事业直接相关的其他人都不真正理解我在干嘛，
  我仍然有一颗能沉下来把这件事做好的心。
  因为，在中学阶段我就发现自己是那个只能淋雨的人。
- 其次，是我活跃着的开源圈子： Racket 语言社区。
+ 其次，是我活跃着的开源圈子： Racket 语言社区@~cite[plt-tr1]。
  在那里我接触到了很多关于程序语言理论、编程教育方面专业又前卫，然而依然谦逊的资料和观点。
  此外，教育圈同样在践行着理想但靠谱的教育理念的朋友和陌生人也时常会在闲聊时让我感觉不再孤单，
  这是很珍贵的激励因素。
@@ -57,58 +64,13 @@
  他们的收获、困惑，
  以及其他情绪亦会以最直白的方式呈现。
  
- 最后，特别提提一下我的科学课代表，
+ 最后，特别提提一下我的义务教育科学课代表，
  她是最早的一批学生里最跟我合拍的一位。
- 聪明、懂事，帮我解决了不少课堂问题，
+ 聪明、自律，帮我解决了不少课堂问题，
  且颜值超高，就是没有时间跟我学我为她定制的课程。
  非主流的教育实践，家长和学生因看不透而退课并不稀奇，
  自她之后，再失去谁我的内心都毫无波澜。
 }
 
-@handbook-appendix[#:index-section? #false #:numbered? #false
- (book-bib-entry #:date "2020"
-                 "DTC" "Don't teach coding: until you read this book"
-                 (list "Lindsey D. Handley" "Stephen R. Foster")
-                 "Jossey Bass")
- (book-bib-entry #:date "2017" #:url "https://doi.org/10.7551/mitpress/10655.001.0001"
-                 "CL" "Coding Literacy: How Computer Programming Is Changing Writing"
-                 "Annette Vee" "The MIT Press")
- (book-bib-entry #:date "1997"
-                 "CnC" "Computability and Complexity: From a Programming Perspective"
-                 "Neil D. Jones" "The MIT Press")
- (book-bib-entry #:date "2013"
-                 "RoR" "Realm of Racket: Learn to Program, One Game at a Time!"
-                 (list "Forrest Bice" "Rose DeMaio" "Spencer Florence" "Feng-Yun Mimi Lin" "Scott Lindeman"
-                       "Nicole Nussbaum" "Eric Peterson" "Ryan Plessner" "David Van Horn" "Matthias Felleisen"
-                       "Conrad Barski, MD")
-                 "No Starch Press")
- (book-bib-entry #:date "2011"
-                 "LoL" "Land of Lisp: Learn to Program in Lisp, One Game at a Time!"
-                 "Conrad Barski, MD" "No Starch Press")
- (book-bib-entry #:date "2012" #:edition "2nd"
-                 "PL" "Programming Language: Application and Interpretation"
-                 "Shriram Krishnamurthi" #false)
- (book-bib-entry #:date "2012" #:url "https://natureofcode.com/book/"
-                 "NoC" "The Nature of Code"
-                 "Daniel Shiffman" #false)
- (book-bib-entry #:date "2017" #:edition "3rd" #:url "https://doi.org/10.1016/B978-0-12-800645-0.50026-9"
-                 "PBR" "Physically Based Rendering: From Theory to Impplementation"
-                 (list "Matt Pharr" "Wenzel Jakob" "Greg Humphreys")
-                 "The MIT Press")
- (book-bib-entry #:date "2019" #:edition "3rd"
-                 "GEA" "Game Engine Architecture"
-                 "Jason Gregory" "CRC Press")
- (book-bib-entry #:date "2009"
-                 "TCC" "冒号课堂：编程范式与OOP思想"
-                 "郑辉" "电子工业出版社")
- (book-bib-entry #:date "2022"
-                 "6kids" "少儿计算思维养成记：六个孩子的编程学习笔记"
-                 (list "包若宁" "卜文远" "傅鼎荃" "魏文珊" "张秦汉" "卜东波") "机械工业出版社")
- (book-bib-entry #:date "2015" #:edition "8th"
-                 "SE:APA" "Software Engineering: A Practitioner's Approach"
-                 (list "Roger S. Pressman" "Bruce R. Maxim")
-                 "机械工业出版社")
- (book-bib-entry #:date "2018"
-                 "CJLH" "The Combridge Handbook of Japanese Linguistics"
-                 (editor "Yoko Hasegawa")
-                 "Cambridge University Press")]
+@handbook-appendix[#:numbered? #false #:tongue 'en
+ #:index-section? #false #:prefab-bibentries? #false]

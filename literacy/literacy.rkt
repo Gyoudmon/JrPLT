@@ -8,10 +8,6 @@
 
 (require scribble/manual)
 
-(require (for-syntax racket/base))
-(require (for-syntax racket/syntax))
-(require (for-syntax syntax/parse))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Just in case for README.md
 (enter-digimon-zone!)

@@ -1,7 +1,7 @@
 #lang info
 
-(define collection "Jr.PLT")
-(define pkg-desc "Programming Language Theory for Juniors, A Contrastive Approach")
+(define collection "JrPLT")
+(define pkg-desc "Computational Thinking Beyond C++, An Interdisciplinary Approach")
 
 (define deps '("digimon" "pict"))
 (define build-deps '("digimon" "scribble-lib" "racket-doc"))

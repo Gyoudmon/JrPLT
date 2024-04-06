@@ -4,7 +4,7 @@
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-title[
- #:documentclass '(ctexbook [heading . #true] [fontset . fandol])
+ #:documentclass '(book openany)
  #:subtitle "跨学科方法"
  #:hide-version? #true
  ]{不只是C++的计算思维}
@@ -67,7 +67,7 @@
 @include-section{linguisteen/answers.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-appendix[#:index-section? #true #:numbered? #true #:title-localization? #true
+@handbook-appendix[#:numbered? #true
  (book-bib-entry #:date "2020"
                  "DTC" "Don't teach coding: until you read this book"
                  (list "Lindsey D. Handley" "Stephen R. Foster")
@@ -100,6 +100,10 @@
  (book-bib-entry #:date "2019" #:edition "3rd"
                  "GEA" "Game Engine Architecture"
                  "Jason Gregory" "CRC Press")
+ (book-bib-entry #:date "2023" #:edition "10th"
+                 "EnMSM:TD" "美国中小学数学教师实践手册"
+                 (list "John A. Van de Walle" "Karen S. Karp" "Jennifer M. Bay-Williams")
+                 "华东师范大学出版社")
  (book-bib-entry #:date "2009"
                  "TCC" "冒号课堂：编程范式与OOP思想"
                  "郑辉" "电子工业出版社")
