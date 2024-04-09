@@ -1,13 +1,9 @@
 #lang scribble/manual
 
-@require{../literacy.rkt}
+@require{literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-story{总结与展望}
-
-@handbook-scenario{研究总结}
-
-@handbook-scenario{研究展望}
+@handbook-story{系统总体结构}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-reference[#:tongue 'en]
+@handbook-reference[]

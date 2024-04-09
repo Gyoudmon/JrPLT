@@ -1,13 +1,11 @@
 #lang scribble/manual
 
-@require{../literacy.rkt}
+@require{literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-story{总结与展望}
+@handbook-story{需求分析}
 
-@handbook-scenario{研究总结}
-
-@handbook-scenario{研究展望}
+完犊子，我忘了怎么写“需求分析”了。
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-reference[#:tongue 'en]
+@handbook-reference[]

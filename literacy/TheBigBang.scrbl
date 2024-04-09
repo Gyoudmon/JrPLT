@@ -1,6 +1,6 @@
 #lang scribble/acmart @natbib @nonacm @screen @timestamp @acmthm
 
-@require{literacy.rkt}
+@require{bang/literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @(define about-me @affiliation[
@@ -16,7 +16,7 @@
             names)))
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title[#:λtitle title #:author mk-author #:tex-bib "bang/bang.bib.tex"]{面向青少年程序设计的STEM游戏引擎的设计与开发}
+@handbook-title[#:λtitle title #:author mk-author]{面向青少年程序设计的STEM游戏引擎的设计与开发}
 @authorsaddresses[]
 
 @include-abstract{bang/abstract_zh.scrbl}
@@ -32,6 +32,10 @@
 @handbook-smart-table[]
 
 @include-section{bang/introduction.scrbl}
+@include-section{bang/requirement.scrbl}
+@include-section{bang/environment.scrbl}
+@include-section{bang/architecture.scrbl}
+@include-section{bang/implementation.scrbl}
 @include-section{bang/future.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -47,7 +51,7 @@
  即便与这份事业直接相关的其他人都不真正理解我在干嘛，
  我仍然有一颗能沉下来把这件事做好的心。
  因为，在中学阶段我就发现自己是那个只能淋雨的人。
- 其次，是我活跃着的开源圈子： Racket 语言社区@~cite[plt-tr1]。
+ 其次，是我活跃着的开源圈子： Racket 语言社区@$cite[plt-tr1]。
  在那里我接触到了很多关于程序语言理论、编程教育方面专业又前卫，然而依然谦逊的资料和观点。
  此外，教育圈同样在践行着理想但靠谱的教育理念的朋友和陌生人也时常会在闲聊时让我感觉不再孤单，
  这是很珍贵的激励因素。
@@ -72,5 +76,4 @@
  自她之后，再失去谁我的内心都毫无波澜。
 }
 
-@handbook-appendix[#:numbered? #false #:tongue 'en
- #:index-section? #false #:prefab-bibentries? #false]
+@handbook-appendix[#:numbered? #false #:index-section? #false #:prefab-bibentries? #false]

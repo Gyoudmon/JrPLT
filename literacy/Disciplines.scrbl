@@ -5,7 +5,8 @@
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-title[
- #:documentclass '(ctexrep [heading . #true] [fontset . macnew])
+ #:documentclass 'ctexrep
+ #:document-options '([heading . #true] [fontset . macnew])
  #:subtitle "课程重难点"
  #:hide-version? #true
  ]{青少计算机科学}

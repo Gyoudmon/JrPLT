@@ -21,6 +21,8 @@
 
 (current-tongue 'zh-Hans)
 
+(handbook-bibtex-load "bibliography.tex")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define stone-image
   (lambda [path #:scale [scale 1.0]]
