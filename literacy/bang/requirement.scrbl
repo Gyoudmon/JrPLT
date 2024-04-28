@@ -3,9 +3,22 @@
 @require{literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-story{需求分析}
+@handbook-story{系统可行性和功能需求分析}
+@handbook-word-count[]
 
 完犊子，我忘了怎么写“需求分析”了。
+
+@handbook-scenario{系统可行性}
+@handbook-word-count[]
+
+@handbook-action{技术可行性}
+@handbook-word-count[]
+
+@handbook-action{经济可行性}
+@handbook-word-count[]
+
+@handbook-scenario{系统功能需求分析}
+@handbook-word-count[]
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-reference[]

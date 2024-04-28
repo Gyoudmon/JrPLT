@@ -4,7 +4,8 @@
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-title[
- #:documentclass '(book openany)
+ #:documentclass 'book
+ #:document-options '(openany)
  #:subtitle "跨学科方法"
  #:hide-version? #true
  ]{不只是C++的计算思维}
@@ -82,7 +83,7 @@
                  "RoR" "Realm of Racket: Learn to Program, One Game at a Time!"
                  (list "Forrest Bice" "Rose DeMaio" "Spencer Florence" "Feng-Yun Mimi Lin" "Scott Lindeman"
                        "Nicole Nussbaum" "Eric Peterson" "Ryan Plessner" "David Van Horn" "Matthias Felleisen"
-                       "Conrad Barski, MD")
+                       "Conrad Barski")
                  "No Starch Press")
  (book-bib-entry #:date "2011"
                  "LoL" "Land of Lisp: Learn to Program in Lisp, One Game at a Time!"
