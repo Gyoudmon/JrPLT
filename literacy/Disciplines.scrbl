@@ -18,12 +18,11 @@
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @include-section{disciplines/big-bang.scrbl}
-@include-section{disciplines/stema.scrbl}
+@include-section{disciplines/contest.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @texbook-appendix{附录}
 
 @include-section{linguisteen/environment.scrbl}
-@include-section{disciplines/faq.scrbl}
 
 @handbook-appendix[#:numbered? #true bibentries]
