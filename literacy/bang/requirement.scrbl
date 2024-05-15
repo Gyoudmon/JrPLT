@@ -8,6 +8,14 @@
 
 完犊子，我忘了怎么写“需求分析”了。
 
+@codeblock[#:line-numbers 1]|{
+#lang stdc/cpp
+
+#include <iostream>
+int main(int argc, char* argv[]) {
+}
+}|
+
 @handbook-scenario{系统可行性}
 @handbook-word-count[]
 

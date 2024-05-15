@@ -1,22 +1,32 @@
 #include <iostream> /* C++ 标准输入输出头文件 */
 
 int main(int argc, char* argv[]) {
-    // 定义长度为8的字符数组，使用初始化列表设置数组的全部元素
-    char cs[8] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
-    // END
+    /* 定义数组，必须使用常量指定数组的长度 */
+    bool booleans[0];  // 设 0-长度 布尔数组 booleans
+    double flonums[8]; // 设 8-长度 浮点数数组 flonums
+    /* END */
 
-    // 定义长度为8的字符串，隐含了结尾的'\0'，语法上看跟定义基础变量一样
-    std::string str = "12345678";
+    /* 定义 8-长度 整数数组 integers, 其内容由右边的初始化列表赋予 */
+    int integers[8] = { 1, 2, 3, 4, 5, 6, 7, 8 };
+    /* END */
 
-    // 遍历数组需要用到循环，for 循环比较常见
-    for (int n = 0; n < str.length(); n ++) {
-        // 字符串可以像数组一样直接用“下标运算符[]”得到构成它的某个字符
-        // 将字符数组cs里的内容复制给字符串str
-        str[n] = cs[n];
+    /* 遍历数组需要用到循环，for 循环比较常见 */ 
+    for (int n = 0; n < 8; n ++) {
+        // 使用整数数组里的内容初始化浮点数数组
+        flonums[n] = integers[n];
     }
     // END
 
-    std::cout << str << std::endl;
+    /* 活用 sizeof 可灵活得到数组的长度信息 */
+    std::cout << sizeof(flonums) / sizeof(double) << std::endl;
+    // END
+
+
+    /* 范围for，无需知道数组长度，直接得到每一个元素 */
+    for (double fl : flonums) {
+        std::cout << fl << std::endl;
+    }
+    // END
 
     return 0;
 }
