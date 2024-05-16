@@ -5,11 +5,15 @@
 
 @(define example-font (desc-font #:family 'monospace #:size 16))
 
-@(define (char->natural ch)
+@(define (random-natural ch)
    (remainder (char->integer ch) 100))
 
-@(define (char->flonum ch)
+@(define (random-flonum ch)
    (/ (remainder (char->integer ch) 100) 10.0))
+
+@(define (char->flonum ch)
+   (real->double-flonum (- (char->integer ch)
+                           (char->integer #\0))))
 
 @(define (array-example id content legend-fmt char->datum)
    @centered{@(let* ([arr content]
@@ -58,8 +62,8 @@
  @item{@tech{数组}的@tech{元素}在内存中按顺序连续存放在一起，
     因此@tech{数组}的@tech{下标}也是从@racket[0]开始的连续自然数。
 
-    @(array-example 'ex:a:n "array<byte>" "含~a个元素的自然数数组，内容下标最大值是~a" char->natural)
-    @(array-example 'ex:a:fl "vectorof flonum" "含~a个元素的浮点数数组，内容下标最大值是~a" char->flonum)}]}
+    @(array-example 'ex:a:n "array<byte>" "含~a个元素的自然数数组，内容下标最大值是~a" random-natural)
+    @(array-example 'ex:a:fl "vectorof flonum" "含~a个元素的浮点数数组，内容下标最大值是~a" random-flonum)}]}
 
  ]
 
@@ -80,9 +84,22 @@
   用大括号@litchar["{}"]和逗号@litchar[","]表达数据集。
   常用于给@tech{数组}或其他没有@tech{构造函数}的@tech{类}成员(@tamer-code-ref{ilst})设置合理的初始值。
 
-  @tamer-c++['ilst "初始化列表" "array.cpp" #px"初始化列表"]}
+  @tamer-c++['ilst "初始化列表" "array.cpp" #px"初始化列表"]
 
- @item{@handbook-deftech[#:origin "Subscript Operator"]{下标运算符}用于获取@tech{下标}处的@tech{数组}@tech{元素}。
+  使用@tech{初始化列表}方式定义数组时有个额外好处：
+  @tech{初始化列表}本身已经自带了@tech{数组的长度}信息，
+  因此声明变量时的@litchar{[]}里可以省略长度。
+  如果不省略@tech{数组的长度}，
+  @tech{初始化列表}所含@tech{元素}的数量@racketerror{不能比已知的长度多}，
+  少了的部分自动补@racket[0]。
+  比如：@tamer-code-ref{ilst} 中的单精度浮点数数组
+  @variable{singles} 的实际内容是：
+
+  @(array-example 'ex:a:fl+0 (string #\1 #\2 #\3 #\0 #\0 #\0 #\0 #\0)
+                  "含~a个元素的单精度浮点数数组，内容下标最大值是~a"
+                  char->flonum)}
+
+ @item{@handbook-deftech[#:origin "Subscript Operator"]{下标运算符}用于引用@tech{下标}处的@tech{数组}@tech{元素}。
   @margin-note{下标在数学中的写法是这样的: @${a_1}。}
   写法上跟声明时指定@tech{数组的长度}一样，用中括号@litchar{[]}和自然数表示。
   而且中括号里面的自然数可以是@tech{常量}、@tech{变量}，
@@ -90,7 +107,7 @@
 
  @item{@handbook-deftech[#:origin "Traversal"]{遍历}是指按照某种顺序不重复、不遗漏地访问数据集合中的全部@tech{元素}。
   对于@tech{数组}这样的简单复合@tech{类型}而言，
-  @tech{遍历}的过程跟让@tech{数组}的@tech{元素}自己按顺序“报数”很相像：
+  @tech{遍历}的过程就是让@tech{数组}的@tech{元素}自己按顺序“报数”：
   第一个@tech{元素}喊@racket[0], 第二个@tech{元素}喊@racket[1], 以此类推。
   写成代码就是一个常规循环(@tamer-code-ref{cp})。
   

@@ -20,7 +20,7 @@
                                                #:char->datum (-> Char Any))
                                 Bitmap)
   (lambda [#:font [font default-font]  #:string? [string? #false] #:char->datum [->datum char->string]
-           #:gapsize [gap -1.0] #:fill [fill-color #false] #:index [index 0] #:index-color [idx-color 'royalblue]
+           #:index [index 0] #:gapsize [gap -1.0] #:fill [fill-color #false] #:index-color [idx-color 'royalblue]
            src0 [max-length 1]]
     (define subfont : Font (desc-font #:family 'monospace #:size (* (font-size font) subfont-rate)))
     (define src : (Listof Char) (append (string->list src0) (if (not string?) null (list #\nul))))
@@ -39,7 +39,7 @@
                                 (char->bitmap (cdr cs) (+ idx 1)
                                               (let* ([ch (car cs)]
                                                      [self (bitmap-cc-superimpose grid (bitmap-text (->datum ch) font))])
-                                                (cons (cond [(or (not index) (eq? ch #\nul)) self]
+                                                (cons (cond [(or (not index) (>= idx (string-length src0))) self]
                                                             [else (let ([idx.bmp (bitmap-text #:color idx-color (+ index idx) subfont)])
                                                                     (bitmap-cb-superimpose (bitmap-cc-superimpose subgrid idx.bmp)
                                                                                            self))])
