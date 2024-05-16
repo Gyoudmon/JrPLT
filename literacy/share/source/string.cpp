@@ -63,5 +63,9 @@ int main(int argc, char* argv[]) {
     std::cout << std::string("a").compare("123") << std::endl;      // 不看长短只比大小
     // END
 
+    /** 最长字符串长度 */
+    printf("0x%lx\n", str.max_size());
+    // END 
+
     return 0;
 }

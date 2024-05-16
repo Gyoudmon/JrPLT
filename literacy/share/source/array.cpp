@@ -1,9 +1,10 @@
 #include <iostream> /* C++ 标准输入输出头文件 */
 
 int main(int argc, char* argv[]) {
-    /* 定义数组，必须使用常量指定数组的长度 */
-    bool booleans[0];  // 设 0-长度 布尔数组 booleans
-    double flonums[8]; // 设 8-长度 浮点数数组 flonums
+    /* 定义数组，可以使用常量或变量指定数组的长度，一经定义，数组的长度不再改变 */
+    bool booleans[0];       // 设 0-长度 布尔数组 booleans
+    double flonums[8];      // 设 8-长度 浮点数数组 flonums
+    float vl_flonums[argc]; // 设 变长单精度浮点数数组 vl_flonums
     /* END */
 
     /* 定义数组, 其内容由右边的初始化列表赋予 */
@@ -27,6 +28,7 @@ int main(int argc, char* argv[]) {
     /* 活用 sizeof 可灵活得到数组的长度信息 */
     std::cout << sizeof(booleans) / sizeof(bool) << std::endl;
     std::cout << sizeof(flonums) / sizeof(double) << std::endl;
+    std::cout << sizeof(vl_flonums) / sizeof(float) << std::endl;
     std::cout << sizeof(logics) / sizeof(bool) << std::endl;
     std::cout << sizeof(singles) / sizeof(float) << std::endl;
     std::cout << sizeof(long_integers) / sizeof(long) << std::endl;

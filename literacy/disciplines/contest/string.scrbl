@@ -44,8 +44,8 @@
 @itemlist[
  #:style 'ordered
 
- @item{@handbook-defterm[#:origin "Character" #:abbr "Char"]{字符}就是单个文字，
-  但是也包括空格这种无形的文字。其@tech{常量}要用单引号@litchar{'}引起来，
+ @item{@handbook-defterm[#:origin "Character" #:abbr "Char"]{字符}就是单个字母、文字、标点符号，
+  以及诸如空格这样的无形符号。其@tech{常量}要用单引号@litchar{'}引起来，
   并且@emph{一般情况下}单引号里最多只能有一个@tech{字符}。}
   
  @item{@handbook-defterm[#:origin "Character Array"]{字符数组}就是由@tech{字符}组成的@tech{数组}。
@@ -53,8 +53,7 @@
   @(array-example 'ex:a:chs "我是字符数组，野蜂飞舞，乱象环生")}
  
  @item{@handbook-defterm[#:origin "String"]{字符串}也是一串@tech{字符}，
-  其@tech{常量}要用双引号@litchar{"}引起来，
-  双引号里@tech{字符}的数量没有特别要求(只要内存够大)。}
+  其@tech{常量}要用双引号@litchar{"}引起来。}
 
  @item{@tech{字符串}会在自己结尾处偷偷追加一个@tech{终止字符}。
   @handbook-defterm[#:origin "Terminator Character"]{终止字符}也是一种无形的@tech{字符}，
@@ -62,7 +61,7 @@
   写作@litchar{'\0'}，注意与真正的@emph{字符}@litchar{'0'}区分。
   @tech{终止字符}会额外占用一字节内存空间，但@tech{字符串}的长度不包含@tech{终止字符}。
 
-  @(string-example 'ex:a:str "我是字符串，终止字符，护甲在手")}
+  @(string-example 'ex:a:str "我是字符串，终止字符，唯我独有")}
  ]
 
 @handbook-action{进阶知识}
@@ -75,15 +74,10 @@
 
 @tamer-c++['defstr_as_array "数组式初始化" "string.cpp" #px"数组式初始化"]
 
-需要注意的是，
-@tech{字符串}是一种@handbook-defterm[#:origin "Variable-Length Array" #:abbr "VLA"]{变长数组}，
-即@tech{数组的长度}可以按需要改变的@tech{数组}。
-因此，定义@tech{字符串}时无需事先确定其长度。
-
 @itemlist[
  #:style 'ordered
  
- @item{@tech{字符数组}和@tech{字符串}都可以通过@tech{字符串}@tech{常量}来更简单地初始化(@tamer-code-ref{defstr})。
+ @item{相较于普通@tech{数组}，@tech{字符数组}和@tech{字符串}还有更简便直观的初始化方法(@tamer-code-ref{defstr})。
         
   @tamer-c++['defstr "字符串式初始化" "string.cpp" #px"字符串式初始化"]
   
@@ -97,19 +91,16 @@
 
 @handbook-action{扩展知识}
 
-@margin-note*{实际上，其他@tech{类型}的@tech{数组}也都有各自更好用的@tech{类}。
- 这些@tech{类}通常也都类似于@tech{变长数组}。}
-@tech{字符数组}是比较基础的简单概念，在真实世界的代码里很少直接使用。
-@tech{字符串}在现代语言里通常会被设计成@tech{类}，
-帮我们隐藏了直接使用@tech{字符数组}的不少麻烦。
-
 C++ 的@tech{字符串}类型名是@type{std::string}。
 所以你看，一般的数据@tech{类型}如@type{int}、@type{float}、@type{bool}、@type{void}，
 它们的名字里没有奇怪的符号，因为那些@tech{类型}都很基础，一般不用特别对待；
-但是@tech{字符串}可以有很多种，你自己写一个都行。
+但是@tech{字符串}可以有很多种，跟你自己写的任何@tech{类}并无区别。
+将来你很可能会自己写一个更好用的@tech{字符串}@tech{类}(比如做游戏软件时)，
 初学阶段用C++的标准@type{std::string}就好。
 
+@tech{字符数组}是比较基础的简单概念，在真实世界的代码里很少直接使用。
 @type{std::string} @tech{类}提供了很多操作@tech{字符串}的@tech{方法}，
+帮我们隐藏了直接使用@tech{字符数组}的不少麻烦，
 包括上面的赋值(@litchar{=})和@tech{连接}(@litchar{+})运算符。
 
 @itemlist[
@@ -137,7 +128,7 @@ C++ 的@tech{字符串}类型名是@type{std::string}。
   @tamer-c++['s.find "查找操作" "string.cpp" #px"查找操作"]}
 
  @item{比较（@id{compare}）操作：比较给定@tech{字符串}与另一个@tech{字符串}的大小。
-  返回@racket[0]表示相等；返回负数表示小于；返回整数表示大于。
+  返回@racket[0]表示相等；返回负数表示小于；返回正数表示大于。
   如果只关心是否相等，可以像比较数字大小一样直接使用 @litchar{==} 操作符。
 
   @tech{字符串}的大小规则如下：

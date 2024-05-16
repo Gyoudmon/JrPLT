@@ -96,6 +96,11 @@
         "xtree": "cpp",
         "xutility": "cpp",
         "__functional_03": "cpp",
-        "memory_resource": "cpp"
+        "memory_resource": "cpp",
+        "__bits": "cpp",
+        "__verbose_abort": "cpp",
+        "set": "cpp",
+        "span": "cpp",
+        "variant": "cpp"
     }
 }
