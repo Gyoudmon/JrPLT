@@ -6,8 +6,8 @@
 
 本课程以各类比赛题库为导向教授学生 C++/Python 语言基础和算法基础。
 
-@include-section{contest/stream.scrbl}
-@include-section{contest/array1d.scrbl}
-@include-section{contest/string.scrbl}
+@include-section{stema/stream.scrbl}
+@include-section{stema/array1d.scrbl}
+@include-section{stema/string.scrbl}
 
 @handbook-reference[]

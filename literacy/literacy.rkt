@@ -21,27 +21,31 @@
 
 (current-tongue 'zh-Hans)
 
-(handbook-bibtex-load "bibliography.tex")
+(handbook-bibtex-load (digimon-path 'literacy "bibliography.tex"))
+
+(d2-default-sketch? #true)
+(d2-default-theme 'Terminal)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define /dev/src (build-path "literacy" "share" "src"))
+
 (define stone-image
   (lambda [path #:scale [scale 1.0]]
     (image (digimon-path 'stone path) #:scale scale)))
 
 (define tamer-c++
   (lambda [id caption subpath start [end #px"END"] [ocness 'close-open]]
-    (tamer-code! #:oc-ness ocness #:rootdir (build-path "literacy" "share" "source")
+    (tamer-code! #:oc-ness ocness #:rootdir /dev/src
                  id caption subpath start end)))
 
 (define tamer-c++-class
   (lambda [id caption subpath]
-    (tamer-code-class #:rootdir (build-path "literacy" "share" "source")
+    (tamer-code-class #:rootdir /dev/src
                       id caption subpath)))
 
 (define tamer-c++-function
   (lambda [id caption subpath #:ns [ns #false] #:subpattern [subpattern #false]]
-    (tamer-code-function #:ns ns #:subpattern subpattern
-                         #:rootdir (build-path "literacy" "share" "source")
+    (tamer-code-function #:ns ns #:subpattern subpattern #:rootdir /dev/src
                          id caption subpath)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
