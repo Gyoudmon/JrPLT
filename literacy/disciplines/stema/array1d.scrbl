@@ -93,7 +93,7 @@
   @tech{初始化列表}所含@tech{元素}的数量@racketerror{不能比已知的长度多}，
   少了的部分自动补@racket[0]。
   比如：@tamer-code-ref{ilst} 中的单精度浮点数数组
-  @variable{singles} 的实际内容是：
+  @:var{singles} 的实际内容是：
 
   @(array-example 'ex:a:fl+0 (string #\1 #\2 #\3 #\0 #\0 #\0 #\0 #\0)
                   "含~a个元素的单精度浮点数数组，内容下标最大值是~a"
@@ -141,7 +141,7 @@
   时都要用到，修改其中的一处得连带修改其他所有的地方，太容易遗漏了，
   有没有方法可以直接知道@tech{数组的长度}信息呢？
 
-  可以使用 @sign{sizeof} 分别获得@tech{数组}占据的全部内存空间
+  可以使用 @:delim{sizeof} 分别获得@tech{数组}占据的全部内存空间
   和@tech{数组}的@tech{类型}所需要的内存空间，
   两相一除得到的就是@tech{数组的长度}(@tamer-code-ref{al})。
  

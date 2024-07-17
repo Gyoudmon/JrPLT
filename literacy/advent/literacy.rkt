@@ -8,11 +8,10 @@
 (require digimon/syntax)
 
 (require (for-syntax racket/list))
-(require (for-syntax racket/symbol))
 (require (for-syntax syntax/parse))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;(tamer-indexed-block-hide-chapter-index #true)
+(tamer-indexed-block-hide-chapter-index #true)
 
 (tamer-default-figure-label "图")
 (tamer-default-figure-label-separator #false)
@@ -20,15 +19,18 @@
 (tamer-default-figure-label-style 'bold)
 
 (tamer-story-submodule-name 'advent)
-(tamer-story-propagate-exceptions #false)
+(tamer-story-propagate-exceptions #true)
+
+(tamer-filebox-line-number-space 2)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-syntax (aoc-task stx)
   (syntax-parse stx #:datum-literals []
     [(_ year day title ...)
      (syntax/loc stx
-       (handbook-story (hyperlink (format "https://adventofcode.com/~a/day/~a" year day)
-                                  title ...)))]))
+       (handbook-root-story #:tag (format "aoc:~a:~a" year day)
+                            (hyperlink (format "https://adventofcode.com/~a/day/~a" year day)
+                                       title ...)))]))
 
 (define-syntax (aoc-desc stx)
   (syntax-parse stx #:datum-literals []
@@ -44,24 +46,32 @@
                                     (list "," ~)))
                  (item (list (emph "时间戳") ": " (tt date) ~ (format "第~a版" 'edition)))))]))
 
-(define-syntax ($argv stx)
-  (syntax-case stx []
-    [(_ [aname desc ...] [aname:rest desc:rest ...] ...)
-     (with-syntax* ([name (datum->syntax #'aname (symbol->immutable-string (syntax-e #'aname)))]
-                    [(name:rest ...) (for/list ([<name> (in-list (syntax->list #'(aname:rest ...)))])
-                                       (datum->syntax <name> (symbol->immutable-string (syntax-e <name>))))]
-                    [maxlength (apply max (map string-length (map syntax-e (syntax->list #'(name name:rest ...)))))])
-       (syntax/loc stx
-         (list (elem (hspace (- maxlength (string-length name)))
-                     (racketvarfont name) ~ desc ...)
-               (elem (linebreak) "; " (hspace (- maxlength (string-length name:rest)))
-                     (racketvarfont name:rest) ~ desc:rest ...) ...)))]))
+(define aoc-tamer-path
+  (lambda [path]
+    (digimon-path 'tamer path)))
+
+(define aoc-image
+  (lambda [path #:scale [scale 1.0]]
+    (image (digimon-path 'stone "AOC" path) #:scale scale)))
+
+(define aoc-example
+  (let ([csep (hspace 2)])
+  (lambda [data desc]
+    (list (linebreak)
+          (tabular #:sep csep
+                   #:style 'boxed
+                   #:row-properties '((top top))
+                   
+                   (list (list data desc)))
+          (linebreak)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define story*
   (lambda argv
     (nested #:style 'inset
-            (decode-compound-paragraph (decode-flow argv)))))
+            (for/list ([content (in-list argv)]
+                       #:when (element? content))
+              (para content)))))
 
 (define story
   (lambda argv

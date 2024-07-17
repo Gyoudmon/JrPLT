@@ -3,11 +3,14 @@
 @require{disciplines/literacy.rkt}
 @require{disciplines/bibentry.rkt}
 
+@(require geofun/digitama/avatar/bacteriophage)
+
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-title[
  #:documentclass 'ctexrep
  #:document-options '([heading . #true] [fontset . macnew])
  #:subtitle "课程重难点"
+ #:figure @bacteriophage-logo[32.0]
  #:hide-version? #true
  ]{青少计算机科学}
 

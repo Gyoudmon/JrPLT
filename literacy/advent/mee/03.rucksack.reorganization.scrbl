@@ -165,7 +165,6 @@ Python 可以通过@bold{自动序列装包/拆包}达到同样的目的，但�
 该字典只包括共有物品类型。
 
 @handbook-chunk[<定义共有物品类型查找函数>
-                (code:comment #,($argv [dict "源字典"] [items "物品清单字符串"] [start "物品清单字符串循环开始的位置"]))
                 (define (make-shared-item-dict dict items start)
                   (for/hash ([ch (in-string items start)]
                              #:when (hash-has-key? dict ch))

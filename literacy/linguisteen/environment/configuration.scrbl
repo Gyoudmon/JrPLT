@@ -11,15 +11,9 @@
 而是要配置好各种编程软件让你自己能顺利学习，
 有时候这个过程真的挺让人挫败的。
 
-@emph{本节内容适用于能够直接访问 Github 的学生自己在家配置。
- 专业性较强，如果家里没有专业人士协助，
+@emph{本节专业性较强，
+ 如果家里没有专业人士协助，
  你可能要花很长时间才能自己摸索出来。}
-
-@emph{@focus{如果因为网络问题导致安装失败，请直接放弃。}
- 或者，学生在上课时肯定经历过这个过程，
- 通过局域网从教师机下载的文件可以直接复制到家里的其他电脑里去，
- 但要保持粘贴位置相同，
- 然后按照本节内容完成其他配置。}
 
 @handbook-scenario[#:tag "env-conf"]{配置环境变量 @litchar{Path}}
 
@@ -105,24 +99,19 @@ Windows 学员可以用@exec{where.exe}（后缀@exec{.exe}不能省略）命令
 或
 
 @itemlist[#:style 'compact
-          @commandline{git clone https://github.com/wargrey/digimon C:/opt/digimon}
+          @commandline|{git clone stem@plteen.fun:digimon C:/opt/digimon}|
           @commandline{raco pkg install -i --auto --link C:/opt/digimon}]
 
 以上两种方法推荐第一种。
-如果因为网络问题导致安装失败，
-第二种方法的第一条命令也会失败。
-可以直接把从老师那下载的 @filepath{C:/opt/digimon} 复制到相应位置，
-然后再执行第二条命令就行。
+如果因为网络问题导致安装失败才换第二种方法。
 
 @handbook-scenario{安装课程相关软件}
 
 这部分软件是运行课程相关程序时必须要有的，
-包含图片素材、头文件、动态链接库等一系列重要文件，
-可以直接把从教师机下载的文件夹复制过来，
-也可以在 PowerShell 里运行如下命令安装：
+包含图片素材、头文件、动态链接库等一系列重要文件。
 
 @itemlist[#:style 'compact
-          @commandline{git clone https://github.com/Gyoudmon/GYDMstem C:/opt/GYDMstem}]
+          @commandline|{git clone stem@plteen.fun:GYDMstem C:/opt/GYDMstem}|]
 
 @handbook-scenario{安装 Pygame}
 

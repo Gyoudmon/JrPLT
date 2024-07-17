@@ -5,62 +5,203 @@
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @aoc-task[2022 2]{猜拳大赛}
 
-@aoc-desc[#:keywords ["字符" "字符串" "符号类型" "枚举类型"]
-          #:edition [三 "2024-06-13"]]
+@aoc-desc[#:keywords ["类型" "符号类型" "枚举类型" "模式识别"]
+          #:edition [三 "2024-06-22"]]
 
-今天故事中的主线任务将按如下程序结构展开：
-
-@handbook-chunk[<rochambo:*>
-                (module advent typed/racket/base
-                  <定义比赛规则函数>
-                  <定义策略解密函数>
-                  <定义策略规则函数>
-                  <定义函数simulate-with-guessed-strategy>
-                  <定义函数simulate-with-designed-strategy>)]
+猜拳游戏是一种起源于中国，
+后经日本标准化并风靡全球的简单、快捷、和平的终结分歧的游戏。
+作为一种产生随机结果的手段，其效果跟抛硬币、掷骰子差不多，
+多见于小孩为主要参与者的非正式场合，
+但也确实存在不少真实世界的应用案例。
+比如在某些体育赛事中用于决定首发队伍。以及：
 
 @story*{
- @story{精灵们开始在沙滩上搭帐篷。为了让自己的帐篷能够尽可能的离食物仓库近一些，
-  一场超大型的猜拳大赛正在如火如荼的进行着。}
+ @story{精灵们开始在沙滩上搭帐篷。
+  为了让自己的帐篷能够尽可能的离食物仓库近一些，
+  一场超大型的猜拳大赛正在如火如荼地进行着。}
 
- @story{猜拳是一种双人对决类游戏，一场比赛下来双方要来上很多轮。每一轮，
-  两位选手同时决定在石头、布、剪刀三种手型里任选其一，
-  然后依据如下简单规则决出胜负：石头砸烂剪刀、剪刀碎掉布、布以柔克刚包裹石头；
+ @story{猜拳是一种双人对决类游戏，一场比赛下来双方要来上很多轮。
+  每一轮，两位选手同时决定在石头、布、剪刀三种手型里任选其一，
+  然后依据如下简单规则决出胜负：
+  石头砸烂剪刀、剪刀碎掉布、布以柔克刚包裹石头；
   而如果双方手型一致，则算平局。}
  
- @story{为答谢你昨天的帮助，有一只小精灵愿意给你一份加密策略，声称一定能帮你获得优胜。
-  这份加密策略看起来是这样的：
- }}
+ @story{得分最高的人将获得比赛优胜，
+  总得分即是每一轮得分的总和。
+  每一轮得分又分为两部分：手型分（出石头得 @tamer-datum['shape-score 'rock] 分，
+  出布得 @tamer-datum['shape-score 'paper] 分，
+  出剪刀得 @tamer-datum['shape-score 'scissor] 分）和结局分（输了不得分，
+  平局得 @tamer-datum['outcome-score 'draw] 分，
+  赢了就能得到 @tamer-datum['outcome-score 'win] 分）。}
+}
 
-@tabular[#:style 'boxed #:sep @hspace[1]
-         (list (list "A" "Y")
-               (list "B" "X")
-               (list "C" "Z"))]
+@handbook-scenario{类型与集合}
 
-精灵说：“左边那一列代表对手出的手型， A 指代石头，B 指代布，C 指代剪刀。
-右边那列……” 不巧，这个时候别的精灵喊她过去帮忙搭帐篷了，她也就真的撇下你
-去帮忙了。
+本书无时无刻不在提“@tech{类型}”这个词，
+还稀里糊涂用它搞定了昨天的任务，
+似乎也没碰到特别不好理解的地方。
+在日常生活中，
+@tech{类型}这个词的出镜率可能没有那么高，
+但它事实上已经内化在我们的母语中了。比如，
 
-没办法，你只好自己猜了，第二列肯定指我自己要出的手型，并且， X 指石头，
-Y 指布，Z 指剪刀。考虑到每次都赢对手就太可疑了，这份策略一定是精心设计过的。
+@itemlist[
+ @item{按奇偶性，自然数可分为@:type{奇数}和@:type{偶数}两大@litchar{类}；}
 
-得分最高的人将获得比赛优胜，总得分即是每一轮得分的总和。每一轮得分又分为两部分：
-手型分（出石头得 @tamer-datum['shape-score 'rock] 分，出布得
-@tamer-datum['shape-score 'paper] 分，出剪刀得
-@tamer-datum['shape-score 'scissor] 分）和结局分（输了不得分，
-平局得 @racket[3] 分，赢了就能得到 @racket[6] 分）。
+ @item{@:type{苹果}和@:type{梨}是两@litchar{种}不同的水果；
+  我喜欢@:type{苹果}胜于@:type{梨}，
+  但是刚刚吃的@:id{苹果}没有@:type{梨}好吃。}
+ 
+ @item{当一个家里有猫的人说“我喜欢猫”时，她脑海里浮现的是@:id{自己家的猫}？还是@:type{猫}这@litchar{种}动物？}
+ ]
 
-提炼上述比赛规则，无论是选手可出的手型，还是每轮比赛的结局，都只有有限的几个取值，
-这样的数据类型通常会被定义为@bold{枚举类型}。在 Racket 中，枚举类型一般会直接使用
-@racket[Symbol]类型的数据来表示，比如 石头(@racket['rock])、布(@racket['paper])、
-剪刀(@racket['scissor])；赢(@racket['win])、平局(@racket['draw])、
-输(@racket['lose])@handbook-footnote{在真实应用中，猜拳手型可以更为精确的定义为:
- @racket[(define-type RPSShape (U 'rock 'paper 'scissor))]，当函数参数被声明为
- 只接受 @racket[RPSShape] 类型的值时，就只能传入上述三个符号，否则编译失败。}。
-于是，围绕这两个枚举类型，我们可以定义如下四个函数分别计算手型分、结局分、本轮得分，
-以及每一轮的结局：
+可见，人脑能无缝切换@:type{类型名}和@:id{某类型中的某个独特个体}。
 
-@handbook-chunk[<定义比赛规则函数>
-                (code:comment #,($argv [shape "当前手型"]))
+@tamer-figure!['ntower "数系和数塔" (aoc-image "number.png" #:scale 0.32)]
+
+严肃地说，
+@focus{@handbook-deftech[#:origin "Type"]{类型}是基于集合(Set)的数学概念，
+各种具体的@tech{类型}不外乎是给数学中的不同类@:term{集合}起了个更直观的@:term{名字}}。
+@:thus{当一个变量被标记为某种@tech{类型}时，
+ 那这个变量的@:term{值域}即为对应的@:term{集合}，
+ 可以被初始化为该@:term{集合}中的任意一个元素
+ }（只要它在计算机能表示的数值范围内）。比如：
+
+@tamer-repl[(code:comment @#,elem{@:type{Natural} 指的是@:term{自然数}集合 @${\mathbb N = \{ 0, 1, 2, 3, \ldots \}}})
+            (code:comment @#,elem{且它包含的最大@:term{自然数}不受计算机体系结构的限制})
+            (define n : Natural #x123456789ABCDEF0FEDCBA987654321)
+            n
+            (code:comment @#,elem{@:type{String} 指全体@:term{字符串}的集合})
+            (define str : String "atom")
+            str
+            (code:comment @#,elem{@:type{Symbol} 指全体@:term{名字}的集合})
+            (define sym : Symbol 'atom)
+            sym]
+
+@handbook-scenario{符号·枚举类型}
+
+猜拳游戏是一种起源于中国，
+后经日本标准化并风靡全球的简单、快捷、和平的终结分歧的游戏。
+作为一种产生随机结果的手段，其效果跟抛硬币、掷骰子差不多，
+多见于小孩为主要参与者的非正式场合，
+但也确实存在不少真实世界的应用案例。
+比如在某些体育赛事中用于决定首发队伍。以及：
+
+@story*{
+ @story{为答谢你昨天的帮助，
+  有一只小精灵愿意给你一份加密策略，声称一定能帮你获得优胜。
+  “左边那一列代表对手出的手型， A 指代石头，B 指代布，C 指代剪刀。右边那列……”
+  不巧，这个时候别的精灵喊她过去帮忙搭帐篷了，
+  她也就真的撇下你去帮忙了。}
+
+ @story{没办法，你只好自己猜了，
+  第二列肯定指我自己要出的手型:
+  X 指石头，Y 指布，Z 指剪刀。
+  考虑到每次都赢对手就太可疑了，
+  这份策略一定是精心设计过的。}
+
+ @story{请根据精灵给你的加密策略计算@question{按照你的理解最后能得到的总分}。}
+}
+
+鉴于今天的任务自带一系列真·解谜游戏属性。
+因此，相对于昨天的任务，
+本章的起点碎片除了包含两个主线任务碎片外还包含游戏规则碎片：
+
+@handbook-chunk[<roshambo:*>
+                (module advent typed/racket
+                  <定义比赛规则>
+                  <定义策略解密函数>
+                  <定义策略规则函数>
+                  <主线任务:求解谜题1>
+                  <主线任务:求解谜题2>)]
+
+@;(tamer-filebox (aoc-tamer-path "mee/02_rps.aex"))
+
+本任务蕴含着一条隐藏信息，猜拳大赛的比赛规则实际上有两个维度组成：
+@focus{猜拳游戏自身的规则}和@focus{猜拳大赛的计分规则}。
+因此，碎片 @racket[<定义比赛规则>] 也要细分为两个碎片：
+
+@handbook-chunk[<定义比赛规则>
+                <定义猜拳游戏规则>
+                #;<定义大赛计分规则>]
+
+对于猜拳游戏，在不同地方虽然叫法可能不同，
+但无论是选手可出的手型，还是每轮比赛的结局，都只有有限的几个@tech{值}，
+这样的一组@tech{值}通常会被定义成@handbook-deftech[#:origin "Enumerated Type" #:abbr "enum"]{枚举类型}。
+在 Racket 中，@tech{枚举类型}的@tech{值}就直接用@tech{符号类型}的@tech{值}表示。
+
+这句话相当拗口，不着急，一步步来，从回顾“@tech{值}”这个概念开始：
+
+@tamer-repl[(code:comment "这是一个 String 类型的值")
+            "atom"
+            (code:comment "这是一个 Symbol 类型的值")
+            'atom
+            (code:comment "这是一个名为 atom 的变量")
+            (eval:alts atom (eval:result "" "" "undefined identifier: atom"))]
+
+从本例中我们至少能读出以下信息：
+
+@itemlist[
+ #:style 'ordered
+ 
+ @item{@tech{值}是不能再化简的表达式。}
+  
+ @item{@:type{Symbol} 的@tech{值}在语法上跟在符号@:delim{'}(键盘输入用@:delim{单引号})后面。}
+
+ @item{@:type{Symbol} 的@tech{值}看起来跟变量名很像。}
+]
+
+第3条是点睛之笔。
+@:thus{@handbook-deftech[#:origin "Symbol Type"]{符号类型}@handbook-footnote{在有些语言里，
+  @tech{符号类型}也被称为原子类型(Atom Type)。
+  }存在的意义就是为了让你能直接写出代表@:term{名字}的@tech{值}}，
+而又不必非得把这个@:term{名字}定义成变量。
+例子中的@:err{红色错误信息}说的是“未定义标识符 atom”，
+之所以会有此错误信息，是因为我们确实没有定义它。
+在没有@tech{符号类型}的语言里，
+相同目的可以用@tech{字符串类型}代劳。
+
+注意，例子中 @racket['atom] 的@racketoutput{类型信息}显示的不是 @:type{Symbol}，
+而是它自己。这说明，@:thus{所有符号@tech{值}既属于 @:type{Symbol} 类型，
+ 它们各自也都专属于它们自己代表的@handbook-deftech[#:origin "Singleton Type"]{单例类型}。
+}@tech{符号类型}的这个性质是它可以用于表示@tech{枚举类型}的基础。
+
+在日常生活中，
+石头(@racket['rock])、布(@racket['paper])、剪刀(@racket['scissor])
+不过是万千名词中平平无奇的三个，扔词堆里就再也找不出来的那种。
+在猜拳游戏中，
+如果把它仨当作一般 @:type{Symbol} 类型的@tech{值}来处理，
+那我们就没有任何手段限制玩家只出这三种手型了。
+这有个正在耍无赖的玩家，
+他的手型伸出了三根手指、另外两根握拳，
+这怎么算？
+
+用自定义@tech{枚举类型}可破。
+
+@handbook-chunk[<定义猜拳游戏的手型和结局类型>
+                (define-type RPS:Shape (U 'rock 'paper 'scissor))
+                (define-type RPS:Output (U 'win 'draw 'lose))]
+
+如此一来，我们就有机会限定玩家只能出规定的手型(结局类型同理)：
+
+@tamer-repl[(code:comment "定义一个 RPS:Shape 的变量，并初始化为 'rock，可行")
+            (define shape : RPS:Shape 'rock)
+            (code:comment "定义一个 RPS:Output 的变量，并初始化为 'tie，失败")
+            (eval:alts (define outcome : RPS:Output 'tie)
+                       (eval:result "" "" "Type Checker: type mismatch"))]
+
+看，失败原因是@:err{类型不匹配（type mismatch），
+ 期待一个类型为 @:type{RPS:Output} 的值，结果喂给它的却是 @racket['tie]}。
+
+@:term{集合}作为一种数学对象有它们自己的运算，
+跟@tech{类型}关系最密切的是@:term{并集}，其次是@:term{交集}。
+我们给猜拳大赛定义的两个@tech{类型}均为名词集合的真子集： @$${
+ \b{Shape} & = \{ \mathit{rock}, \mathit{paper}, \mathit{scissor} \} \\
+ \b{Outcome} & =  \{ \mathit{win}, \mathit{draw}, \mathit{lose} \}
+}
+
+@handbook-chunk[<定义猜拳游戏规则>
+                <定义猜拳游戏的手型和结局类型>
+                
                 (define (shape-score [shape : Symbol]) : Byte
                   (case shape
                     [(rock)    1]
@@ -68,7 +209,7 @@ Y 指布，Z 指剪刀。考虑到每次都赢对手就太可疑了，这份策�
                     [(scissor) 3]
                     [else      0]))
 
-                (code:comment #,($argv [outcome "当前结局"]))
+                
                 (define (outcome-score [outcome : Symbol]) : Byte
                   (case outcome
                     [(win)  6]
@@ -76,12 +217,12 @@ Y 指布，Z 指剪刀。考虑到每次都赢对手就太可疑了，这份策�
                     [(lose) 0]
                     [else   0]))
 
-                (code:comment #,($argv [sf:play "本轮己方手型"] [outcome "本轮结局"]))
+                
                 (define (round-score [sf:play : Symbol] [outcome : Symbol]) : Index
                   (+ (shape-score sf:play)
                      (outcome-score outcome)))
 
-                (code:comment #,($argv [op:play "对手出手手型"] [sf:play "我方出手手型"]))
+                
                 (define (round-end [op:play : Symbol] [sf:play : Symbol]) : Symbol
                   (cond [(eq? sf:play op:play)  'draw]
                         [(eq? sf:play 'rock)    (if (eq? op:play 'scissor) 'win 'lose)]
@@ -114,8 +255,7 @@ Y 指布，Z 指剪刀。考虑到每次都赢对手就太可疑了，这份策�
 于是，抱着试试看的心态，我们需要一个函数 @racketid[simulate-with-guessed-strategy]
 来计算@question{严格跟着那份自己理解的加密策略走能得到多高的分}：
 
-@handbook-chunk[<定义函数simulate-with-guessed-strategy>
-                (code:comment #,($argv [/dev/datin "与加密策略关联的输入源"]))
+@handbook-chunk[<主线任务:求解谜题1>
                 (define simulate-with-guessed-strategy : (-> Input-Port Natural)
                   (lambda [/dev/datin]
                     <读取-模拟-累加-循环>))]
@@ -124,7 +264,6 @@ Y 指布，Z 指剪刀。考虑到每次都赢对手就太可疑了，这份策�
 即逐行读取策略指导，每读到一行，就按照该轮策略模拟比赛，然后将结果累加。直到没有更多内容为止，函数返回总得分。
 
 @handbook-chunk[<读取-模拟-累加-循环>
-                (code:comment #,($argv [total "比赛结束时的总得分"]))
                 (let rsal : Natural ([total : Natural 0])
                   (define line (read-line /dev/datin))
                   (if (string? line)
@@ -137,7 +276,6 @@ Y 指布，Z 指剪刀。考虑到每次都赢对手就太可疑了，这份策�
 要先解密策略文件：
 
 @handbook-chunk[<定义策略解密函数>
-                (code:comment #,($argv [ch "加密策略文件中的字符"]))
                 (define (char->shape [ch : Char]) : Symbol
                   (case ch
                     [(#\A #\X) 'rock]
@@ -192,7 +330,6 @@ Y 指布，Z 指剪刀。考虑到每次都赢对手就太可疑了，这份策�
 于是，我们先来补全真正的策略规则函数:
 
 @handbook-chunk[<定义策略规则函数>
-                (code:comment #,($argv [ch "加密策略文件中的字符"]))
                 (define (char->outcome [ch : Char]) : Symbol
                   (case ch
                     [(#\X) 'lose]
@@ -200,7 +337,6 @@ Y 指布，Z 指剪刀。考虑到每次都赢对手就太可疑了，这份策�
                     [(#\Z) 'win]
                     [else 'false]))
 
-                (code:comment #,($argv [op:play "对手手型"] [outcome "策略结局"]))
                 (define (smart-shape op:play outcome)
                   (cond [(eq? outcome 'draw)    op:play]
                         [(eq? op:play 'rock)    (if (eq? outcome 'win) 'paper 'scissor)]
@@ -211,8 +347,7 @@ Y 指布，Z 指剪刀。考虑到每次都赢对手就太可疑了，这份策�
 然后是真策略函数 @racketid[simulate-with-designed-strategy]，
 以计算@question{严格跟着那份精灵的加密策略走能得到多高的分}：
 
-@handbook-chunk[<定义函数simulate-with-designed-strategy>
-                (code:comment #,($argv [/dev/datin "与加密策略关联的输入源"]))
+@handbook-chunk[<主线任务:求解谜题2>
                 (define simulate-with-designed-strategy : (-> Input-Port Natural)
                   (lambda [/dev/datin]
                     (let rsal : Natural ([total : Natural 0])
@@ -241,6 +376,31 @@ Y 指布，Z 指剪刀。考虑到每次都赢对手就太可疑了，这份策�
 @tamer-repl[($ simulate-with-designed-strategy #:< "mee/02_rps.aoc")]
 
 不过，貌似就本任务中的输入数据来说，这个机密策略还不如自己瞎猜的那个。
+
+@handbook-scenario{扩展思考}
+
+虽然今天的任务完成了，
+但是你有没有好奇过，
+精灵们是如何执行她们写下的比赛策略的呢？
+
+表面上看，猜拳是一个真·随机过程，
+在这种情况下，不存在行之有效的必胜策略。
+但是，人类玩家并不是真·随机数发生器，
+下一轮出什么手型的影响因素很多。比如：
+性格特征、心理因素、本轮结局、对手的干扰等等。
+有经验的玩家可以在多次对决中逐渐摸索出对手的出手规律，
+从而预判对手下一次的出手可能。
+
+实际上，确实有不少社会科学类研究员专门研究过猜拳中的博弈策略，
+并揭示出了一些有趣的结论。
+比如人类的行为模式普遍存在持续的周期性；
+某些对手会基于本轮结局按不同的出手循序决定下一轮出手手型。
+也有人根据这些结论设计出了不少猜拳机器人，
+其中最无耻的一类策略是利用高速摄像头捕捉对手的手型，
+然后在毫秒级延迟中给出必杀手型。
+
+更严肃一点的研究可以是，
+将猜拳游戏中@:term{互相克制的三种手型}放到@:term{演化动力学}模型中去探索动态博弈策略。
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-reference[]

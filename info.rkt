@@ -7,7 +7,7 @@
 (define build-deps '("digimon" "scribble-lib" "racket-doc"))
 
 (define version "1.0")
-(define pkg-authors '("WarGrey Gyoudmon Ju"))
+(define pkg-authors '("WarGrey G. Ju"))
 (define test-omit-paths 'all)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -59,8 +59,6 @@
   '(["literacy/Linguisteen.scrbl" xelatex]
     ["literacy/Disciplines.scrbl" xelatex]
     ["literacy/TheBigBang.scrbl" xelatex]
-    ["literacy/MagicalEnergyExpedition.scrbl" xelatex]
-    
-    ["literacy/lookback/2023.scrbl" "居-2023" xelatex]
+    ["literacy/AdventOfLambda.scrbl" xelatex "advent-of-lambda"]
 
     ["literacy/Metrics.scrbl" xelatex #:explicitly-make]))

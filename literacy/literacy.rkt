@@ -2,6 +2,7 @@
 
 (provide (all-defined-out))
 (provide (all-from-out digimon/tamer))
+(provide (rename-out [:cmt :desc] [:out :type]))
 
 (require digimon/tamer)
 (require digimon/collection)
@@ -49,38 +50,6 @@
                          id caption subpath)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define desc
-  (lambda argv
-    (apply racketmetafont argv)))
-
-(define name
-  (lambda [arg]
-    (tamer-deftech arg)))
-
-(define term-name
-  (lambda [arg]
-    (defterm arg)))
-
-(define variable
-  (lambda argv
-    (apply racketvarfont argv)))
-
-(define sign
-  (lambda argv
-    (apply racketparenfont argv)))
-
-(define id
-  (lambda argv
-    (apply racketidfont argv)))
-
-(define type
-  (lambda body
-    (apply racketvalfont body)))
-
-(define form
-  (lambda argv
-    (apply racketkeywordfont argv)))
-
 (define idea
   (lambda argv
     (apply racketoutput argv)))
@@ -88,18 +57,6 @@
 (define focus
   (lambda argv
     (apply racketvalfont argv)))
-
-(define thus
-  (lambda argv
-    (apply racketresultfont argv)))
-
-(define note
-  (lambda argv
-    (apply racketcommentfont argv)))
-
-(define fallacy
-  (lambda argv
-    (apply racketerror argv)))
 
 (define question
   (lambda argv

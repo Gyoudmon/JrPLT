@@ -70,7 +70,7 @@
 我们对@tech{字符数组}和@tech{字符串}的基本操作都不应该陌生了，
 直接就当成是特殊的@tech{数组}即可(@tamer-code-ref{defstr_as_array})。
 
-@margin-note{自己动手画画看，字符数组 @variable{chars} 里的内容是什么？}
+@margin-note{自己动手画画看，字符数组 @:var{chars} 里的内容是什么？}
 
 @tamer-c++['defstr_as_array "数组式初始化" "string.cpp" #px"数组式初始化"]
 
@@ -91,43 +91,43 @@
 
 @handbook-action{扩展知识}
 
-C++ 的@tech{字符串}类型名是@type{std::string}。
-所以你看，一般的数据@tech{类型}如@type{int}、@type{float}、@type{bool}、@type{void}，
+C++ 的@tech{字符串}类型名是@:type{std::string}。
+所以你看，一般的数据@tech{类型}如@:type{int}、@:type{float}、@:type{bool}、@:type{void}，
 它们的名字里没有奇怪的符号，因为那些@tech{类型}都很基础，一般不用特别对待；
 但是@tech{字符串}可以有很多种，跟你自己写的任何@tech{类}并无区别。
 将来你很可能会自己写一个更好用的@tech{字符串}@tech{类}(比如做游戏软件时)，
-初学阶段用C++的标准@type{std::string}就好。
+初学阶段用C++的标准@:type{std::string}就好。
 
 @tech{字符数组}是比较基础的简单概念，在真实世界的代码里很少直接使用。
-@type{std::string} @tech{类}提供了很多操作@tech{字符串}的@tech{方法}，
+@:type{std::string} @tech{类}提供了很多操作@tech{字符串}的@tech{方法}，
 帮我们隐藏了直接使用@tech{字符数组}的不少麻烦，
 包括上面的赋值(@litchar{=})和@tech{连接}(@litchar{+})运算符。
 
 @itemlist[
  #:style 'ordered
 
- @item{插入（@id{insert}）操作：在给定@tech{字符串}的指定位置插入别的@tech{字符数组}或@tech{字符串}，并且返回自己。
-  当插入位置在字符串结尾时，也可以使用@id{append}@tech{方法}或@litchar{+=}运算符省去插入位置。
+ @item{插入（@:id{insert}）操作：在给定@tech{字符串}的指定位置插入别的@tech{字符数组}或@tech{字符串}，并且返回自己。
+  当插入位置在字符串结尾时，也可以使用@:id{append}@tech{方法}或@litchar{+=}运算符省去插入位置。
 
   @tamer-c++['s.insert "插入操作" "string.cpp" #px"插入操作"]}
                                                       
- @item{删除（@id{erase}）操作：删除给定@tech{字符串}的指定位置处的连续几个@tech{字符}。
+ @item{删除（@:id{erase}）操作：删除给定@tech{字符串}的指定位置处的连续几个@tech{字符}。
 
   @tamer-c++['s.erase "删除操作" "string.cpp" #px"擦除操作"]}
 
- @item{更新（@id{replace}）操作：将给定@tech{字符串}的指定位置处的连续几个@tech{字符}替换成别的@tech{字符数组}或@tech{字符串}。
+ @item{更新（@:id{replace}）操作：将给定@tech{字符串}的指定位置处的连续几个@tech{字符}替换成别的@tech{字符数组}或@tech{字符串}。
   更新操作可以看成是“先删除再插入”，请结合@tech{方法}签名理解这点。
   如果只需要替换一个字符，别忘了@litchar{[]}和@litchar{=}运算符。
 
   @tamer-c++['s.replace "更新操作" "string.cpp" #px"替换操作"]}
 
- @item{查找（@id{find}）操作：在给定@tech{字符串}的指定位置开始查找别的@tech{字符串}，
+ @item{查找（@:id{find}）操作：在给定@tech{字符串}的指定位置开始查找别的@tech{字符串}，
   如果能找到，返回它@emph{第一次}出现的位置；
-  如果不能找到，返回特殊值@type{std::string}::@var{npos}(通常是@racket[-1])。
+  如果不能找到，返回特殊值@:type{std::string}::@:var{npos}(通常是@racket[-1])。
   
   @tamer-c++['s.find "查找操作" "string.cpp" #px"查找操作"]}
 
- @item{比较（@id{compare}）操作：比较给定@tech{字符串}与另一个@tech{字符串}的大小。
+ @item{比较（@:id{compare}）操作：比较给定@tech{字符串}与另一个@tech{字符串}的大小。
   返回@racket[0]表示相等；返回负数表示小于；返回正数表示大于。
   如果只关心是否相等，可以像比较数字大小一样直接使用 @litchar{==} 操作符。
 

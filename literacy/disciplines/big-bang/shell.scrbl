@@ -45,7 +45,7 @@
   用户通过键盘操作计算机，每次输入一行，按回车键后计算机开始执行刚刚输入的行，
   并把输出结果显示在屏幕上。}
 
- @item{Windows 启动 PowerShell 快捷做法：@hotkeys['win #\R]，输入 @id{PowerShell}。}]
+ @item{Windows 启动 PowerShell 快捷做法：@hotkeys['win #\R]，输入 @:mod{PowerShell}。}]
 
 @handbook-action[#:tag "$shell:path"]{难点知识}
 
