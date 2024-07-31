@@ -9,7 +9,8 @@
       (+ (* k x) b))))
 
 (module+ main
-  (parameterize ([plot-pen-color-map 'pastel2])
+  (parameterize ([plot-pen-color-map 'pastel2]
+                 [line-width 2])
     (define kb-data
       (list (cons 2 4)
             (cons 2 -4)

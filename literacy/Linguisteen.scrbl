@@ -108,9 +108,6 @@
  (book-bib-entry #:date "2009"
                  "TCC" "冒号课堂：编程范式与OOP思想"
                  "郑辉" "电子工业出版社")
- (book-bib-entry #:date "2022"
-                 "6kids" "少儿计算思维养成记：六个孩子的编程学习笔记"
-                 (list "包若宁" "卜文远" "傅鼎荃" "魏文珊" "张秦汉" "卜东波") "机械工业出版社")
  (book-bib-entry #:date "2015" #:edition "8th"
                  "SE:APA" "Software Engineering: A Practitioner's Approach"
                  (list "Roger S. Pressman" "Bruce R. Maxim")
@@ -118,8 +115,4 @@
  (book-bib-entry #:date "2018"
                  "CJLH" "The Combridge Handbook of Japanese Linguistics"
                  (editor "Yoko Hasegawa")
-                 "Cambridge University Press")
- (url-bib-entry #"ST" "什么是科学思维？如何建立科学思维？"
-                "https://b23.tv/WvDw04W"
-                #:author (list "芳斯塔芙" "鬼谷藏龙")
-                #:date "2023")]
+                 "Cambridge University Press")]

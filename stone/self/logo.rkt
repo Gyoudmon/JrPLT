@@ -1,7 +1,7 @@
 #lang typed/racket/base
 
 (require bitmap)
-(require geofun/track)
+(require geofun)
 (require geofun/digitama/avatar/bacteriophage)
 (require geofun/digitama/schematic/procedure)
 
@@ -29,12 +29,13 @@
                           (drift '#:A '(-0.618+3.0i))
                           (drift '#:C '(-0.618+0.0i)))
                         
-                        (track-freeze 7-bridge-agent #:color 'Yellow #:fill 'Gray #:fill-style 'odd-even))
+                        (geo-freeze 7-bridge-agent #:color 'Yellow #:fill 'Gray #:fill-style 'odd-even))
                       '(V E F) '(=))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define logo (bacteriophage-logo 128.0 #:perspective-alpha 0.75))
+(define logo (bacteriophage-logo 128.0))
 (define icon (bitmap-inset logo))
+(define figure (bitmap-inset (bacteriophage-logo 128.0 #:tail-color 'SteelBlue #:tail-alpha 1.0)))
 (define mini-icon (bitmap-inset (bacteriophage-logo 128.0 #:sheath-length 0.0)))
 
 (define splash (bitmap-splash-screen))
@@ -42,5 +43,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main
   logo
+  figure
+  (bitmap-frame logo #:fill 'Aquamarine)
   mini-icon
   splash)
