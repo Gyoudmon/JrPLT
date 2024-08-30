@@ -2,7 +2,7 @@
 
 (provide (all-defined-out))
 
-(require bitmap)
+(require geofun/vector)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define math-font (desc-font #:size 14.0 #:family 'math))
@@ -13,71 +13,70 @@
 (define y-axis-length (* x-axis-length 0.75))
 (define ar 4.0)
 
-(define (cs-xyline [x : Real] [y : Real]) : Bitmap
-  (bitmap-rb-superimpose
-   (bitmap-hline x 0.5 #:stroke cs-line)
-   (bitmap-vline 0.5 y #:stroke cs-line)))
+(define (cs-xyline [x : Real] [y : Real]) : Geo
+  (geo-rb-superimpose
+   (geo-hline x 0.5 #:stroke cs-line)
+   (geo-vline 0.5 y #:stroke cs-line)))
 
-(define (cs-dot [x : Real] [y : Real] [c : Color 'black]) : Bitmap
-  (bitmap-pin* 1.0 1.0 0.5 0.5 (cs-xyline x y)
-               (bitmap-circle 2.0 #:border #false #:fill c)))
+(define (cs-dot [x : Real] [y : Real] [c : Color 'black]) : Geo
+  (geo-pin* 1.0 1.0 0.5 0.5 (cs-xyline x y)
+               (geo-circle 2.0 #:stroke #false #:fill c)))
 
-(define (cs-rect [x : Real] [y : Real] [w : Real] [h : Real] [c : Color 'black]) : Bitmap
-  (bitmap-pin* 1.0 1.0 0.0 0.0 (cs-xyline x y)
-               (bitmap-ct-superimpose (bitmap-rc-superimpose
-                                       (bitmap-rectangle w h #:border c)
-                                       (bitmap-text "h " math-font))
-                                      (bitmap-text "w " math-font))))
+(define (cs-rect [x : Real] [y : Real] [w : Real] [h : Real] [c : Color 'black]) : Geo
+  (geo-pin* 1.0 1.0 0.0 0.0 (cs-xyline x y)
+               (geo-ct-superimpose (geo-rc-superimpose
+                                       (geo-rectangle w h #:stroke c)
+                                       (geo-text "h " math-font))
+                                      (geo-text "w " math-font))))
 
-(define (cs-circle [x : Real] [y : Real] [r : Real] [c : Color 'black]) : Bitmap
-  (bitmap-pin-over (cs-xyline x y)
-                   (make-rectangular x y)
-                   (bitmap-hc-append (bitmap-rc-superimpose
-                                      (bitmap-circle r #:border c)
-                                      (bitmap-arrow ar (- r ar) #:fill arrow-color))
-                                     (bitmap-text 'R math-font))
-                   (make-rectangular r r)))
+(define (cs-circle [x : Real] [y : Real] [r : Real] [c : Color 'black]) : Geo
+  (geo-pin-over (cs-xyline x y)
+                   x y
+                   (geo-hc-append (geo-rc-superimpose
+                                      (geo-circle r #:stroke c)
+                                      (geo-arrow ar (- r ar) #:fill arrow-color #:stroke #false))
+                                     (geo-text 'R math-font))
+                   r r))
 
-(define (cs-ellipse [x : Real] [y : Real] [a : Real] [b : Real] [c : Color 'black]) : Bitmap
-  (bitmap-pin-over (cs-xyline x y)
-                   (make-rectangular x y)
-                   (bitmap-vc-append
-                    (bitmap-hc-append
-                     (bitmap-cb-superimpose (bitmap-rc-superimpose
-                                             (bitmap-ellipse (* a 2) (* b 2) #:border c)
-                                             (bitmap-arrow ar (- a ar) #:fill arrow-color))
-                                            (bitmap-arrow ar (- b ar) pi/2 #:fill arrow-color))
-                     (bitmap-text 'a math-font))
-                    (bitmap-text 'b math-font))
-                   (make-rectangular a b)))
+(define (cs-ellipse [x : Real] [y : Real] [a : Real] [b : Real] [c : Color 'black]) : Geo
+  (geo-pin-over (cs-xyline x y)
+                   x y
+                   (geo-vc-append
+                    (geo-hc-append
+                     (geo-cb-superimpose (geo-rc-superimpose
+                                             (geo-ellipse (* a 2) (* b 2) #:stroke c)
+                                             (geo-arrow ar (- a ar) #:fill arrow-color #:stroke #false))
+                                            (geo-arrow ar (- b ar) pi/2 #:fill arrow-color #:stroke #false))
+                     (geo-text 'a math-font))
+                    (geo-text 'b math-font))
+                   a b))
 
-(define (cs-regular-polygon [n : Byte] [x : Real] [y : Real] [r : Real] [c : Color 'black]) : Bitmap
-  (bitmap-pin-over (cs-xyline x y)
-                   (make-rectangular x y)
-                   (bitmap-hc-append (bitmap-rc-superimpose
-                                      (bitmap-cc-superimpose
-                                       (bitmap-circle r #:border 'grey)
-                                       (bitmap-regular-polygon n r #:border c))
-                                      (bitmap-arrow ar (- r ar) #:fill arrow-color))
-                                     (bitmap-text 'R math-font))
-                   (make-rectangular r r)))
+(define (cs-regular-polygon [n : Byte] [x : Real] [y : Real] [r : Real] [c : Color 'black]) : Geo
+  (geo-pin-over (cs-xyline x y)
+                   x y
+                   (geo-hc-append (geo-rc-superimpose
+                                   (geo-cc-superimpose
+                                    (geo-circle r #:stroke 'grey)
+                                    (geo-regular-polygon n r #:stroke c))
+                                   (geo-arrow ar (- r ar) #:fill arrow-color #:stroke #false))
+                                  (geo-text 'R math-font))
+                   r r))
 
-(define (cartesian-pin [cs : Bitmap] [shapes : (Listof Bitmap)]) : Bitmap
-  (define pin-pt (+ (* ch 2) 2+2i))
-  (for/fold ([bmp : Bitmap cs])
+(define (cartesian-pin [cs : Geo] [shapes : (Listof Geo)]) : Geo
+  (for/fold ([bmp : Geo cs])
             ([shape (in-list shapes)])
-    (bitmap-pin-over bmp pin-pt shape)))
+    (geo-pin-over bmp (+ (* ch 2) 2) 2 shape)))
 
 (define (make-cartesian-demo [scale : Nonnegative-Flonum 1.0])
-  (bitmap-scale
+  (geo-scale
    (cartesian-pin
-    (bitmap-hb-append #:gapsize ch
-                      (bitmap-text "y " math-font)
-                      (bitmap-lt-superimpose
-                       (bitmap-vr-append
-                        (bitmap-arrow ar x-axis-length)
-                        (bitmap-text "x" math-font))
-                       (bitmap-arrow ar y-axis-length pi/2)))
+    (geo-hb-append #:gapsize ch
+                   (geo-text "y " math-font)
+                   (geo-lt-superimpose
+                    (geo-vr-append
+                     (geo-arrow ar x-axis-length #:stroke #false #:fill 'Black)
+                     (geo-text "x" math-font))
+                    (geo-arrow ar y-axis-length pi/2 #:stroke #false #:fill 'Black)))
     
     (list (cs-dot 30 40 'seagreen)
           (cs-rect 60 60 60 42 'forestgreen)

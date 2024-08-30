@@ -2,7 +2,7 @@
 
 (provide (all-defined-out))
 
-(require bitmap)
+(require geofun/vector)
 
 (require digimon/tamer)
 (require scribble/manual)
@@ -13,12 +13,12 @@
 (define anchor-font (desc-font #:size 9))
 
 (define anchor-demo
-  (for/fold ([base (bitmap-solid 'palegreen 96)])
-            ([superimpose (in-list (list bitmap-lt-superimpose bitmap-ct-superimpose bitmap-rt-superimpose
-                                         bitmap-lc-superimpose bitmap-cc-superimpose bitmap-rc-superimpose
-                                         bitmap-lb-superimpose bitmap-cb-superimpose bitmap-rb-superimpose))])
+  (for/fold ([base (geo-square 96 #:fill 'palegreen #:stroke #false)])
+            ([superimpose (in-list (list geo-lt-superimpose geo-ct-superimpose geo-rt-superimpose
+                                         geo-lc-superimpose geo-cc-superimpose geo-rc-superimpose
+                                         geo-lb-superimpose geo-cb-superimpose geo-rb-superimpose))])
     (let* ([anchor (string-upcase (cadr (string-split (symbol->immutable-string (object-name superimpose)) "-")))]
-           [label (bitmap-text anchor anchor-font #:color 'crimson)])
+           [label (geo-text anchor anchor-font #:color 'crimson)])
       (superimpose base label))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

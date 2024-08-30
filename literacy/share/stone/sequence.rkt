@@ -2,7 +2,7 @@
 
 (require racket/list)
 
-(require bitmap)
+(require geofun/vector)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define default-font : Font (desc-font #:family 'decorative #:size 24))
@@ -16,36 +16,36 @@
         1)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define bitmap-sequence : (-> Positive-Index (-> Integer Real) [#:unit Positive-Byte] [#:dot-radius Real] [#:arrow-radius Real] [#:gapsize Real] Bitmap)
+(define geo-sequence : (-> Positive-Index (-> Integer Real) [#:unit Positive-Byte] [#:dot-radius Real] [#:arrow-radius Real] [#:gapsize Real] Geo)
   (lambda [x-max map #:unit [unit 64] #:dot-radius [dr 3.0] #:arrow-radius [ar 8.0] #:gapsize [gapsize 8.0]]
-    (define axis (bitmap-arrow ar (* unit (+ x-max 2))))
-    (define λarrow (bitmap-arrow (* ar 0.618) (* unit 1.618) (/ pi 2.0) #:fill 'Gray))
-    (define x-baseline : Real (* (sub1 (bitmap-height axis)) 0.5))
+    (define axis (geo-arrow ar (* unit (+ x-max 2)) #:stroke #false #:fill 'Black))
+    (define λarrow (geo-arrow (* ar 0.618) (* unit 1.618) (/ pi 2.0) #:fill 'Gray #:stroke #false))
+    (define x-baseline : Real (* (sub1 (geo-height axis)) 0.5))
 
-    (for/fold ([number-line : Bitmap (bitmap-composite 'over axis 0.0 x-baseline (bitmap-circle dr #:fill 'GhostWhite) dr dr)])
+    (for/fold ([number-line : Geo (geo-composite #:operator 'over axis 0.0 x-baseline (geo-circle dr #:fill 'GhostWhite) dr dr)])
               ([i (in-range 1 (+ x-max 1))])
-      (define fmap : Bitmap
-        (bitmap-vc-append #:gapsize gapsize
-                          (bitmap-circle dr #:fill 'black)
-                          (bitmap-text i default-font #:color 'Purple)
-                          λarrow
-                          (bitmap-text (map i) default-font #:color 'Green)))
-      (bitmap-composite 'over
-                        number-line (* i unit) x-baseline
-                        fmap (* (bitmap-width fmap) 0.5) dr))))
+      (define fmap : Geo
+        (geo-vc-append #:gapsize gapsize
+                       (geo-circle dr #:fill 'black)
+                       (geo-text i default-font #:color 'Purple)
+                       λarrow
+                       (geo-text (map i) default-font #:color 'Green)))
+      (geo-composite #:operator 'over
+                     number-line (* i unit) x-baseline
+                     fmap (* (geo-width fmap) 0.5) dr))))
 
-(define bitmap-sequence-function : (-> String Real Color Color Bitmap)
+(define geo-sequence-function : (-> String Real Color Color Geo)
   (lambda [fn size color text-color]
     (define border (desc-stroke #:color 'WhiteSmoke #:width 2.0))
     
-    (bitmap-pin* 0.5 0.25 0.5 0.5
-                 (bitmap-sandglass size #:neck-width -0.32 #:neck-height -0.0 #:fill color #:border border)
-                 (bitmap-text (string-append "    " fn "    ") math-font #:color text-color))))
+    (geo-pin* 0.5 0.25 0.5 0.5
+              (geo-sandglass size #:neck-width -0.32 #:neck-height -0.0 #:fill color #:stroke border)
+              (geo-text (string-append "    " fn "    ") math-font #:color text-color))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define seq-diagram (bitmap-sequence 12 fibonacci-sequence))
-(define seq-function-shape (bitmap-sequence-function "f(n)" 64 'RoyalBlue 'GhostWhite))
-(define seq-fibonacci-shape (bitmap-sequence-function "F(n)" 64 'ForestGreen 'GhostWhite))
+(define seq-diagram (geo-sequence 12 fibonacci-sequence))
+(define seq-function-shape (geo-sequence-function "f(n)" 64 'RoyalBlue 'GhostWhite))
+(define seq-fibonacci-shape (geo-sequence-function "F(n)" 64 'ForestGreen 'GhostWhite))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main

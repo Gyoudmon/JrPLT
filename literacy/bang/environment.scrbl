@@ -25,6 +25,8 @@ Lisp 方言@handbook-footnote{Lisp 是最古老的两大高级程序语言之一
 我用 Racket 编写的构建工具可以帮助学生隐藏编译、测试 C++ 程序和项目时的所有恼人细节。
 对于学有余力的学生，Racket也是一个帮助他们打开学科眼界的窗口。
 
+此外，我用 Racket 编写的图形程序可以方便快捷的生成教学相关的可视化素材。
+
 @handbook-action{C++ 工具链}
 
 Windows、macOS、Linux 三大操作系统都有自己专属的C++工具链软件。
@@ -125,11 +127,6 @@ GYDMstem 也包含在本文配套的源码中，
 big-bang 是本游戏引擎的源码，
 在实际授课中一般不提供给学生，
 由教师编译好并包含在 GYDMstem 中一起分发给学生。
-
-然后执行以下命令安装：
-
-@itemlist[#:style 'compact
-          @commandline{raco pkg install --auto --link C:/opt/digimon}]
 
 @handbook-action{部署课程源码}
 
