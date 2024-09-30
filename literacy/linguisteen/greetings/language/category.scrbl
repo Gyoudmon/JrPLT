@@ -237,10 +237,10 @@
   现在感觉到“泰裤辣”就对味了。}}
 
 @tamer-repl[
- (require bitmap)
- (bitmap-polygon #:fill 'burlywood #:border 'green
-                 #:window -1-i
-                 '(0.0 -8+16i 32.0 -8-16i))]
+ (require geofun/vector)
+ (geo-polygon #:fill 'burlywood #:stroke 'green
+              #:window -1-i
+              '(0.0 -8+16i 32.0 -8-16i))]
 
 这段代码里出现了很多英文单词、数字和奇怪的符号，
 这些确实是代码给人的第一印象。

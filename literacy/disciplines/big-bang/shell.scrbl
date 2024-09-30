@@ -15,7 +15,7 @@
  
  @item{知道 Shell 既是一种操作计算机的方式，也是一种程序语言}
  
- @item{使用常用 shell 命令管理项目目录，完成后续课程必要的教学配置}]
+ @item{使用常用 shell 命令管理项目目录}]
 
 @handbook-scenario{知识点}
 

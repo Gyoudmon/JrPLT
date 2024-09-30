@@ -18,7 +18,10 @@
                      (define io:width : Flonum (* em 1.618))
                      (define in:gapsize : Flonum (* em 0.618))
 
-                     (define-dryland-wani! 7-bridge-agent [io:width in:gapsize #:anchor '#:A] #:-
+                     (define-dryland-wani! 7-bridge-agent [#:anchor '#:A
+                                                           #:stroke 'Yellow #:fill 'Gray #:fill-rule 'odd-even
+                                                           io:width in:gapsize]
+                       #:-
                        (move-up 3 '#:B)
                        (drift -1.4 '(-0.618+1.5i) '#:C)
                        (drift '#:B '(+0.618-1.5i))
@@ -28,7 +31,7 @@
                        (drift '#:A '(-0.618+3.0i))
                        (drift '#:C '(-0.618+0.0i)))
                         
-                     (geo-bitmap (geo-freeze 7-bridge-agent #:stroke 'Yellow #:fill 'Gray #:fill-rule 'odd-even)))
+                     7-bridge-agent)
                    '(V E F) '(=))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

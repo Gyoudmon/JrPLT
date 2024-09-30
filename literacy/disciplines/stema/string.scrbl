@@ -87,7 +87,7 @@
  @item{两个或多个@tech{字符串}可以通过加号(@litchar{+})@tamer-deftech[#:origin "Concatenate"]{连接}成一个全新的@tech{字符串}。
             
   @centered{@(tamer-figure! 'ex:s:cat "字符串连接操作"
-                            (bitmap-concatenate "计算机" "科学" #:font example-font))}}]
+                            (geo-concatenate "计算机" "科学" #:font example-font))}}]
 
 @handbook-action{扩展知识}
 
