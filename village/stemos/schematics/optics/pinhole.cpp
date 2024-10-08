@@ -1,12 +1,12 @@
 #include "pinhole.hpp"
 
-#include <gydm/physics/color/rgba.hpp>
+#include <plteen/physics/color/rgba.hpp>
 
 #include <filesystem>
 #include <vector>
 
 using namespace WarGrey::STEM;
-using namespace GYDM;
+using namespace Plteen;
 
 /*************************************************************************************************/
 static const int default_frame_rate = 24;
@@ -50,7 +50,7 @@ public:
 };
 
 /*************************************************************************************************/
-class WarGrey::STEM::PinholePlane::Pinholet : public GYDM::IGraphlet {
+class WarGrey::STEM::PinholePlane::Pinholet : public Plteen::IGraphlet {
 public:
     Pinholet(float width, float height) : width(width), height(height) {}
     virtual ~Pinholet() {}

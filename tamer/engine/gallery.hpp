@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../../digitama/gydm/bang.hpp"
+#include "../../digitama/plteen/bang.hpp"
 
 /*************************************************************************************************/
-namespace GYDM {
-    class GalleryPlane : public GYDM::TheBigBang {
+namespace Plteen {
+    class GalleryPlane : public Plteen::TheBigBang {
         public:
             GalleryPlane() : TheBigBang("Gallery") { this->the_name("Tamer"); }
 
@@ -13,7 +13,7 @@ namespace GYDM {
             void reflow(float width, float height) override;
 
         public:
-            bool can_select(GYDM::IMatter* m) override {
+            bool can_select(Plteen::IMatter* m) override {
                 return true;
             }
 
@@ -25,22 +25,22 @@ namespace GYDM {
             void reflow_for_raft(float width, float height);
 
         private: // objects for composing a raft
-            GYDM::Labellet* caption;
-            GYDM::IShapelet* raft;
-            GYDM::IShapelet* bow;
-            GYDM::IShapelet* stern;
-            GYDM::IShapelet* flag;
-            GYDM::IShapelet* mast;
-            GYDM::IShapelet* post;
-            GYDM::IShapelet* paddle;
-            GYDM::IShapelet* sea;
+            Plteen::Labellet* caption;
+            Plteen::IShapelet* raft;
+            Plteen::IShapelet* bow;
+            Plteen::IShapelet* stern;
+            Plteen::IShapelet* flag;
+            Plteen::IShapelet* mast;
+            Plteen::IShapelet* post;
+            Plteen::IShapelet* paddle;
+            Plteen::IShapelet* sea;
 
         private: // objects for composing a house
-            GYDM::IShapelet* roof;
-            GYDM::IShapelet* wall;
-            GYDM::IShapelet* door;
-            GYDM::IShapelet* lock;
-            GYDM::IShapelet* window;
-            GYDM::IShapelet* garden;
+            Plteen::IShapelet* roof;
+            Plteen::IShapelet* wall;
+            Plteen::IShapelet* door;
+            Plteen::IShapelet* lock;
+            Plteen::IShapelet* window;
+            Plteen::IShapelet* garden;
     };
 }

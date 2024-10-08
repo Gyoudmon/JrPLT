@@ -1,4 +1,4 @@
-#include <gydm/game.hpp>
+#include <plteen/game.hpp>
 
 #include "village/splash.hpp"
 
@@ -7,7 +7,7 @@
 #include "village/stemos/schematics/optics/pinhole.hpp"
 #include "village/stemos/schematics/optics/chromaticity.hpp"
 
-using namespace GYDM;
+using namespace Plteen;
 using namespace WarGrey::PLT;
 using namespace WarGrey::STEM;
 

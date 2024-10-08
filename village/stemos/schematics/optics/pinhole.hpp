@@ -1,6 +1,6 @@
 #pragma once // 确保只被 include 一次
 
-#include <gydm/game.hpp>
+#include <plteen/game.hpp>
 
 #include "../../stem.hpp"
 
@@ -22,11 +22,11 @@ namespace WarGrey::STEM {
         void on_mission_start(float width, float height) override;
 
     public:
-        bool can_select(GYDM::IMatter* m) override;
+        bool can_select(Plteen::IMatter* m) override;
             
     protected: // 覆盖输入事件处理方法
         void on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) override; // 处理键盘事件
-        void on_tap(GYDM::IMatter* m, float x, float y) override;                  // 处理鼠标事件
+        void on_tap(Plteen::IMatter* m, float x, float y) override;                  // 处理鼠标事件
 
     private:
         void load_labview(float width, float height);
@@ -36,7 +36,7 @@ namespace WarGrey::STEM {
         void pace_forward();
             
     private: // 游戏操作
-        std::map<char, GYDM::Labellet*> instructions;
+        std::map<char, Plteen::Labellet*> instructions;
 
     private:
         class Pinholet;

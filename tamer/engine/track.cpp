@@ -1,17 +1,17 @@
 #include "track.hpp"
 
-using namespace GYDM;
+using namespace Plteen;
 
 /*************************************************************************************************/
 static double gliding_duration = 0.2;
 
 /*************************************************************************************************/
-void GYDM::TrackPlane::construct(float width, float height) {
+void Plteen::TrackPlane::construct(float width, float height) {
     this->the_name("Tamer");
     this->style = make_highlight_dimension_style(24U, 8U, 2);
 }
 
-void GYDM::TrackPlane::load(float width, float height) {
+void Plteen::TrackPlane::load(float width, float height) {
     this->track = this->insert(new Tracklet(width, height));
 
     TheBigBang::load(width, height);
@@ -33,13 +33,13 @@ void GYDM::TrackPlane::load(float width, float height) {
     }
 }
 
-void GYDM::TrackPlane::reflow(float width, float height) {
+void Plteen::TrackPlane::reflow(float width, float height) {
     TheBigBang::reflow(width, height);
 
     this->move_to(this->variable, { width, 0.0F }, MatterPort::RT, { -8.0F, 8.0F });
 }
 
-void GYDM::TrackPlane::update(uint64_t interval, uint32_t count, uint64_t uptime) {
+void Plteen::TrackPlane::update(uint64_t interval, uint32_t count, uint64_t uptime) {
     if (is_shift_pressed()) {
         for (auto bracer : this->bracers) {
             bracer->try_switch_mode(BracerMode::Run);
@@ -51,19 +51,19 @@ void GYDM::TrackPlane::update(uint64_t interval, uint32_t count, uint64_t uptime
     }
 }
 
-void GYDM::TrackPlane::on_mission_start(float width, float height) {
+void Plteen::TrackPlane::on_mission_start(float width, float height) {
     this->run_bracers_at_random(false);
 }
 
-bool GYDM::TrackPlane::can_select(IMatter *m) {
+bool Plteen::TrackPlane::can_select(IMatter *m) {
     return isinstance(m, Citizen) || (this->agent == m);
 }
 
-bool GYDM::TrackPlane::can_select_multiple() {
+bool Plteen::TrackPlane::can_select_multiple() {
     return is_shift_pressed();
 }
 
-void GYDM::TrackPlane::after_select(IMatter *m, bool yes) {
+void Plteen::TrackPlane::after_select(IMatter *m, bool yes) {
     if (!yes) {
         if (isinstance(m, Citizen)) {
             if (!this->is_colliding_with_mouse(m)) {
@@ -75,7 +75,7 @@ void GYDM::TrackPlane::after_select(IMatter *m, bool yes) {
     this->heading = m->get_heading(false);
 }
 
-void GYDM::TrackPlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {
+void Plteen::TrackPlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) {
     if (pressed) {
         switch (key) {
         case 'c': this->track->erase(); break;
@@ -86,7 +86,7 @@ void GYDM::TrackPlane::on_char(char key, uint16_t modifiers, uint8_t repeats, bo
     }
 }
 
-bool GYDM::TrackPlane::update_tooltip(IMatter *m, float lx, float ly, float gx, float gy) {
+bool Plteen::TrackPlane::update_tooltip(IMatter *m, float lx, float ly, float gx, float gy) {
     bool updated = false;
 
     if (isinstance(m, Citizen)) {
@@ -97,7 +97,7 @@ bool GYDM::TrackPlane::update_tooltip(IMatter *m, float lx, float ly, float gx, 
     return updated;
 }
 
-void GYDM::TrackPlane::run_bracers_at_random(bool drawing) {
+void Plteen::TrackPlane::run_bracers_at_random(bool drawing) {
     IMatter* selected = this->find_next_selected_matter();
 
     if (selected == nullptr) {
@@ -114,7 +114,7 @@ void GYDM::TrackPlane::run_bracers_at_random(bool drawing) {
     }
 }
 
-void GYDM::TrackPlane::run_bracers_in_direction() {
+void Plteen::TrackPlane::run_bracers_in_direction() {
     size_t selected = this->count_selected();
     float length = 72.0F;
 
@@ -127,7 +127,7 @@ void GYDM::TrackPlane::run_bracers_in_direction() {
     }
 }
 
-void GYDM::TrackPlane::run_bracers_in_8_ways() {
+void Plteen::TrackPlane::run_bracers_in_8_ways() {
     IMatter* selected = this->find_next_selected_matter();
 
     if (selected == nullptr) {
@@ -144,7 +144,7 @@ void GYDM::TrackPlane::run_bracers_in_8_ways() {
     }
 }
 
-void GYDM::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, size_t sides, size_t rounds, double gapsize) {
+void Plteen::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, size_t sides, size_t rounds, double gapsize) {
     double meridian = double(rounds * gapsize);
     double rad = degrees_to_radians(360.0 / sides);
     double factor = 2.0 - 2.0 * flcos(rad); 

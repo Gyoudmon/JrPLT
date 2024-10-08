@@ -1,13 +1,17 @@
 #lang scribble/book
 
 @require{literacy.rkt}
+@require{../stone/self/logo.rkt}
+
+@(require geofun/resize)
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-title[
  #:documentclass 'book
  #:document-options '(openany)
  #:hide-version? #true
- ]{从集合论开始的信奥训练}
+ #:figure @(geo-scale (geo-splash-screen) (* 0.618 0.618))
+ ]{从类型论开始的信奥训练}
 
 @texbook-frontmatter[]
 

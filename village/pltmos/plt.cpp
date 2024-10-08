@@ -1,6 +1,6 @@
 #include "plt.hpp"
 
-using namespace GYDM;
+using namespace Plteen;
 using namespace WarGrey::PLT;
 
 /*************************************************************************************************/

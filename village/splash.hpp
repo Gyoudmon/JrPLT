@@ -1,14 +1,14 @@
 #ifdef _USE_EXTERNAL_INCLUDING
-#include <gydm/game.hpp>
+#include <plteen/game.hpp>
 #else
-#include "../digitama/gydm/game.hpp"
+#include "../digitama/plteen/game.hpp"
 #endif
 
 #include <vector>
 #include <filesystem>
 
 /*************************************************************************************************/
-namespace GYDM {
+namespace Plteen {
     class JrPlane : public Plane {
     public:
         JrPlane(Cosmos* master) : Plane("青少计算机科学"), master(master) {}
@@ -21,11 +21,11 @@ namespace GYDM {
         void on_mission_start(float width, float height) override;
 
     public:
-        bool can_select(GYDM::IMatter* m) override;
-        void on_tap(GYDM::IMatter* m, float x, float y) override;
+        bool can_select(Plteen::IMatter* m) override;
+        void on_tap(Plteen::IMatter* m, float x, float y) override;
 
     protected:
-        bool update_tooltip(GYDM::IMatter* m, float local_x, float local_y, float global_x, float global_y) override;
+        bool update_tooltip(Plteen::IMatter* m, float local_x, float local_y, float global_x, float global_y) override;
 
     private:
         void load_for_demo(float width, float height);
@@ -35,25 +35,25 @@ namespace GYDM {
         void reflow_plot(float width, float height);
     
     private:
-        GYDM::Linkmon* agent;
-        GYDM::Labellet* title;
-        GYDM::Labellet* tooltip;
+        Plteen::Linkmon* agent;
+        Plteen::Labellet* title;
+        Plteen::Labellet* tooltip;
         std::vector<Sprite*> coins;
         std::vector<Labellet*> names;
-        GYDM::Tuxmon* tux;
+        Plteen::Tuxmon* tux;
 
     private: // for lambda demos
-        // GYDM::ConveyerBeltlet* conveyer;
+        // Plteen::ConveyerBeltlet* conveyer;
 
     private: // for the plot
-        GYDM::PlanetCuteAtlas* stage;
-        GYDM::Citizen* host;
-        GYDM::Citizen* wife;
-        GYDM::Citizen* concubine;
-        GYDM::Citizen* handsome;
+        Plteen::PlanetCuteAtlas* stage;
+        Plteen::Citizen* host;
+        Plteen::Citizen* wife;
+        Plteen::Citizen* concubine;
+        Plteen::Citizen* handsome;
         
     private:
-        GYDM::Cosmos* master;
+        Plteen::Cosmos* master;
         int target_plane = 0;
     };
 }

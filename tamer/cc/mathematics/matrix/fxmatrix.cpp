@@ -1,12 +1,12 @@
 #include <vector>
 
-#include "../../../../digitama/gydm/datum/array.hpp"
-#include "../../../../digitama/gydm/physics/algebra/matrix.hpp"
+#include "../../../../digitama/plteen/datum/array.hpp"
+#include "../../../../digitama/plteen/physics/algebra/matrix.hpp"
 
-using namespace GYDM;
+using namespace Plteen;
 
 /*************************************************************************************************/
-namespace GYDM {
+namespace Plteen {
     template<typename T>
     std::vector<std::vector<T>> make_vector2d(size_t R, size_t C, T datum) {
         std::vector<std::vector<T>> v2d;

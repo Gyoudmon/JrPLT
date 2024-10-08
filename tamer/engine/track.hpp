@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../../digitama/gydm/bang.hpp"
+#include "../../digitama/plteen/bang.hpp"
 
 #include <vector>
 
 /*************************************************************************************************/
-namespace GYDM {
-    class TrackPlane : public GYDM::TheBigBang {
+namespace Plteen {
+    class TrackPlane : public Plteen::TheBigBang {
     public:
         TrackPlane() : TheBigBang("Track") { }
 

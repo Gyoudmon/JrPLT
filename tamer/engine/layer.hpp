@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../../digitama/gydm/bang.hpp"
+#include "../../digitama/plteen/bang.hpp"
 
 #include <vector>
 
 /*************************************************************************************************/
-namespace GYDM {
-    class LayerPlane : public GYDM::TheBigBang {
+namespace Plteen {
+    class LayerPlane : public Plteen::TheBigBang {
     public:
         LayerPlane() : TheBigBang("Layer Order") { this->the_name("Tamer"); }
 

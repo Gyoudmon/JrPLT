@@ -6,7 +6,7 @@
                 "digitama",
                 "village",
                 "/usr/local/include",
-                "/opt/GYDMstem/include"
+                "/opt/JrPLT/include"
             ],
             "defines": [
                 "__racket__",

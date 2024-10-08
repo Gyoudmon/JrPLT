@@ -49,11 +49,11 @@ namespace WarGrey::STEM {
         void on_mission_start(float width, float height) override;
 
     public:
-        bool can_select(GYDM::IMatter* m) override;
+        bool can_select(Plteen::IMatter* m) override;
             
     protected: // 覆盖输入事件处理方法
         void on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) override; // 处理键盘事件
-        void on_tap(GYDM::IMatter* m, float x, float y) override;                  // 处理鼠标事件
+        void on_tap(Plteen::IMatter* m, float x, float y) override;                  // 处理鼠标事件
 
     private:
         void load_balls(float width, float height);
@@ -68,22 +68,22 @@ namespace WarGrey::STEM {
         
     private:
         void switch_game_state(WarGrey::STEM::TCLMState new_state);
-        void spot_ball(WarGrey::STEM::LotteryPlane::Ballet* ball, const GYDM::Dot& O, float apothem);
-        void update_balls(const std::map<size_t, Ballet*>& balls, std::vector<Ballet*>& lucky_balls, const GYDM::Dot& O, float apothem, bool motion_only);
+        void spot_ball(WarGrey::STEM::LotteryPlane::Ballet* ball, const Plteen::Dot& O, float apothem);
+        void update_balls(const std::map<size_t, Ballet*>& balls, std::vector<Ballet*>& lucky_balls, const Plteen::Dot& O, float apothem, bool motion_only);
         bool select(const std::vector<WarGrey::STEM::LotteryPlane::Ballet*>& balls);
         bool pick(WarGrey::STEM::LotteryPlane::Ballet* ball);
-        void apply_forces(WarGrey::STEM::LotteryPlane::Ballet* ball, const GYDM::Dot& O, float radius, bool no_fan);
+        void apply_forces(WarGrey::STEM::LotteryPlane::Ballet* ball, const Plteen::Dot& O, float radius, bool no_fan);
         
     private: // 游戏操作
-        std::vector<GYDM::Labellet*> winning_numbers;
-        std::vector<GYDM::Labellet*> winning_labels;
+        std::vector<Plteen::Labellet*> winning_numbers;
+        std::vector<Plteen::Labellet*> winning_labels;
         std::map<size_t, WarGrey::STEM::LotteryPlane::Ballet*> all_balls;
         std::map<size_t, WarGrey::STEM::LotteryPlane::Ballet*> win_balls;
-        GYDM::IShapelet* machine;
-        GYDM::IShapelet* window;
-        GYDM::IShapelet* inlet;
-        GYDM::IShapelet* outlet;
-        GYDM::IShapelet* winning_slot;
+        Plteen::IShapelet* machine;
+        Plteen::IShapelet* window;
+        Plteen::IShapelet* inlet;
+        Plteen::IShapelet* outlet;
+        Plteen::IShapelet* winning_slot;
         
     private: // 游戏状态
         WarGrey::STEM::TCLMState state = TCLMState::Reset;

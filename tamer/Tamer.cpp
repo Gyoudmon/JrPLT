@@ -1,4 +1,4 @@
-#include "../digitama/gydm/game.hpp"
+#include "../digitama/plteen/game.hpp"
 #include "../village/splash.hpp"
 
 #include "engine/text.hpp"
@@ -7,7 +7,7 @@
 #include "engine/track.hpp"
 #include "engine/plot.hpp"
 
-using namespace GYDM;
+using namespace Plteen;
 
 /*************************************************************************************************/
 namespace {

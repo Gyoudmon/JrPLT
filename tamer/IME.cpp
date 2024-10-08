@@ -1,11 +1,11 @@
-#include "../digitama/gydm/game.hpp"
-#include "../digitama/gydm/bang.hpp"
+#include "../digitama/plteen/game.hpp"
+#include "../digitama/plteen/bang.hpp"
 
-using namespace GYDM;
+using namespace Plteen;
 
 /*************************************************************************************************/
 namespace {
-    class IMEPlane : public GYDM::TheBigBang {
+    class IMEPlane : public Plteen::TheBigBang {
     public:
         IMEPlane(Cosmos* master) : TheBigBang("IME") {
             this->the_name("Tamer");

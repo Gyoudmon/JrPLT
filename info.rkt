@@ -24,12 +24,12 @@
 
 (define sdl2+config
   '((config SDL2)
-    (lib gydm)
+    (lib plteen)
     
     (macro _USE_EXTERNAL_INCLUDING)
     
     [#:debug
-     (libpath "digitama/gydm/compiled/native/debug/lib")]))
+     (libpath "digitama/plteen/compiled/native/debug/lib")]))
 
 (define native-compiled-subpath '())
 (define native-compiled-bindir '())
@@ -38,14 +38,14 @@
 (define native-compiled-debug '("debug"))
 
 (define native-destination-drive "C:")
-(define native-destination-subroot '("opt" "GYDMstem"))
+(define native-destination-subroot '("opt" "JrPLT"))
 (define native-destination-release '())
 (define native-destination-debug '("debug"))
 (define native-destination-incdir '("include"))
 (define native-destination-libdir '("lib"))
 
 (define native-launcher-names
-  `(["digitama/gydm/gydm.cpp" so ,@sdl2-config]
+  `(["digitama/plteen/plteen.cpp" so ,@sdl2-config]
     ["village/pltmos/pltmos.cpp" so ,@sdl2+config]
     ["village/stemos/stemos.cpp" so ,@sdl2+config]
 
@@ -57,6 +57,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define typesettings
   '(["literacy/Linguisteen.scrbl" xelatex]
+    ["literacy/TypedOI.scrbl" xelatex]
     ["literacy/Disciplines.scrbl" xelatex]
     ["literacy/TheBigBang.scrbl" xelatex]
     ["literacy/AdventOfLambda.scrbl" xelatex "advent-of-lambda"]

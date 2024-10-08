@@ -1,10 +1,10 @@
 #include "stream.hpp"
 
-#include <gydm/bang.hpp>
+#include <plteen/bang.hpp>
 
 #include <filesystem>
 
-using namespace GYDM;
+using namespace Plteen;
 using namespace WarGrey::PLT;
 
 using namespace std::filesystem;
@@ -383,7 +383,7 @@ void WarGrey::PLT::StreamPlane::agent_rest() {
 WarGrey::PLT::StreamSprite::StreamSprite(const char* action, float width, float ratio)
     : Sprite(WATERFALL_PATH), action(action), width(width), ratio(ratio) {}
 
-void WarGrey::PLT::StreamSprite::construct(GYDM::dc_t* dc) {
+void WarGrey::PLT::StreamSprite::construct(Plteen::dc_t* dc) {
     Sprite::construct(dc);
 
     this->switch_to_costume(this->action);

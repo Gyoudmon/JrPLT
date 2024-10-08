@@ -1,6 +1,6 @@
-#include "../../../../digitama/gydm/physics/algebra/matrix.hpp"
+#include "../../../../digitama/plteen/physics/algebra/matrix.hpp"
 
-using namespace GYDM;
+using namespace Plteen;
 
 /*************************************************************************************************/
 extern "C" {

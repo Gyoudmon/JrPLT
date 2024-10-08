@@ -1,6 +1,6 @@
 #include "splash.hpp"
 
-using namespace GYDM;
+using namespace Plteen;
 
 /*************************************************************************************************/
 static const char* unknown_task_name = "冒险越来越深入了";
@@ -50,7 +50,7 @@ namespace {
 }
 
 /*********************************************************************************************/
-void GYDM::JrPlane::load(float width, float height) {
+void Plteen::JrPlane::load(float width, float height) {
     this->title = this->insert(new Labellet(GameFont::Title(), BLACK, this->name()));
             
     this->agent = this->insert(new Linkmon());
@@ -82,11 +82,11 @@ void GYDM::JrPlane::load(float width, float height) {
     this->load_for_plot(width, height);
 }
 
-void GYDM::JrPlane::load_for_demo(float width, float height) {
+void Plteen::JrPlane::load_for_demo(float width, float height) {
     // this->conveyer = this->insert(new ConveyerBeltlet(32.0F, 128.0F, 120.0));
 }
 
-void GYDM::JrPlane::load_for_plot(float width, float height) {
+void Plteen::JrPlane::load_for_plot(float width, float height) {
     this->stage = this->insert(new StageAtlas(xtile_count + 2, ytile_count + 2));
     this->host = this->insert(new Joshua("邹忌"));
     this->wife = this->insert(new Estelle("妻"));
@@ -97,7 +97,7 @@ void GYDM::JrPlane::load_for_plot(float width, float height) {
     this->set_bubble_margin({ 4.0F, 8.0F });
 }
         
-void GYDM::JrPlane::reflow(float width, float height) {
+void Plteen::JrPlane::reflow(float width, float height) {
     this->move_to(this->title, Position(this->agent, MatterPort::RB), MatterPort::LB);
             
     for (int idx = 0; idx < this->coins.size(); idx ++) {
@@ -118,10 +118,10 @@ void GYDM::JrPlane::reflow(float width, float height) {
     this->reflow_plot(width, height);
 }
 
-void GYDM::JrPlane::reflow_demo(float width, float height) {
+void Plteen::JrPlane::reflow_demo(float width, float height) {
 }
 
-void GYDM::JrPlane::reflow_plot(float width, float height) {
+void Plteen::JrPlane::reflow_plot(float width, float height) {
     this->move_to(this->stage, Position(width * 0.5, height), MatterPort::CB);
     this->stage->move_to_logic_tile(this->host, xtile_count / 2, ytile_count / 2, MatterPort::CB, MatterPort::CB);
     this->stage->move_to_logic_tile(this->wife, 0, -3, MatterPort::CB, MatterPort::CB);
@@ -129,7 +129,7 @@ void GYDM::JrPlane::reflow_plot(float width, float height) {
     this->stage->move_to_logic_tile(this->handsome, -1, 0, MatterPort::CB, MatterPort::CB);
 }
 
-void GYDM::JrPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
+void Plteen::JrPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
     if (this->coins.size() > 0) {
         Dot tux_rb = this->get_matter_location(this->tux, MatterPort::RB);
         Dot star_rb = this->get_matter_location(this->coins.back(), MatterPort::RB);
@@ -154,21 +154,21 @@ void GYDM::JrPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
     }
 }
 
-void GYDM::JrPlane::on_mission_start(float width, float height) {
+void Plteen::JrPlane::on_mission_start(float width, float height) {
     this->agent->play_greeting(1);
 
     this->tux->set_border_strategy(BorderStrategy::IGNORE);
     this->tux->set_velocity(2.0, 0.0);
 }
 
-bool GYDM::JrPlane::can_select(IMatter* m) {
+bool Plteen::JrPlane::can_select(IMatter* m) {
     return isinstance(m, Coinlet)
             || isinstance(m, Citizen)
             || (m == this->tux)
             || (m == this->agent);
 }
 
-void GYDM::JrPlane::on_tap(IMatter* m, float x, float y) {
+void Plteen::JrPlane::on_tap(IMatter* m, float x, float y) {
     auto coin = dynamic_cast<Coinlet*>(m);
     auto citizen = dynamic_cast<Citizen*>(m);
 
@@ -193,7 +193,7 @@ void GYDM::JrPlane::on_tap(IMatter* m, float x, float y) {
     }
 }
 
-bool GYDM::JrPlane::update_tooltip(IMatter* m, float local_x, float local_y, float global_x, float global_y) {
+bool Plteen::JrPlane::update_tooltip(IMatter* m, float local_x, float local_y, float global_x, float global_y) {
     auto coin = dynamic_cast<Coinlet*>(m);
     bool updated = false;            
             

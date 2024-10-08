@@ -1,6 +1,6 @@
 #include "text.hpp"
 
-using namespace GYDM;
+using namespace Plteen;
 
 /*************************************************************************************************/
 static const double gliding_duration = 0.618;
@@ -8,14 +8,14 @@ static const double gliding_duration = 0.618;
 static std::vector<std::string> predefined_texts = { "Sphinx", "ex", "0", "O", "em", "ch" };
 
 /*************************************************************************************************/
-void GYDM::TextPlane::construct(float width, float height) {
+void Plteen::TextPlane::construct(float width, float height) {
     this->style = make_highlight_dimension_style(24U, 8U, 4U, 0);
     this->style.label_xfraction = 1.0F;
     this->style.label_font = GameFont::monospace();
     this->style.number_font = this->style.label_font;
 }
 
-void GYDM::TextPlane::load(float width, float height) {
+void Plteen::TextPlane::load(float width, float height) {
     TheBigBang::load(width, height);
 
     for (auto t : predefined_texts) {
@@ -34,7 +34,7 @@ void GYDM::TextPlane::load(float width, float height) {
     this->metrics.push_back(this->insert(new Dimensionlet(this->style, "pt", "LSpace")));
 }
 
-void GYDM::TextPlane::reflow(float width, float height) {
+void Plteen::TextPlane::reflow(float width, float height) {
     TheBigBang::reflow(width, height);
 
     this->move_to(this->metrics[0], { this->agent, MatterPort::LB }, MatterPort::LT);
@@ -43,15 +43,15 @@ void GYDM::TextPlane::reflow(float width, float height) {
     }
 }
 
-void GYDM::TextPlane::on_mission_start(float width, float height) {
+void Plteen::TextPlane::on_mission_start(float width, float height) {
     this->move_texts_at_random();
 }
 
-bool GYDM::TextPlane::can_select(IMatter *m) {
+bool Plteen::TextPlane::can_select(IMatter *m) {
     return isinstance(m, Labellet) || (this->agent == m);
 }
 
-void GYDM::TextPlane::after_select(IMatter *m, bool yes) {
+void Plteen::TextPlane::after_select(IMatter *m, bool yes) {
     if (yes) {
         auto lbl = dynamic_cast<Labellet*>(m);
 
@@ -70,7 +70,7 @@ void GYDM::TextPlane::after_select(IMatter *m, bool yes) {
     }
 }
 
-void GYDM::TextPlane::move_texts_at_random() {
+void Plteen::TextPlane::move_texts_at_random() {
     for (auto t : this->texts) {
         this->glide_to_random_location(gliding_duration, t);
     }

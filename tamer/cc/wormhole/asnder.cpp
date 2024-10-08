@@ -1,12 +1,12 @@
 
-#include "../../../digitama/gydm/wormhole/jargon/asn_der.hpp"
+#include "../../../digitama/plteen/wormhole/jargon/asn_der.hpp"
 
-#include "../../../digitama/gydm/datum/fixnum.hpp"
-#include "../../../digitama/gydm/datum/flonum.hpp"
-#include "../../../digitama/gydm/datum/natural.hpp"
-#include "../../../digitama/gydm/datum/enum.hpp"
+#include "../../../digitama/plteen/datum/fixnum.hpp"
+#include "../../../digitama/plteen/datum/flonum.hpp"
+#include "../../../digitama/plteen/datum/natural.hpp"
+#include "../../../digitama/plteen/datum/enum.hpp"
 
-using namespace GYDM;
+using namespace Plteen;
 
 /*************************************************************************************************/
 #define asn_tame_string(s, span, offset, basn, bsize, restored, rsize, type_span, type_to_octets, octets_to_type) \

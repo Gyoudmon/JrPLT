@@ -1,10 +1,10 @@
 #include "lottery.hpp"
 
-#include <gydm/datum/time.hpp>
+#include <plteen/datum/time.hpp>
 
-#include <gydm/physics/color/rgba.hpp>
+#include <plteen/physics/color/rgba.hpp>
 
-using namespace GYDM;
+using namespace Plteen;
 using namespace WarGrey::STEM;
 
 /*************************************************************************************************/

@@ -1,5 +1,7 @@
 #lang typed/racket/base
 
+(provide (all-defined-out))
+
 (require geofun/vector)
 (require geofun/digitama/avatar/bacteriophage)
 (require geofun/digitama/schematic/procedure)

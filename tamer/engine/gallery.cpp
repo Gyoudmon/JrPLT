@@ -1,20 +1,20 @@
 #include "gallery.hpp"
 
-using namespace GYDM;
+using namespace Plteen;
 
 /*************************************************************************************************/
 static const float raft_height = float(generic_font_size(FontSize::xx_large));
 static const float raft_width = raft_height * 4.0F;
 
 /*************************************************************************************************/
-void GYDM::GalleryPlane::load(float width, float height) {
+void Plteen::GalleryPlane::load(float width, float height) {
     TheBigBang::load(width, height);
 
     this->load_for_house(width, height);
     this->load_for_raft(width, height);
 }
 
-void GYDM::GalleryPlane::reflow(float width, float height) {
+void Plteen::GalleryPlane::reflow(float width, float height) {
     TheBigBang::reflow(width, height);
 
     this->reflow_for_house(width, height);
@@ -22,7 +22,7 @@ void GYDM::GalleryPlane::reflow(float width, float height) {
 }
 
 /*************************************************************************************************/
-void GYDM::GalleryPlane::load_for_house(float width, float height) {
+void Plteen::GalleryPlane::load_for_house(float width, float height) {
     this->garden = this->insert(new Ellipselet(100, 40, PALEGREEN, KHAKI));               // 苍绿色院子
     
     this->roof = this->insert(new Trianglet(128.0F, -90.0F, DEEPSKYBLUE, ROYALBLUE));     // 深空蓝屋顶
@@ -32,7 +32,7 @@ void GYDM::GalleryPlane::load_for_house(float width, float height) {
     this->window = this->insert(new RoundedSquarelet(32, -0.15F, LIGHTSKYBLUE, SKYBLUE)); // 天蓝色窗户
 }
 
-void GYDM::GalleryPlane::reflow_for_house(float width, float height) {
+void Plteen::GalleryPlane::reflow_for_house(float width, float height) {
     this->move_to(this->roof, { width * 0.25F, height * 0.75F }, MatterPort::CB);
     this->move_to(this->wall, { this->roof, MatterPort::CB }, MatterPort::CT);
     this->move_to(this->door, { this->wall, MatterPort::LB }, MatterPort::LB, { 12.0F, 0.0F });
@@ -43,7 +43,7 @@ void GYDM::GalleryPlane::reflow_for_house(float width, float height) {
 }
 
 /*************************************************************************************************/
-void GYDM::GalleryPlane::load_for_raft(float width, float height) {
+void Plteen::GalleryPlane::load_for_raft(float width, float height) {
     this->sea = this->insert(new Ellipselet(raft_width * 1.618F, raft_height, DEEPSKYBLUE));
 
     this->mast = this->insert(new Rectanglet(4.0F, raft_width, BURLYWOOD, SADDLEBROWN));
@@ -66,7 +66,7 @@ void GYDM::GalleryPlane::load_for_raft(float width, float height) {
     }
 }
 
-void GYDM::GalleryPlane::reflow_for_raft(float width, float height) {
+void Plteen::GalleryPlane::reflow_for_raft(float width, float height) {
     this->move_to(this->sea, { width * 0.75F, height * 0.80F }, MatterPort::CT);
                 
     this->move_to(this->raft, { this->sea, MatterPort::CT }, MatterPort::CC);
