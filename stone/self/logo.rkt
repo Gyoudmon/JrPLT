@@ -20,9 +20,9 @@
                      (define io:width : Flonum (* em 1.618))
                      (define in:gapsize : Flonum (* em 0.618))
 
-                     (define-dryland-wani! 7-bridge-agent [#:anchor '#:A
-                                                           #:stroke 'Yellow #:fill 'Gray #:fill-rule 'odd-even
-                                                           io:width in:gapsize]
+                     (define-gomamon! 7-bridge-agent [#:anchor '#:A
+                                                      #:stroke 'Yellow #:fill 'Gray #:fill-rule 'odd-even
+                                                      io:width in:gapsize]
                        #:-
                        (move-up 3 '#:B)
                        (drift -1.4 '(-0.618+1.5i) '#:C)

@@ -33,7 +33,7 @@
             "includePath": [
                 "digitama",
                 "village",
-                "C:\\opt\\GYDMstem\\include"
+                "C:\\opt\\JrPLT\\include"
             ],
             "defines": [
                 "__racket__",

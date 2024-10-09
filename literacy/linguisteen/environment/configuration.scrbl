@@ -79,39 +79,30 @@ Windows 学员可以用@exec{where.exe}（后缀@exec{.exe}不能省略）命令
 但安装它又需要先配好上面的路径。
 
 @itemlist[
- @item{C:\opt\GYDMstem\lib}
+ @item{C:\opt\JrPLT\lib}
  ]
 
-@handbook-scenario{安装我用 Racket 写的 C++ 软件构建工具}
+@handbook-scenario{安装我用 Racket 写的教学辅助软件}
 
-用我自己写的软件来教学生，肯定有家长会质疑这个做法。
 初学编程真的麻烦且枯燥，学生很可能在第一个月就被各种烦人的细节劝退。
 我的工具可以以最简洁的方式带学生入门，
 毕竟专业的软件都不太适合中小学生直接用。
 如果学生有能力参加竞赛，我们会专门培训标准工具链以应付笔试考试。
 
-以下命令均在 PowerShell 里运行，
-并且需要@emph{以管理员方式启动 PowerShell}：
+以下命令均在 PowerShell 里运行：
 
 @itemlist[#:style 'compact
-          @commandline{raco pkg install -i --auto digimon}]
+          @commandline|{git clone stem@plteen.fun:digimon.git C:/opt/digimon}|
+          @commandline|{git clone stem@plteen.fun:graphics.git C:/opt/graphics}|
+          @commandline{raco pkg install --auto --link C:/opt/digimon C:/opt/graphics}]
 
-或
-
-@itemlist[#:style 'compact
-          @commandline|{git clone stem@plteen.fun:digimon C:/opt/digimon}|
-          @commandline{raco pkg install -i --auto --link C:/opt/digimon}]
-
-以上两种方法推荐第一种。
-如果因为网络问题导致安装失败才换第二种方法。
-
-@handbook-scenario{安装课程相关软件}
+@handbook-scenario{安装课程软件运行时库}
 
 这部分软件是运行课程相关程序时必须要有的，
 包含图片素材、头文件、动态链接库等一系列重要文件。
 
 @itemlist[#:style 'compact
-          @commandline|{git clone stem@plteen.fun:GYDMstem C:/opt/GYDMstem}|]
+          @commandline|{git clone stem@plteen.fun:JrPLT.git C:/opt/JrPLT}|]
 
 @handbook-scenario{安装 Pygame}
 
@@ -123,9 +114,7 @@ Pygame 是比较流行的 Python 游戏库，其内核是 SDL。
 也就是说，为使Python和C++课程处于同一起跑线上，
 我的代码库会尽量降低对 Pygame (在SDL之上的扩展)的依赖。
 因此，对于已经熟悉 Pygame 的学生，他们过往课程的经验或许有用，
-但思维方式一定会有较大改变。你可能需要让学生和家长明白，
-这个改变肯定是好的。C++都能变得通俗易懂，把这份功力用在
-Python 上，自然是降维打击。
+但思维方式一定会有较大改变。
 
 在 PowerShell 中。
 执行以下命令安装 Pygame：
@@ -138,11 +127,6 @@ Python 版本太新会导致没有新版本的可用的 Pygame，
 
 本来，PySDL2 是个更好的选项，但这个库问题太多了，它的开发者和维护者都相当业余的样子。
 因此重新启用 Pygame。
-
-@handbook-scenario{同步课程源码}
-
-课程源码就是那个在上课时以学生名字命名的文件夹里的东西，
-随便复制到哪都行，建议跟上课时所在目录一样。
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-reference[]

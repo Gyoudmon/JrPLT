@@ -107,6 +107,8 @@
        (make-shell-row 'pwd       '()                "打印“当前工作目录”的路径"            @tt{@litchar{p}rint @litchar{w}orking @litchar{d}irectory})
        (make-shell-row 'cat       '("文件路径")       "按顺序将指定文件的内容打印在屏幕上"    @tt{con@litchar{cat}enate and print files})
        (make-shell-row 'which     '("命令名")         "打印“命令名”对应的实际路径(Unix)"    @tt{-})
-       (make-shell-row 'where.exe '("命令名")         "打印“命令名”对应的实际路径(Windows)" @tt{-}))]
+       (make-shell-row 'where.exe '("命令名")         "打印“命令名”对应的实际路径(Windows)" @tt{-})
+       (make-shell-row 'clear     '()                "清空屏幕"                          @tt{@litchar{clear}})
+       (make-shell-row 'exit      '()                "退出"                             @tt{@litchar{exit}}))]
 
 @handbook-reference[]
