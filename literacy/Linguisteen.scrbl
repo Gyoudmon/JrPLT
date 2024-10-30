@@ -8,10 +8,10 @@
 @handbook-title[
  #:documentclass 'book
  #:document-options '(openany)
- #:subtitle "跨学科方法"
+ #:subtitle (list "跨学科方法" @smaller{Racket、C++的语言朋友们})
  #:figure @bacteriophage-logo[32.0]
  #:hide-version? #true
- ]{不只是C++的计算思维}
+ ]{代码源记}
 
 @texbook-frontmatter[]
 

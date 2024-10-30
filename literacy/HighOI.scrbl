@@ -9,9 +9,10 @@
 @handbook-title[
  #:documentclass 'book
  #:document-options '(openany)
+ #:subtitle "程序语言理论视角"
  #:hide-version? #true
  #:figure @(geo-scale (geo-splash-screen) (* 0.618 0.618))
- ]{从类型论开始的信奥训练}
+ ]{高观点下的信息学奥赛}
 
 @texbook-frontmatter[]
 

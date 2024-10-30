@@ -9,21 +9,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define geo-splash-screen : (-> Geo)
   (lambda []
-    (geo-procedure #:iofill
-                   (λ [var] (case var
-                              [(V) 'Red]
-                              [(E) 'Green]
-                              [(F) 'Blue]
-                              [else 'Purple]))
+    (geo-procedure #:iofill (λ [var] (case var
+                                       [(V) 'Red]
+                                       [(E) 'Green]
+                                       [(F) 'Blue]
+                                       [else 'Purple]))
                       
                    (λ [[em : Nonnegative-Flonum]] : Geo
-                     (define io:width : Flonum (* em 1.618))
-                     (define in:gapsize : Flonum (* em 0.618))
+                     (define io:width   : Nonnegative-Flonum (* em 1.618))
+                     (define in:gapsize : Nonnegative-Flonum (* em 0.618))
 
-                     (define-gomamon! 7-bridge-agent [#:anchor '#:A
-                                                      #:stroke 'Yellow #:fill 'Gray #:fill-rule 'odd-even
-                                                      io:width in:gapsize]
-                       #:-
+                     (define-gomamon! 7-bridge-agent
+                       [io:width in:gapsize #:anchor '#:A #:stroke 'Yellow #:fill 'Gray #:fill-rule 'even-odd] #:-
                        (move-up 3 '#:B)
                        (drift -1.4 '(-0.618+1.5i) '#:C)
                        (drift '#:B '(+0.618-1.5i))
@@ -32,8 +29,9 @@
                        (jump-back)
                        (drift '#:A '(-0.618+3.0i))
                        (drift '#:C '(-0.618+0.0i)))
-                        
+                     
                      7-bridge-agent)
+                   
                    '(V E F) '(=))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
