@@ -59,8 +59,9 @@
 (define typesettings
   '(["literacy/Linguisteen.scrbl" xelatex]
     ["literacy/HighOI.scrbl" xelatex]
-    ["literacy/Disciplines.scrbl" xelatex]
     ["literacy/TheBigBang.scrbl" xelatex]
+    ["literacy/Disciplines.scrbl" xelatex]
+    ["literacy/Introduction.scrbl" xelatex]
     ["literacy/AdventOfLambda.scrbl" xelatex "advent-of-lambda"]
 
     ["literacy/Metrics.scrbl" xelatex #:explicitly-make]))

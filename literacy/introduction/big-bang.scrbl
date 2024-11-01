@@ -2,10 +2,23 @@
 
 @(require "../literacy.rkt")
 
-@(define figure-scale 0.20)
+@(define figure-scale 0.30)
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-root-story{宇宙大爆炸}
+
+@margin-note{取名为@tech{宇宙大爆炸}是顺应了宇宙发展“从无到有”的自然规律。}
+
+@tamer-deftech{宇宙大爆炸}是青少计算机科学后续所有课程的基础。
+学完本课程之后，学生将对程序语言、程序设计和计算思维有个初步的了解。
+
+@tamer-figure!["d:bigbang" "宇宙大爆炸 主界面"]{
+ @stone-image["Disciplines/Disciplines/big-bang.png" #:scale figure-scale]}
+
+@tamer-figure-ref{d:bigbang}是@tech{宇宙大爆炸}的主界面。
+其中，企鹅是@emph{信信学奥赛}官方指定操作系统的吉祥物；
+鱼币是企鹅的食物，大部分鱼币代表学生作品，少部分是教师扩展程序(这些可随
+源码库一起提供给学生课后自主研究用)。
 
 本课作为入门级课，需预设若干不确定因素。
 简而言之，课程共分为四个阶段,
@@ -56,7 +69,7 @@
 一定程度上激发继续学习的兴趣。
 
 @tamer-figure!["d:shape" "计算思维之分解与合成"]{
- @stone-image["Disciplines/shape.png" #:scale 0.5]}
+ @stone-image["Disciplines/Disciplines/shape.png" #:scale 0.5]}
 
 @tamer-figure-ref{d:shape}即是比较合适的开局例子。
 在第四次或第五次课时，学生开始接触我的游戏引擎源码库，
@@ -73,7 +86,7 @@
 即，基础数据类型，会比较多的强调跨学科应用。
 
 @tamer-figure!["d:chromaticity" "色度图"]{
- @stone-image["Disciplines/chromaticity.png" #:scale figure-scale]}
+ @stone-image["Disciplines/Disciplines/chromaticity.png" #:scale figure-scale]}
 
 计算机最擅长处理的数据类型显然是数字；
 光是物理宇宙中最重要的自然现象之一，
@@ -97,7 +110,7 @@
 不过必要的知识点，应该已经在语文课上有所涉及。
 
 @tamer-figure!["d:drunkard" "计算思维之随机游走"]{
- @stone-image["Disciplines/drunkard.png" #:scale figure-scale]}
+ @stone-image["Disciplines/Disciplines/drunkard.png" #:scale figure-scale]}
 
 在该阶段结束时，学生通过创设情景来综合运用算术运算、逻辑运算与分支结构，
 以简单处理(伪)随机数从而得到一系列看起来更自然或更实用的随机数(
@@ -143,7 +156,7 @@
 同时它也是课程作品的基础。
 
 @tamer-figure!["d:self-avoiding.walk.png" "自回避游走"]{
- @stone-image["Disciplines/self-avoiding.walk.png" #:scale figure-scale]}
+ @stone-image["Disciplines/Disciplines/self-avoiding.walk.png" #:scale figure-scale]}
 
 本阶段的主要目的是带学生完整体验真实的软件开发过程。
 而从课程完整性角度来说，应该在基础课程中正式安排“流”相关概念。
@@ -156,7 +169,7 @@
 这时教师可根据需要引入“字符编码”话题。
 
 @tamer-figure!["d:stream" "流"]{
- @stone-image["Disciplines/stream.png" #:scale figure-scale]}
+ @stone-image["Disciplines/Disciplines/stream.png" #:scale figure-scale]}
 
 在本课程作品中不一定会用到“流”知识(因为如何设计文件格式保存程序数据也值得单独
 开一门课)。在后续课程，尤其是竞赛冲刺课程中，肯定有发挥空间。
@@ -176,7 +189,7 @@
 比较符合真实的生态学研究。
 
 @tamer-figure!["d:conway" "计算思维之数学仿真"]{
- @stone-image["Disciplines/conway.png" #:scale figure-scale]}
+ @stone-image["Disciplines/Disciplines/conway.png" #:scale figure-scale]}
 
 @tamer-figure-ref{d:conway}的“生命游戏”忠于原版。
 这个项目除了过于抽象对想象力有较高要求外，其内部逻辑相当简单，
@@ -187,7 +200,7 @@
 现在有人已经证明了，可以在该游戏中模拟现代计算机。
 
 @tamer-figure!["d:evolution" "计算思维之生态仿真"]{
- @stone-image["Disciplines/evolution.png" #:scale figure-scale]}
+ @stone-image["Disciplines/Disciplines/evolution.png" #:scale figure-scale]}
 
 @tamer-figure-ref{d:evolution}的“演化”在原版的基础上增加了一些设定。
 比如，繁殖周期。因为原版没有图形界面，只是简单展示世界的某一个快照，可以无限繁殖；
