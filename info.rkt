@@ -50,6 +50,7 @@
     ["village/stemos/stemos.cpp" so ,@sdl2+config]
 
     ["BigBang.cpp" console ,@sdl2+config]
+    ["JrPLT-CR.cpp" console ,@sdl2+config]
 
     ["tamer/IME.cpp" console ,@sdl2-config]
     ["tamer/Tamer.cpp" console ,@sdl2-config]))

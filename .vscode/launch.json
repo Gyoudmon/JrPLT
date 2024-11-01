@@ -64,10 +64,28 @@
             "cwd": "${workspaceFolder}",
             "environment": [],
             "MIMode": "lldb",
-            "preLaunchTask": "宇宙大爆炸[Release]",
+            "preLaunchTask": "宇宙大爆炸",
 
             "windows": {
                 "program": "${workspaceFolder}/compiled/native/release/BigBang.exe",
+                "type": "cppvsdbg"
+            }
+        },
+
+        {
+            "name": "JrPLT 教室",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/compiled/native/release/JrPLT-CR",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "MIMode": "lldb",
+            "preLaunchTask": "JrPLT 教室",
+
+            "windows": {
+                "program": "${workspaceFolder}/compiled/native/release/JrPLT-CR.exe",
                 "type": "cppvsdbg"
             }
         },

@@ -61,8 +61,8 @@
         },
 
         {
-            "label": "宇宙大爆炸[Release]",
-            "detail": "构建和运行 青少计算机科学",
+            "label": "宇宙大爆炸",
+            "detail": "构建和运行 宇宙大爆炸",
             "command": "raco",
             "type": "cppbuild",
             "problemMatcher": [ "$gcc" ],
@@ -73,9 +73,21 @@
         },
 
         {
+            "label": "JrPLT 教室",
+            "detail": "构建和运行 JrPLT 教室",
+            "command": "raco",
+            "type": "cppbuild",
+            "problemMatcher": [ "$gcc" ],
+            "args": [ "wisemon", "-d", "cc", "${workspaceFolder}/JrPLT-CR.cpp" ],
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": { "kind": "build", "isDefault": false },
+            "windows": { "problemMatcher": ["$msCompile"] }
+        },
+
+        {
             "type": "cppbuild",
             "label": "宇宙大爆炸[Debug]",
-            "detail": "构建和调试 青少计算机科学",
+            "detail": "构建和调试 宇宙大爆炸",
             "command": "raco",
             "problemMatcher": [ "$gcc" ],
             "args": [ "wisemon", "-d", "cc-dbg", "${workspaceFolder}/BigBang.cpp" ],
