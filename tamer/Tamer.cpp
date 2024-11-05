@@ -162,11 +162,11 @@ namespace {
             imgdb_setup(digimon_zonedir().append("stone"));
             
 #ifdef __windows__
-            digimon_appdata_setup("C:\\opt\\GYDMstem\\");
-            digimon_mascot_setup("C:\\opt\\GYDMstem\\stone\\mascot");
+            digimon_appdata_setup("C:\\opt\\JrPLT\\");
+            digimon_mascot_setup("C:\\opt\\JrPLT\\stone\\mascot");
 #else
-            digimon_appdata_setup("/opt/GYDMstem/");
-            digimon_mascot_setup("/opt/GYDMstem/stone/mascot");
+            digimon_appdata_setup("/opt/JrPLT/");
+            digimon_mascot_setup("/opt/JrPLT/stone/mascot");
 #endif
         }
 

@@ -53,15 +53,15 @@ WarGrey::CAE::StudentEntity::StudentEntity(const std::string& s, int idx) {
     scan_skip_delimiter(src, &pos, end, field_delimiter);
 
     this->No = scan_natural(src, &pos, end);
-    if (this->No == 0U) throw exn_gms("无效学号");
+    if (this->No == 0U) throw exn_gms("Invalid Student No.");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
     
     this->nickname = scan_string(src, &pos, end, field_delimiter);
-    if (this->nickname.empty()) throw exn_gms("无效昵称");
+    if (this->nickname.empty()) throw exn_gms("Invalid Nickname");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
     
     this->gender = name_to_gender(scan_string(src, &pos, end, field_delimiter).c_str());
-    if (this->gender == StudentGender::_) throw exn_gms("无效性别");
+    if (this->gender == StudentGender::_) throw exn_gms("Invalid Gender");
 }
 
 bool WarGrey::CAE::StudentEntity::update(const char* s, size_t end, size_t idx) {
@@ -90,7 +90,7 @@ bool WarGrey::CAE::StudentEntity::update_avatar_gender(const char* s, size_t end
     scan_skip_delimiter(s, &idx, end, field_delimiter);
 
     new_gender = name_to_gender(scan_string(s, &idx, end, field_delimiter).c_str());
-    if (new_gender == StudentGender::_) throw exn_gms("无效性别");
+    if (new_gender == StudentGender::_) throw exn_gms("Invalid Gender");
 
     if ((new_avatar != this->avatar) || (new_gender != this->gender)) {
         this->avatar = new_avatar;

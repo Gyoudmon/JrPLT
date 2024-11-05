@@ -56,7 +56,7 @@ WarGrey::CAE::DisciplineEntity::DisciplineEntity(const std::string& s, int idx) 
     scan_skip_space(src, &pos, end);
 
     this->code = scan_natural(src, &pos, end);
-    if (this->code == 0U) throw exn_gms("无效课程代号");
+    if (this->code == 0U) throw exn_gms("Invalid Discipline No.");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
 
     this->type = name_to_type(scan_string(src, &pos, end, field_delimiter).c_str());

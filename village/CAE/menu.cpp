@@ -53,11 +53,11 @@ static const char TLM_CLER_KEY = '4';
 
 std::vector<std::pair<char, std::string>> WarGrey::CAE::TopLevelMenu::prepare_menu_items() {
     return {
-        { MENU_RETURN_KEY, "退出系统"},
-        { TLM_CLSS_KEY, "开设班级"},
-        { TLM_CRSE_KEY, "开设课程"},
-        { TLM_STDT_KEY, "新生注册"},
-        { TLM_CLER_KEY, "清理信息"}
+        { MENU_RETURN_KEY, "Exit"},
+        { TLM_CLSS_KEY, "Classes"},
+        { TLM_CRSE_KEY, "Disciplines"},
+        { TLM_STDT_KEY, "Students"},
+        { TLM_CLER_KEY, "Trash"}
     };
 }
 
@@ -77,7 +77,7 @@ static const char CLASS_DELETE_KEY = '1';
 
 std::vector<std::pair<char, std::string>> WarGrey::CAE::ClassMenu::prepare_menu_items() {
     return {
-        { CLASS_DELETE_KEY, "删除班级" }
+        { CLASS_DELETE_KEY, "Delete Class" }
     };
 }
 
@@ -93,7 +93,7 @@ static const char DSCPLN_DELETE_KEY = '1';
 
 std::vector<std::pair<char, std::string>> WarGrey::CAE::DisciplineMenu::prepare_menu_items() {
     return {
-        { DSCPLN_DELETE_KEY, "删除课程"}
+        { DSCPLN_DELETE_KEY, "Delete Discipline"}
     };
 }
 
@@ -107,15 +107,15 @@ void WarGrey::CAE::DisciplineMenu::on_menu_key(IMenuEventListener* master, MenuT
 /*************************************************************************************************/
 static const char STDT_UPDATE_KEY = '1';
 static const char STDT_DELETE_KEY = '2';
-static const char STDT_CLASS_KEY = '3';
+static const char STDT_CLASS_KEY  = '3';
 static const char STDT_AVATAR_KEY = '4';
 
 std::vector<std::pair<char, std::string>> WarGrey::CAE::StudentMenu::prepare_menu_items() {
     return {
-        { STDT_UPDATE_KEY, "更新学生信息"},
-        { STDT_DELETE_KEY, "删除学生信息"},
-        { STDT_CLASS_KEY,  "分班"},
-        { STDT_AVATAR_KEY, "更改形象和性别"}
+        { STDT_UPDATE_KEY, "Update Student"},
+        { STDT_DELETE_KEY, "Remove Student"},
+        { STDT_CLASS_KEY,  "Bind to Class"},
+        { STDT_AVATAR_KEY, "Alter Avatar and Gener"}
     };
 }
 
@@ -136,9 +136,9 @@ static const char GRADE_DELETE_KEY = '3';
 
 std::vector<std::pair<char, std::string>> WarGrey::CAE::GradeMenu::prepare_menu_items() {
     return {
-        { GRADE_CREATE_KEY, "添加成绩信息"},
-        { GRADE_UPDATE_KEY, "更新成绩信息"},
-        { GRADE_DELETE_KEY, "删除成绩信息"}
+        { GRADE_CREATE_KEY, "Add Points"},
+        { GRADE_UPDATE_KEY, "Update Points"},
+        { GRADE_DELETE_KEY, "Remove Points"}
     };
 }
 
@@ -157,9 +157,9 @@ static const char CLEAR_GRADE_KEY = '2';
 
 std::vector<std::pair<char, std::string>> WarGrey::CAE::ClearMenu::prepare_menu_items() {
     return {
-        { MENU_RETURN_KEY, "返回上级菜单"},
-        { CLEAR_STUDT_KEY, "清除游离学生信息"},
-        { CLEAR_GRADE_KEY, "清除游离成绩信息"}
+        { MENU_RETURN_KEY, "Back"},
+        { CLEAR_STUDT_KEY, "Clear Detached Students"},
+        { CLEAR_GRADE_KEY, "Clear Detached Points"}
     };
 }
 

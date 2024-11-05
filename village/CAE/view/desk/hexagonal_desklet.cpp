@@ -1,4 +1,4 @@
-#include "desklet.hpp"
+#include "hexagonal_desklet.hpp"
 
 #include <plteen/datum/flonum.hpp>
 
@@ -8,7 +8,7 @@ using namespace WarGrey::CAE;
 /*************************************************************************************************/
 static float unit_rad = pi_f / 3.0F;
 
-static MatterPort anchors [] = {
+static MatterPort hexagonal_anchors [] = {
     MatterPort::CC, MatterPort::RC, MatterPort::RB,
     MatterPort::CB, MatterPort::LB, MatterPort::LC
 };
@@ -42,7 +42,7 @@ void WarGrey::CAE::HexagonalDesklet::sit(ISprite* stu, int idx, double duration)
             
             master->glide_to(duration, stu,
                 Dot(box.width() * flcos(theta), box.height() * flsin(theta)) + O,
-                anchors[idx - 1], Vector::O);
+                hexagonal_anchors[idx - 1], Vector::O);
 
             switch (idx) {
             case 1: case 4: dy = +1.0F; break;

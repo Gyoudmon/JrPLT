@@ -54,7 +54,7 @@ namespace WarGrey::CAE {
     /*********************************************************************************************/
     class TopLevelMenu : public WarGrey::CAE::IMenu {
     public:
-        TopLevelMenu() : IMenu("默认菜单") {}
+        TopLevelMenu() : IMenu("Default Menu") {}
         virtual ~TopLevelMenu() {}
 
     public:
@@ -67,7 +67,7 @@ namespace WarGrey::CAE {
 
     class ClassMenu : public WarGrey::CAE::IMenu {
     public:
-        ClassMenu() : IMenu("班级信息菜单") {}
+        ClassMenu() : IMenu("Class Info") {}
         virtual ~ClassMenu() {}
 
     public:
@@ -80,7 +80,7 @@ namespace WarGrey::CAE {
 
     class DisciplineMenu : public WarGrey::CAE::IMenu {
     public:
-        DisciplineMenu() : IMenu("课程信息菜单") {}
+        DisciplineMenu() : IMenu("Discipline Info") {}
         virtual ~DisciplineMenu() {}
 
     public:
@@ -93,7 +93,7 @@ namespace WarGrey::CAE {
 
     class StudentMenu : public WarGrey::CAE::IMenu {
     public:
-        StudentMenu() : IMenu("学生信息菜单") {}
+        StudentMenu() : IMenu("Student Info") {}
         virtual ~StudentMenu() {}
 
     public:
@@ -106,7 +106,7 @@ namespace WarGrey::CAE {
 
     class GradeMenu : public WarGrey::CAE::IMenu {
     public:
-        GradeMenu() : IMenu("成绩管理菜单") {}
+        GradeMenu() : IMenu("Points") {}
         virtual ~GradeMenu() {}
 
     public:
@@ -119,7 +119,7 @@ namespace WarGrey::CAE {
 
     class ClearMenu : public WarGrey::CAE::IMenu {
     public:
-        ClearMenu() : IMenu("清理菜单") {}
+        ClearMenu() : IMenu("Trash") {}
         virtual ~ClearMenu() {}
 
     public:

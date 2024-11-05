@@ -27,15 +27,15 @@ WarGrey::CAE::GradeEntity::GradeEntity(const std::string& s, int idx) {
     scan_skip_space(src, &pos, end);
 
     this->student_No = scan_natural(src, &pos, end);
-    if (this->student_No == 0U) throw exn_gms("无效学号");
+    if (this->student_No == 0U) throw exn_gms("Invalid Student No.");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
 
     this->discipline_code = scan_natural(src, &pos, end);
-    if (this->discipline_code == 0U) throw exn_gms("无效课程代号");
+    if (this->discipline_code == 0U) throw exn_gms("Invalid Discipline No.");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
 
     this->timestamp = scan_natural(src, &pos, end);
-    if (this->timestamp == 0U) throw exn_gms("无效时间戳");
+    if (this->timestamp == 0U) throw exn_gms("Invalid Timestamp");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
 
     this->extract_scores(src, end, pos);
@@ -52,10 +52,10 @@ void WarGrey::CAE::GradeEntity::extract_scores(const char* ss, size_t end, size_
     while (idx < end) {
         double s = scan_flonum(ss, &idx, end);
 
-        if ((s >= 0.0) && (s <= 150.0)) {    
+        if ((s >= 0.0) && (s <= 200.0)) {    
             this->points.push_back(s);
         } else {
-            throw exn_gms("分值(%lf)不合理", s);
+            throw exn_gms("Irrational Points: %lf", s);
         }
     }
 }

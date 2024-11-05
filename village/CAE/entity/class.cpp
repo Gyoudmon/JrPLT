@@ -20,7 +20,7 @@ WarGrey::CAE::ClassEntity::ClassEntity(const std::string& s, int idx) {
 
     scan_skip_space(src, &pos, end);
     this->seq = scan_natural(src, &pos, end);
-    if (this->seq == 0U) throw exn_gms("无效班级");
+    if (this->seq == 0U) throw exn_gms("Invalid Class No.");
 }
 
 std::string WarGrey::CAE::ClassEntity::to_string() {

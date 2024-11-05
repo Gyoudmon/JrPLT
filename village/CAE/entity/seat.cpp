@@ -21,11 +21,11 @@ WarGrey::CAE::SeatEntity::SeatEntity(const std::string& s, int idx) {
     scan_skip_space(src, &pos, end);
 
     this->student_No = scan_natural(src, &pos, end);
-    if (this->student_No == 0U) throw exn_gms("无效学号");
+    if (this->student_No == 0U) throw exn_gms("Invalid Student No.");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
 
     this->class_id = scan_natural(src, &pos, end);
-    if (this->class_id == 0U) throw exn_gms("无效班号");
+    if (this->class_id == 0U) throw exn_gms("Invalid Class No.");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
     
     this->desk = scan_natural(src, &pos, end);
