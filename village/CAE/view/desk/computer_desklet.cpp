@@ -42,12 +42,12 @@ void WarGrey::CAE::ComputerDesklet::sit(ISprite* stu, int idx, double duration) 
         if (master != nullptr) {
             float height = this->get_bounding_box().height();
             float seat_height = height / float(this->seat_count());
-            Dot O = master->get_matter_location(this, (this->get_index() % 2 == 1) ? MatterPort::LB : MatterPort::RB);
+            cPoint O = master->get_matter_location(this, (this->get_index() % 2 == 1) ? MatterPort::LB : MatterPort::RB);
             
             master->glide_to(duration, stu,
-                Dot(0.0F, seat_height * (float(- a_idx) - 0.5F)) + O,
+                cPoint(0.0F, seat_height * (float(- a_idx) - 0.5F)) + O,
                 (this->get_index() % 2 == 1) ? MatterPort::RC : MatterPort::LC,
-                Vector::O);
+                cO);
 
             master->glide(0.1, stu, { 0.0F, 1.0F });
         }

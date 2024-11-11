@@ -76,7 +76,7 @@ void WarGrey::PLT::StreamPlane::load(float width, float height) {
 }
 
 void WarGrey::PLT::StreamPlane::reflow(float width, float height) {
-    Vector distance(0.0F, generic_font_size(FontSize::xx_large) * 4.0F);
+    cVector distance(0.0F, generic_font_size(FontSize::xx_large) * 4.0F);
     float char_pos = 0.25F;
     float line_pos = 1.0F - char_pos;
 
@@ -103,8 +103,8 @@ void WarGrey::PLT::StreamPlane::reflow(float width, float height) {
 }
 
 void WarGrey::PLT::StreamPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
-    Vector charoff = { 0.0F, -CHAR_FALL_SPEED };
-    Vector lineoff = { 0.0F, -LINE_CHAR_FALL_SPEED };
+    cVector charoff = { 0.0F, -CHAR_FALL_SPEED };
+    cVector lineoff = { 0.0F, -LINE_CHAR_FALL_SPEED };
 
     /***************************************** chars *********************************************/
     if (this->char_port->in_playing()) {

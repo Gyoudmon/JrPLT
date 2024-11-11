@@ -15,7 +15,7 @@ static MatterPort hexagonal_anchors [] = {
 
 /*************************************************************************************************/
 int WarGrey::CAE::HexagonalDesklet::get_seat_by(float local_x, float local_y) {
-    Dot O = this->get_bounding_box().point_at(MatterPort::CC);
+    cPoint O = this->get_bounding_box().point_at(MatterPort::CC);
     float theta = flatan(local_y - O.y, local_x - O.x);
 
     int idx = 0; 
@@ -36,13 +36,13 @@ void WarGrey::CAE::HexagonalDesklet::sit(ISprite* stu, int idx, double duration)
         if (master != nullptr) {
             float theta = (float(idx % this->seat_count()) + 0.5F) * unit_rad;
             Box box = this->get_bounding_box() * 0.5F;
-            Dot O = master->get_matter_location(this, MatterPort::CC);
+            cPoint O = master->get_matter_location(this, MatterPort::CC);
             float dx = 0.0F;
             float dy = 0.0F;
             
             master->glide_to(duration, stu,
-                Dot(box.width() * flcos(theta), box.height() * flsin(theta)) + O,
-                hexagonal_anchors[idx - 1], Vector::O);
+                cPoint(box.width() * flcos(theta), box.height() * flsin(theta)) + O,
+                hexagonal_anchors[idx - 1], cO);
 
             switch (idx) {
             case 1: case 4: dy = +1.0F; break;

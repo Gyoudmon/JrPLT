@@ -7,7 +7,6 @@
 #include "view/doorlet.hpp"
 #include "view/disciplinelet.hpp"
 #include "view/studentlet.hpp"
-#include "view/gradelet.hpp"
 #include "view/desk/computer_desklet.hpp"
 
 #include <plteen/datum/string.hpp>
@@ -26,6 +25,9 @@ namespace {
     static const float platform_width = 512.0F;
     static const float platform_height = 80.0F;
     static const double gliding_duration = 0.4;
+    static const double radar_alpha = 0.42;
+    static const double radar_levels [] = { 0.4, 0.6, 0.8 };
+    static const char* radar_variables [] = { "理论", "表达", "逻辑", "批判", "工程", "专注" };
 
     static const std::vector<DisciplineType> report_disciplines = {
         DisciplineType::Mathematics, DisciplineType::Programming,
@@ -59,7 +61,7 @@ namespace {
                 this->reflow_model_sprites(gliding_duration);
             } catch (const std::exception& e) {}
 
-            this->load_grade_reports(width, height);
+            this->load_literacy_radars(width, height);
             this->set_background(SNOW);
         }
 
@@ -280,7 +282,7 @@ namespace {
                 this->the_task = MenuTask::_;
                 this->the_grade_subtask = GradeTask::_;
 
-                this->avatar->show(this->the_menu_type == MenuType::Student);
+                // this->avatar->show(this->the_menu_type == MenuType::Student);
             }
         }
         
@@ -520,6 +522,7 @@ namespace {
 
             this->move_to(this->title, { this->agent, MatterPort::RB }, MatterPort::LB);
             this->move_to(this->side_border, { sidebar_width, height }, MatterPort::CB);
+            this->move_to(this->literacy_radar, { sidebar_width * 0.5F, height }, MatterPort::CB );
             
             for (auto menu : this->menus) {
                 this->move_to(menu.second, { this->agent, MatterPort::LB }, MatterPort::LT, { 4.0F, 4.0F });
@@ -540,9 +543,9 @@ namespace {
             this->stuLabel = this->insert(new Labellet(GameFont::serif(), GHOSTWHITE, "%s", "[Student]"));
             
             this->desks.push_back(this->insert(new ComputerDesklet(1, desk_width, desk_height, 11,  1, DARKSEAGREEN)));
-            this->desks.push_back(this->insert(new ComputerDesklet(2, desk_width, desk_height, 11, 12, DARKSEAGREEN)));
-            this->desks.push_back(this->insert(new ComputerDesklet(3, desk_width, desk_height, 11, 23, DARKSEAGREEN)));
-            this->desks.push_back(this->insert(new ComputerDesklet(4, desk_width, desk_height, 11, 34, DARKSEAGREEN)));
+            this->desks.push_back(this->insert(new ComputerDesklet(2, desk_width, desk_height, 10, 12, DARKSEAGREEN)));
+            this->desks.push_back(this->insert(new ComputerDesklet(3, desk_width, desk_height, 12, 22, DARKSEAGREEN)));
+            this->desks.push_back(this->insert(new ComputerDesklet(4, desk_width, desk_height, 12, 34, DARKSEAGREEN)));
         }
 
         void reflow_classroom(float width, float height) {
@@ -570,22 +573,22 @@ namespace {
 
         void reflow_class_logos(double duration = gliding_duration) {
             if (!this->doors.empty()) {
-                Dot spot = this->get_matter_location(this->side_border, MatterPort::CB);
+                cPoint spot = this->get_matter_location(this->side_border, MatterPort::CB);
                 Box grid = this->doors.rbegin()->second->get_bounding_box() * 1.2F;
 
                 for (auto cls = this->doors.rbegin(); cls != this->doors.rend(); cls ++) {
                     this->glide_to(duration, cls->second, spot, MatterPort::CB, { 0.0F, -1.0F });
-                    spot.y -= grid.height();
+                    spot -= cPoint(0.0F, grid.height());
                 }
             }
         }
 
         void reflow_discipline_logos(double duration = gliding_duration) {
             if (!this->disciplines.empty()) {
-                Dot gap(4.0F, 0.0F);
-                Dot spot = this->get_matter_location(this->platform, MatterPort::LC) + gap;
-                float grid_width = this->disciplines.begin()->second->get_bounding_box().width() + gap.x;
-                float dis_x0 = spot.x;
+                cPoint gap(4.0F, 0.0F);
+                cPoint spot = this->get_matter_location(this->platform, MatterPort::LC) + gap;
+                float grid_width = this->disciplines.begin()->second->get_bounding_box().width() + _X(gap);
+                float dis_x0 = _X(spot);
 
                 for (auto dis : this->disciplines) {
                     uint64_t disCode = this->model->get_discipline_code(dis.second->get_type());
@@ -593,9 +596,9 @@ namespace {
                     if ((disCode == this->the_disCode) || (this->the_disCode == 0U)) {
                         dis.second->show(true);
                         this->glide_to(duration, dis.second, spot, MatterPort::LC);
-                        spot.x += grid_width;
+                        spot += cPoint(grid_width, 0.0F);
                     } else {
-                        this->glide_to(duration, dis.second, { dis_x0, spot.y }, MatterPort::LC);
+                        this->glide_to(duration, dis.second, { dis_x0, _Y(spot) }, MatterPort::LC);
                     }
                 }
             }
@@ -603,14 +606,14 @@ namespace {
 
         void reflow_students(double duration = gliding_duration) {
             if (!this->students.empty()) {
-                Dot nocls_stu = this->get_matter_location(this->side_border, MatterPort::LB);
+                cPoint nocls_stu = this->get_matter_location(this->side_border, MatterPort::LB);
                 Box grid = this->students.begin()->second->get_bounding_box();
                 uint64_t desk_idx, seat_idx;
                 float gap = 4.0F;
          
-                nocls_stu.x *= 0.90F;
-                grid.rbdot += { gap, gap };
-                grid.ltdot.y = grid.height() * 3.0F;
+                grid.rbdot += cVector(gap, gap);
+                set_X(nocls_stu, _X(nocls_stu) * 0.90F);
+                set_Y(grid.ltdot, grid.height() * 3.0F);
 
                 for (auto stu : this->students) {
                     uint64_t stuClsId = this->model->get_student_class(stu.second->primary_key());
@@ -620,11 +623,11 @@ namespace {
                     if (stuClsId == 0U) {
                         this->glide_to(duration, stu.second, nocls_stu, MatterPort::RB);
 
-                        if (nocls_stu.y > grid_y) {
-                            nocls_stu.y -= grid.height();
+                        if (_Y(nocls_stu) > grid_y) {
+                            nocls_stu -= cVector(0.0F, grid.height());
                         } else {
-                            nocls_stu.x -= grid.width();
-                            nocls_stu.y = this->get_matter_location(this->side_border, MatterPort::LB).y;
+                            nocls_stu -= cVector(grid.width(), 0.0F);
+                            set_Y(nocls_stu, _Y(this->get_matter_location(this->side_border, MatterPort::LB)));
                         }
                     } else {
                         if (stu.second->visible()) {
@@ -726,18 +729,32 @@ namespace {
             this->avatar->camouflage(true);
         }
 
-        void load_grade_reports(float width, float height) {
+        void load_literacy_radars(float width, float height) {
+            this->literacy_radar = this->load_literacy_radar(width, height, "Student's Assessment");
         }
 
-        Gradelet* load_grade_report(float width, float height, const char* title) {
-            auto report = this->insert(new Gradelet(title, this->calculate_sidebar_width() - 64.0F));
+        Radarlet* load_literacy_radar(float width, float height, const char* title) {
+            float side_width = this->calculate_sidebar_width();
+            float radar_radius = side_width * 0.382F;
 
-            this->update_report_discipline(report);
+            auto radar = this->insert(new Radarlet(sizeof(radar_variables)/sizeof(char*), radar_radius, WHITESMOKE, 0.90));
+
+            radar->set_title(title);
+            radar->set_start_angle(0.0, false);
+            radar->set_variable_names(radar_variables);
+            radar->camouflage(true);
+
+            radar->set_levels(radar_levels);
+            radar->push_observation( std::vector<double>(radar->variable_length(), 0.0).data(), SEAGREEN,   radar_alpha);
+            radar->push_observation( std::vector<double>(radar->variable_length(), 0.0).data(), DODGERBLUE, radar_alpha);
+
+            this->update_report_discipline(radar);
             
-            return report;
+            return radar;
         }
 
-        void update_report_discipline(Gradelet* report) {
+        void update_report_discipline(Radarlet* radar) {
+            std::vector<double> vars(radar->variable_length());
             std::vector<DisciplineType> actual_types;
 
             for (auto disType : report_disciplines) {
@@ -748,7 +765,13 @@ namespace {
                 }
             }
 
-            report->set_disciplines(actual_types, MatterPort::LB);
+            for (size_t idx = 0; idx < radar->variable_length(); idx ++) {
+                vars[idx] = random_uniform(0.0, 1.0);
+            }
+
+            radar->set_observation(1, vars.data());
+
+            // report->set_disciplines(actual_types, MatterPort::LB);
         }
 
         void update_student_report(uint64_t sNo) {
@@ -779,6 +802,8 @@ namespace {
                         s_pts.push_back(lpts);
                     }
                 }
+
+                this->update_report_discipline(this->literacy_radar);
             }
         }
 
@@ -828,6 +853,7 @@ namespace {
         Labellet* clsLabel;
         Labellet* stuLabel;
         Linelet* side_border;
+        Radarlet* literacy_radar;
         std::map<uint64_t, DoorSprite*> doors;
         std::map<uint64_t, DisciplineSprite*> disciplines;
         std::map<uint64_t, StudentSprite*> students;

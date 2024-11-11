@@ -68,11 +68,11 @@ namespace WarGrey::STEM {
         
     private:
         void switch_game_state(WarGrey::STEM::TCLMState new_state);
-        void spot_ball(WarGrey::STEM::LotteryPlane::Ballet* ball, const Plteen::Dot& O, float apothem);
-        void update_balls(const std::map<size_t, Ballet*>& balls, std::vector<Ballet*>& lucky_balls, const Plteen::Dot& O, float apothem, bool motion_only);
+        void spot_ball(WarGrey::STEM::LotteryPlane::Ballet* ball, const Plteen::cPoint& O, float apothem);
+        void update_balls(const std::map<size_t, Ballet*>& balls, std::vector<Ballet*>& lucky_balls, const Plteen::cPoint& O, float apothem, bool motion_only);
         bool select(const std::vector<WarGrey::STEM::LotteryPlane::Ballet*>& balls);
         bool pick(WarGrey::STEM::LotteryPlane::Ballet* ball);
-        void apply_forces(WarGrey::STEM::LotteryPlane::Ballet* ball, const Plteen::Dot& O, float radius, bool no_fan);
+        void apply_forces(WarGrey::STEM::LotteryPlane::Ballet* ball, const Plteen::cPoint& O, float radius, bool no_fan);
         
     private: // 游戏操作
         std::vector<Plteen::Labellet*> winning_numbers;

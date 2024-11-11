@@ -8,7 +8,7 @@ void WarGrey::CAE::StudentSprite::draw(dc_t* dc, float x, float y, float Width, 
     Sprite::draw(dc, x, y, Width, Height);
 
     if (this->sbar_color.is_opacity() && (this->sbar_percentage > 0.0)) {
-        dc->draw_hline(x, y + 1.0F, Width * this->sbar_percentage, this->sbar_color);
+        dc->draw_hline(x, y + 1.0F, Width * float(this->sbar_percentage), this->sbar_color);
     }
 
     if (is_shift_pressed()) {
