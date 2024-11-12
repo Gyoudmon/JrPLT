@@ -2,7 +2,7 @@
 
 @require{../literacy.rkt}
 
-@handbook-part{宇宙大爆炸}
+@handbook-part{宇宙大爆炸：初来乍到，好刺激}
 
 @tamer-deftech{宇宙大爆炸}是青少计算机科学后续所有课程的基础。
 学完本课程之后，学生将对程序语言、程序设计和计算思维有个初步的了解。
