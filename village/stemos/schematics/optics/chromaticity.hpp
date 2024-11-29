@@ -9,7 +9,7 @@
 namespace WarGrey::STEM {
     class __lambda__ ChromaticityDiagramPlane : public WarGrey::STEM::TheSTEMPlane {
     public:
-        ChromaticityDiagramPlane() : TheSTEMPlane("色度图", 0xFFFFFFU) {}
+        ChromaticityDiagramPlane() : TheBigBang("色度图", 0xFFFFFFU) {}
         virtual ~ChromaticityDiagramPlane() {}
         
     public:

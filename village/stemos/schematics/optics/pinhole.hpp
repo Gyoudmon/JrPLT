@@ -1,10 +1,9 @@
 #pragma once // 确保只被 include 一次
 
 #include <plteen/game.hpp>
+#include <map>
 
 #include "../../stem.hpp"
-
-#include <map>
 
 namespace WarGrey::STEM {
     enum class GameState { Auto, Stop, Edit, _ };
@@ -12,7 +11,7 @@ namespace WarGrey::STEM {
     /** 声明游戏宇宙 **/
     class __lambda__ PinholePlane : public WarGrey::STEM::TheSTEMPlane {
     public:
-        PinholePlane(float gridsize = 8.0F) : TheSTEMPlane("小孔成像") {}
+        PinholePlane(float gridsize = 8.0F) : TheBigBang("小孔成像") {}
         virtual ~PinholePlane() {}
 
     public:    // 覆盖游戏基本方法
@@ -26,7 +25,7 @@ namespace WarGrey::STEM {
             
     protected: // 覆盖输入事件处理方法
         void on_char(char key, uint16_t modifiers, uint8_t repeats, bool pressed) override; // 处理键盘事件
-        void on_tap(Plteen::IMatter* m, float x, float y) override;                  // 处理鼠标事件
+        void on_tap(Plteen::IMatter* m, float x, float y) override;                         // 处理鼠标事件
 
     private:
         void load_labview(float width, float height);

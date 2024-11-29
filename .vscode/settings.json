@@ -101,6 +101,7 @@
         "__verbose_abort": "cpp",
         "set": "cpp",
         "span": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "__memory": "c"
     }
 }

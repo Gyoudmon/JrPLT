@@ -7,7 +7,6 @@ static double gliding_duration = 0.2;
 
 /*************************************************************************************************/
 void Plteen::TrackPlane::construct(float width, float height) {
-    this->the_name("Tamer");
     this->style = make_highlight_dimension_style(24U, 8U, 2);
 }
 

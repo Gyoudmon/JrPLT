@@ -5,10 +5,10 @@
 namespace WarGrey::CAE {
     class DoorSprite : public Plteen::Sprite {
     public:
-        DoorSprite(uint64_t seq);
+        DoorSprite(uint64_t seq, const char* nickname);
         virtual ~DoorSprite() {}
 
-        const char* name() override;
+        const char* name() override { return this->_name.c_str(); }
         int preferred_local_fps() override { return 24; }
 
     public:
@@ -20,5 +20,6 @@ namespace WarGrey::CAE {
 
     private:
         uint64_t seq;
+        std::string _name;
     };
 }

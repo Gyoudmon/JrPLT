@@ -1,14 +1,14 @@
 #pragma once
 
-#include "../../digitama/plteen/bang.hpp"
+#include "tamer.hpp"
 
 #include <vector>
 
 /*************************************************************************************************/
 namespace Plteen {
-    class LayerPlane : public Plteen::TheBigBang {
+    class LayerPlane : public Plteen::TheTamerBang {
     public:
-        LayerPlane() : TheBigBang("Layer Order") { this->the_name("Tamer"); }
+        LayerPlane() : TheBigBang("Layer Order") {}
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override;

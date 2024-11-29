@@ -2,6 +2,7 @@
 
 #include "village/splash.hpp"
 
+#include "village/pltmos/carry.hpp"
 #include "village/pltmos/stream.hpp"
 #include "village/stemos/motion/lottery.hpp"
 #include "village/stemos/schematics/optics/pinhole.hpp"
@@ -36,12 +37,18 @@ namespace {
 
     public:  // 覆盖游戏基本方法
         void construct(int argc, char* argv[]) override {
-            this->parse_cmdline_options(argc, argv);
-            this->set_window_size(1200, 0);
             GameFont::fontsize(21);
+            this->parse_cmdline_options(argc, argv);
+
+#ifdef NDEBUG
+            this->toggle_window_fullscreen();
+#else
+            this->set_window_size(0, 0);
+#endif
 
             this->splash = this->push_plane(new JrPlane(this));
 
+            this->push_plane(new CarrySystemPlane());
             this->push_plane(new StreamPlane());
             this->push_plane(new LotteryPlane());
             this->push_plane(new PinholePlane());

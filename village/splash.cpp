@@ -122,7 +122,7 @@ void Plteen::JrPlane::reflow_demo(float width, float height) {
 }
 
 void Plteen::JrPlane::reflow_plot(float width, float height) {
-    this->move_to(this->stage, Position(width * 0.5, height), MatterPort::CB);
+    this->move_to(this->stage, Position(width * 0.5, height * 0.618), MatterPort::CC);
     this->stage->move_to_logic_tile(this->host, xtile_count / 2, ytile_count / 2, MatterPort::CB, MatterPort::CB);
     this->stage->move_to_logic_tile(this->wife, 0, -3, MatterPort::CB, MatterPort::CB);
     this->stage->move_to_logic_tile(this->concubine, 0, -1, MatterPort::CB, MatterPort::CB);

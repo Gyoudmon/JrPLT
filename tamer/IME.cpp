@@ -1,26 +1,24 @@
 #include "../digitama/plteen/game.hpp"
-#include "../digitama/plteen/bang.hpp"
+#include "engine/tamer.hpp"
 
 using namespace Plteen;
 
 /*************************************************************************************************/
 namespace {
-    class IMEPlane : public Plteen::TheBigBang {
+    class IMEPlane : public Plteen::TheTamerBang {
     public:
-        IMEPlane(Cosmos* master) : TheBigBang("IME") {
-            this->the_name("Tamer");
-        }
+        IMEPlane(Cosmos* master) : TheBigBang("IME") {}
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override {
-            TheBigBang::load(width, height);
+            TheTamerBang::load(width, height);
             
             this->message = this->insert(new Labellet(GameFont::fangsong(), DIMGRAY, "PRESS ANY KEY"));
             this->ime_msg = this->insert(new Labellet(GameFont::fangsong(), DIMGRAY, ""));
         }
         
         void reflow(float width, float height) override {
-            TheBigBang::reflow(width, height);
+            TheTamerBang::reflow(width, height);
 
             this->move_to(this->message, { this->agent, MatterPort::LB }, MatterPort::LT);
             this->move_to(this->ime_msg, { width, height }, MatterPort::RB);

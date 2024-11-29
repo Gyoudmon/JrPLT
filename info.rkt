@@ -60,7 +60,7 @@
   '(["literacy/Linguisteen.scrbl" xelatex]
     ["literacy/HighOI.scrbl" xelatex]
     ["literacy/TheBigBang.scrbl" xelatex]
-    ["literacy/HowToDesignProgram.scrbl" xelatex]
+    ["literacy/HowToDesignPrograms.scrbl" xelatex]
     ["literacy/Introduction.scrbl" xelatex]
     ["literacy/AdventOfLambda.scrbl" xelatex "advent-of-lambda"]
 

@@ -3,9 +3,9 @@
 
 #include "engine/text.hpp"
 #include "engine/layer.hpp"
-#include "engine/gallery.hpp"
 #include "engine/track.hpp"
 #include "engine/plot.hpp"
+#include "engine/gallery.hpp"
 
 using namespace Plteen;
 
@@ -19,7 +19,7 @@ namespace {
     /*********************************************************************************************/
     class TamerPlane : public Plane {
     public:
-        TamerPlane(Cosmos* master) : Plane("Tamer"), master(master) { }
+        TamerPlane(Cosmos* master) : Plane("Tamer"), master(master) {}
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override {
@@ -138,6 +138,7 @@ namespace {
 
             return updated;
         }
+
 
     private:
         Linkmon* agent;

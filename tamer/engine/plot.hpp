@@ -1,14 +1,14 @@
 #pragma once // 确保只被 include 一次
 
-#include "../../digitama/plteen/bang.hpp"
+#include "tamer.hpp"
 
 #include <vector>
 
 namespace Plteen {
     /*********************************************************************************************/
-    class PlotPlane : public Plteen::TheBigBang {
+    class PlotPlane : public Plteen::TheTamerBang {
     public:
-        PlotPlane() : TheBigBang("Plot Diagram") { this->the_name("Tamer"); }
+        PlotPlane() : TheBigBang("Plot Diagram") {}
         virtual ~PlotPlane() {}
         
     public:

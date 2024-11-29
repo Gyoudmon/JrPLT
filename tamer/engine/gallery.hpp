@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../../digitama/plteen/bang.hpp"
+#include "tamer.hpp"
 
 /*************************************************************************************************/
 namespace Plteen {
-    class GalleryPlane : public Plteen::TheBigBang {
+    class GalleryPlane : public Plteen::TheTamerBang {
         public:
-            GalleryPlane() : TheBigBang("Gallery") { this->the_name("Tamer"); }
+            GalleryPlane() : TheBigBang("Gallery") {}
 
         public:
             void load(float width, float height) override;

@@ -9,7 +9,7 @@
         [else (+ layer (brick-number (sub1 layer)))]))
 
 (define brick-heap
-  (let ([block (bitmap-rectangle 32 16 #:border 'orangered #:fill 'firebrick)])
+  (let ([block (bitmap-rectangle 32 16 #:stroke 'orangered #:fill 'firebrick)])
     (lambda [layer]
       (cond [(<= layer 0) (bitmap-blank)]
             [else (bitmap-vc-append*

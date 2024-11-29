@@ -1,6 +1,6 @@
 #lang scribble/report
 
-@require{disciplines/literacy.rkt}
+@require{htdp/literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-title[

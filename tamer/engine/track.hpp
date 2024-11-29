@@ -1,14 +1,14 @@
 #pragma once
 
-#include "../../digitama/plteen/bang.hpp"
+#include "tamer.hpp"
 
 #include <vector>
 
 /*************************************************************************************************/
 namespace Plteen {
-    class TrackPlane : public Plteen::TheBigBang {
+    class TrackPlane : public Plteen::TheTamerBang {
     public:
-        TrackPlane() : TheBigBang("Track") { }
+        TrackPlane() : TheBigBang("Track") {}
 
     public: // 覆盖游戏基本方法
         void construct(float width, float height) override;

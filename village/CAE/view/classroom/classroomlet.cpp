@@ -1,13 +1,9 @@
-#include "JrPLTCR.hpp"
+#include "classroomlet.hpp"
 
-#include "menu.hpp"
-#include "avatar.hpp"
-#include "model.hpp"
-
-#include "view/doorlet.hpp"
-#include "view/disciplinelet.hpp"
-#include "view/studentlet.hpp"
-#include "view/desk/computer_desklet.hpp"
+#include "../doorlet.hpp"
+#include "../disciplinelet.hpp"
+#include "../studentlet.hpp"
+#include "../desk/computer_desklet.hpp"
 
 #include <plteen/datum/string.hpp>
 #include <plteen/datum/vector.hpp>
@@ -883,52 +879,4 @@ namespace {
         std::string caein;
         std::string caeout;
     };
-}
-
-/*************************************************************************************************/
-namespace { enum GMSCmdOpt { GMSIn, GMSOut, _ }; }
-
-void WarGrey::CAE::JrPLTCRCosmos::construct(int argc, char* argv[]) {
-    enter_digimon_zone(argv[0]);
-    imgdb_setup(digimon_subdir("stone"));
-
-#ifdef __windows__
-    digimon_appdata_setup("C:\\opt\\JrPLT\\");
-    digimon_mascot_setup("C:\\opt\\JrPLT\\stone\\mascot");
-#else
-    digimon_appdata_setup("/opt/JrPLT/");
-    digimon_mascot_setup("/opt/JrPLT/stone/mascot");
-#endif
-
-    this->parse_commandline_argument(argc, argv);
-    this->set_snapshot_folder("/Users/wargrey/Desktop");
-    this->set_cmdwin_height(24);
-
-    GameFont::fontsize(20);
-
-    this->push_plane(new JrPLTPlane(this->caein, this->caeout));
-}
-
-void WarGrey::CAE::JrPLTCRCosmos::parse_commandline_argument(int argc, char* argv[]) {
-    GMSCmdOpt opt = GMSCmdOpt::_;
-
-    for (int idx = 1; idx < argc; idx ++) {
-        switch (opt) {
-        case GMSCmdOpt::GMSIn: {
-            this->caein = argv[idx];
-            opt = GMSCmdOpt::_;
-        }; break;
-        case GMSCmdOpt::GMSOut: {
-            this->caeout = argv[idx];
-            opt = GMSCmdOpt::_;
-        }; break;
-        default: {
-            if ((strcmp(argv[idx], "-i") == 0) || (strcmp(argv[idx], "--in") == 0)) {
-                opt = GMSCmdOpt::GMSIn;
-            } else if ((strcmp(argv[idx], "-o") == 0) || (strcmp(argv[idx], "--out") == 0)) {
-                opt = GMSCmdOpt::GMSOut;
-            }
-        }; break;
-        }
-    }
 }

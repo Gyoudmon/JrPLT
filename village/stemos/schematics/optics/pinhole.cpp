@@ -30,7 +30,6 @@ static const uint32_t colors_for_auto[] = { GRAY,  GREEN, GRAY,  GRAY,  GRAY,  G
 static const uint32_t colors_for_stop[] = { GREEN, GRAY,  GREEN, GREEN, GRAY,  GRAY };
 static const uint32_t colors_for_edit[] = { GREEN, GRAY,  GRAY,  GREEN, GREEN, GREEN };
 
-
 /*************************************************************************************************/
 class LightSource {
 public:

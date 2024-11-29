@@ -52,7 +52,7 @@ private:
 /*************************************************************************************************/
 WarGrey::STEM::LotteryPlane::LotteryPlane(const std::vector<uint8_t>& numbers
     , const std::vector<BallGroup>& groups, double fan_frequency)
-    : TheSTEMPlane("摇奖机"), fan_frequency(fan_frequency), ball_numbers(numbers), ball_groups(groups) {
+    : TheBigBang("摇奖机"), fan_frequency(fan_frequency), ball_numbers(numbers), ball_groups(groups) {
         this->ball_count = 0;
         for (auto group : groups) {
             this->ball_count += group.count;

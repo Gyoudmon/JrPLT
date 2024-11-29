@@ -4,9 +4,11 @@
 #include <plteen/bang.hpp>
 
 namespace WarGrey::STEM {
-    class __lambda__ TheSTEMPlane : public Plteen::TheBigBang {
-    public:
-        TheSTEMPlane(const char* name, uint32_t title_color = 0U);
-        virtual ~TheSTEMPlane() {}
+    class __lambda__ TheSTEMPlane : public virtual Plteen::TheBigBang {
+    protected:
+        const char* the_title_prefix() const override {
+            // Επιστήμη(Science) in greek
+            return "[Σ]交互式科学";
+        }
     };
 }

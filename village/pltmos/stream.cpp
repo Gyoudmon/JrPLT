@@ -1,7 +1,6 @@
 #include "stream.hpp"
 
 #include <plteen/bang.hpp>
-
 #include <filesystem>
 
 using namespace Plteen;
@@ -32,7 +31,7 @@ static const char* file_failure_tooltip = "输入流打开失败";
 static const char* file_eof_tooltip = "管道流已见底，别忘了“关闭”它";
 
 /*************************************************************************************************/
-WarGrey::PLT::StreamPlane::StreamPlane(const char* spath) : ThePLTPlane("流"), stream_source(spath) {
+WarGrey::PLT::StreamPlane::StreamPlane(const char* spath) : TheBigBang("流"), stream_source(spath) {
     if (exists(path(spath))) {
         this->stream_source = spath;
     } else {
@@ -76,6 +75,8 @@ void WarGrey::PLT::StreamPlane::load(float width, float height) {
 }
 
 void WarGrey::PLT::StreamPlane::reflow(float width, float height) {
+    ThePLTPlane::reflow(width, height);
+    
     cVector distance(0.0F, generic_font_size(FontSize::xx_large) * 4.0F);
     float char_pos = 0.25F;
     float line_pos = 1.0F - char_pos;
