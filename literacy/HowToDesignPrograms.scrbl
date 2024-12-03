@@ -40,8 +40,8 @@
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @include-section{htdp/greetings.scrbl}
 @include-section{htdp/big-bang.scrbl}
-@include-section{htdp/primitive-data.scrbl}
-@include-section{htdp/compound-data.scrbl}
+@include-section{htdp/fxdata.scrbl}
+@include-section{htdp/vardata.scrbl}
 @include-section{htdp/abstract.scrbl}
 @include-section{htdp/user-defined-data.scrbl}
 @include-section{htdp/goodbye.scrbl}

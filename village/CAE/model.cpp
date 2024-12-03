@@ -113,7 +113,7 @@ void WarGrey::CAE::GMSModel::clear(bool broadcast) {
 
 /**
  * Delete student records that binding classes had been deleted
- * but leave those binding no class as-is.
+ * but leaving those binding no class as-is.
  */
 void WarGrey::CAE::GMSModel::clear_detached_students() {
     auto it = this->students.begin();
@@ -307,6 +307,7 @@ void WarGrey::CAE::GMSModel::delete_student_as_user_request(uint64_t sNo) {
         shared_student_t entity = this->students[sNo];
 
         this->students.erase(sNo);
+        this->seats.erase(sNo);
         this->listener->on_student_deleted(sNo, entity, false);
     } else {
         throw exn_gms("查无此人(%llu)", sNo);

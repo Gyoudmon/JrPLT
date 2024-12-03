@@ -63,9 +63,6 @@
   (define argv (current-command-line-arguments))
   (define argc (vector-length argv))
 
-  (when (>= argc 3)
-    (bind-scores
-     (list-students (vector-ref argv 0))
-     (list-disciplines (vector-ref argv 0))
-     (vector-ref argv 1)
-     (list-all-scores/flatten (vector-ref argv 2)))))
+  (when (>= argc 1)
+    (list-students (vector-ref argv 0))
+    (list-disciplines (vector-ref argv 0))))

@@ -23,7 +23,7 @@ using namespace WarGrey::CAE;
 namespace {
     static const size_t DESK_COUNT = 4;
     static const float platform_width = 512.0F;
-    static const float platform_height = 80.0F;
+    static const float platform_height = 64.0F;
     static const double gliding_duration = 0.4;
     static const double radar_alpha = 0.42;
     static const double radar_levels [] = { 0.4, 0.6, 0.8 };
@@ -542,7 +542,7 @@ namespace {
             float sidebar_pos = this->calculate_sidebar_width();
             float croom_width = width - sidebar_pos;
             float desk_width = croom_width / float(DESK_COUNT + 4);
-            float desk_height = height - platform_height * 2.0;
+            float desk_height = height - platform_height * 1.618;
 
             this->platform = this->insert(new Rectanglet(platform_width, platform_height, SKYBLUE));
             this->clsLabel = this->insert(new Labellet(GameFont::monospace(FontSize::x_large), GHOSTWHITE, "[Class]"));
@@ -559,7 +559,7 @@ namespace {
             float croom_width = width - sidebar_pos;
             float desk_cy = (height - platform_height) * 0.5F;
 
-            this->move_to(this->platform, { croom_width * 0.50F + sidebar_pos, height * 0.95F }, MatterPort::CC);
+            this->move_to(this->platform, { croom_width * 0.50F + sidebar_pos, height * 1.0F }, MatterPort::CB);
             this->move_to(this->clsLabel, { this->platform, MatterPort::RT }, MatterPort::RT, { -4.0F, +4.0F });
             this->move_to(this->stuLabel, { this->platform, MatterPort::RB }, MatterPort::RB, { -4.0F, -4.0F });
 
