@@ -26,7 +26,7 @@ static ClassRoomType name_to_class_room_type(const char* name) {
 
 /*************************************************************************************************/
 bool WarGrey::CAE::ClassEntity::match(const std::string& line, int* offset) {
-    return GMSEntity::match(line, class_mark, offset);
+    return CAEEntity::match(line, class_mark, offset);
 }
 
 const char* WarGrey::CAE::ClassEntity::prompt() {
@@ -45,7 +45,7 @@ WarGrey::CAE::ClassEntity::ClassEntity(const std::string& s, int idx) {
 
     scan_skip_space(src, &pos, end);
     this->seq = scan_natural(src, &pos, end);
-    if (this->seq == 0U) throw exn_gms("Invalid Class No.");
+    if (this->seq == 0U) throw exn_cae("Invalid Class No.");
     
     scan_skip_delimiter(src, &pos, end, field_delimiter);
     this->nickname = scan_string(src, &pos, end, field_delimiter);

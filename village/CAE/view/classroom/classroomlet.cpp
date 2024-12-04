@@ -36,7 +36,7 @@ namespace {
     class JrPLTPlane : public Plane, public IMenuEventListener, public IModelListener {
     public:
         JrPLTPlane(std::string caein, std::string caeout) : Plane("JrPLT CAE") {
-            this->model = new GMSModel(this);
+            this->model = new CAEModel(this);
             this->caein = caein;
             this->caeout = (caeout.empty()) ? this->caein : caeout;
         }
@@ -869,7 +869,7 @@ namespace {
         uint64_t the_clsId = 0U;
         uint64_t the_disCode = 0U;
         uint64_t the_sNo = 0U;
-        GMSModel* model;
+        CAEModel* model;
 
     private:
         GradeTask the_grade_subtask = GradeTask::_;

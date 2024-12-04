@@ -6,7 +6,7 @@ using namespace WarGrey::CAE;
 using namespace Plteen;
 
 /*************************************************************************************************/
-bool WarGrey::CAE::GMSEntity::match(const std::string& line, char line_mark, int* offset) {
+bool WarGrey::CAE::CAEEntity::match(const std::string& line, char line_mark, int* offset) {
     bool matched = false;
 
     if (line.size() > 2) {
@@ -19,7 +19,7 @@ bool WarGrey::CAE::GMSEntity::match(const std::string& line, char line_mark, int
     return matched;
 }
 
-bool WarGrey::CAE::GMSEntity::match(const std::string& line, char mark1, char mark2, int* offset) {
+bool WarGrey::CAE::CAEEntity::match(const std::string& line, char mark1, char mark2, int* offset) {
     bool matched = false;
 
     if (line.size() > 3) {
@@ -32,7 +32,7 @@ bool WarGrey::CAE::GMSEntity::match(const std::string& line, char mark1, char ma
     return matched;
 }
 
-bool WarGrey::CAE::GMSEntity::match(const std::string& line, char mark1, char mark2, char mark3, int* offset) {
+bool WarGrey::CAE::CAEEntity::match(const std::string& line, char mark1, char mark2, char mark3, int* offset) {
     bool matched = false;
 
     if (line.size() > 4) {
@@ -46,7 +46,7 @@ bool WarGrey::CAE::GMSEntity::match(const std::string& line, char mark1, char ma
 }
 
 /*************************************************************************************************/
-WarGrey::CAE::exn_gms::exn_gms(const char* fmt, ...) {
+WarGrey::CAE::exn_cae::exn_cae(const char* fmt, ...) {
     VSNPRINT(msg, fmt);
     this->message = msg;
 }

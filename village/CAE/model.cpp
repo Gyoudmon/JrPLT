@@ -5,6 +5,7 @@
 #include <plteen/datum/flonum.hpp>
 #include <plteen/datum/vector.hpp>
 
+#include <vector>
 #include <fstream>
 #include <filesystem>
 
@@ -14,18 +15,18 @@ using namespace WarGrey::CAE;
 using namespace std::filesystem;
 
 /*************************************************************************************************/
-void WarGrey::CAE::GMSModel::import_from_file(const std::string& path_gms) {
-    if (exists(path_gms) && (!is_directory(path_gms))) {
-        std::ifstream gmsin;
+void WarGrey::CAE::CAEModel::import_from_file(const std::string& path_db) {
+    if (exists(path_db) && (!is_directory(path_db))) {
+        std::ifstream caein;
         std::string line;
         int offset;
 
-        gmsin.exceptions(std::ios_base::badbit | std::ios_base::failbit);
-        gmsin.open(path_gms);
+        caein.exceptions(std::ios_base::badbit | std::ios_base::failbit);
+        caein.open(path_db);
 
         this->clear();
 
-        while (std::getline(gmsin, line)) {
+        while (std::getline(caein, line)) {
             try {
                 if (GradeEntity::match(line, &offset)) {
                     this->register_student_scores(std::make_shared<GradeEntity>(line, offset));
@@ -48,47 +49,97 @@ void WarGrey::CAE::GMSModel::import_from_file(const std::string& path_gms) {
             }
         }
 
-        gmsin.close();
+        caein.close();
     }
 }
 
-void WarGrey::CAE::GMSModel::export_to_file(const std::string& path_gms, bool override_if_exists) {
-    if (!exists(path_gms) || override_if_exists) {
-        std::ofstream gmsout;
+void WarGrey::CAE::CAEModel::export_to_file(const std::string& path_db, bool override_if_exists) {
+    if (!exists(path_db) || override_if_exists) {
+        std::ofstream caeout;
         
-        gmsout.exceptions(std::ios_base::badbit | std::ios_base::failbit);
-        gmsout.open(path_gms);
+        caeout.exceptions(std::ios_base::badbit | std::ios_base::failbit);
+        caeout.open(path_db);
 
         for (auto& cls : this->classes) {
-            gmsout << cls.second->to_string() << std::endl;
+            caeout << cls.second->to_string() << std::endl;
         }
 
         for (auto& dis : this->disciplines) {
-            gmsout << dis.second->to_string() << std::endl;
+            caeout << dis.second->to_string() << std::endl;
         }
 
         for (auto& stu : this->students) {
-            gmsout << stu.second->to_string() << std::endl;
+            caeout << stu.second->to_string() << std::endl;
         }
 
         for (auto& seat : this->seats) {
-            gmsout << seat.second->to_string() << std::endl;
+            caeout << seat.second->to_string() << std::endl;
         }
 
         for (auto& ts_score : this->scores) {
             for (auto& dis_score : ts_score.second) {
                 for (auto& score : dis_score.second) {
-                    gmsout << score.second->to_string() << std::endl;
+                    caeout << score.second->to_string() << std::endl;
                 }
             }
         }
         
-        gmsout.close();
+        caeout.close();
+    }
+}
+
+void WarGrey::CAE::CAEModel::export_grade_to_file(const std::string& path_csv, bool override_if_exists) {
+    if (!exists(path_csv) || override_if_exists) {
+        std::ofstream grdout;
+        
+        grdout.exceptions(std::ios_base::badbit | std::ios_base::failbit);
+        grdout.open(path_csv);
+        this->export_grade_to_file(grdout);       
+        grdout.close();
+    }
+}
+
+void WarGrey::CAE::CAEModel::export_grade_to_file(std::ostream& caeout) {
+    for (auto& dis : this->disciplines) {
+        std::map<uint64_t, std::vector<uint64_t>> timestamps;
+
+        for (auto& stu_score : this->scores) {
+            if (this->students.find(stu_score.first) != this->students.end()) {
+                uint64_t clsId = this->get_student_class(stu_score.first);
+
+                if (clsId > 0) {
+                    if (timestamps.find(clsId) == timestamps.end()) {
+                        std::vector<uint64_t> times;
+
+                        this->feed_class_timestamps(clsId, dis.first, times);
+                        timestamps[clsId] = times;
+                    }
+
+                    caeout << stu_score.first << "," << this->students[stu_score.first]->get_nickname();
+                    caeout << "," << this->students[stu_score.first]->get_gender();
+                    caeout << "," << this->disciplines[dis.first]->cannonical_name();
+
+                    for (auto& ts : timestamps[clsId]) {
+                        caeout << ",";
+
+                        if (stu_score.second.find(ts) != stu_score.second.end()) {
+                            auto& dis_score = stu_score.second[ts];
+
+                            if (dis_score.find(dis.first) != dis_score.end()) {
+                                caeout << dis_score[dis.first]->get_score();
+                            }
+                        }
+                    }
+                    
+                    caeout << std::endl;
+                }
+            }
+        }
     }
 }
 
 /*************************************************************************************************/
-void WarGrey::CAE::GMSModel::clear(bool broadcast) {
+void WarGrey::CAE::CAEModel::clear(bool broadcast) {
     if (broadcast) {
         for (auto& cls : this->classes) {
             this->listener->on_class_deleted(cls.first, cls.second, true);
@@ -115,7 +166,7 @@ void WarGrey::CAE::GMSModel::clear(bool broadcast) {
  * Delete student records that binding classes had been deleted
  * but leaving those binding no class as-is.
  */
-void WarGrey::CAE::GMSModel::clear_detached_students() {
+void WarGrey::CAE::CAEModel::clear_detached_students() {
     auto it = this->students.begin();
 
     while (it != this->students.end()) {
@@ -140,7 +191,7 @@ void WarGrey::CAE::GMSModel::clear_detached_students() {
 /**
  * Delete grade records that related students or diciplines had been deleted
  */
-void WarGrey::CAE::GMSModel::clear_detached_grades() {
+void WarGrey::CAE::CAEModel::clear_detached_grades() {
     auto it = this->scores.begin();
 
     while (it != this->scores.end()) {
@@ -178,7 +229,7 @@ void WarGrey::CAE::GMSModel::clear_detached_grades() {
     }
 }
 
-void WarGrey::CAE::GMSModel::register_student_scores(shared_grade_t grade) {
+void WarGrey::CAE::CAEModel::register_student_scores(shared_grade_t grade) {
     uint64_t sNo = grade->get_student();
     uint64_t ts = grade->get_timestamp();
     uint64_t dis = grade->get_discipline();
@@ -193,9 +244,9 @@ void WarGrey::CAE::GMSModel::register_student_scores(shared_grade_t grade) {
                 dis_scores[dis] = grade;
             } else {
                 if (this->disciplines.find(dis) != this->disciplines.end()) {
-                    throw exn_gms("成绩已(%s@%llu)登记", this->disciplines[dis]->cannonical_name(), ts);
+                    throw exn_cae("成绩已(%s@%llu)登记", this->disciplines[dis]->cannonical_name(), ts);
                 } else {
-                    throw exn_gms("成绩已(%llu@%llu)登记", dis, ts);
+                    throw exn_cae("成绩已(%llu@%llu)登记", dis, ts);
                 }
             }
         } else {
@@ -206,18 +257,18 @@ void WarGrey::CAE::GMSModel::register_student_scores(shared_grade_t grade) {
     }
 }
 
-void WarGrey::CAE::GMSModel::register_class(shared_class_t cls, bool in_batching) {
+void WarGrey::CAE::CAEModel::register_class(shared_class_t cls, bool in_batching) {
     uint64_t pk = cls->primary_key();
 
     if (this->classes.find(pk) == this->classes.end()) {
         this->classes[pk] = cls;
         this->listener->on_class_created(pk, cls, in_batching);
     } else {
-        throw exn_gms("班级(%llu)已存在", cls->primary_key());
+        throw exn_cae("班级(%llu)已存在", cls->primary_key());
     }
 }
 
-void WarGrey::CAE::GMSModel::register_discipline(shared_discipline_t dis, bool in_batching) {
+void WarGrey::CAE::CAEModel::register_discipline(shared_discipline_t dis, bool in_batching) {
     uint64_t pk = dis->primary_key();
 
     if (this->disciplines.find(pk) == this->disciplines.end()) {
@@ -228,45 +279,45 @@ void WarGrey::CAE::GMSModel::register_discipline(shared_discipline_t dis, bool i
             this->dis_codes[disType] = pk;
             this->listener->on_discipline_created(pk, dis, in_batching);
         } else {
-            throw exn_gms("课程类型(%s)已存在", dis->cannonical_name());
+            throw exn_cae("课程类型(%s)已存在", dis->cannonical_name());
         }
     } else {
-        throw exn_gms("课程(%llu)已存在", dis->primary_key());
+        throw exn_cae("课程(%llu)已存在", dis->primary_key());
     }
 }
 
-void WarGrey::CAE::GMSModel::register_student(shared_student_t stu, bool in_batching) {
+void WarGrey::CAE::CAEModel::register_student(shared_student_t stu, bool in_batching) {
     uint64_t pk = stu->primary_key();
 
     if (this->students.find(pk) == this->students.end()) {
         this->students[pk] = stu;
         this->listener->on_student_created(pk, stu, in_batching);
     } else {
-        throw exn_gms("学号(%llu)已存在", stu->primary_key());
+        throw exn_cae("学号(%llu)已存在", stu->primary_key());
     }
 }
 
 /*************************************************************************************************/
-void WarGrey::CAE::GMSModel::create_class_from_user_input(const char* text, size_t size) {
+void WarGrey::CAE::CAEModel::create_class_from_user_input(const char* text, size_t size) {
     this->register_class(std::make_shared<ClassEntity>(text, 0), false);
 }
 
-void WarGrey::CAE::GMSModel::delete_class_as_user_request(uint64_t clsId) {
+void WarGrey::CAE::CAEModel::delete_class_as_user_request(uint64_t clsId) {
     if (this->classes.find(clsId) != this->classes.end()) {
         shared_class_t entity = this->classes[clsId];
 
         this->classes.erase(clsId);
         this->listener->on_class_deleted(clsId, entity, false);
     } else {
-        throw exn_gms("查无此班(%llu)", clsId);
+        throw exn_cae("查无此班(%llu)", clsId);
     }
 }
 
-void WarGrey::CAE::GMSModel::create_discipline_from_user_input(const char* text, size_t size) {
+void WarGrey::CAE::CAEModel::create_discipline_from_user_input(const char* text, size_t size) {
     this->register_discipline(std::make_shared<DisciplineEntity>(text, 0), false);
 }
 
-void WarGrey::CAE::GMSModel::delete_discipline_as_user_request(uint64_t disCode) {
+void WarGrey::CAE::CAEModel::delete_discipline_as_user_request(uint64_t disCode) {
     if (this->disciplines.find(disCode) != this->disciplines.end()) {
         shared_discipline_t entity = this->disciplines[disCode];
 
@@ -274,35 +325,35 @@ void WarGrey::CAE::GMSModel::delete_discipline_as_user_request(uint64_t disCode)
         this->dis_codes.erase(entity->cannonical_type());
         this->listener->on_discipline_deleted(disCode, entity, false);
     } else {
-        throw exn_gms("查无此课(%llu)", disCode);
+        throw exn_cae("查无此课(%llu)", disCode);
     }
 }
 
-void WarGrey::CAE::GMSModel::create_student_from_user_input(const char* text, size_t size) {
+void WarGrey::CAE::CAEModel::create_student_from_user_input(const char* text, size_t size) {
     this->register_student(std::make_shared<StudentEntity>(text, 0), false);
 }
 
-void WarGrey::CAE::GMSModel::update_student_from_user_input(uint64_t sNo, const char* text, size_t size) {
+void WarGrey::CAE::CAEModel::update_student_from_user_input(uint64_t sNo, const char* text, size_t size) {
     if (this->students.find(sNo) != this->students.end()) {
         if (this->students[sNo]->update(text, size)) {
             this->listener->on_student_updated(sNo, this->students[sNo]);
         }
     } else {
-        throw exn_gms("查无此人(%llu)", sNo);
+        throw exn_cae("查无此人(%llu)", sNo);
     }
 }
 
-void WarGrey::CAE::GMSModel::update_student_avatar_from_user_input(uint64_t sNo, const char* text, size_t size) {
+void WarGrey::CAE::CAEModel::update_student_avatar_from_user_input(uint64_t sNo, const char* text, size_t size) {
     if (this->students.find(sNo) != this->students.end()) {
         if (this->students[sNo]->update_avatar_gender(text, size)) {
             this->listener->on_student_avatar_updated(sNo, this->students[sNo]);
         }
     } else {
-        throw exn_gms("查无此人(%llu)", sNo);
+        throw exn_cae("查无此人(%llu)", sNo);
     }
 }
 
-void WarGrey::CAE::GMSModel::delete_student_as_user_request(uint64_t sNo) {
+void WarGrey::CAE::CAEModel::delete_student_as_user_request(uint64_t sNo) {
     if (this->students.find(sNo) != this->students.end()) {
         shared_student_t entity = this->students[sNo];
 
@@ -310,18 +361,18 @@ void WarGrey::CAE::GMSModel::delete_student_as_user_request(uint64_t sNo) {
         this->seats.erase(sNo);
         this->listener->on_student_deleted(sNo, entity, false);
     } else {
-        throw exn_gms("查无此人(%llu)", sNo);
+        throw exn_cae("查无此人(%llu)", sNo);
     }
 }
 
-void WarGrey::CAE::GMSModel::register_student_scores_from_user_input(uint64_t sNo, uint64_t disCode, uint64_t ts, const char* text, size_t size) {
+void WarGrey::CAE::CAEModel::register_student_scores_from_user_input(uint64_t sNo, uint64_t disCode, uint64_t ts, const char* text, size_t size) {
     shared_grade_t grade = std::make_shared<GradeEntity>(sNo, disCode, ts);
 
     grade->extract_scores(text, size, 0U);
     this->register_student_scores(grade);
 }
 
-void WarGrey::CAE::GMSModel::update_student_scores_from_user_input(uint64_t sNo, uint64_t disCode, uint64_t ts, const char* text, size_t size) {
+void WarGrey::CAE::CAEModel::update_student_scores_from_user_input(uint64_t sNo, uint64_t disCode, uint64_t ts, const char* text, size_t size) {
     if (this->scores.find(sNo) != this->scores.end()) {
         auto& ts_scores = this->scores[sNo];
 
@@ -331,19 +382,19 @@ void WarGrey::CAE::GMSModel::update_student_scores_from_user_input(uint64_t sNo,
             if (dis_scores.find(disCode) != dis_scores.end()) {
                 dis_scores[disCode]->extract_scores(text, size, 0U);
             } else {
-                throw exn_gms("成绩(%s)未登记(%s@%llu)",
+                throw exn_cae("成绩(%s)未登记(%s@%llu)",
                     this->disciplines[disCode]->cannonical_name(),
                     this->students[sNo]->get_nickname().c_str(), ts);
             }
         } else {
-            throw exn_gms("成绩未登记(%s@%llu)", this->students[sNo]->get_nickname().c_str(), ts);
+            throw exn_cae("成绩未登记(%s@%llu)", this->students[sNo]->get_nickname().c_str(), ts);
         }
     } else {
-        throw exn_gms("成绩未登记(%llu)", sNo);
+        throw exn_cae("成绩未登记(%llu)", sNo);
     }
 }
 
-void WarGrey::CAE::GMSModel::delete_student_scores_as_user_request(uint64_t sNo, uint64_t disCode, uint64_t ts) {
+void WarGrey::CAE::CAEModel::delete_student_scores_as_user_request(uint64_t sNo, uint64_t disCode, uint64_t ts) {
     if (this->scores.find(sNo) != this->scores.end()) {
         auto& ts_scores = this->scores[sNo];
 
@@ -357,20 +408,20 @@ void WarGrey::CAE::GMSModel::delete_student_scores_as_user_request(uint64_t sNo,
                     ts_scores.erase(ts);
                 }
             } else {
-                throw exn_gms("成绩(%s)未登记(%s@%llu)",
+                throw exn_cae("成绩(%s)未登记(%s@%llu)",
                     this->disciplines[disCode]->cannonical_name(),
                     this->students[sNo]->get_nickname().c_str(), ts);
             }
         } else {
-            throw exn_gms("成绩未登记(%s@%llu)", this->students[sNo]->get_nickname().c_str(), ts);
+            throw exn_cae("成绩未登记(%s@%llu)", this->students[sNo]->get_nickname().c_str(), ts);
         }
     } else {
-        throw exn_gms("成绩未登记(%llu)", sNo);
+        throw exn_cae("成绩未登记(%llu)", sNo);
     }
 }
 
 /*************************************************************************************************/
-void WarGrey::CAE::GMSModel::bind_student_to_class(uint64_t sNo, uint64_t clsId) {
+void WarGrey::CAE::CAEModel::bind_student_to_class(uint64_t sNo, uint64_t clsId) {
     if (this->seats.find(sNo) == this->seats.end()) {
         this->seats[sNo] = std::make_shared<SeatEntity>(sNo, clsId);
     } else {
@@ -378,13 +429,13 @@ void WarGrey::CAE::GMSModel::bind_student_to_class(uint64_t sNo, uint64_t clsId)
     }
 }
 
-void WarGrey::CAE::GMSModel::bind_student_to_seat(uint64_t sNo, uint64_t dsk_idx, uint64_t seat_idx) {
+void WarGrey::CAE::CAEModel::bind_student_to_seat(uint64_t sNo, uint64_t dsk_idx, uint64_t seat_idx) {
     if (this->seats.find(sNo) != this->seats.end()) {
         this->seats[sNo]->set_seat(dsk_idx, seat_idx);
     }
 }
 
-uint64_t WarGrey::CAE::GMSModel::get_student_class(uint64_t sNo) {
+uint64_t WarGrey::CAE::CAEModel::get_student_class(uint64_t sNo) {
     uint64_t clsId = 0U;
 
     if (this->seats.find(sNo) != this->seats.end()) {
@@ -394,7 +445,7 @@ uint64_t WarGrey::CAE::GMSModel::get_student_class(uint64_t sNo) {
     return clsId;
 }
 
-uint64_t WarGrey::CAE::GMSModel::get_student_at_seat(uint64_t clsId, uint64_t desk_idx, uint64_t seat_idx) {
+uint64_t WarGrey::CAE::CAEModel::get_student_at_seat(uint64_t clsId, uint64_t desk_idx, uint64_t seat_idx) {
     uint64_t sNo = 0U;
 
     for (auto& seat : this->seats) {
@@ -411,7 +462,7 @@ uint64_t WarGrey::CAE::GMSModel::get_student_at_seat(uint64_t clsId, uint64_t de
     return sNo;
 }
 
-void WarGrey::CAE::GMSModel::feed_student_seat(uint64_t sNo, uint64_t* dsk_idx, uint64_t* st_idx) {
+void WarGrey::CAE::CAEModel::feed_student_seat(uint64_t sNo, uint64_t* dsk_idx, uint64_t* st_idx) {
     if (this->seats.find(sNo) != this->seats.end()) {
         SET_BOX(dsk_idx, this->seats[sNo]->get_desk());
         SET_BOX(st_idx, this->seats[sNo]->get_seat());
@@ -421,7 +472,7 @@ void WarGrey::CAE::GMSModel::feed_student_seat(uint64_t sNo, uint64_t* dsk_idx, 
 }
 
 /*************************************************************************************************/
-uint64_t WarGrey::CAE::GMSModel::get_discipline_code(DisciplineType type) {
+uint64_t WarGrey::CAE::CAEModel::get_discipline_code(DisciplineType type) {
     uint64_t discode = 0U;
 
     if (this->dis_codes.find(type) != this->dis_codes.end()) {
@@ -431,7 +482,7 @@ uint64_t WarGrey::CAE::GMSModel::get_discipline_code(DisciplineType type) {
     return discode;
 }
 
-size_t WarGrey::CAE::GMSModel::get_class_population(uint64_t clsId) {
+size_t WarGrey::CAE::CAEModel::get_class_population(uint64_t clsId) {
     size_t n = 0U;
 
     for (auto& st : this->seats) {
@@ -443,7 +494,7 @@ size_t WarGrey::CAE::GMSModel::get_class_population(uint64_t clsId) {
     return n;
 }
 
-uint64_t WarGrey::CAE::GMSModel::get_class_latest_timestamp(uint64_t clsId, size_t offset) {
+uint64_t WarGrey::CAE::CAEModel::get_class_latest_timestamp(uint64_t clsId, size_t offset) {
     uint64_t timestamp = 0U;
 
     for (auto& st : this->seats) {
@@ -468,7 +519,7 @@ uint64_t WarGrey::CAE::GMSModel::get_class_latest_timestamp(uint64_t clsId, size
     return timestamp;
 }
 
-uint64_t WarGrey::CAE::GMSModel::get_student_latest_timestamp(uint64_t sNo, size_t offset) {
+uint64_t WarGrey::CAE::CAEModel::get_student_latest_timestamp(uint64_t sNo, size_t offset) {
     uint64_t timestamp = 0U;
 
     if (this->scores.find(sNo) != this->scores.end()) {
@@ -491,7 +542,7 @@ uint64_t WarGrey::CAE::GMSModel::get_student_latest_timestamp(uint64_t sNo, size
     return timestamp;
 }
 
-double WarGrey::CAE::GMSModel::get_class_average_score(uint64_t clsId, uint64_t disCode, uint64_t timestamp) {
+double WarGrey::CAE::CAEModel::get_class_average_score(uint64_t clsId, uint64_t disCode, uint64_t timestamp) {
     double total = 0.0;
     size_t n = 0U;
 
@@ -519,7 +570,7 @@ double WarGrey::CAE::GMSModel::get_class_average_score(uint64_t clsId, uint64_t 
     return (n == 0U) ? flnan : total / double(n);
 }
 
-double WarGrey::CAE::GMSModel::get_student_score(uint64_t sNo, uint64_t disCode, uint64_t timestamp) {
+double WarGrey::CAE::CAEModel::get_student_score(uint64_t sNo, uint64_t disCode, uint64_t timestamp) {
     std::vector<double> pts;
 
     this->feed_student_score_points(sNo, disCode, timestamp, pts);
@@ -527,7 +578,7 @@ double WarGrey::CAE::GMSModel::get_student_score(uint64_t sNo, uint64_t disCode,
     return vector_sum(pts);
 }
 
-void WarGrey::CAE::GMSModel::feed_student_score_points(uint64_t sNo, uint64_t disCode, uint64_t timestamp, std::vector<double>& pts) {
+void WarGrey::CAE::CAEModel::feed_student_score_points(uint64_t sNo, uint64_t disCode, uint64_t timestamp, std::vector<double>& pts) {
     pts.clear();
 
     if (this->scores.find(sNo) != this->scores.end()) {
@@ -542,5 +593,26 @@ void WarGrey::CAE::GMSModel::feed_student_score_points(uint64_t sNo, uint64_t di
                 s->feed_score_points(pts);
             }
         }
+    }
+}
+
+void WarGrey::CAE::CAEModel::feed_class_timestamps(uint64_t clsId, uint64_t disCode, std::vector<uint64_t>& tss) {
+    std::map<uint64_t, bool> timestamps;
+
+    for (auto& stu_score : this->scores) {
+        if (this->get_student_class(stu_score.first) == clsId) {
+            for (auto& ts_score : stu_score.second) {
+                if (timestamps.find(ts_score.first) == timestamps.end()) {
+                    if (ts_score.second.find(disCode) != ts_score.second.end()) {
+                        timestamps[ts_score.first] = true;
+                    }
+                }
+            }
+        }
+    }
+
+    tss.clear();
+    for (auto& ts : timestamps) {
+        tss.push_back(ts.first);
     }
 }

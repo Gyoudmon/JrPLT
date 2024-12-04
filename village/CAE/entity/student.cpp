@@ -26,7 +26,7 @@ static StudentGender name_to_gender(const char* gender) {
 /*************************************************************************************************/
 
 bool WarGrey::CAE::StudentEntity::match(const std::string& line, int* offset) {
-    return GMSEntity::match(line, student_mark, offset);
+    return CAEEntity::match(line, student_mark, offset);
 }
 
 const char* WarGrey::CAE::StudentEntity::prompt() {
@@ -53,15 +53,19 @@ WarGrey::CAE::StudentEntity::StudentEntity(const std::string& s, int idx) {
     scan_skip_delimiter(src, &pos, end, field_delimiter);
 
     this->No = scan_natural(src, &pos, end);
-    if (this->No == 0U) throw exn_gms("Invalid Student No.");
+    if (this->No == 0U) throw exn_cae("Invalid Student No.");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
     
     this->nickname = scan_string(src, &pos, end, field_delimiter);
-    if (this->nickname.empty()) throw exn_gms("Invalid Nickname");
+    if (this->nickname.empty()) throw exn_cae("Invalid Nickname");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
     
     this->gender = name_to_gender(scan_string(src, &pos, end, field_delimiter).c_str());
-    if (this->gender == StudentGender::_) throw exn_gms("Invalid Gender");
+    if (this->gender == StudentGender::_) throw exn_cae("Invalid Gender");
+}
+
+std::string WarGrey::CAE::StudentEntity::get_gender() {
+    return gender_to_name(this->gender);
 }
 
 bool WarGrey::CAE::StudentEntity::update(const char* s, size_t end, size_t idx) {
@@ -90,7 +94,7 @@ bool WarGrey::CAE::StudentEntity::update_avatar_gender(const char* s, size_t end
     scan_skip_delimiter(s, &idx, end, field_delimiter);
 
     new_gender = name_to_gender(scan_string(s, &idx, end, field_delimiter).c_str());
-    if (new_gender == StudentGender::_) throw exn_gms("Invalid Gender");
+    if (new_gender == StudentGender::_) throw exn_cae("Invalid Gender");
 
     if ((new_avatar != this->avatar) || (new_gender != this->gender)) {
         this->avatar = new_avatar;

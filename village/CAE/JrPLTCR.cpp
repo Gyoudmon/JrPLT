@@ -39,10 +39,11 @@ namespace {
     /*********************************************************************************************/
     class JrPLTPlane : public Plane, public IMenuEventListener, public IModelListener {
     public:
-        JrPLTPlane(std::string caein, std::string caeout) : Plane("JrPLT CAE") {
-            this->model = new GMSModel(this);
+        JrPLTPlane(const std::string& caein, const std::string& caeout, const std::string& grdout) : Plane("JrPLT CAE") {
+            this->model = new CAEModel(this);
             this->caein = caein;
             this->caeout = (caeout.empty()) ? this->caein : caeout;
+            this->grdout = grdout;
         }
 
         virtual ~JrPLTPlane() {
@@ -309,6 +310,19 @@ namespace {
                 case MenuTask::DeleteGrade: this->on_grade_task(false); break;
                 case MenuTask::ClearStudent: this->start_input_text("Clear Detached Students(Y/N)?: "); break;
                 case MenuTask::ClearGrade: this->start_input_text("Clear Detached Points(Y/N)?: "); break;
+                case MenuTask::ExportGrade: {
+                    try {
+                        if (!this->grdout.empty()) {
+                            this->model->export_grade_to_file(this->grdout);
+                            this->log_message(Log::Info, make_nstring("done exporting grades to %s.", this->grdout.c_str()));
+                        } else {
+                            this->model->export_grade_to_file(std::cout);
+                            this->log_message(Log::Info, make_nstring("done exporting grades to stdout."));
+                        }
+                    } catch (const std::exception& e) {
+                        this->log_message(Log::Fatal, e.what());
+                    }
+                }; break;        
                 default: /* do nothing */;
                 }
             } catch (const std::exception& e) {
@@ -873,7 +887,7 @@ namespace {
         uint64_t the_clsId = 0U;
         uint64_t the_disCode = 0U;
         uint64_t the_sNo = 0U;
-        GMSModel* model;
+        CAEModel* model;
 
     private:
         GradeTask the_grade_subtask = GradeTask::_;
@@ -882,11 +896,12 @@ namespace {
     private:
         std::string caein;
         std::string caeout;
+        std::string grdout;
     };
 }
 
 /*************************************************************************************************/
-namespace { enum GMSCmdOpt { GMSIn, GMSOut, _ }; }
+namespace { enum CAECmdOpt { CAEIn, CAEOut, GRDOut, _ }; }
 
 void WarGrey::CAE::JrPLTCRCosmos::construct(int argc, char* argv[]) {
     enter_digimon_zone(argv[0]);
@@ -906,27 +921,33 @@ void WarGrey::CAE::JrPLTCRCosmos::construct(int argc, char* argv[]) {
 
     GameFont::fontsize(20);
 
-    this->push_plane(new JrPLTPlane(this->caein, this->caeout));
+    this->push_plane(new JrPLTPlane(this->caein, this->caeout, this->grdout));
 }
 
 void WarGrey::CAE::JrPLTCRCosmos::parse_commandline_argument(int argc, char* argv[]) {
-    GMSCmdOpt opt = GMSCmdOpt::_;
+    CAECmdOpt opt = CAECmdOpt::_;
 
     for (int idx = 1; idx < argc; idx ++) {
         switch (opt) {
-        case GMSCmdOpt::GMSIn: {
+        case CAECmdOpt::CAEIn: {
             this->caein = argv[idx];
-            opt = GMSCmdOpt::_;
+            opt = CAECmdOpt::_;
         }; break;
-        case GMSCmdOpt::GMSOut: {
+        case CAECmdOpt::CAEOut: {
             this->caeout = argv[idx];
-            opt = GMSCmdOpt::_;
+            opt = CAECmdOpt::_;
+        }; break;
+        case CAECmdOpt::GRDOut: {
+            this->grdout = argv[idx];
+            opt = CAECmdOpt::_;
         }; break;
         default: {
             if ((strcmp(argv[idx], "-i") == 0) || (strcmp(argv[idx], "--in") == 0)) {
-                opt = GMSCmdOpt::GMSIn;
+                opt = CAECmdOpt::CAEIn;
             } else if ((strcmp(argv[idx], "-o") == 0) || (strcmp(argv[idx], "--out") == 0)) {
-                opt = GMSCmdOpt::GMSOut;
+                opt = CAECmdOpt::CAEOut;
+            } else if ((strcmp(argv[idx], "-g") == 0) || (strcmp(argv[idx], "--grdout") == 0)) {
+                opt = CAECmdOpt::GRDOut;
             }
         }; break;
         }

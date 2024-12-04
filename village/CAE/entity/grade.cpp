@@ -11,7 +11,7 @@ static const char timestamp_mark = 't';
 
 /*************************************************************************************************/
 bool WarGrey::CAE::GradeEntity::match(const std::string& line, int* offset) {
-    return GMSEntity::match(line, student_mark, discipline_mark, timestamp_mark, offset);
+    return CAEEntity::match(line, student_mark, discipline_mark, timestamp_mark, offset);
 }
 
 const char* WarGrey::CAE::GradeEntity::prompt() {
@@ -27,15 +27,15 @@ WarGrey::CAE::GradeEntity::GradeEntity(const std::string& s, int idx) {
     scan_skip_space(src, &pos, end);
 
     this->student_No = scan_natural(src, &pos, end);
-    if (this->student_No == 0U) throw exn_gms("Invalid Student No.");
+    if (this->student_No == 0U) throw exn_cae("Invalid Student No.");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
 
     this->discipline_code = scan_natural(src, &pos, end);
-    if (this->discipline_code == 0U) throw exn_gms("Invalid Discipline No.");
+    if (this->discipline_code == 0U) throw exn_cae("Invalid Discipline No.");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
 
     this->timestamp = scan_natural(src, &pos, end);
-    if (this->timestamp == 0U) throw exn_gms("Invalid Timestamp");
+    if (this->timestamp == 0U) throw exn_cae("Invalid Timestamp");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
 
     this->extract_scores(src, end, pos);
@@ -55,7 +55,7 @@ void WarGrey::CAE::GradeEntity::extract_scores(const char* ss, size_t end, size_
         if ((s >= 0.0) && (s <= 200.0)) {    
             this->points.push_back(s);
         } else {
-            throw exn_gms("Irrational Points: %lf", s);
+            throw exn_cae("Irrational Points: %lf", s);
         }
     }
 }

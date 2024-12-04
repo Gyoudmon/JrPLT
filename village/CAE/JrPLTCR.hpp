@@ -15,5 +15,6 @@ namespace WarGrey::CAE {
     private:
         std::string caein;
         std::string caeout;
+        std::string grdout;
     };
 }

@@ -7,7 +7,7 @@ using namespace Plteen;
 
 /*************************************************************************************************/
 bool WarGrey::CAE::DisciplineEntity::match(const std::string& line, int* offset) {
-    return GMSEntity::match(line, discipline_mark, offset);
+    return CAEEntity::match(line, discipline_mark, offset);
 }
 
 const char* WarGrey::CAE::DisciplineEntity::prompt() {
@@ -56,7 +56,7 @@ WarGrey::CAE::DisciplineEntity::DisciplineEntity(const std::string& s, int idx) 
     scan_skip_space(src, &pos, end);
 
     this->code = scan_natural(src, &pos, end);
-    if (this->code == 0U) throw exn_gms("Invalid Discipline No.");
+    if (this->code == 0U) throw exn_cae("Invalid Discipline No.");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
 
     this->type = name_to_type(scan_string(src, &pos, end, field_delimiter).c_str());

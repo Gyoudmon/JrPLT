@@ -3,7 +3,7 @@
 #include "entity.hpp"
 
 namespace WarGrey::CAE {
-    class SeatEntity : public WarGrey::CAE::GMSEntity {
+    class SeatEntity : public WarGrey::CAE::CAEEntity {
     public:
         static bool match(const std::string& line, int* offset);
         static const char* prompt();

@@ -5,7 +5,7 @@
 namespace WarGrey::CAE {
     enum class ClassRoomType { ComputerColumn, STEM, Blank };
 
-    class ClassEntity : public WarGrey::CAE::GMSEntity {
+    class ClassEntity : public WarGrey::CAE::CAEEntity {
     public:
         static bool match(const std::string& line, int* offset);
         static const char* prompt();

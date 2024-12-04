@@ -132,12 +132,14 @@ void WarGrey::CAE::StudentMenu::on_menu_key(IMenuEventListener* master, MenuType
 /*************************************************************************************************/
 static const char GRADE_CREATE_KEY = '1';
 static const char GRADE_UPDATE_KEY = '2';
-static const char GRADE_DELETE_KEY = '3';
+static const char GRADE_EXPORT_KEY = '3';
+static const char GRADE_DELETE_KEY = '4';
 
 std::vector<std::pair<char, std::string>> WarGrey::CAE::GradeMenu::prepare_menu_items() {
     return {
         { GRADE_CREATE_KEY, "Add Points"},
         { GRADE_UPDATE_KEY, "Update Points"},
+        { GRADE_EXPORT_KEY, "Export Points"},
         { GRADE_DELETE_KEY, "Remove Points"}
     };
 }
@@ -146,6 +148,7 @@ void WarGrey::CAE::GradeMenu::on_menu_key(IMenuEventListener* master, MenuType s
     switch (key) {
     case GRADE_CREATE_KEY: master->on_menu_task(self, MenuTask::CreateGrade); break;
     case GRADE_UPDATE_KEY: master->on_menu_task(self, MenuTask::UpdateGrade); break;
+    case GRADE_EXPORT_KEY: master->on_menu_task(self, MenuTask::ExportGrade); break;
     case GRADE_DELETE_KEY: master->on_menu_task(self, MenuTask::DeleteGrade); break;
     default: /* do nothing */;
     }

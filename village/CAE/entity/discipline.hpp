@@ -10,7 +10,7 @@ namespace WarGrey::CAE {
         Blank
     };
 
-    class DisciplineEntity : public WarGrey::CAE::GMSEntity {
+    class DisciplineEntity : public WarGrey::CAE::CAEEntity {
     public:
         static bool match(const std::string& line, int* offset);
         static const char* prompt();

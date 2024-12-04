@@ -11,7 +11,7 @@ namespace WarGrey::CAE {
         CreateClass, DeleteClass,
         CreateDiscipline, DeleteDiscipline,
         CreateStudent, UpdateStudent, DeleteStudent, BindClass, UpdateAvatar, ClearStudent,
-        CreateGrade, UpdateGrade, DeleteGrade, ClearGrade,
+        CreateGrade, UpdateGrade, ExportGrade, DeleteGrade, ClearGrade,
         _
     };
 

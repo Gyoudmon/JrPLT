@@ -5,7 +5,7 @@
 namespace WarGrey::CAE {
     enum class StudentGender { Girl, Boy, _ };
 
-    class StudentEntity : public WarGrey::CAE::GMSEntity {
+    class StudentEntity : public WarGrey::CAE::CAEEntity {
     public:
         static bool match(const std::string& line, int* offset);
         static const char* prompt();
@@ -26,7 +26,8 @@ namespace WarGrey::CAE {
     public:
         uint8_t get_avatar() { return this->avatar; }
         std::string get_nickname() { return this->nickname; }
-
+        std::string get_gender();
+        
     public:
         uint64_t primary_key() override { return this->No; }
         std::string to_string() override;

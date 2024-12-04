@@ -5,7 +5,7 @@
 #include <vector>
 
 namespace WarGrey::CAE {
-    class GradeEntity : public WarGrey::CAE::GMSEntity {
+    class GradeEntity : public WarGrey::CAE::CAEEntity {
     public:
         static bool match(const std::string& line, int* offset);
         static const char* prompt();

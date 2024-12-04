@@ -5,7 +5,7 @@ using namespace Plteen;
 
 /*************************************************************************************************/
 bool WarGrey::CAE::SeatEntity::match(const std::string& line, int* offset) {
-    return GMSEntity::match(line, student_mark, class_mark, offset);
+    return CAEEntity::match(line, student_mark, class_mark, offset);
 }
 
 const char* WarGrey::CAE::SeatEntity::prompt() {
@@ -21,11 +21,11 @@ WarGrey::CAE::SeatEntity::SeatEntity(const std::string& s, int idx) {
     scan_skip_space(src, &pos, end);
 
     this->student_No = scan_natural(src, &pos, end);
-    if (this->student_No == 0U) throw exn_gms("Invalid Student No.");
+    if (this->student_No == 0U) throw exn_cae("Invalid Student No.");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
 
     this->class_id = scan_natural(src, &pos, end);
-    if (this->class_id == 0U) throw exn_gms("Invalid Class No.");
+    if (this->class_id == 0U) throw exn_cae("Invalid Class No.");
     scan_skip_delimiter(src, &pos, end, field_delimiter);
     
     this->desk = scan_natural(src, &pos, end);

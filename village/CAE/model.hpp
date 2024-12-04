@@ -7,6 +7,7 @@
 #include "entity/grade.hpp"
 
 #include <map>
+#include <iostream>
 
 /*************************************************************************************************/
 namespace WarGrey::CAE {
@@ -24,17 +25,18 @@ namespace WarGrey::CAE {
         virtual void on_student_deleted(uint64_t pk, shared_student_t entity, bool in_batching) = 0;
     };
 
-    class GMSModel {
+    class CAEModel {
     public:
-        GMSModel(IModelListener* listener) : listener(listener) {}
-        virtual ~GMSModel() {}
+        CAEModel(IModelListener* listener) : listener(listener) {}
+        virtual ~CAEModel() {}
 
     public:
-        void import_from_file(const std::string& path_gms);
-        void export_to_file(const std::string& path_gms, bool override_if_exists = true);
+        void import_from_file(const std::string& path_db);
+        void export_to_file(const std::string& path_db, bool override_if_exists = true);
+        void export_grade_to_file(const std::string& path_csv, bool override_if_exists = true);
+        void export_grade_to_file(std::ostream& path_csv);
 
     public:
-        /* Entity Manipulation */
         void create_class_from_user_input(const char* text, size_t size);
         void delete_class_as_user_request(uint64_t clsId);
 
@@ -52,8 +54,7 @@ namespace WarGrey::CAE {
 
         void clear_detached_students();
         void clear_detached_grades();
-        /* END Entity Manipulation */
-
+        
     public:
         void bind_student_to_class(uint64_t sNo, uint64_t clsId);
         void bind_student_to_seat(uint64_t sNo, uint64_t desk_idx, uint64_t seat_idx);
@@ -62,7 +63,6 @@ namespace WarGrey::CAE {
         void feed_student_seat(uint64_t sNo, uint64_t* dsk_idx, uint64_t* st_idx);
 
     public:
-        /* Query and Aggregation */
         uint64_t get_discipline_code(DisciplineType type);
         size_t get_class_population(uint64_t clsId);
         uint64_t get_class_latest_timestamp(uint64_t clsId, size_t offset = 0);
@@ -70,8 +70,8 @@ namespace WarGrey::CAE {
         double get_class_average_score(uint64_t clsId, uint64_t disCode, uint64_t timestamp);
         double get_student_score(uint64_t sNo, uint64_t disCode, uint64_t timestamp);
         void feed_student_score_points(uint64_t sNo, uint64_t disCode, uint64_t timestamp, std::vector<double>& pts);
-        /* END Query and Aggregation */
-
+        void feed_class_timestamps(uint64_t clsId, uint64_t disCode, std::vector<uint64_t>& tss);
+        
     private:
         void register_class(shared_class_t cls, bool in_batching);
         void register_discipline(shared_discipline_t dis, bool in_batching);
@@ -80,14 +80,16 @@ namespace WarGrey::CAE {
         void clear(bool broadcast = true);
 
     private:
-        /* Entity Runtime Organization */
         std::map<uint64_t, shared_class_t> classes;
         std::map<uint64_t, shared_discipline_t> disciplines;
         std::map<uint64_t, shared_student_t> students;
-        std::map<uint64_t, shared_seat_t> seats;
-        std::map<uint64_t, std::map<uint64_t, std::map<uint64_t, shared_grade_t>>> scores;
-        /* END Entity Runtime Organization */
 
+        // (HashTable stuNo Seat)
+        std::map<uint64_t, shared_seat_t> seats;
+
+        // (HashTable stuNo (HashTable TimeStamp Grade))
+        std::map<uint64_t, std::map<uint64_t, std::map<uint64_t, shared_grade_t>>> scores;
+        
     private:
         std::map<DisciplineType, uint64_t> dis_codes;
 
