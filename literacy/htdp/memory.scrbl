@@ -3,9 +3,8 @@
 @(require "literacy.rkt")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-part{此电脑}
+@handbook-part{随机存储器：计算机也有记忆吗？}
 
-@include-section{pc/shell.scrbl}
-@include-section{pc/git.scrbl}
+@include-section{memory/pointer.scrbl}
 
 @handbook-reference[]

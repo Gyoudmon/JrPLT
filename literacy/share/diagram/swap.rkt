@@ -25,7 +25,7 @@
   (move-down 1 'Done$))
 
 (define-flowchart! swap.dia [#:start-name "Swap" #:background 'White] #:-
-  (move-right 1.5 '|define a, b|!)
+  (move-right 1.5 '|define a, b, c|!)
   (move-right 1.5 '>>|read a, b|)
   (move-right 1.5 '|c = a|)
   (move-right 1.5 '|a = b|)

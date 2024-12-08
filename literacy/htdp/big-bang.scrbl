@@ -16,8 +16,6 @@
 鱼币是企鹅的食物，大部分鱼币代表学生作品，
 少部分是教师演示程序。
 
-@include-section{big-bang/shell.scrbl}
-@include-section{big-bang/git.scrbl}
 @include-section{big-bang/function-object.scrbl}
 @include-section{big-bang/big-bang.scrbl}
 @include-section{big-bang/agent.scrbl}

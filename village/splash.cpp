@@ -13,25 +13,19 @@ namespace {
     static int xtile_count = 15;
     static int ytile_count = 15;
 
-    class StageAtlas : public PlanetCuteAtlas {
+    class RadixAtlas : public PlanetCuteAtlas {
     public:
-        StageAtlas(int row, int col) : PlanetCuteAtlas(row, col, GroundBlockType::Stone) {}
+        RadixAtlas(int row, int col) : PlanetCuteAtlas(row, col, GroundBlockType::Stone) {}
 
-        virtual ~StageAtlas() noexcept {}
+        virtual ~RadixAtlas() noexcept {}
 
     public:
         int preferred_local_fps() override { return 4; }
 
-    public:
-        void reset() {
-            for (int r = 0; r < this->map_row; r ++) {
-                for (int c = 0; c < this->map_col; c ++) {
-                    if ((r == 0) || (c == 0)
-                            || (r == this->map_row - 1)
-                            || (c == this->map_col - 1)) {
-                        this->set_tile_type(r, c, GroundBlockType::Grass);
-                    }
-                }
+    protected:
+        void alter_map_tile(size_t r, size_t c) override {
+            if ((r == 0) || (c == 0) || (r == this->map_row - 1) || (c == this->map_col - 1)) {
+                this->set_tile_type(r, c, GroundBlockType::Grass);
             }
         }
 
@@ -41,7 +35,6 @@ namespace {
             cPoint tile_rb;
 
             PlanetCuteAtlas::on_tilemap_load(atlas);
-            this->reset();
 
             tile_rb = this->get_map_tile_location(0, MatterPort::RB);
             this->create_logic_grid(xtile_count, ytile_count, Margin(_Y(tile_rb) - margin.top, _X(tile_rb)));
@@ -87,7 +80,7 @@ void Plteen::JrPlane::load_for_demo(float width, float height) {
 }
 
 void Plteen::JrPlane::load_for_plot(float width, float height) {
-    this->stage = this->insert(new StageAtlas(xtile_count + 2, ytile_count + 2));
+    this->stage = this->insert(new RadixAtlas(xtile_count + 2, ytile_count + 2));
     this->host = this->insert(new Joshua("邹忌"));
     this->wife = this->insert(new Estelle("妻"));
     this->concubine = this->insert(new Klose("妾"));

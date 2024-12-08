@@ -24,11 +24,9 @@
 
 (handbook-bibtex-load (digimon-path 'literacy "bibliography.tex"))
 
-(d2-default-sketch? #true)
-(d2-default-theme 'Terminal)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define /dev/src (build-path "literacy" "share" "src"))
+(define /dev/src  (build-path "literacy" "share" "src"))
+(define /prce/mem (build-path "literacy" "share" "mem"))
 
 (define stone-image
   (lambda [path #:scale [scale 1.0]]

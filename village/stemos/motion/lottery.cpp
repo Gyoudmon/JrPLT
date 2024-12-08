@@ -226,7 +226,7 @@ bool WarGrey::STEM::LotteryPlane::pick(LotteryPlane::Ballet* ball) {
                 float slot_width = ball_radius * 2.0F;
                 cPoint out = this->get_matter_location(this->outlet, MatterPort::LB);
                 cPoint end = this->get_matter_location(this->winning_slot, MatterPort::LB);
-                cVector v = out - end;
+                cVector v = end - out;
 
                 this->glide(gliding_duration, ball, cVector(0.0F, _Y(v)));
                 this->glide(gliding_duration, ball, cVector(_X(v) + slot_width * float(this->current_winning_slot), 0.0F));

@@ -48,7 +48,7 @@ namespace {
 
             this->splash = this->push_plane(new JrPlane(this));
 
-            this->push_plane(new CarrySystemPlane());
+            this->push_plane(new DotAndCarryOnePlane());
             this->push_plane(new StreamPlane());
             this->push_plane(new LotteryPlane());
             this->push_plane(new PinholePlane());

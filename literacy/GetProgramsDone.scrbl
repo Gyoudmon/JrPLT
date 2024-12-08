@@ -30,7 +30,7 @@
  #:subtitle "小小语言设计师的启蒙教科书"
  #:figure splash
  #:hide-version? #true
- ]{如何设计程序}
+ ]{教会计算机干活吧！}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-smart-table[]
@@ -43,7 +43,8 @@
 @include-section{htdp/fxdata.scrbl}
 @include-section{htdp/vardata.scrbl}
 @include-section{htdp/abstract.scrbl}
-@include-section{htdp/user-defined-data.scrbl}
+@include-section{htdp/memory.scrbl}
+@include-section{htdp/power.scrbl}
 @include-section{htdp/goodbye.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
