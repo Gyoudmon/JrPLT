@@ -179,7 +179,7 @@ void WarGrey::PLT::DotAndCarryOnePlane::on_motion_complete(Plteen::IMatter* m, f
             if (ones == 0) {
                 size_t head = this->seq / this->radix;
                 size_t digit = head % this->radix;
-                size_t iterated_radix = this->radix;
+                size_t radix_size = this->radix;
                 size_t slots_idx = 1;
                 int col = -2;
 
@@ -188,13 +188,13 @@ void WarGrey::PLT::DotAndCarryOnePlane::on_motion_complete(Plteen::IMatter* m, f
 
                     head /= this->radix;
                     digit = head % this->radix;
-                    iterated_radix *= this->radix;
+                    radix_size *= this->radix;
                     slots_idx ++;
                     col --;
                 };
 
                 this->digits[slots_idx]->set_text("%X", digit);
-                for (size_t idx = 1; idx <= iterated_radix; idx++) {
+                for (size_t idx = 1; idx <= radix_size; idx++) {
                     this->stage->glide_to_logic_tile(COUNTING_DURATION,
                             this->animals[this->seq - idx], digit, col,
                             MatterPort::CC, MatterPort::CC);
