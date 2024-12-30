@@ -2,7 +2,7 @@
 
 (provide (all-defined-out))
 (provide (all-from-out digimon/tamer))
-(provide (rename-out [:cmt :desc] [:out :type]))
+(provide (rename-out [:rdr :desc] [:out :type]))
 
 (require digimon/tamer)
 (require digimon/collection)
@@ -19,6 +19,7 @@
 
 (tamer-default-figure-label "图")
 (tamer-default-code-label "段")
+(tamer-default-algorithm-label "算法")
 
 (current-tongue 'zh-Hans)
 

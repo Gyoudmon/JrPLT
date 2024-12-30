@@ -11,11 +11,11 @@
 (require (for-syntax syntax/parse))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(tamer-indexed-block-hide-chapter-index #true)
+(tamer-indexed-block-hide-chapter-index #false)
 
 (tamer-default-figure-label "图")
 (tamer-default-figure-label-separator #false)
-(tamer-default-figure-label-tail ". ")
+(tamer-default-figure-label-tail " ")
 (tamer-default-figure-label-style 'bold)
 
 (tamer-story-submodule-name 'advent)
@@ -44,7 +44,8 @@
                                     (for/list ([key (in-list (list kw ...))])
                                       (racketkeywordfont (tech key)))
                                     (list "," ~)))
-                 (item (list (emph "时间戳") ": " (tt date) ~ (format "第~a版" 'edition)))))]))
+                 (item (list (emph "时间戳") ": " (tt date) ~ (format "第~a版" 'edition)))
+                 (item (list (emph "文字量") ": " (handbook-word-count #:make-element elem)))))]))
 
 (define aoc-tamer-path
   (lambda [path]

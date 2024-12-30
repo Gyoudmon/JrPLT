@@ -562,10 +562,10 @@ namespace {
             this->clsLabel = this->insert(new Labellet(GameFont::monospace(FontSize::x_large), GHOSTWHITE, "[Class]"));
             this->stuLabel = this->insert(new Labellet(GameFont::serif(), GHOSTWHITE, "%s", "[Student]"));
             
-            this->desks.push_back(this->insert(new ComputerDesklet(1, desk_width, desk_height, 11,  1, DARKSEAGREEN)));
-            this->desks.push_back(this->insert(new ComputerDesklet(2, desk_width, desk_height, 10, 12, DARKSEAGREEN)));
-            this->desks.push_back(this->insert(new ComputerDesklet(3, desk_width, desk_height, 12, 22, DARKSEAGREEN)));
-            this->desks.push_back(this->insert(new ComputerDesklet(4, desk_width, desk_height, 12, 34, DARKSEAGREEN)));
+            this->desks.push_back(this->insert(new ComputerDesklet(1, desk_width, desk_height, 12,  1, DARKSEAGREEN)));
+            this->desks.push_back(this->insert(new ComputerDesklet(2, desk_width, desk_height, 12, 13, DARKSEAGREEN)));
+            this->desks.push_back(this->insert(new ComputerDesklet(3, desk_width, desk_height, 12, 25, DARKSEAGREEN)));
+            this->desks.push_back(this->insert(new ComputerDesklet(4, desk_width, desk_height, 12, 37, DARKSEAGREEN)));
         }
 
         void reflow_classroom(float width, float height) {

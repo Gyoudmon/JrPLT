@@ -1,9 +1,17 @@
-#lang scribble/report
+#lang scribble/book
 
 @require{advent/literacy.rkt}
+@require{bibentry.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title[#:hide-version? #true #:subtitle "魔法能量远征"]{函数降临节}
+@handbook-title[
+ #:document-options '(openany oneside)
+ #:hide-version? #true
+ #:subtitle "首席历史学家的行踪"]{函数降临节}
+
+@$tex:newcounter:algorithm[]
+
+@texbook-frontmatter[]
 
 @handbook-preface-section{代码降临节}
 
@@ -15,8 +23,8 @@
 懂点编程基础知识、有一定的问题求解技巧即可开始。总之，青少练手、大学课程项目、
 面试热身、企业培训，等等。各种级别的参与者都能从中找到价值。
 
-在本文中，解谜的范式和实现语言主要是@tech[#:key "函数式编程"]{函数式思维}和
-@hyperlink["https://racket-lang.org/"]{Racket}。
+在本作中，解谜的范式和实现语言主要是@tech[#:key "函数式编程"]{函数式思维}和
+@:type{Typed} @hyperlink["https://racket-lang.org/"]{Racket}。
 这里的函数更接近数学函数，而非一般程序语言里的函数；
 解谜思路也更像代数中的变量替换和函数复合，而非指令的下达和执行。
 如果你没有学过编程，那再好不过，直接从贴近人类思维的数学视角进入；
@@ -24,25 +32,30 @@
 挑战过程可能会出现函数式不擅长的问题，
 届时我们也不会犹豫使用其他思路来求解。
 
-@handbook-preface-section{魔法能量远征}
+@handbook-preface-section{首席历史学家的行踪}
 
-圣诞驯鹿的主食与普通驯鹿无异，但它们需要特殊能量来快递圣诞礼物。
-因此，驯鹿最爱的零食是一种只会生长在丛林深处的特殊的星形水果，
-精灵们每年都会带你远征去寻找这种水果。
+往年，首席历史学家总会出席大型圣诞雪橇发射活动，
+但今年已有好几个月没见到他的身影了。
+最近的传闻说他在北极访问较为重要的历史地点，
+一小队资深精灵历史学家邀请你陪同他们共同确认他们认为他最可能去的地方。
 
-为了供应足够的礼物快递能量，远征队在圣诞节之前要采摘到至少50颗星形水果。
-尽管精灵会保证把你带到一个长满水果的树丛附近，
-但如有需要，你仍然可以攫取任何沿途看到的水果。
-采集水果的方式是解谜，一天两个谜题，
-解完第一个谜才会解锁第二个，每个谜题价值一颗水果。
+每确认一个地点，精灵们就会标记一颗星。
+他们推算出了50个地址，认为首席历史学家必定会出现在其中的一处。
+因此，为拯救今年的圣诞节，
+请你在圣诞老人出发之前帮助他们收集到50颗星。
+收集星星的方式是解谜，
+圣诞日历每天都会解锁两个谜题，
+一个谜题价值一颗星。
 
 祝你好运！
 
 @handbook-smart-table[]
 
-@include-section[(submod "advent/mee/01.calorie.counting.scrbl" doc)]
-@include-section[(submod "advent/mee/02.rock.paper.scissors.scrbl" doc)]
-@;include-section[(submod "advent/mee/03.rucksack.reorganization.scrbl" doc)]
+@texbook-mainmatter[]
+
+@include-section[(submod "advent/iSoH/01.historian.hysteria.scrbl" doc)]
+
+@texbook-appendix{附录}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-appendix[#:numbered? #false #:index-section? #true #:prefab-bibentries? #false]
+@handbook-appendix[#:numbered? #false #:index-section? #true bibentries]

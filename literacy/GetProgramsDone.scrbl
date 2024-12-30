@@ -1,9 +1,11 @@
 #lang scribble/report
 
 @require{htdp/literacy.rkt}
+@require{bibentry.rkt}
 
 @(require geofun/vector)
 
+@;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @(define font (desc-font #:family 'math #:size 16.0))
 @(define arrow (geo-arrow 3.0 32.0 #:stroke #false #:fill 'DodgerBlue))
 @(define gapsize 4.0)
@@ -54,12 +56,5 @@
 @include-section{htdp/for-parent.scrbl}
 
 @handbook-appendix[#:numbered? #true
- (book-bib-entry #:date "2018" #:edition "2nd"
-                 "2htdp" "How to Design Programs: An Introducation to Programming and Computing"
-                 (list "Matthias Felleisen" "Robert Bruce Findler" "Matthew Flatt" "Shriram Krishnamurthi")
-                 "The MIT Press")
- (book-bib-entry #:date "2020"
-                 "DTC" "Don't teach coding: until you read this book"
-                 (list "Lindsey D. Handley" "Stephen R. Foster")
-                 "Jossey Bass")]
+ bibentries]
 
