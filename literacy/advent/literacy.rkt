@@ -38,14 +38,14 @@
               (~once (~seq #:edition [edition date])))
         ...)
      (syntax/loc stx
-       (itemlist #:style 'compact
-                 (item (add-between #:splice? #true
-                                    #:before-first (list (emph "关键词") ":" ~)
-                                    (for/list ([key (in-list (list kw ...))])
-                                      (racketkeywordfont (tech key)))
-                                    (list "," ~)))
-                 (item (list (emph "时间戳") ": " (tt date) ~ (format "第~a版" 'edition)))
-                 (item (list (emph "文字量") ": " (handbook-word-count #:make-element elem)))))]))
+       (handbook-itemlist #:style 'compact
+                          (item (add-between #:splice? #true
+                                             #:before-first (list (emph "关键词") ":" ~)
+                                             (for/list ([key (in-list (list kw ...))])
+                                               (racketkeywordfont (tech key)))
+                                             (list "," ~)))
+                          (item (list (emph "时间戳") ": " (tt date) ~ (format "第~a版" 'edition)))
+                          (item (list (emph "文字量") ": " (handbook-word-count #:make-element elem)))))]))
 
 (define aoc-tamer-path
   (lambda [path]
