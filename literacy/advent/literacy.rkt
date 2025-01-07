@@ -47,6 +47,7 @@
                           (item (list (emph "时间戳") ": " (tt date) ~ (format "第~a版" 'edition)))
                           (item (list (emph "文字量") ": " (handbook-word-count #:make-element elem)))))]))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define aoc-tamer-path
   (lambda [path]
     (digimon-path 'tamer path)))
@@ -66,16 +67,21 @@
                    (list (list data desc)))
           (linebreak)))))
 
+(define aoc-emph
+  (lambda argv
+    (apply elem #:style story-emph-style argv)))
+
+(define aoc-question
+  (lambda argv
+    (apply elem #:style story-question-style argv)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define story*
-  (lambda argv
-    (nested #:style 'inset
-            (for/list ([content (in-list argv)]
-                       #:when (element? content))
-              (para content)))))
+(define story-style (make-style "aocStory" '(multicommand)))
+(define story-emph-style (make-style "aocEmph" null))
+(define story-question-style (make-style "aocQuestion" null))
 
-(define story
-  (lambda argv
-    (apply racketplainfont
-           (list* (hspace 4) argv))))
-
+(define aoc-story
+  (lambda [title . paras]
+    (make-nested-flow story-style
+                      (list (para title)
+                            (apply tamer-indent-paragraphs paras)))))

@@ -2,13 +2,13 @@
 
 @(require "../literacy.rkt")
 
-@require{../../share/diagram/aoc/2024.01.hh.rkt}
+@require{../../share/diagram/aoc/2024/01.hh.rkt}
 @require{../../share/timeline.rkt}
 
 @(require digimon/digitama/tamer/pseudocode)
 @(require racket/math)
 
-@(require geofun)
+@(require geofun/vector)
 @(require diafun/flowchart)
 @(require plotfun/axis)
 
@@ -26,9 +26,6 @@
                (geo-pin* 1.0 0.56 0.5 0.5 g (geo-dart (* unit 0.1) (* pi 0.5) #:fill c #:stroke #false))
                g)
            'lc)))
-
-@;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@(define Puzzle:1 "两份地址清单中的总差距是多少")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @aoc-task[2024 1]{历史学者癔症了}
@@ -53,7 +50,7 @@
 但跟文学的关系在哪里呢？
 这个关系就是@:term{写作}，
 人与人的交流依托自然语言，
-人与计算机交流依托的是程序语言。
+人驱动计算机干活依托的是程序语言。
 写作的本质是用文字表达作者的思想或意图，
 除了词汇量和熟练度上的差异，写作本身应该与语言无关，
 但要考虑读者的接受程度。
@@ -65,10 +62,13 @@
 后者给编译程序看，它们会自动将散落在文章各处的代码碎片组装成正确的程序；
 前者（和后者共同）给人类读者看。
 比如你现在正在阅读的本书就是@tech{文学式编程}的例子。
-此外，在 Racket 自身优势的加持下，
-文中示例程序的运行结果也是最终程序的直接执行结果（而非额外运行程序之后再把结果复制粘贴过来）。
-
-@handbook-action{代码碎片}
+此外，@margin-note*{
+ 而非我笨手笨脚地复制粘贴过来。
+ 这书里这么多程序和图形，
+ 每一个都要我亲自动手修改每一处，
+ 浪费时间不说，关键是太业余了。
+}在 Racket 自身优势的加持下，
+文中示例程序的运行结果也是最终程序的直接执行结果。
 
 接下来我们通过完成第一天的主线任务来具体感受一下。
 散文中的代码碎片有一个起点，
@@ -77,8 +77,9 @@
 
 @handbook-chunk[<hysteria:*>
                 (module advent typed/racket
-                  <主线任务：求解谜题1>
-                  <主线任务：求解谜题2>)]
+                  <辅助任务：读取谜题数据>
+                  <主线任务1：求解总差距>
+                  <主线任务2：求解相似度>)]
 
 其中用@emph{角括号}（@:pn{< >}）括起来的部分就是散落在本章各处的代码碎片的名字，
 其本质跟@tech{变量}名没有什么不一样，比如本任务的起点碎片名为@racket[<hysteria:*>]。
@@ -95,61 +96,63 @@
 那些没被使用的碎片的价值是继续留在本书里给读者看。
 它们或提供了额外信息，或提供了另一种思路。
 
-原始故事作为我们学习编程的情景，以嵌套形式插入文中，以避免跟正文内容互相干扰：
+原始故事作为我们学习编程的情景，以故事卡片的形式呈现：
 
-@story*[
- @story{精灵小队碰到的第一个问题是，他们的地址清单里什么都没有，头脑一片空白。
-  最后有人提议说，最好的起点理应是首席历史学家的办公室。}
+@aoc-story[@racket[<主线任务1：求解总差距>]]{
+ 精灵小队碰到的第一个问题是，他们的地址清单里@aoc-emph{什么都没有}，头脑一片空白。
+ 最后有人提议说，最好的起点理应是首席历史学家的办公室。
   
- @story{于是，精灵们涌进办公室，人人都确认了首席历史学家确实失踪了。
-  同时，精灵们还发现了一些有意思的笔记和一份重要历史地点的列表。
-  看起来很像首席历史学家出发前制定的计划，
-  也许这些笔记可以帮助大家确定寻找路线。}
+ 于是，精灵们涌进办公室，人人都确认了首席历史学家确实失踪了。
+ 同时，精灵们还发现了一些有意思的笔记和一份写着“重要历史地点”的清单。
+ 看起来很像首席历史学家出发前制定的计划，
+ 也许这些笔记可以帮助大家确定寻找路线。
  
- @story{重要地点并非根据名字列出，
-  而是根据不重复的数字列出，
-  姑且称作地址编号(@litchar{location ID})。
-  为确保大家都没遗漏，精灵小队分成了两个小组，
-  各自搜寻办公室并独立写下所有的地址编号。}
+ 重要地点并非根据名字列出，
+ 而是根据不重复的数字列出，
+ 姑且称作@aoc-emph{地址编号(location ID)}。
+ 为确保大家都没遗漏，精灵小队分成了两个小组，
+ 各自搜寻办公室并独立写下所有的地址编号。
 
- @story{两份地址编号出炉之后，它们显然会不尽相同，
-  于是你需要从中调解两队精灵。
-  假设两份清单只会有很小的差异，
-  可以将两组编号逐个配对并计算它们的差距。
-  即：先配对两组清单中的最小编号，
-  然后是第二小的编号，以此类推。
-  对于每一对编号，计算出他们的差距，
-  最后将所有的差距值相加。
-  问：@question{@|Puzzle:1|}?}]
- 
-情景部分会用特殊颜色说清楚我们需要解决的问题是什么，
-比如第一个问题是@question{@|Puzzle:1|}。
-对该谜题的求解就对应着之前给出的碎片@racket[<主线任务：求解谜题1>]。
+ 两份地址编号出炉之后，它们显然会不尽相同，
+ 于是你需要从中调解两队精灵。
+ 假设两份清单只会有很小的差异，
+ 可以将两组编号逐个配对并计算它们的差距。
+ 即：先配对@aoc-emph{两组清单中的最小编号}，
+ 然后是@aoc-emph{第二小的编号}，以此类推。
+ 对于每一对编号，计算出@aoc-emph{它们的差距}，
+ 最后将@aoc-emph{所有的差距值相加}。
+ 问：@aoc-question{两份地址清单中的总差距是多少}?}
+
+我特意选了与原文相似的配色风格。
+故事卡的标签页上写着任务目标，
+@margin-note*{你可以点击便签试试看}
+标签内容同时也是我们实际做任务的代码碎片的名字；
+任务中的重点以高亮度字体标记，
+问题在高亮的基础上加了上下划线。
 
 故事中的例子会从情景部分抽出来放在正文里，作为我们思考的素材。
 比如，精灵们给的两份地址清单长这样(清单内容保存在文件中，
 后缀名是 @:in{.aex}，插入本书时会在最左侧增加行号)：
 
-@(tamer-filebox (aoc-tamer-path "iSoH/01_hh.aex"))
+@(tamer-filebox #:tag '01_hh.aex (aoc-tamer-path "iSoH/01_hh.aex"))
 
-@linebreak[]
-从这份清单可以看到，
+从这个文件可以看到，
 甲组的地址编号写在左边一列，乙组的地址编号写在右边一列。
 总计共有六对编号，与之对应的差距可以如此计算：
 
 @handbook-itemlist[
  #:style 'compact
-               
+ 
  @item{甲组的最小编号是 @racket[1], 乙组的最小编号是 @racket[3]，它们的差距是 @racket[2]；}  
  @item{甲组的第二小编号是 @racket[2], 乙组的第二小编号是 @racket[3]，它们的差距是 @racket[1]；}  
  @item{甲组和乙组的第三小编号都是 @racket[3], 因此差距是 @racket[0]；}
  @item{下一对编号是 @racket[3] 和 @racket[4]，差距为 @racket[1]；}
  @item{第五对编号是 @racket[3] 和 @racket[5]，差距为 @racket[2]；}
  @item{最后，甲组的最大编号是 @racket[4]，乙组的最大编号是 @racket[9]，差距为 @racket[5]。}]
-
+ 
 于是，将以上各对差距相加即可得到总差距为 @racket[11]。
 
-@handbook-action{语言无关算法}
+@handbook-scenario{算法}
 
 我们先设想一下，
 如果不写程序，用纸和笔你会怎么解决这个问题？
@@ -192,7 +195,7 @@
  直到扫完整个列表停止}。
 此时的总差距即是解锁下一个谜题的钥匙。
 
-@handbook-scene{自然语言描述}
+@handbook-action{自然语言描述}
 
 到这里我要打个岔，介绍一个相当重要的概念。
 在数学和计算机科学中，
@@ -226,7 +229,7 @@
 其缺点很明显，
 写起来啰嗦，读起来……各有各的见解。
 
-@handbook-scene{伪代码描述}
+@handbook-action{伪代码描述}
 
 在计算机科学和软件工程领域一直有一小撮研究员坚信，
 存在某种方法能够自动将大白话翻译成软件，
@@ -234,18 +237,23 @@
 在深入研究那些有趣的课题之前，
 我们先从传统角度亲身体验一下从大白话到程序代码的层层翻译过程。
 
-首先调整大白话@tech{算法}的第一步，
+我们先只考虑调整大白话@tech{算法}的第一步，@margin-note*{
+ 由于初次接触@tech{函数式编程}有太多新知识体系要慢慢建立，
+ 第二步等理解了解谜流程之后再考虑。
+ 其实我也是解完谜题之后才发现，
+ 现在考虑第二步确实会让我写作、
+ 你阅读的难度增加不少。}
 使它看起来更有条理、更精确，
 同时调整格式让它读起来不那么吓人。
 
 @algo-pseudocode[
  #:tag 'read-loc-ids "读取地址编号列表（大白话版）"
- @list['|read IDs|]{尝试从清单的当前位置@:in{读取}两个@:type{自然数}}
+ @list['|read IDs|]{尝试从文件的当前位置@:in{读取}两个@:type{自然数}}
  @list['predicate?]{@emph{如果} 读到的确实都是@:type{自然数}，@emph{则}：}
  @list['|cons 1st|]{@hspace[4]将第一个@:type{自然数}加到甲组地址编号列表的头部位置}
  @list['|cons 2nd|]{@hspace[4]将第二个@:type{自然数}加到乙组地址编号列表的头部位置}
  @list['loop]{@hspace[4]@emph{回到}@algo-goto['|read IDs|]重复执行}
- @list['done]{@emph{否则} @:cmt{; 两组地址编号列表构造完毕}}
+ @list['done]{@emph{否则} @:cmt{; 两组地址编号列表构造完毕，告知结果}}
  ]
 
 于是，我们就得到了书写工整的@algoref{read-loc-ids}。
@@ -276,29 +284,7 @@
 被缩进的@tech{算法}步骤归属于它们的上一行步骤。
 对@tech{缩进}更直观的解释在@Secref{algo:flowchart}。
 
-如法炮制，现在改写大白话@tech{算法}的第二步：
-
-@algo-pseudocode[
- #:tag 'accumulate "累加总差距(大白话版)"
- @list['|sort 1st|]{将甲组的地址编号列表按升序@emph{排序}}
- @list['|sort 2nd|]{将乙组的地址编号列表按升序@emph{排序}}
- @list['|for each|]{@emph{对于}两组列表中的@emph{每一对地址编号}，执行：}
- @list['accumulate]{@hspace[4]计算差距并累加到总差距中}
- @list['print]{@:cmt{; 告知结果}}
-]
-
-相对于@algo-ref{read-loc-ids}的晦涩，
-@algo-ref{accumulate}倒是直白很多。
-
-由@tech{缩进}可知，
-@algo-ref[#:line 'accumulate]{accumulate}归属于@algoref[#:line 'for-each]{accumulate}，
-它们共同构成了一种符合人类思维习惯的@:term{循环结构}。
-因此，人类读者在阅读时不用考虑往回跳转，
-读一遍就可以继续往后；
-计算机会自动重复阅读，
-直到循环结束才继续下一行。
-
-虽然@algo-ref{read-loc-ids}和@algo-ref{accumulate}都打着大白话@tech{算法}的名义，
+虽然@algo-ref{read-loc-ids}打着大白话@tech{算法}的名义，
 但读起来总感觉哪里怪怪的。
 有这个感觉就对了，
 每一次翻译都会使得@tech{算法}离大白话更远、
@@ -310,28 +296,24 @@
 那么，准备好了没？我们即将面对不说人话的@tech{算法}描述。
 
 @algo-pseudocode[
- #:tag 'alg:find-total-distance "求解总差距(未知数版)"
+ #:tag 'alg:rpcl "读取地址编号列表(未知数版)"
  @list['initialization!]{@emph{设} @${x}、@${y}分别是@focus{初始}代表甲、乙两组地址编号列表的@emph{空列表}}
- @list['|read IDs|]{尝试从清单当前位置@:in{读取}两个@:type{自然数}，@emph{设}为@${a}、@${b}}
- @list['predicate?]{@emph{if}  @:pn{@${a}和@${b}确实都是@:type{自然数}}，@emph{then}：}
+ @list['|read IDs|]{尝试从文件当前位置@:in{读取}两个@:type{自然数}，@emph{设}为@${a}、@${b}}
+ @list['predicate?]{@tt{if}@hspace[2]@:pn{@${a}和@${b}确实都是@:type{自然数}}, @tt{then}}
  @list['|cons x|]{@hspace[4]@emph{令} @focus{新}@${x = a:x}}
  @list['|cons y|]{@hspace[4]@emph{令} @focus{新}@${y = b:y}}
  @list['loop]{@hspace[4]@emph{回到}@algo-goto['|read IDs|]重复执行}
- @list['No]{@emph{else} @:cmt{; 此时的 @${x}、@${y} 分别指向甲、乙两组的地址编号列表}}
- @list['|sort x|]{@hspace[4]@emph{令} @focus{新}@${x} @:pn{=} @:pn["("]@racket[sort] @${x}@:pn[")"]}
- @list['|sort y|]{@hspace[4]@emph{令} @focus{新}@${y} @:pn{=} @:pn["("]@racket[sort] @${y}@:pn[")"]}
- @list['sum]{@hspace[4]@emph{计算} @${\sum_{i=1}^n |x_i - y_i|}}
- @list['print]{@hspace[4]@:cmt{; 告知结果}}
+ @list['No]{@tt{else} @:cmt{; 此时的 @${x}、@${y} 分别指向甲、乙两组的地址编号列表}}
+ @list['done]{@hspace[4]@:cmt{; 告知结果}}
 ]
 
-于是，合并@algo-ref{read-loc-ids}和@algo-ref{accumulate}后，
-再用数学语言(和代码)翻译，我们得到了@algo-ref{alg:find-total-distance}。
+于是，用数学语言(和代码)翻译@algo-ref{read-loc-ids}后我们得到了@algo-ref{alg:rpcl}。
 怎么样，汗流浃背了没？深呼吸，放轻松。
-这个@tech{算法}每一步做了什么事都已经确定了(和其他版本的描述对比即可)，
+这个@tech{算法}每一步做了什么事都已经确定了(和大白话版本的描述对比即可)，
 只是选用了诸多怪异的符号来书写。
 
-无论是以大白话为主的@algo-ref{read-loc-ids}、@algo-ref{accumulate}，
-还是混合了大白话、数学语言、程序代码的@algo-ref{alg:find-total-distance}。
+无论是以大白话为主的@algo-ref{read-loc-ids}，
+还是混合了大白话、数学语言、程序代码的@algo-ref{alg:rpcl}。
 这种@emph{没有固定章法@handbook-footnote{计算机类论文、
   书籍中出现的@tech{伪代码}经常看着很像作者喜欢的程序语言的代码。
   这说明@tech{伪代码}可以写成任何样子，
@@ -339,14 +321,14 @@
  ，却又处处透露着死板}的描述@tech{算法}的方式称为@tamer-deftech[#:origin "Pseudocode"]{伪代码}描述。
 像真的代码一样一板一眼，又不能像真的代码一样直接喂给计算机去执行。
 
-@handbook-scene[#:tag "algo:flowchart"]{流程图描述}
+@handbook-action[#:tag "algo:flowchart"]{流程图描述}
 
 @tech{伪代码}步骤名的另一个妙用是作为@tech{流程图}的标签，
 以图形化的形式更直观地表达@tech{算法}步骤及其执行顺序。
-比如，把@algo-ref{alg:find-total-distance}画成流程图就长@fig-ref{flow:find-total-distance}那样。
+比如，把@algo-ref{alg:rpcl}画成流程图就长@fig-ref{flow:rpcl}那样。
 
-@tamer-figure!['flow:find-total-distance
-               @list{@algo-ref{alg:find-total-distance} 流程图}
+@tamer-figure!['flow:rpcl
+               @list{@algo-ref{alg:rpcl} 流程图}
                @(geo-scale hh-sp1.dia 0.50)]
 
 @tamer-deftech[#:origin "Flowchart"]{流程图}使用箭头指示下一步活动，
@@ -369,8 +351,8 @@
  @item{@dia-flow-node[#:scale (* diaflow-node-scale 1.18)]{菱形?} 指示@tech{算法}的条件分支。
   也即@tech{算法}走到了岔路口，要根据条件决定选择哪条分支继续，
   每条分支的第一个箭头会贴上条件成立与否的标签。
-  比如：@algo-ref[#:line 'predicate?]{alg:find-total-distance}根据条件“@:desc{读到的都是@:type{自然数}}”是否成立
-  来决定是继续读清单(@tt{Yes})，还是计算总差距(@tt{No})。
+  比如：@algo-ref[#:line 'predicate?]{alg:rpcl}根据条件“@:desc{读到的都是@:type{自然数}}”是否成立
+  来决定是继续读文件(@tt{Yes})，还是计算总差距(@tt{No})。
 
   @handbook-itemlist[
  #:style 'compact
@@ -379,15 +361,13 @@
  @item{循环的本质就是@emph{箭头往回指}，因此也离不开条件分支。}]}
 
  @item{@dia-flow-node[#:scale diaflow-node-scale]{长方形} 是最常见也最务实的活动类型，代表实际要干的活。
-  如果步骤比较复杂，长方形两边会加个竖线，表明该步骤可以继续分解成另一个更小的任务。
-  比如：使用数学语言表达的@algo-ref[#:line 'sum]{alg:find-total-distance}可以
-  被分解成@algo-ref[#:line 'for-each]{accumulate}和@algoref[#:line 'accumulate]{accumulate}。}
+  如果步骤比较复杂，长方形两边会加个竖线，表明该步骤可以继续分解成另一个更小的任务。}
  
  @item{@dia-flow-node[#:scale diaflow-node-scale]{六边形!} 表明@tech{算法}依赖重要的准备工作。
   虽然解谜类@tech{算法}通常无需准备，或有其他系统代劳。
   但是初学者经常忘记给变量设置初始值，
   因此我会在本书强调@emph{初始化}这个步骤。
-  你看，你是不是没发现这个步骤并没有出现在大白话描述的@algo-ref{read-loc-ids}和@algo-ref{accumulate}里。}
+  你看，你是不是没发现这个步骤并没有出现在大白话描述的@algo-ref{read-loc-ids}里。}
  ]
 
 当你要跟其他人协作解决复杂问题时，
@@ -416,19 +396,16 @@
 比如，按照正常人用纸笔解谜的过程，
 他们更可能把读到的数字加到@tech{列表}末尾，而不是开头。
 
-以上，就是本书存在的动机和价值。
-
 @handbook-action{高级程序语言描述}
 
 现在，我们对@tech{算法}这个概念已经有了个最基本的感性认识，
-可以开始将它翻译成真正的程序代码了吗？还差一点。
-回看@algo-ref{alg:find-total-distance}和@fig-ref{flow:find-total-distance}，
+回看@algo-ref{alg:rpcl}和@fig-ref{flow:rpcl}，
 发现什么问题了没？或者，换个问法，
 @margin-note*{使用英文命名并不是造成你理解困难的原因。
  因为你的英语词汇量只会越来越多。
  当你适应英文阅读时，
  你很可能也会嫌弃我竟然在这用中文写@tech{伪代码}。}
-@fig-ref{flow:find-total-distance}真的能帮你记忆关键线索吗？
+@fig-ref{flow:rpcl}真的能帮你记忆关键线索吗？
 确实很勉强，因为我之前@:error{给各个步骤起名时做了个很不好的示范}，
 简单来说就是@:error{词不达意}，或@:error{过于言简意赅}了。
 另一方面，理科教材里出现的@:term{概念名}、
@@ -440,21 +417,16 @@
 
 所有的@tech{算法}也都应该有个名字，
 而@:term{循环}是绝大多数程序的典型特征。
-本例包含两个循环结构，
-但由于第二个“累加循环”(@algo-ref{accumulate})听着就很常见，
-且可以在第一个“读清单循环”(@algo-ref{read-loc-ids})结束时一笔带过。
-因此，@algo-ref{read-loc-ids}的部分更具代表性，
-不妨称作@:term{读取-判断-扩列 循环}，
-缩写为 @:sym{rpcl}(read-predicate-construct loop)。
-如此，@algo-ref{alg:find-total-distance}翻译之后可以是这样的：
+因此，不妨把@algo-ref{alg:rpcl}称作@:term{读取-判断-扩列 循环}，
+缩写为 @:id{rpcl}(read-predicate-construct loop)。
+如此，翻译之后可以是这样的：
 
 @handbook-chunk[|<read-predicate-construct loop>|
                 (let rpcl (<initialization!>)
                   |<read IDs>|
                   (if <predicate?>
                       <地址编号扩列，递推下一轮>
-                      (let (|<sort IDs>|)
-                        <sum>)))]
+                      <done>))]
 
 @focus{@tech[#:key "函数式编程"]{函数式}代码惊人的短小精悍}有没有？
 之后的活就是把那些与步骤名对应的代码碎片一个个翻译成真实代码。
@@ -464,7 +436,7 @@
 本例中它们大致上一一对应，
 除了@focus{用晦涩的中文}写出来的那句。
 
-@algo-ref{alg:find-total-distance}看着已经很数学了，
+@algo-ref{alg:rpcl}看着已经很数学了，
 但如果我说它还可以进一步数学化你会怎么想？
 前面我们强调了@tech{算法}步骤的@:term{简洁}和@:term{精确}，
 下一步就该考虑@:term{严谨}了，
@@ -482,7 +454,7 @@
 先@:term{变量名}后@:term{变量类型}，中间用冒号(@:pn{:})分隔，
 再跟上@:term{初始值}。
 
-@algo-ref[#:line 'initialization!]{alg:find-total-distance}没有强调类型，
+@algo-ref[#:line 'initialization!]{alg:rpcl}没有强调类型，
 在这补上：
 
 @handbook-chunk[<initialization!>
@@ -514,8 +486,8 @@
 只不过 Racket 没有把它设计成硬性语法规则，
 这里我个人选用了这种更为大众化的惯例。
 
-@algo-ref[#:line '|read IDs|]{alg:find-total-distance}就是字面直译，
-@:desc{对地址清单 @:var{locin} 执行 @racket[read] 操作，给结果起名为 @${a}；
+@algo-ref[#:line '|read IDs|]{alg:rpcl}就是字面直译，
+@:desc{对清单文件 @:var{locin} 执行 @racket[read] 操作，给结果起名为 @${a}；
  重复一次，并给结果起名为 @${b}。}
 
 @handbook-chunk[|<read IDs>|
@@ -529,7 +501,7 @@
 其中包括特殊值 @tamer-defterm[#:origin "End of File"]{eof}，
 代表@:name{文件结尾}，也即清单读完了。
 注意，此时我们要假装自己是英语母语人士，
-将清单里的@:term{连续空格}(包括@:term{换行})视作单词的分隔符。
+将文件里的@:term{连续空格}(包括@:term{换行})视作单词的分隔符。
 因此只管“读”，不用考虑换行。
 这也意味着，@:id{read} 自己知道“当前位置”在哪里，
 就像我们在看书时，眼睛会跟着一起移动。
@@ -537,7 +509,7 @@
 本例中，我们可以放心地假设，
 @${a} 和 @${b} 要么是@emph{自然数}，要么是 @tech{eof},
 不存在其他可能。
-于是，@algo-ref[#:line 'predicate?]{alg:find-total-distance} 就是对结果提问：@:desc{
+于是，@algo-ref[#:line 'predicate?]{alg:rpcl} 就是对结果提问：@:desc{
  @${a}是自然数吗？@${b}是自然数吗？}
 并且同时回答“是”(@racket[#true])。
 
@@ -572,6 +544,9 @@
 嗯，Racket 的命名风格偏向严谨，极少乱搞缩写，比较合我的口味。
 @idea{对英语语感尚不稳定的初学者来说也是件微不足道的好事}。
 
+@handbook-chunk[<done>
+                (values A.IDs B.IDs)]
+
 @handbook-scene{列表}
 
 践行@tech{文学式编程}的一个好处是，
@@ -603,14 +578,15 @@
 是吧？无需多言，
 直接上@handbook-defterm[#:origin "List"]{列表}的基本特征：
 
-@handbook-itemlist[
+@handbook-sharp-box[
+ @handbook-itemlist[
  #:style 'ordered
 
- @item{一种容器，可以存放很多项内容，通常所有项都需要一条条写出来，项的数量称为@:term{长度}；}
+ @item{一种容器，可以存放很多项内容，项的数量称为@:term{长度}；}
  @item{容量虽没有理论上限，但受限于存储媒介的大小；}
  @item{内容@focus{按顺序}存放，可通过@:term{自然数}@:term{索引}来引用某一项内容；}
  @item{内容@focus{可以重复}出现，重复内容靠存放位置来区分彼此。}
- ]
+ ]]
 
 这些特征说清楚了@tech{列表}作为一种@:term{数据类型}应该长什么样，
 但却没有规定它具体该以什么@:term{结构}形式出现。
@@ -646,10 +622,11 @@ C++ 的列表（@:id{std::list}）是@:term{链表}（类比许愿签）。
 于是，看起来最难翻译的@:desc{将地址编号列表按升序@emph{排序}}反倒是最简单的：
 
 @handbook-chunk[|<sort IDs>|
-                [A.sorted-IDs (sort A.IDs)] (code:comment "按升序排列甲组地址编号列表")
-                [B.sorted-IDs (sort B.IDs)] (code:comment "按升序排列乙组地址编号列表")]
+                [A.sorted-IDs (sort A.IDs <)] (code:comment "按升序排列甲组地址编号列表")
+                [B.sorted-IDs (sort B.IDs <)] (code:comment "按升序排列乙组地址编号列表")]
 
-函数 @:id{sort} 就是字面意思“对列表排序”，而且默认就是升序排序;
+函数 @:id{sort} 就是字面意思“对列表排序”，
+“升序”即“从小到大”，指定小于号（@:pn{<}）即可;
 然后将排好序的@focus{新}@tech{列表}作为求值结果返回，
 @focus{而原来的列表保持不变}。
 本例中原列表的使命已经结束，
@@ -667,7 +644,8 @@ C++ 的列表（@:id{std::list}）是@:term{链表}（类比许愿签）。
 如果中学数学课不会导致你瞌睡，
 那你已经能够理解数学函数的典型特征：
 
-@handbook-itemlist[
+@handbook-sharp-box[
+ @handbook-itemlist[
  #:style 'ordered
  
  @item{通过一系列@focus{代数变换}规则，将一系列@tech{输入}@tech{值}转化为一个@tech{输出}@tech{值}。}
@@ -684,9 +662,9 @@ C++ 的列表（@:id{std::list}）是@:term{链表}（类比许愿签）。
   大到让病毒逃离实验室结果毁灭了全世界。}
 
  @item{可以通过复合产生@tech{高阶函数}。}
-]
+]]
 
-发现函数的特征1和前面介绍的@tech{算法}很相似了吗？
+发现特征1和前面介绍的@tech{算法}很相似了吗？
 到目前为止，我们一直在做一件事：
 @focus{变着花样用不同方式、从不同角度描述解谜的@tech{算法}}。
 当用高级程序语言来描述@tech{算法}时，
@@ -802,8 +780,8 @@ C++ 的列表（@:id{std::list}）是@:term{链表}（类比许愿签）。
 人类对话用的“自然语言”并不擅长描述数学、科学这样“不自然”的东西。
 
 @algo-ref[#:line (cons 4 5)]{
- alg:find-total-distance}和@algoref[#:line (cons 8 9)]{
- alg:find-total-distance}都在不断定义@focus{新}@tech{变量}，
+ alg:rpcl}和@algoref[#:line (cons 8 9)]{
+ alg:rpcl}都在不断定义@focus{新}@tech{变量}，
 这……看着就很灾难，太不优雅了。
 
 不妨换个思路，开个上帝视角，@focus{一个@tech{变量}，
@@ -1018,13 +996,13 @@ C++ 的列表（@:id{std::list}）是@:term{链表}（类比许愿签）。
 
 理论如此晦涩，铺垫了好几页，结果代码倒是简单到让人意外。
 
-@margin-note*{@algo-ref[#:line (cons 4 5)]{alg:find-total-distance}的列表构造语法借用自 Haskell。}
+@margin-note*{@algo-ref[#:line (cons 4 5)]{alg:rpcl}的列表构造语法借用自 Haskell。}
 函数 @:id{cons}(即 @litchar{cons}truct) 用于@:desc{构造一个新列表，
  保证该列表的头部项是刚读到的地址编号，其他项是原列表}。
 
 @margin-note*{Racket @tech{列表}常数用@:pn{()}界定，各项以@:pn{空格}分隔。}
 @tamer-figure!['tl:cons
-               @list{@tech{时间轴}，@tech{倒序}构造乙组精灵写的地址编号列表@racket['(4 3 5 3 9 3)]}
+               @list{@tech{时间轴}，@tech{倒序}构造乙组精灵写的地址编号列表 @(tamer-elemref #:type 'file "01_hh.aex" @racket['(4 3 5 3 9 3)])}
                (plot-axis #:tick-range (cons 0 7) #:reals #(null (4) (3 4) (5 3 4) (3 5 3 4) (9 3 5 3 4) (3 9 3 5 3 4))
                           #:real-position -2.0 #:real-anchor 'ct
                           #:real->sticker (make-timeline-real->sticker "ID(n)" 7 0.618)
@@ -1051,9 +1029,48 @@ C++ 的列表（@:id{std::list}）是@:term{链表}（类比许愿签）。
 
 @handbook-action{迭代式循环}
 
-@handbook-chunk[
- <sum>
- 0]
+@algo-pseudocode[
+ #:tag 'alg:find-total-distance "求解总差距(未知数版)"
+ @list['initialization!]{@emph{设} @${x}、@${y}分别是@focus{初始}代表甲、乙两组地址编号列表的@emph{空列表}}
+ @list['|read IDs|]{尝试从文件当前位置@:in{读取}两个@:type{自然数}，@emph{设}为@${a}、@${b}}
+ @list['predicate?]{@emph{if}  @:pn{@${a}和@${b}确实都是@:type{自然数}}，@emph{then}：}
+ @list['|cons x|]{@hspace[4]@emph{令} @focus{新}@${x = a:x}}
+ @list['|cons y|]{@hspace[4]@emph{令} @focus{新}@${y = b:y}}
+ @list['loop]{@hspace[4]@emph{回到}@algo-goto['|read IDs|]重复执行}
+ @list['No]{@emph{else} @:cmt{; 此时的 @${x}、@${y} 分别指向甲、乙两组的地址编号列表}}
+ @list['|sort x|]{@hspace[4]@emph{令} @focus{新}@${x} @:pn{=} @:pn["("]@racket[sort] @${x}@:pn[")"]}
+ @list['|sort y|]{@hspace[4]@emph{令} @focus{新}@${y} @:pn{=} @:pn["("]@racket[sort] @${y}@:pn[")"]}
+ @list['sum]{@hspace[4]@emph{计算} @${\sum_{i=1}^n |x_i - y_i|}}
+ @list['print]{@hspace[4]@:cmt{; 告知结果}}
+]
+
+
+如法炮制，现在改写大白话@tech{算法}的第二步：
+
+@algo-pseudocode[
+ #:tag 'accumulate "累加总差距(大白话版)"
+ @list['|sort 1st|]{将甲组的地址编号列表按升序@emph{排序}}
+ @list['|sort 2nd|]{将乙组的地址编号列表按升序@emph{排序}}
+ @list['|for each|]{@emph{对于}两组列表中的@emph{每一对地址编号}，执行：}
+ @list['accumulate]{@hspace[4]计算差距并累加到总差距中}
+ @list['print]{@:cmt{; 告知结果}}
+]
+
+相对于@algo-ref{read-loc-ids}的晦涩，
+@algo-ref{accumulate}倒是直白很多。
+
+由@tech{缩进}可知，
+@algo-ref[#:line 'accumulate]{accumulate}归属于@algoref[#:line 'for-each]{accumulate}，
+它们共同构成了一种符合人类思维习惯的@:term{循环结构}。
+因此，人类读者在阅读时不用考虑往回跳转，
+读一遍就可以继续往后；
+计算机会自动重复阅读，
+直到循环结束才继续下一行。
+
+@handbook-chunk[<sum>
+ (for/sum : Natural ([a (in-list A.sorted-IDs)]
+                     [b (in-list B.sorted-IDs)])
+   (abs (- b a)))]
 
 @handbook-action{类型签名}
 
@@ -1066,55 +1083,66 @@ C++ 的列表（@:id{std::list}）是@:term{链表}（类比许愿签）。
 因此需要把它放置在另一个正式函数里才能随叫随用。
 这便是本节一开始就提到的两个主线任务碎片之一：
 
-@handbook-chunk[<主线任务：求解谜题1>
-                (define find-top-calorie <函数find-top-calorie的类型签名>
-                  (λ <函数find-top-calorie的参数列表>
-                    24000))]
+@handbook-chunk[<辅助任务：读取谜题数据>
+                (define read-loc-ids <函数read-loc-ids的类型签名>
+                  (λ <函数read-loc-ids的参数列表>
+                    |<read-predicate-construct loop>|))]
 
-@margin-note{λ 是希腊字母，在函数式语言里代表的正是函数本体。
- 在 Racket 中也可写成英语的 @racket[lambda]。}
-相对于草稿纸上的函数 @:sym{rpcl}，
-这个任务碎片用 @:stx{define} 和 @:stx{λ} 严肃定义了一个叫做 @:id{find-top-calorie} 的函数，
+@handbook-chunk[<主线任务1：求解总差距>
+                (define find-total-distance <函数find-total-distance的类型签名>
+                  (λ <函数find-total-distance的参数列表>
+                    11))]
+
+相对于草稿纸上的函数 @:id{rpcl}，@margin-note*{
+ λ 是希腊字母，在函数式语言里代表的正是函数本体。
+ 在 Racket 中也可写成它的英语单词： @racket[lambda]。
+}这个任务碎片用 @:stx{define} 和 @:stx{λ} 严肃定义了一个叫做 @:id{find-total-distance} 的函数，
 其除了在内部包含了@racket[|<read-predicate-construct loop>|]本体外，
 还需标注清楚@tech{类型签名}和参数列表。
 
 所谓@handbook-deftech[#:origin "Type Signature"]{类型签名}，
-简单来说就是函数的定义域(输入参数)和值域(求值结果)应当满足的类型约定。
+简单来说就是@tech{函数}的@:term{定义域}(输入参数)和@:term{陪域}(求值结果)应当满足的类型约定。
 标注@tech{类型签名}的方式有很多，
 比较常见的是像下面这样：
 
-@handbook-chunk[<函数find-top-calorie的类型签名>
+@handbook-chunk[<函数read-loc-ids的类型签名>
+                : (-> Input-Port (Values (Listof Natural) (Listof Natural)))]
+
+@handbook-chunk[<函数find-total-distance的类型签名>
                 : (-> Input-Port Natural)]
 
 跟标注变量类型时一样，函数的类型信息也跟在用空格隔开的单个冒号（@:pn{:}）后面。
-@focus{@:pn{(-> )}表明这个类型代表的是一个函数，
-里面的最后一个类型名表示函数的值域类型;
+@focus{@:pn{(-> )}表明这个类型代表的是一个@tech{函数}，
+里面的最后一个类型表示函数的@:term{陪域}类型;
 其余类型名按顺序依次表示每一个输入参数的类型。}
-于是，函数 @:id{find-top-calorie} 的功能可以简单表述为：
+于是，函数 @:id{find-total-distance} 的功能可以简单表述为：
 @:thus{给定一个类型为@:term{输入流}（@:type{Input-Port}）的输入参数，
  得到一个类型为@:term{自然数}（@:type{Natural}）的结果。}
 完美匹配了第一个谜题的要求：
-@:desc{阅读精灵写的卡路里清单，计算得到携带食物最多的精灵总共能提供多少卡路里。}
+@:desc{阅读精灵写的地址编号清单，计算得到总差距。}
 
-@focus{类型签名只强调参数的类型，不强调参数的名字}。
+@focus{@tech{类型签名}只强调参数的类型，不强调参数的名字}。
 因为计算机不懂名字的寓意，它们更擅长通过类型来理解程序；
 而人类读者更习惯通过“有意义的名字”来理解内容。
 因此，我们把类型为 @:type{Input-Port} 的参数命名为 @:var{locin}（即
-@litchar{cal}orie list @litchar{in}put-port 的缩写）：
+@litchar{loc}ation ID @litchar{in}put-port 的缩写）：
 
-@handbook-chunk[<函数find-top-calorie的参数列表>
+@handbook-chunk[<函数read-loc-ids的参数列表>
                 [locin]]
 
-你注意到代码碎片@racket[<读取一行>]里也用到变量 @:var{locin} 了吗？
-这也是 @:sym{rpcl} 草稿函数实锤的一个重要原因：
-它知道如何解谜，但是没有花精力去关注数据到底从哪来。
-当它被放置在 @:id{find-top-calorie} 里时，
+@handbook-chunk[<函数find-total-distance的参数列表>
+                [locin]]
+
+你注意到代码碎片@racket[<read IDs>]里也用到@tech{变量} @:var{locin} 了吗？
+这也是 @:id{rpcl} 草稿函数实锤的一个重要原因：
+它知道如何解谜，但是没有花精力去关注谜题里的数据到底从哪来。
+当它被放置在 @:id{find-total-distance} 里时，
 就自动共享了@:term{输入流} @:var{locin}。
-读取数据就像打开水龙头就有水流出来一样自然。
+@:desc{读取数据}就像@:desc{打开水龙头就有水流出来}一样自然。
 
 @handbook-scenario{REPL}
 
-函数 @:sym{rpcl} 的命名借鉴了Lisp语系传统的
+函数 @:id{rpcl} 的命名借鉴了Lisp语系传统的
 @handbook-deftech[#:origin "Read-Eval-Print Loop" #:abbr "REPL"]{读取-求值-打印循环}。
 即，每一轮循环要做的事是：@:desc{读取用户输入的表达式，计算此表达式的结果，再把结果打印出来。}
 这个循环看起来不太起眼，但在很多场合能极大的提高你的开发效率，
@@ -1183,26 +1211,26 @@ Racket 读取到一个表达式之后，
 于是，接下来我们实际运行一下主线任务中的函数来验证它是否正确：
 
 @tamer-repl[#:requires ["../aoc.rkt"]
-            ($ find-top-calorie #:< "mee/01_cc.aex" #:expect 24000)]
+            ($ find-total-distance #:< "iSoH/01_hh.aex" #:expect 11)]
 
-求值的最终结果是 @racket[24000]，符合预期。
+求值的最终结果是 @racket[11]，符合预期。
 @margin-note*{如果结果不对，本书也将不复存在。}
 任务数据保存在后缀名为 @litchar{.aoc} 的文件中：
 
-@tamer-repl[($ find-top-calorie #:< "mee/01_cc.aoc")]
+@tamer-repl[($ find-total-distance #:< "iSoH/01_hh.aoc")]
 
 第一个谜题求解完毕。提交这个答案，解锁第二个谜题。
 
-@story*[
- @story{当你在冥思苦想求解第一个谜题时学到的爆炸性信息时，
-  精灵们又开始搞事了：
-  天，这么点零食迟早会被吃完的！
-  这可不行，你必须再找到另外两个所带食物提供了最多卡路里的精灵。
-  这样，一只精灵的零食吃完了，
-  咱还有俩可以继续腐败。}
+@aoc-story[@racket[1]]{
+ 当你在冥思苦想求解第一个谜题时学到的爆炸性信息时，
+ 精灵们又开始搞事了：
+ 天，这么点零食迟早会被吃完的！
+ 这可不行，你必须再找到另外两个所带食物提供了最多卡路里的精灵。
+ 这样，一只精灵的零食吃完了，
+ 咱还有俩可以继续腐败。
   
- @story{请帮助精灵们@question{找出携带食物所提供卡路里最多的前三只精灵，
-   并计算他们所带食物所能提供的卡路里总和。}}]
+ 请帮助精灵们@question{找出携带食物所提供卡路里最多的前三只精灵，
+  并计算他们所带食物所能提供的卡路里总和。}}
 
 根据题意可知，例子中携带食物提供卡路里最多的三只精灵分别是第四只（@racket[24000] 卡）、
 第三只（@racket[11000] 卡）和第五只（@racket[10000] 卡），总计 @racket[45000] 大卡。
@@ -1288,11 +1316,11 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
 也应当在原题的基础之上适当考虑通用性。
 万一又有精灵来整活呢？
 @:desc{找一个}也好，@:desc{找三个}也罢，都只是@:desc{找n个}的特定案例。
-因此，相较于求解第一个谜题的 @:id{find-top-calorie} 函数，
-这个复数形式的 @:id{find-top-calories} 函数增加了一个类型为 @:type{Natural} 的参数 @:var{b}：
+因此，相较于求解第一个谜题的 @:id{find-total-distance} 函数，
+这个复数形式的 @:id{find-total-distances} 函数增加了一个类型为 @:type{Natural} 的参数 @:var{b}：
 
-@handbook-chunk[<主线任务：求解谜题2>
-                (define find-top-calories : (-> Input-Port Natural Natural)
+@handbook-chunk[<主线任务2：求解相似度>
+                (define find-total-distances : (-> Input-Port Natural Natural)
                   (λ [locin n]
                     (let rpcl ([self:cal : Natural 0]
                                <初始化高卡路里列表>)
@@ -1307,7 +1335,7 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
 从上面这段碎片里，
 我们也可以大致看出求解第一个谜题时被拆得稀碎的代码组装成最终程序后的样子。
 
-算法逻辑大同小异，区别在于新的 @:sym{rpcl}
+算法逻辑大同小异，区别在于新的 @:id{rpcl}
 函数里代表最大值的参数类型从 @:type{Natural} 变为了 @:type{(Listof Natural)}：
 
 @handbook-chunk[<初始化高卡路里列表>
@@ -1416,15 +1444,7 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
 
 至此，今天的任务终于完成了：
 
-@tamer-repl[($ find-top-calories 3 #:< "mee/01_cc.aex" #:expect 45000)
-            ($ find-top-calories 3 #:< "mee/01_cc.aoc")]
-
 提交这个答案，解锁明天的任务。
-
-此外，我们还可以对比一下这两个谜题在逻辑上的一致：
-
-@tamer-repl[($ find-top-calorie    #:< "mee/01_cc.aoc")
-            ($ find-top-calories 1 #:< "mee/01_cc.aoc")]
 
 文中出现了好几处理论性较强的段落，
 你现在看不懂才是正常现象，

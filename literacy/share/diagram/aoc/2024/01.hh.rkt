@@ -6,7 +6,7 @@
 (require diafun/flowchart)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define-flowchart! hh-sp1.dia [#:start-name "求解总差距(代数版)" #:background 'White] #:-
+(define-flowchart! hh-sp1.dia [#:start-name "读取地址编号列表(未知数版)" #:background 'White] #:-
   (move-down 1 'initialization!)
   (move-down 1 '>>|read IDs|)
   (move-down 1 '#:predicate?)
@@ -20,10 +20,7 @@
 
   (jump-back)
   (move-right 1 #false "No")
-  (move-down 1 '|sort x|)
-  (move-down 1 '|sort y|)
-  (move-down 1 'λsum)
-  (move-down 1 '<<print)
+  (move-down 2 '<<result)
   (move-down 1 'Done$))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
