@@ -3,8 +3,36 @@
 %%   it has trouble in displaying rarely used characters
 %% the `ctexbook` documentclass doesn't provide `openany`
 \usepackage[heading = true, fontset = macnew]{ctex}
-\usepackage[a4paper, left=24mm, top=32mm]{geometry}
+\usepackage{fancyhdr}
 
+%% for wider margin notes
+\usepackage[
+   a4paper,
+   includemp,
+   top=3.170cm,
+   bottom=2.510cm,
+   left=1.6835cm,
+   right=0.6cm,
+   marginparwidth=36mm,
+   marginparsep=4mm
+]{geometry}
+
+\newcommand{\defaultPage}{\newgeometry{left=32mm, top=32mm, ignoremp}}
+\renewcommand{\preDoc}{\defaultPage}
+
+\pagestyle{fancy}
+\addtolength{\headwidth}{\marginparwidth}
+
+% for typesetting footnote as sidenote
+\usepackage{snotez}
+
+\setsidenotes{
+   text-mark-format=\textsuperscript{\normalfont#1},
+   note-mark-format={#1: },
+   note-mark-sep=\enskip
+}
+
+%% for Chinese text
 \ctexset{
    chapter/name = {第, 天},
    chapter/number = \chinese{chapter},
@@ -17,23 +45,43 @@
    subsubsection/number = \chinese{subsubsection}
 }
 
-\setcounter{tocdepth}{3}
-\setcounter{secnumdepth}{3}
-
 \usepackage{indentfirst}
 \setlength{\parindent}{2em}
 
-\newcommand{\aocStory}[2]{
+%% for Advent of Code
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing}
+
+\newcommand{\aocPending}[2]{
    \begin{tcolorbox}
-   [enhanced, breakable,
+   [enhanced, breakable, title={#1},
+      attach boxed title to top right={ xshift=-1.618em, yshift=-2mm },
       sharp corners=uphill, arc=2em,
       coltext=Silver, colframe=GhostWhite,
       colback=Black, colbacktitle=MidnightBlue,
-      attach boxed title to top right={ xshift=-1.618em, yshift=-2mm },
-      drop fuzzy shadow,
-      title={#1}]
+      drop fuzzy shadow]
    #2
    \end{tcolorbox}}
+
+\newcommand{\aocStoryTearedPaper}[2]{
+   \begin{tcolorbox}
+   [enhanced, breakable, frame hidden, title={#1},
+      attach boxed title to top right={ xshift=-1.618em, yshift=-2mm },
+      boxed title style={ colback=MidnightBlue, drop fuzzy shadow },
+      coltext=Silver, colback=Black, colframe=GhostWhite,
+      interior style={
+         draw=GhostWhite, line width=1pt, color=Black,
+         decorate, decoration={ random steps, segment length=3.6mm, amplitude=1.618mm }}]
+   #2
+   \end{tcolorbox}}
+
+\newenvironment{aocComplain}
+{  \begin{tcolorbox}
+   [enhanced, breakable, frame hidden,
+      interior style={
+         draw=WhiteSmoke, line width=1pt, color=GhostWhite,
+         decorate, decoration={ random steps, segment length=4mm, amplitude=2mm }}]    }
+{  \end{tcolorbox}                                                                     }
 
 \newtcbox{\aocEmph}[1][GhostWhite]{
    on line, nobeforeafter,
@@ -47,11 +95,3 @@
    coltext=GhostWhite, colframe=#1, colback=Black!75!#1,
    boxsep=0pt, left=1pt, right=1pt, top=2pt, bottom=2pt,
    boxrule=0pt, bottomrule=1pt, toprule=1pt }
-
-%% for typesetting footnote as sidenote
-\usepackage[footnote]{snotez}
-\setsidenotes{
-   text-mark-format=\textsuperscript{\normalfont#1},
-   note-mark-format=#1:,
-   note-mark-sep=\enskip
-}

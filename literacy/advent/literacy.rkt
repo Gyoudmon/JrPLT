@@ -22,6 +22,7 @@
 (tamer-story-propagate-exceptions #true)
 
 (tamer-filebox-line-number-space 2)
+(tamer-marginnote-left? #false)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-syntax (aoc-task stx)
@@ -76,7 +77,8 @@
     (apply elem #:style story-question-style argv)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define story-style (make-style "aocStory" '(multicommand)))
+(define story-style (make-style "aocStoryTearedPaper" '(multicommand)))
+(define story-complain-style (make-style "aocComplain" null))
 (define story-emph-style (make-style "aocEmph" null))
 (define story-question-style (make-style "aocQuestion" null))
 
@@ -85,3 +87,8 @@
     (make-nested-flow story-style
                       (list (para title)
                             (apply tamer-indent-paragraphs paras)))))
+
+(define aoc-complain
+  (lambda paras
+    (make-nested-flow story-complain-style
+                      (list (apply tamer-indent-paragraphs paras)))))

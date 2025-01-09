@@ -44,19 +44,21 @@
  他们推算出了50个地址，认为首席历史学家@aoc-emph{必定}会出现在其中的一处。
  因此，为拯救今年的圣诞节，
  请你在圣诞老人出发之前帮助他们收集到50颗星。
- 收集星星的方式是解谜，
+ @aoc-question{收集星星的方式是解谜(solve puzzle)}，
  圣诞日历每天都会解锁两个谜题，
- @aoc-question{一个谜题价值一颗星}。
+ 一个谜题价值一颗星。
  
  祝你好运！}
 
 @handbook-smart-table[]
 
+@$tex{restoregeometry}
 @texbook-mainmatter[]
 
 @include-section[(submod "advent/iSoH/01.historian.hysteria.scrbl" doc)]
 
+@texbook-command-part[#:part? #false "defaultPage" null]
 @texbook-appendix{附录}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-appendix[#:numbered? #false #:index-section? #true bibentries]
+@handbook-appendix[#:numbered? #true #:index-section? #true bibentries]
