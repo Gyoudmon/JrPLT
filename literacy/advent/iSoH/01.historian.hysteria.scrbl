@@ -13,10 +13,11 @@
 @(require plotfun/axis)
 
 @(define diaflow-scale 0.50)
+@(define diaflow-marginfigure-scale 0.42)
 @(define diaflow-node-scale 0.36)
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@(define rr:add1-sticker
+@(define hh:add1-sticker
    (lambda [id r datum unit font color]
      (define c (rgb* color (/ (+ r 1.0) 8.0)))
      (define g (geo-vc-append (geo-text "+1" font #:color c)
@@ -31,7 +32,7 @@
 @aoc-task[2024 1]{历史学者癔症了}
 
 @aoc-desc[#:keywords ["文学式编程" "算法" "函数式编程" "递归函数" "类型签名" "REPL" "sexp" "列表" "高阶函数"]
-          #:edition [四 "2025-01-08"]]
+          #:edition [四 "2025-01-12"]]
 
 阅读本章时，
 读者应当重点关注的是@:val{如何将解谜思路翻译成代码}，
@@ -116,7 +117,7 @@
  为确保大家都没遗漏，精灵小队分成了两个小组，
  各自搜寻办公室并独立写下所有的地址编号。
 
- 两份地址编号出炉之后，它们显然会不尽相同，
+ 两份地址编号清单出炉之后，它们显然会不尽相同，
  于是你需要从中调解两队精灵。
  假设两份清单只会有很小的差异，
  可以将两组编号逐个配对并计算它们的差距。
@@ -211,12 +212,14 @@
  }称为@handbook-deftech[#:origin "Algorithm"]{算法}；
 通常，@focus{
  这些步骤用于@handbook-deftech[#:origin "Process"]{处理}一系列@handbook-deftech[#:origin "Input"]{输入}@tech{值}，
- 并产生一系列@handbook-deftech[#:origin "Output"]{输出}@tech{值}}。
+ 并产生一系列@handbook-deftech[#:origin "Output"]{输出}@tech{值}}(@fig-ref{IPO.dia})。
+@tamer-figure-margin['IPO.dia "算法：输入-处理-输出"]{@(geo-scale IPO.dia diaflow-marginfigure-scale)}
+
 如果你喜欢做饭，那你肯定听过或看过菜谱，
 它会详细说清楚需要的食材、佐料(@tech{输入})，
-烹饪时的工序、火候、材料用量等等各种细节(@tech{处理})，
+烹饪时的用量、工序、火候等等各种细节(@tech{处理})，
 保证你照着做就真的能得到它想教会你做的菜(@tech{输出})。
-菜谱就是厨房里的@tech{算法}。
+菜谱写的就是厨房里的@tech{算法}。
 
 那么对比菜谱，我们上面描述的解谜步骤能被称为@tech{算法}吗？能也不能。
 说它能，是因为它确实给出了有限的步骤，并且按此步骤的确存在解开谜题的可能；
@@ -309,7 +312,7 @@
  @list['|cons x|]{@hspace[4]@emph{令} @focus{新}@${x = a:x}}
  @list['|cons y|]{@hspace[4]@emph{令} @focus{新}@${y = b:y}}
  @list['loop]{@hspace[4]@emph{回到}@algo-goto['|read IDs|]重复执行}
- @list['No]{@tt{otherwise} @:cmt{; 此时的 @${x}、@${y} 分别指向甲、乙两组的地址编号列表}}
+ @list['No]{@tt{else} @:cmt{; 此时的 @${x}、@${y} 分别指向甲、乙两组的地址编号列表}}
  @list['done]{@hspace[4]@:cmt{; 告知结果}}
 ]
 
@@ -335,7 +338,8 @@
 
 @tamer-figure!['flow:rpcl
                @list{@algo-ref{alg:rpcl} 流程图}
-               @(geo-scale hh-sp1.dia 0.50)]
+               @(tamer-delayed-figure-apply #:values geo-scale #:post-argv '(0.50)
+                                            make-hh-sp1.dia 'IPO.dia 'flow:mutation)]
 
 @tamer-deftech[#:origin "Flowchart"]{流程图}使用箭头指示下一步活动，
 使用形状指示活动类型。
@@ -352,7 +356,8 @@
   每个@tech{算法}都必定有一个开始，应当@focus{至少}有一个结束。
   在绘制时通常会“向下”或“向右”流动。}
  
- @item{@dia-flow-node[#:scale diaflow-node-scale]{>>平行四边形} 指示@tech{算法}的@tech{输入}和@tech{输出}。}
+ @item{@dia-flow-node[#:scale diaflow-node-scale]{>>平行四边形} 指示@tech{算法}的@tech{输入}和@tech{输出}。
+  这里更强调的是“获取输入”和“展示输出”这两个动作。}
  
  @item{@dia-flow-node[#:scale (* diaflow-node-scale 1.18)]{菱形?} 指示@tech{算法}的条件分支。
   也即@tech{算法}走到了岔路口，要根据条件决定选择哪条分支继续。
@@ -434,7 +439,8 @@
   复习时也是连着题目一起看，
   而不会只看这些字母。}
 
- @item{等到我们设计@tech{算法}时，命名问题可能会很突出。@handbook-sidenote*{
+ @item{等到我们设计@tech{算法}时，
+  @focus{命名问题可能会很突出}。@handbook-sidenote*{
    这方面千万别偷懒，也不要盲从各种比赛题目，
    包括带赛教练、所谓刷题刷出来的金牌选手。
    用我的方法试试，对比之后才会形成你自己的见解。
@@ -447,7 +453,7 @@
   @:thus{除了定义明确的概念可以沿用数学惯例外，
    其他未知数的名字都应仔细斟酌}，
   即使只用一个字母，也应优先用单词首字母，
-  而不是随便@${a}， @${b}， @${c}， @${d}。}
+  而不是随便@${a}， @${b}， @${c}， @${d}……}
  
  @item{@idea{科学家只会给重要的概念起名字，
    然后赋予这个名字一个专属字母符号}。
@@ -485,7 +491,7 @@
 但如果我说它还可以进一步数学化你会怎么想？
 前面我们强调了@tech{算法}步骤的@:term{简洁}和@:term{精确}，
 下一步就该考虑@:term{严谨}了，
-也即在@focus{任何}情况下都不能出错。
+也即在@focus{(最好能在)任何}情况下都不出错。
 而且最好是@focus{让计算机自己能确保这件事，
  而不是浪费我们宝贵的时间去一遍遍检查}。
 再怎么改@tech{伪代码}也还是要我们亲自去确认，听着就很费时间。
@@ -534,11 +540,14 @@
 
 @algo-ref[#:line '|read IDs|]{alg:rpcl}就是字面直译，
 @:desc{对清单文件 @:var{locin} 执行 @racket[read] 操作，给结果起名为 @${a}；
- 重复一次，并给结果起名为 @${b}：}
+ 重复一次，并给结果起名为 @${b}}：
 
 @handbook-chunk[|<read IDs>|
                 (define a : Any (read locin))
                 (define b : Any (read locin))]
+
+@tamer-figure-margin['read.dia @algoref[#:line '|read IDs|]{alg:rpcl}]{
+ @(geo-scale read.dia diaflow-marginfigure-scale)}
 
 函数 @:id{read} 的求值结果@handbook-footnote{Racket 不太强调“返回值”这个说法，
  而更偏好“求值结果”(evalutes to a result)。
@@ -547,10 +556,10 @@
 其中包括特殊值 @tamer-defterm[#:origin "End of File"]{eof}，
 代表@:name{文件结尾}，也即清单读完了。
 注意，此时我们要假装自己是英语母语人士，
-将文件里的@:term{连续空格}(包括@:term{换行})视作单词的分隔符。
+将文件里的@:term{连续空格}(包括@:term{换行})视作单词、数字和符号的分隔符。
 因此只管“读”，不用考虑换行。
 这也意味着，@:id{read} 自己知道“当前位置”在哪里，
-就像我们在看书时，眼睛会跟着一起移动。
+就像我们在看书时，眼睛会跟着一起移动(@fig-ref{read.dia})。
 
 本例中，我们可以放心地假设，
 @${a} 和 @${b} 要么是@emph{自然数}，要么是 @tech{eof},
@@ -563,6 +572,9 @@
                 (and (exact-nonnegative-integer? a)  (code:comment "a 是自然数吗？")
                      (exact-nonnegative-integer? b)) (code:comment "b 是自然数吗？")]
 
+@tamer-figure-margin['predicate.dia @algoref[#:line '|predicate?|]{alg:rpcl}]{
+ @(geo-scale predicate.dia diaflow-marginfigure-scale)}
+
 咦，这个提问里为啥没有出现@emph{自然数}(@racket[natural])?
 这是因为 Racket 的原生数值类型最接近数学的数系@handbook-footnote{
  确实也有别的语言(比如 Smalltalk)的数值类型也很全面，
@@ -574,9 +586,9 @@
 有理数之下，有@:term{整数}、@:term{分数}、可数值化的@:term{浮点数}。
 
 在这个前提下有一个例外：@racket[1] 和 @racket[1.0]。
-数学上，前者是@:term{精确数}(exact number)；
-后者可能是@:term{精确数}，也可能是@:term{近似数}(inexact number)。
-而在 Racket 中，前者也是@:term{精确数}，但后者一定是@:term{近似数}。
+数学上，它俩都有可能是@:term{精确数}(exact number)，
+也都有可能是@:term{近似数}(inexact number)。
+而在 Racket 中，前者一定是@:term{精确数}，后者一定是@:term{近似数}。
 因此，问句变成了@emph{你是精确的非负整数(exact nonnegative integer)吗}，
 更突出了@emph{自然数}的现代定义，且消除了争议。
 
@@ -603,7 +615,7 @@ Racket 的命名风格偏向严谨，极少瞎搞缩写，比较合我的口味�
                       (cons b B.IDs)) (code:comment "构造新的乙组编号列表，保证 b 成为原列表的头部")]
 
 这个代码碎片的名字相当晦涩，写出来倒是意外地简单。
-它蕴含了@tech{函数式编程}的基本原理，暂时不详述。
+先忍耐一下，它蕴含了@tech{函数式编程}的基本原理，暂不详述。
 如果你实在忍不住好奇，
 可以先从@Secref{sec:fp}看起，
 到@Secref{sec:rloop}结束。
@@ -621,10 +633,9 @@ Racket 的命名风格偏向严谨，极少瞎搞缩写，比较合我的口味�
   自信点，这确实就是你在数学课上学到的那个代数表达式。
 }@focus{
  每一条@tech[#:key "函数式编程"]{函数式}代码的语句其实压根就不是执行指令的@emph{动作序列}，
- 而是一个个@:term{代数表达式}，
- 而有定义的@:term{代数表达式}天然有结果@tech{值}。
-}因此，
-我们无需专门像常规编程语言那样专门搞个 @:kw{return} 语句来表达“这就是结果”。
+ 而是一个个@:term{代数表达式}}，
+ 而有定义的@:term{代数表达式}天然有结果@tech{值}。因此，
+我们无需像常规编程语言那样专门搞个 @:kw{return} 语句来表达“这就是结果”。
 @focus{每一条@tech[#:key "函数式编程"]{函数式}代码都会产生@tech{值}，
  当它是@tech{算法}的最后一条语句时，
  它的@tech{值}也就顺理成章地成了整个@tech{算法}的@tech{输出}结果。
@@ -635,8 +646,20 @@ Racket 的命名风格偏向严谨，极少瞎搞缩写，比较合我的口味�
 它的求值结果就是一切你给它的@tech{值}，
 什么多余的事情都不做，
 常常用作@handbook-deftech[#:origin "Identity Function"]{恒等函数}。
+这的特殊之处在于，
+Racket 是为数不多@focus{直接允许@tech{函数}拥有多个结果@tech{值}}的语言@handbook-footnote{
+ Python、C++ 2017等现代语言在语法上看起来有多个返回值，
+ 实际上内部使用了@emph{元组}这样的集合类型，
+ 过程稍显繁琐，至少有“打包”，“返回”，“解包”三个步骤。
+}，而且你很幸运，碰到的第一个谜题就有机会合理应用这个特性。
 
-@handbook-action{类型签名}
+顺带一提，借助 @:id{values} 函数，
+@algo-ref[#:line '|read IDs|]{alg:rpcl}也可以简化为一句话：
+
+@handbook-chunk[|<read IDs/Values>|
+                (define-values (a b) (values (read locin) (read locin)))]
+
+@handbook-scenario{类型签名}
 
 到这里，从解谜的角度来说，我们已经打好草稿了；
 从答题的角度来说，还缺少一步：把草稿誊写到答题卡上。
@@ -911,15 +934,16 @@ C++ 的列表（@:id{std::list}）是@:term{链表}（类比许愿签）。
 比如，@tech{变量}代表的是内存中的某个存储位置，
 一句“@${x = x + 1}”涵盖了“读取”、“加1”、“写入”三条指令(@fig-ref{flow:mutation})。
 
-@tamer-figure-margin['flow:mutation "经典“赋值”示意图" (geo-scale hh-mutate.dia 0.4)]
+@tamer-figure-margin['flow:mutation "经典“赋值运算”示意图" (geo-scale hh-mutate.dia 0.4)]
 
 @aoc-complain{
  这对于从小学着代数长大、做了无数卷子却没多少工科实践类课程的初学者来说，
  它相当于在做题时要不断“用修正液涂掉旧答案、写上新答案”，
  @:thus{检查时草稿纸上已经没有任何做题痕迹了}。
- 更拧巴的是，数学老师普遍要花大力气才能让学生正确理解@:err{
-  等号（@:pn{=}）不表示“经过计算得到一个值”}，
- 然后编程老师说@emph{要先计算等号右边的值，再放回左边的存储空间里}……
+ 另一方面，数学老师普遍要花大力气才能让学生正确理解@emph{
+  等号（@:pn{=}）@:err{不表示}“经过计算得到一个值”}，
+ 然后编程老师说@emph{要先计算等号右边的值，再放回左边的存储空间里}，
+ 就……很拧巴……
 
  别气馁，我也经历过这样的瞎折腾。
  好消息是，@tech{函数式编程}会带我们回归数学思维。
@@ -1045,7 +1069,7 @@ C++ 的列表（@:id{std::list}）是@:term{链表}（类比许愿签）。
 @tamer-figure!['numberline
                @list{数轴，一生二、二生三、三生万物}
                @(plot-axis #:tick-range (cons 0 7) #:reals '(0 1 2 3 4 5 6 (7 . arrow))
-                           #:real->sticker rr:add1-sticker
+                           #:real->sticker hh:add1-sticker
                            #:axis-color 'Orange
                            #:axis-label "x"
                            400 0.0 42.0)]
@@ -1258,7 +1282,7 @@ C++ 的列表（@:id{std::list}）是@:term{链表}（类比许愿签）。
  @list['|cons x|]{@hspace[4]@emph{令} @focus{新}@${x = a:x}}
  @list['|cons y|]{@hspace[4]@emph{令} @focus{新}@${y = b:y}}
  @list['loop]{@hspace[4]@emph{回到}@algo-goto['|read IDs|]重复执行}
- @list['No]{@tt{otherwise} @:cmt{; 此时的 @${x}、@${y} 分别指向甲、乙两组的地址编号列表}}
+ @list['No]{@tt{else} @:cmt{; 此时的 @${x}、@${y} 分别指向甲、乙两组的地址编号列表}}
  @list['|sort x|]{@hspace[4]@emph{令} @focus{新}@${x} @:pn{=} @:pn["("]@racket[sort] @${x}@:pn[")"]}
  @list['|sort y|]{@hspace[4]@emph{令} @focus{新}@${y} @:pn{=} @:pn["("]@racket[sort] @${y}@:pn[")"]}
  @list['sum]{@hspace[4]@emph{计算} @${\sum_{i=1}^n |x_i - y_i|}}

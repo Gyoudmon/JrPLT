@@ -17,3 +17,21 @@
       (define fdia (geo-pin* 0.5 0.2 0.5 0.5 func name))
 
       (geo-vc-append #:gapsize 4.0 arrow fdia arrow gobj))))
+
+
+(module+ main
+  (plot-axis #:tick-range (cons 0 8) #:reals sub1
+             #:real-position -2.0 #:real-anchor 'ct
+             #:real->sticker (make-timeline-real->sticker "x(n)" 8)
+             #:real-color 'DarkCyan
+             #:real-exclude-zero? #true
+             #:axis-label "n"
+             400 0.0 42.0)
+
+  (plot-axis #:tick-range (cons 0 7) #:reals #(null (4) (3 4) (5 3 4) (3 5 3 4) (9 3 5 3 4) (3 9 3 5 3 4))
+                          #:real-position -2.0 #:real-anchor 'ct
+                          #:real->sticker (make-timeline-real->sticker "ID(n)" 7 0.618)
+                          #:real-color 'DarkCyan
+                          #:real-exclude-zero? #true
+                          #:axis-label "n"
+                          400 0.0 48.0))
