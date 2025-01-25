@@ -1,6 +1,11 @@
 %% `menukeys` in texlive 2022 doesn't care the loading order
 \usepackage[os=win, mackeys=symbols]{menukeys}
 
+%% render section link by name
+\renewcommand{\SecRef}[2]{节~#1(#2)}
+\renewcommand{\SecRefUC}[2]{节~#1(#2)}
+
+%% unused
 \newtcbox{\langBox}[1][]{tcbox raise base,nobeforeafter,
   rounded corners=all,size=small,
   colframe=cyan,colback=cyan!42,

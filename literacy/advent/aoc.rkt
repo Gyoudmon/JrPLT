@@ -10,13 +10,27 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-syntax ($ stx)
-  (syntax-parse stx #:datum-literals [<]
-    [(_ f argv:expr ... (~or #:< <) path
-        (~optional (~seq #:expect expected) #:defaults ([expected #'#false])))
+  (syntax-parse stx #:datum-literals [< > >>]
+    [(_ f argv:expr ... (~or #:< <) path (~seq #:expect expected))
      (syntax/loc stx
        (call-with-input-file* (digimon-path 'tamer path)
          (lambda [[/dev/stdin : Input-Port]]
-           (aoc-check-answer 'f (f /dev/stdin argv ...) expected))))]))
+           (aoc-check-answer 'f (f /dev/stdin argv ...) expected))))]
+    [(_ f argv:expr ... (~seq #:expect expected))
+     (syntax/loc stx
+       (aoc-check-answer 'f (f argv ...) expected))]
+    [(_ f argv:expr ... (~or #:< <) path (~or #:> #:>> > >>) receiver)
+     (syntax/loc stx
+       (call-with-input-file* (digimon-path 'tamer path)
+         (lambda [[/dev/stdin : Input-Port]]
+           (call-with-values
+               (λ [] (f /dev/stdin argv ...))
+             receiver))))]
+    [(_ f argv:expr ... (~or #:< <) path)
+     (syntax/loc stx
+       (call-with-input-file* (digimon-path 'tamer path)
+         (lambda [[/dev/stdin : Input-Port]]
+           (f /dev/stdin argv ...))))]))
 
 (define-syntax (read-aoc-data stx)
   (syntax-case stx []
@@ -48,9 +62,9 @@
                             [else (reverse ls)]))])))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define #:forall (a) aoc-check-answer : (-> Symbol a (Option a) a)
+(define #:forall (a) aoc-check-answer : (-> Symbol a a a)
   (lambda [who given expected]
-    (when (and expected (not (equal? given expected)))
+    (unless (equal? given expected)
       (raise-user-error who "wrong answer. expected: ~a; given: ~a"
                         expected given))
 
