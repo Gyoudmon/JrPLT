@@ -18,6 +18,7 @@
 (tamer-block-label-style 'bold)
 
 (tamer-default-figure-label "图")
+(tamer-default-table-label "表")
 (tamer-default-code-label "段")
 (tamer-default-algorithm-label "算法")
 

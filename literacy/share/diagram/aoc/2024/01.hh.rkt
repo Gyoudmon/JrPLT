@@ -25,8 +25,8 @@
         (move-down 1 '#:predicate?)
         
         (move-left 1 #false "Yes")
-        (move-down 1 '|cons x|)
-        (move-down 1 '|cons y|)
+        (move-down 1 '|cons X|)
+        (move-down 1 '|cons Y|)
         (move-down 1)
         (move-left 1 #false "Loop")
         (L-step '>>|read IDs|)
@@ -52,13 +52,26 @@
     
     (define-flowchart! hh-p1.dia #:start h-anchor [#:start-name "Find Total Distance" #:background 'White] #:-
       (move-down 1 '>>|input|)
-      (move-down 1 '|sort x|)
-      (move-down  1 '|sort y|)
+      (move-down 1 '|sort X|)
+      (move-down 1 '|sort Y|)
       (move-down 1 'λsum)
       (move-down 1 '<<|output|)
       (move-down 1 'done$))
 
     hh-p1.dia))
+
+(define make-hh-p2.dia : (->* () (Any) Geo)
+  (lambda [[h 'Helper]]
+    (define-values (h-label h-anchor) (aoc-extract-flow-connect-from-info h))
+    
+    (define-flowchart! hh-p2.dia #:start h-anchor [#:start-name "Find Similarity Score" #:background 'White] #:-
+      (move-down 1 'definition!)
+      (move-down 1 '>>|input|)
+      (move-down 1 'λ|weighted sum|)
+      (move-down 1 '<<|output|)
+      (move-down 1 'done$))
+
+    hh-p2.dia))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -109,6 +122,7 @@
 (module+ main
   (make-hh-helper.dia "Puzzel 1" "Puzzel 2")
   (make-hh-p1.dia)
+  (make-hh-p2.dia)
   IPO.dia
   read.dia
   (dia-flowlet-read #:peek-size 5 #:downward? #true

@@ -29,10 +29,10 @@
            'lc)))
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@aoc-task[2024 1]{慌乱的历史学者们}
+@aoc-task[2024 1]{慌乱的历史学者}
 
-@aoc-desc[#:keywords ["文学式编程" "函数式编程" "类型签名" "算法" "数据结构" "递推关系" "列表" "高阶函数" "REPL" "sexp"]
-          #:edition [四 "2025-01-25"]]
+@aoc-desc[#:keywords ["文学式编程" "函数式编程" "类型签名" "算法" "数据结构" "列表" "高阶函数" "递推关系" "迭代" "递归" "REPL" "sexp"]
+          #:edition [四 "2025-01-27"]]
 
 阅读本章时，
 读者应当重点关注的是@:val{如何将解谜思路翻译成代码}，
@@ -58,7 +58,7 @@
 优秀的作者还会考虑@focus{语言自身的思维和惯例}。
 
 @handbook-deftech[#:origin "Literate Programming"]{文学式编程}讲究以人为本，
-用作者自己的写作思路来写程序，同样阅读程序的人也能更容易理解程序。
+用作者自己的写作思路来写程序，同样阅读程序的人也能更容易地理解程序。
 这样的程序源码分为散文和代码两部分，
 后者给编译程序看，它们会自动将散落在文章各处的代码碎片组装成正确的程序；
 前者（和后者共同）给人类读者看。
@@ -152,8 +152,8 @@
  @item{甲组和乙组的第三小编号都是 @racket[3], 因此差距是 @racket[0]；}
  @item{下一对编号是 @racket[3] 和 @racket[4]，差距为 @racket[1]；}
  @item{第五对编号是 @racket[3] 和 @racket[5]，差距为 @racket[2]；}
- @item{最后，甲组的最大编号是 @racket[4]，乙组的最大编号是 @racket[9]，差距为 @racket[5]。}]
-于是，将以上各对差距相加即可得到总差距：
+ @item{最后，甲组的最大编号是 @racket[4]，乙组的最大编号是 @racket[9]，差距为 @racket[5]。}
+ ]于是，将以上各对差距相加即可得到总差距：
 @racket[2] @:pn{+} @racket[1] @:pn{+} @racket[0] @:pn{+}
 @racket[1] @:pn{+} @racket[2] @:pn{+} @racket[5] @:pn{=}
 @racket[11]。
@@ -231,7 +231,7 @@
 相信聪明的你可以联系上下文自动理清所有细节，
 但是你能教会你的同学、乃至你不满10岁的弟弟妹妹吗？
 编程就是@idea{用计算机能理解的语言教会它做事}，
-而且，计算机可比人笨得多，
+计算机可比人笨得多，
 你不得不@idea{教会它所有你自己脑补的细节}。
 
 描述@tech{算法}的方式有很多种，
@@ -308,13 +308,13 @@
 
 @algo-pseudocode[
  #:tag 'algo:rpcl "Read Location IDs(代数版)"
- @list['initialization!]{@emph{设} @${x}、@${y}分别是@focus{初始}代表甲、乙两组地址编号列表的@emph{空列表}}
+ @list['initialization!]{@emph{设} @${X}、@${Y}分别是@focus{初始}代表甲、乙两组地址编号列表的@emph{空列表}}
  @list['|read IDs|]{尝试从文件当前位置@:in{读取}两个@:type{自然数}，@emph{设}为@${a}、@${b}}
  @list['predicate?]{@tt{if}@hspace[2]@:pn{@${a}和@${b}确实都是@:type{自然数}}, @tt{then}}
- @list['|cons x|]{@hspace[4]@emph{令} @focus{新}@${x = a:x}}
- @list['|cons y|]{@hspace[4]@emph{令} @focus{新}@${y = b:y}}
+ @list['|cons X|]{@hspace[4]@emph{令} @focus{新}@${X = a:X}}
+ @list['|cons Y|]{@hspace[4]@emph{令} @focus{新}@${Y = b:Y}}
  @list['loop]{@hspace[4]@emph{回到}@algo-goto['|read IDs|]重复执行}
- @list['No]{@tt{else} @:cmt{; 此时的 @${x}、@${y} 分别指向甲、乙两组的地址编号列表}}
+ @list['No]{@tt{else} @:cmt{; 此时的 @${X}、@${Y} 分别指代甲、乙两组地址编号列表}}
  @list['done]{@hspace[4]@:cmt{; 告知结果}}
 ]
 
@@ -339,9 +339,9 @@
 比如，把@algo-ref{algo:rpcl}画成流程图就长@fig-ref{flow:rpcl}那样。
 
 @tamer-figure!['flow:rpcl
-               @list{@algo-ref{algo:rpcl} 流程图}
+               @list{@algo-ref{algo:rpcl} 流程图，后接@fig-ref{flow:puzzle1}或@fig-ref{flow:puzzle2}}
                @(tamer-delayed-figure-apply #:values geo-scale #:post-argv '(0.50)
-                                            make-hh-helper.dia 'flow:ftd 'flow:mutation)]
+                                            make-hh-helper.dia 'flow:puzzle1 'flow:puzzle2)]
 
 @tamer-deftech[#:origin "Flowchart"]{流程图}使用@emph{实线箭头}指示下一步活动，
 使用@emph{几何形状}指示活动类型。
@@ -427,7 +427,7 @@
    因为你的词汇量只会越来越多。
    }当你适应英文阅读时，
   你很可能也会嫌弃我@emph{竟然用中文写@tech{伪代码}，
-   简直岂有此理，取关、拉黑！}}
+   岂有此理，取关拉黑！}}
  
 @item{其次，科学教科书里出现的@:term{概念名}、
   @:term{常量}和@tech{变量}往往都会粗暴地用一个(或两个)字母来表示。
@@ -457,12 +457,24 @@
    其他未知数的名字都应仔细斟酌}，
   即使只用一个字母，也应优先用单词首字母，
   而不是随便来一堆@${a}， @${b}， @${c}， @${d}……}
- 
- @item{@idea{科学家只会给重要的概念起名字，
-   然后赋予这个名字一个专属字母符号}。
-  数学中的重要概念也有它们的专属字母，
-  比如：圆周率@${\pi}，自然常数@${e}，等等。}
 ]
+
+@aoc-complain{
+ 来做个小测试，快速说出下面这些字都是什么颜色？
+ @centered{@:err{蓝} @:cmt{绿} @:id{紫} @:type{橙}}
+ 怎么样，感觉脑袋里有小人打架了没？
+ @focus{你会优先考虑字的意思，然后才是其他信息}。
+ 而胡乱选用的字母本身并没有具体的意思……
+ 
+ @focus{科学家只会给重要的概念起名字，
+  然后赋予这个名字一个专属字母符号}，
+ 数学也不例外。
+ 比如：圆周率@${\pi}，自然常数@${e}，等等。
+ 
+ “起名字”这件事在编程过程中就像呼吸一样自然，
+ @:thus{且重要，能反应出你是否真的理解了问题。
+  经常训练这个亦可以激活你的词汇量}，
+ 就当是在玩一种更实用的字谜游戏了。}
 
 @handbook-scene{读取-判断-扩列 循环}
 
@@ -516,7 +528,7 @@
 分号(@:pn{;})及其后面到本行结尾的内容是@tamer-deftech[#:origin "Comment"]{注释}，
 这是写给人类读者看的，在计算机看来相当于空格。
 
-此外，本段代码碎片将@tech{变量} @${x}和@${y}重命名成了 @:var{A.IDs} 和 @:var{B.IDs}。
+此外，本段代码碎片将@tech{变量} @${X}和@${Y}重命名成了 @:var{A.IDs} 和 @:var{B.IDs}。
 
 @aoc-complain{
  嗯，看起来就很奇怪的名字。
@@ -756,10 +768,6 @@ Racket 是为数不多@focus{直接允许@tech{函数}拥有多个结果@tech{�
 那个醒目的@racket["Find Location IDs(大白话版)"]。
 只不过在实际程序中，
 一个名字可能不是那么地够用。
-总之，
-@idea{“起名字”这件事在编程过程中就像呼吸一样自然，
- 且重要，能反应出你是否真的理解了问题。
- 经常训练这个亦可以激活你的词汇量}。
 
 @handbook-scenario{REPL}
 
@@ -912,8 +920,8 @@ Racket 读取到一个表达式之后，
  @handbook-itemlist[
  #:style 'ordered
 
- @item{一种容器，可以存放很多项内容，项的数量称为@:term{长度}；}
- @item{容量虽没有理论上限，但受限于存储媒介的大小；}
+ @item{一种容器，可以存放很多项内容，项的数量称为@handbook-deftech[#:origin "Length"]{长度}；}
+ @item{@tech{长度}没有理论上限，但受限于存储媒介的大小；}
  @item{内容@focus{按顺序}存放，可通过@:term{自然数}@:term{索引}来引用某一项内容；}
  @item{内容@focus{可以重复}出现，重复内容靠存放位置来区分彼此。}
  ]]
@@ -954,7 +962,8 @@ C++ 的列表（@:id{std::list}）是@:term{链表}（类比许愿签）。
 但@focus{这种写法与数学的渊源却颇为深刻}。
 
 高级程序语言起源于上世纪50年代，
-但那些无外乎是对机器语言的直白翻译（用英文单词来替代@racket[0]@racket[1]串），
+但那些无外乎是对机器语言的直白翻译@handbook-sidenote*{
+ 用英文单词来替代@racket[0]@racket[1]串}，
 语法也是互相借鉴。
 总之，没有特别亮眼的创新，
 特别是缺乏数学的美感。
@@ -992,8 +1001,7 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
 
 @handbook-action{前缀记法 vs. 中缀记法 vs. 五花八门}
 
-文法设计方面的话题我不在这展开，直接说重点。
-我们从幼儿园就开始学习的算术表达式，
+我们从幼儿园就开始学习的算式，
 其写法属于中缀记法，总是把操作符写在操作数的中间；
 而 @tech{sexp} 是一种前缀记法，
 @focus{总是把操作符写在操作数的前面}。
@@ -1099,17 +1107,17 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
 
 @handbook-scenario{列表操作}
 
-第一个主线任务@racket[|<Puzzle 1: Find Total Distance>|]，
+第一个@emph{主线任务}@racket[|<Puzzle 1: Find Total Distance>|]，
 也就是大白话@tech{算法}的第二步，
 其内容都可以归结为是对@tech{列表}的几种操作：
 
 @algo-pseudocode[
- #:tag 'desc:find-total-distance "Find Total Distance(原始版)"
+ #:tag 'desc:find-total-distance "Find Total Distance(大白话版)"
  @list['|sort 1st|]{将甲组的地址编号列表按升序@emph{排序}}
  @list['|sort 2nd|]{将乙组的地址编号列表按升序@emph{排序}}
  @list['|for each|]{@emph{对于}两组列表中的@emph{每一对地址编号}，执行：}
  @list['accumulate]{@hspace[4]计算差距并累加到总差距中}
- @list['print]{@:cmt{; 告知结果}}
+ @list['output]{@:cmt{; 告知结果}}
 ]
 
 相对于@algo-ref{desc:read-location-ids}的晦涩，
@@ -1123,19 +1131,19 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
 直到循环结束才继续下一行。
 代数化之后会更直观地体现这个差别：
 
-@algo-pseudocode[
- #:tag 'algo:find-total-distance "Find Total Distance(代数版)"
- @list['input]{@emph{设} @${x}、@${y} 分别是甲、乙两组地址编号列表}
- @list['|sort x|]{@emph{令} @focus{新}@${x} @:pn{=} @:pn["("]@racket[sort] @${x}@:pn[")"]}
- @list['|sort y|]{@emph{令} @focus{新}@${y} @:pn{=} @:pn["("]@racket[sort] @${y}@:pn[")"]}
- @list['sum]{@emph{计算} @${\sum_{i=1}^n |x_i - y_i|}}
- @list['output]{@:cmt{; 告知结果}}
-]
-
-@tamer-figure-margin['flow:ftd
+@tamer-figure-margin['flow:puzzle1
                      @list{@algo-ref{algo:find-total-distance} 流程图}
                      @(tamer-delayed-figure-apply #:values geo-scale #:post-argv (list diaflow-marginfigure-scale)
                                                   make-hh-p1.dia 'flow:rpcl)]
+
+@algo-pseudocode[
+ #:tag 'algo:find-total-distance "Find Total Distance(代数版)"
+ @list['input]{@emph{设} @${X}、@${Y} 分别是甲、乙两组地址编号列表}
+ @list['|sort x|]{@emph{令} @focus{新}@${X} @:pn{=} @:pn["("]@racket[sort] @${X}@:pn[")"]}
+ @list['|sort y|]{@emph{令} @focus{新}@${Y} @:pn{=} @:pn["("]@racket[sort] @${Y}@:pn[")"]}
+ @list['sum]{@emph{计算} @${\sum_{i=1}^n |X_i - Y_i|}}
+ @list['output]{@:cmt{; 告知结果}}
+]
 
 @algo-ref[#:line 'for-each]{desc:find-total-distance
  }和@algoref[#:line 'accumulate]{desc:find-total-distance
@@ -1159,7 +1167,9 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
                                     [b (in-list B.sorted-IDs)])
                   <accumulate>)]
 
-这段代码碎片咋一看有点抽象，
+@handbook-sidenote*{注意，@litchar{/} 是 Racket 合法的命名字符，
+ 可解读为名字主体部分(在本例中指@:stx:def{for})的变体。
+ }这段代码碎片咋一看有点抽象，
 细细读来依稀可见“@tt{sum ... for each ... in list ...}”句式:
 
 @handbook-itemlist[
@@ -1168,9 +1178,12 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
  @item{语法 @:stx:def{for/sum} 表明可能存在很多种 @tt{for each} 循环，
   本例中的循环的目的是 @:sym{sum}。即：@:desc{
    累加@racket[<accumulate>]的@tech{值}，
-   并最终得到一个类型为 @:type{Natural} 的结果。}}
- @item{每对中括号(@:pn{[]})代表一个 @tt{for each} 子句，每次循环取出一个数，并给起个名字。}
- @item{函数 @:id{in-list} 表明该子句中的数来源于某个@tech{列表}。}
+   并最终得到一个类型为 @:type{Natural} 的结果}。}
+ @item{每对中括号(@:pn{[]})代表一个 @tt{for each} 子句，每次循环都按顺序取出一个数，并给起个名字。
+  是不是在找@tt{each}这个单词在哪？它就指代每一个取出来的数，@tt{each a}、@tt{each b}。
+  为避免啰嗦，就没必要专门写出来了。}
+ @item{函数 @:id{in-list} 表明该子句中的数来源于某个@tech{列表}。
+  本例中，提供数的@tech{列表}一定要先排好序。}
  ]
 
 此外，这段代码碎片连@tech{缩进}也跟@algo-ref{desc:find-total-distance}保持一致，
@@ -1179,15 +1192,11 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
 @handbook-chunk[<accumulate>
                 (abs (- b a)) (code:comment @#,${|a - b|})]
 
-@handbook-itemlist[
- #:style 'compact
+函数 @:id{-} 就是减法运算符; 函数 @:id{abs} 用于计算绝对值。
 
- @item{函数 @:id{-} 就是减法运算符}
- @item{函数 @:id{abs} 用于计算绝对值}
- ]
-
-以上就是本章任务中唯一接地气的数学部分，
-搞定它之后第一个@emph{主线任务}就剩把流程走完了。
+注意，语法 @:stx:def{for/sum} 自带@emph{累加}语义，
+因此，我们只需要计算本轮循环中待累加的@tech{值}，
+不用管这个@tech{值}会被加到哪去。
 
 @handbook-action{主线任务1：find-total-distance 函数}
 
@@ -1212,8 +1221,8 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
 
 @tech{算法}名字应该是对其功能的简短描述：
 @:desc{阅读谜题提供的清单文件，计算甲、乙两组精灵所写地址编号的总差距}。
-然后从功能描述中提炼出@tech{类型签名}：
-@:desc{给定一个类型为@:term{输入流}（@:type{Input-Port}）的@tech{输入}参数，
+然后从功能描述中提炼出@tech{类型签名}：@:type{(-> Input-Port Natural)}。
+即，@:desc{给定一个类型为@:term{输入流}（@:type{Input-Port}）的@tech{输入}参数，
  得到一个类型为@:term{自然数}（@:type{Natural}）的结果}。
 于是，配上@algo-ref{algo:find-total-distance}的步骤，
 即可得到本任务函数 @:id{find-total-distance} 的全貌：
@@ -1255,7 +1264,7 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
  @(geo-scale sort.dia diaflow-marginfigure-scale)}
 
 函数 @:id{sort} 就是字面意思@:desc{对列表排序}。
-但它也是一个@tech{高阶函数}，
+注意，它也是一个@tech{高阶函数}，
 通过指定@emph{小于}关系运算符来完成对@emph{升序}的配置。
 本例中参与比较的都是@:term{自然数}，使用正常的@emph{小于号}(@:pn{<})即可。
 其求值结果就是排好序的@focus{新}@tech{列表}，
@@ -1266,24 +1275,206 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
 Racket 能自己@emph{推导}出结果的@emph{类型}，
 因此新定义的两个@tech{变量}的@:term{类型}信息可以省略。
 
-@handbook-action{测试任务结果}
+@handbook-scene{测试谜题1解法}
 
-第一个谜题求解完毕，用例子中的数据检验一下：
-
+第一个谜题求解完毕，先用例题数据检验一下：
 @tamer-repl[($ find-total-distance < "iSoH/01_hh.aex" #:expect 11)]
 
 求值的最终结果是 @racket[11]，符合预期。
 @handbook-sidenote*{如果结果不对，本书也将不复存在。}
 
 任务数据保存在后缀名为 @litchar{.aoc} 的文件中：
-
-@tamer-repl[($ find-total-distance #:< "iSoH/01_hh.aoc")]
+@tamer-repl[($ find-total-distance < "iSoH/01_hh.aoc")]
 
 提交这个答案，解锁第二个谜题。
 
+@aoc-story[@racket[|<Puzzle 2: Find Similarity Score>|]]{
+ 你的分析只不过是确认了一件大家都知道且害怕知道的事：
+ 这两组地址清单是真的不一样。或者，是吗？
+
+ 精灵历史学者们显然不愿承认是自己组犯了错，
+ 也不认可对方解读首席历史学家手稿的方式。
+ 在一片吵闹声中，你发现了件有趣的事：
+ 两组地址清单里出现了不少重复编号！
+ 也许大家都理解错了，那些数字压根就不代表地址。
+
+ 这一次，你需要找出左边那列每一个数字出现在右边的次数，
+ 并计算其总的@aoc-emph{相似度(Similarity Score)}。即，
+ 将左边的每一个数字@aoc-emph{乘上}它在右边出现的次数，
+ 最后再全部@aoc-emph{加}起来。
+  
+ 问：@aoc-question{What is their similarity score}?}
+
+精灵们是这样的，请先耐下心来习惯他们的毛手毛脚。
+于是，根据题意:
+@handbook-sidenote{@(tamer-filebox (aoc-tamer-path "iSoH/01_hh.aex") #:path-centerized? #true)}
+@handbook-itemlist[
+ #:style 'compact
+ @item{左边第一个数字是 @racket[3]，在右边出现了三次，所以相似度是 @racket[3] @:pn{*} @racket[3] @:pn{=} @racket[9]；}
+ @item{左边第二个数字是 @racket[4]，在右边仅出现一次，所以相似度是 @racket[3] @:pn{*} @racket[1] @:pn{=} @racket[4]；}
+ @item{左边第三个数字是 @racket[2]，没在右边出现，所以相似度是 @racket[2] @:pn{*} @racket[0] @:pn{=} @racket[0]；}
+ @item{第四个数字 @racket[1]，也没在右边出现，相似度也是 @racket[0]；}
+ @item{第五、第六个数字与第一个数字一样，相似度也都是 @racket[9]。}
+ ]所以，总相似度是：
+@racket[9] @:pn{+} @racket[4] @:pn{+} @racket[0] @:pn{+}
+@racket[0] @:pn{+} @racket[9] @:pn{+} @racket[9] @:pn{=}
+@racket[31]。
+
+@handbook-action{主线任务2：find-similarity-score 函数}
+
+在对谜题1的求解过程中，
+我们体验到了@tech{列表}带来的便利。
+现在尝试从@emph{操作列表}的角度来描述第二个@emph{主线任务}@racket[|<Puzzle 2: Find Similarity Score>|]:
+
+@algo-pseudocode[
+ #:tag 'algo:find-similarity-score "Find Similarity Score"
+ @list['input]{@emph{设} @${X}、@${Y} 分别是左、右两列地址编号列表}
+ @list['definition]{@emph{设} @${\mathcal{W}_Y(x)} 表示@${x}在@${Y}中出现的次数}
+ @list['|weighted sum|]{计算 @${\sum_{i=1}^n x_i \cdot \mathcal{W}_Y(x_i)}}
+ @list['output]{@:cmt{; 告知结果}}
+]
+
+@tamer-figure-margin['flow:puzzle2
+                     @list{@algo-ref{algo:find-similarity-score} 流程图}
+                     @(tamer-delayed-figure-apply #:values geo-scale #:post-argv (list diaflow-marginfigure-scale)
+                                                  make-hh-p2.dia 'flow:rpcl)]
+
+能看出来，谜题2比谜题1还简单一些，无需@emph{排序}，会@emph{数数}足已。
+因此不必强行分别给出其解谜@tech{算法}的大白话版和代数版了，
+直接上该任务@tech{函数} @:id{find-similarity-score} 的全貌：
+
+@handbook-chunk[|<Puzzle 2: Find Similarity Score>|
+                (define find-similarity-score : (-> Input-Port Natural)
+                  (lambda [locin]
+                    |<definition>|
+                    |<Read Location IDs>|
+                    (for/sum : Natural ([x (in-list A.IDs)])
+                      <score>)))]
+
+同样，本任务也是接着@emph{辅助任务}来的，
+因此直接包含代码碎片@racket[|<Read Location IDs>|]获得两个@tech{数列}；
+语法 @:stx:def{for/sum} 自带@emph{累加}语义，
+因此，每轮循环给@emph{相似度}的打分环节就是最直白的乘法运算：
+
+@handbook-chunk[<score>
+                (* x (weight x))]
+
+好吧，这段代码碎片里的乘法不算特别直白。
+它认为@algo-ref[#:line 'definition]{algo:find-similarity-score}定义的@tech{函数}
+@${\mathcal{W}_Y(x)}的全名应该叫 @:id{weight}，
+直译为“重量”，在数学和统计学中引申为“权重”。
+所以，看出来谜题2中的数学部分其实是@:term{加权求和}了吗？
+
+@handbook-scene{数权重：count 函数}
+
+@:term{加权求和}作为一种统计学方法，
+其核心是如何计算@:term{权重}。
+因此，程序语言没法直接提供这样一个@tech{函数}，
+需要我们根据问题情景自己定义。
+任务做到现在，
+定义@tech{函数}这事早就不陌生了，
+而且这一次@tech{函数}名已经确定了，
+照搬自统计学术语。
+接下来是描述其功能：@:desc{
+ 给定左边@tech{列表}里的一个数，
+ 得到这个数在右边@tech{列表}中出现的次数}。
+由此可以提炼出其@tech{类型签名}：@:type{(-> Natural Natural)}。
+即，@:desc{给定一个 @:type{Natural} 型的@tech{输入}参数，
+ 得到一个 @:type{Natural} 型的@tech{输出}结果}。
+
+在本例中，确定@:term{权重}的方法就是最直白、最原始的@:term{数数}，
+毕竟我们才刚刚开始解决精灵们的问题，
+手头已有的信息只够我们做此尝试。于是，
+
+@handbook-chunk[<definition>
+                (define weight : (-> Natural Natural)
+                  (lambda [x]
+                    <count>))]
+
+好消息是，在@tech{列表}中数数是常见操作，
+提供@tech{列表}的语言不顺便提供 @:id{count} 函数就太磕碜了。
+坏消息是，@:id{count} 也是一个@tech{高阶函数}，
+你不得不思考得深一些。不过，
+鉴于 @:id{count} 函数的@tech{类型签名}对初学者来说太过犯规，
+这里就不放出来了，我针对本题给个简单版本：
+@handbook-sidenote*{注意，这段代码碎片没有包含在任何其他碎片中，因此不会出现在最终代码里。}
+
+@handbook-chunk[|<count 函数 简易类型签名>|
+                (-> (-> Any Boolean) (code:comment "参数1类型：过滤函数")
+                    (Listof Natural) (code:comment "参数2类型：自然数列表")
+                    Natural)]
+
+跟着注释不难看出，
+@:id{count} 函数接受一个过滤用的@tech{谓词函数}和一个 @:type{(Listof Natural)} 型的@tech{值}，
+得到一个 @:type{Natural} 型的结果，而该结果正是原列表中能够满足过滤函数的项的数量。
+理清这一点后，如何@emph{数数}就不难理解了：
+
+@handbook-chunk[<count>
+                (count <数数用谓词函数> B.IDs)]
+
+函数 @:id{count} 实际做的事是：@:desc{
+ 按顺序把@tech{列表}@:var{B.IDs}里的项取出来，
+ 问@tech{谓词函数}这一项是否符合要求，
+ 如果是就@${+1}，不是就当没看见}。
+
+代码碎片@racket[<definition>]的位置隐藏着一些有趣的点：
+
+@handbook-itemlist[
+ #:style 'compact
+
+ @item{@focus{你可以在一个@tech{函数}内部定义另一个@tech{函数}}。
+  这事咋一看很奇妙，仔细一想却又很稀松平常。
+  定义@tech{函数}的本质只是在给@tech{函数}起名字，
+  这在@tech{函数式编程}中就像呼吸一样自然。
+  即使你不做，函数式语言也很可能瞒着你悄悄做了不少。
+  比如：
+
+ @itemlist[
+ #:style 'compact
+ @item{给@:stx:def{let}起名就是在@emph{定义}一次性函数；}
+ @item{不起名直接用@:sym{λ}就@emph{产生}了一个@tech{匿名函数}。}
+ ]}
+ 
+ @item{@focus{内部@tech{函数}自动共享外部@tech{函数}的@tech{变量}}。
+  所以，我们不必每次都告诉 @:id{weight} 要从中数数的那个@tech{列表}是哪个。}
+ ]
+
+那么，是不是该给 @:id{count} 函数定义一个@tech{谓词函数}了？
+不是，不用@emph{定义}，只需@emph{产生}一个@tech{匿名函数}即可，
+因为这个@tech{谓词函数}只有 @:id{count} 函数会用到。
+换句话说，@focus{@tech{匿名函数}和@tech{高阶函数}是绝配}，
+今后我们还会学习其他更数学的产生@tech{匿名函数}的方法。
+于是，
+
+@handbook-chunk[<数数用谓词函数>
+                (λ [[y : Natural]] : Boolean
+                  (x . = . y))]
+
+嗯？你困惑等号(@:pn{=})在这的用法吗？
+它就是用于检查两个数是否相等的@emph{关系运算符}：
+
+@tamer-repl[(:query-type/args = Number Number)]
+
+此外，因为@tech{匿名函数}没有名字，
+我们在标记其@tech{类型签名}时就不能用之前的方法了，
+但仍然还是用冒号(@:pn{:})语法：
+直接给每个@tech{输入}参数标记类型，
+最后在参数列表后面跟上@tech{输出}结果的类型。
+这种方法也适用于其他定义@tech{函数}的场合。
+
+@handbook-scene{测试谜题2解法}
+
+谜题2求解完毕，先用例题数据测试一下：
+@tamer-repl[($ find-similarity-score < "iSoH/01_hh.aex" #:expect 31)]
+
+然后是任务数据：
+@tamer-repl[($ find-similarity-score < "iSoH/01_hh.aoc")]
+
+提交这个答案，解锁明天的任务。
+
 @handbook-scenario[#:tag "sec:fp"]{函数式编程}
 
-为什么非要如此折腾一圈，而不直接修改原列表呢？因为我们在讨论@tech{函数式编程}啊。
+第一天漫长的挑战终于完成，可以正式了解一下什么是@tech{函数式编程}了。
 
 @handbook-deftech[#:origin "Functional Programming"]{函数式编程}讲究@emph{
  总是通过定义一系列函数来教会计算机解决问题}，
@@ -1344,7 +1535,8 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
  别气馁，我也经历过这样的瞎折腾。
  好消息是，@tech{函数式编程}会带我们回归数学思维。
  因其本质是@focus{代数替换}，
- 因此@:thus{等号（@:pn{=}）就是关系运算符，没有@:term{赋值}语义}。}
+ 因此@:thus{等号（@:pn{=}）就是关系运算符，没有@:term{赋值}语义}。
+ 比如，@racket[<数数用谓词函数>]。}
 
 那么问题来了，既然“修改变量值”也算@tech{副作用}，
 @tech{函数式编程}中岂不是就没有@tech{变量}只有@tech{常量}了？
@@ -1360,42 +1552,33 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
   在不同的前提条件下，它们可以取不同的@tech{值}，是为“变”；
   然而，一但条件确定，它们的@tech{值}也就不再改变，
   进而导致对函数的求值结果也不会改变。
-  打个比方，
-  数学@tech{变量}相当于身份证上的姓名，
-  不同人的名字可以相同可以不同，
-  但每个人的名字在第一次确定之后（一般）不可更改，
-  当交谈中提到你认识的人的名字时，
-  你脑海里浮现的也是@focus{记忆中}那个人活灵活现的形象；
-  与之相对的，指令式语言的@tech{变量}相当于酒店房间的门牌号，
-  房间里面有谁取决于何人能入住，
-  提到这个门牌号时，很可能已经不是原来的住户了。}
+
+  @aoc-complain{打个比方，
+   数学@tech{变量}相当于身份证上的姓名，
+   不同人的名字可以相同可以不同，
+   但每个人的名字在第一次确定之后（一般）不可更改，
+   当交谈中提到你认识的人的名字时，
+   你脑海里浮现的也是@focus{记忆中}那个人活灵活现的形象；
+   与之相对的，指令式语言的@tech{变量}相当于酒店房间的门牌号，
+   房间里面有谁取决于何人能入住，
+   提到这个门牌号时，很可能已经不是原来的住户了。}}
 
  @item{指令式语言的@tech{变量}之所以代表存储位置，
   根本原因是因为我们现在@focus{最常见的计算机组成结构的核心仍然是存储设备，
   一切程序代码和数据都必须安排存储空间才能参与计算，函数式语言也不例外}。
   因此当你要深究函数式程序在执行时都偷偷瞒着你做了啥见不得人的事时，
   你会惊讶地发现，它们的@tech{变量}也都有自己在内存的地址。
-  差别在于，
-  
-  @handbook-itemlist[
- #:style 'compact
+  差别在于，@focus{函数式语言不提供方法（或者明确建议你不要）直接修改变量的值，
+   如果你遵守这个约定，你的程序运行起来会更高效和可靠}。
+                               
+  @aoc-complain{在此语境下打个比方，
+   指令式语言的@tech{变量}仍是酒店房间的门牌号，
+   函数式语言的@tech{变量}则是家庭地址的门牌号@handbook-footnote{
+    身份证上确实写着你的家庭地址}。
+   显然，酒店房间人来人往，你不能假设里面住着谁；
+   但家庭地址比较稳定，你可以合理假设里面的住户不会轻易改变。
+   现在你要找人，或者寄快递，哪类地址更可靠？}}
  
- @item{@focus{函数式语言不提供方法（或者明确建议你不要）直接修改变量的值，
-     如果你遵守这个约定，你的程序运行起来会更高效和可靠}。
-    在此语境下打个比方，
-    指令式语言的@tech{变量}仍是酒店房间的门牌号，@handbook-sidenote*{
-     身份证上确实写着你的家庭地址
-    }函数式语言的@tech{变量}则是家庭地址的门牌号。
-    显然，酒店房间人来人往，你不能假设里面住着谁；
-    但家庭地址比较稳定，你可以合理假设里面的住户不会轻易改变。
-    现在你要找人，或者寄快递，哪类地址更可靠？}
-
- @item{@focus{函数式语言的代码和它们在内存中的存储结构差异可以大到面目全非、毫不相干}。
-    形象点说，用纸笔模拟计算，纸就是一种存储设备。
-    不同学科的练习本上画的线往往都不一样，
-    这些线可以启发你类比不同的存储结构。
-    比如，作文本与指令式语言，数学本与函数式语言。}]}
-
  @item{不与真实世界交流的程序，
   连接受键盘输入、将结果显示在屏幕上都做不到。
   这样的程序没有任何价值。
@@ -1481,104 +1664,39 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 我就肯定能接着你的数往大了数，
 你说气不气人？
 
+@handbook-scene{迭代}
+
 道理我都懂，可是这跟@tech{函数}有什么关系？
-@tech{函数}存在的首要任务是将@tech{输入}转化为@tech{输出}。
 估计是“@${+ 1}”这个写法让你困惑了，
 给它取个高级点的名字吧，
 叫做 successor(@emph{后继}，意为“下一个”)，缩写为 @${s}。
 其功能是，当我们给这个@tech{函数}喂一个@emph{非负整数}时，
 它就会吐出这个数的“下一个”@emph{整数}给我们。
-于是，@$${s(0) \rightarrow 1,
- @hspace[2]s(1) \rightarrow 2,
- @hspace[2]s(255) \rightarrow 256,
- @hspace[2]s(1000) \rightarrow 1001,
- @hspace[2]...}
-现在不必再说“以此类推”了吧？
+即，@$$[#:tag "successor"]{s(x) = x + 1}
+于是，从首项开始，一遍一遍重复使用它：@$${
+ s(0) \rightarrow 1,\\
+ s(1) = s(s(0)) \rightarrow 2,\\
+ s(2) = s(s(1)) = s(s(s(0))) \rightarrow 3,\\
+ ...}
+现在可以把“以此类推”替换成@${x_n = s(x_{n-1})}了，有@tech{函数}了吧？
 
-@handbook-scene{通项公式}
+而且，这个过程有个名字，叫做@handbook-deftech[#:origin "Iteration"]{迭代}，
+它强调的是@emph{重复使用某个@tech{算法}}的动态过程，
+@focus{每一轮重复产生的@tech{值}都是下一轮重复的@:term{初始值}}。
 
-@fig-ref{numberline}只刻画了旧@tech{值}和新@tech{值}之间的@tech{函数}关系，
-也能得到我们需要的全部@tech{值}。
-但如果我问，程序运行到某一时刻时，@tech{变量}的@tech{值}是多少？
-这才是我们要定义@tech{变量}、收集全部@tech{值}的动力。
-要回答这个问题，我们需要对@fig-ref{numberline}稍微变个形，
-由此得到了@fig-ref{nl:sub1}，
-你看看有哪里不一样？
-
-@tamer-figure!['nl:sub1
-               @list{数轴，但@:err{不该这么用}}
-               (plot-axis #:tick-range (cons 0 8) #:reals sub1
-                          #:real-position 0.618 #:real-anchor 'cb
-                          #:real-color 'Crimson
-                          #:axis-color 'RoyalBlue
-                          #:real-exclude-zero? #true
-                          #:axis-label "n"
-                          400 0.0 42.0)]
-
-@fig-ref{nl:sub1}的数轴的名称变为了@${n}，
-表明线下方与@${n}齐平的数字代表的是@${x_n}各@tech{值}的@:name{索引}，
-也就是“第@${n}个@${x}”的@${n}；
-@${x_n} 的@tech{值}则被标在了线的上方。
-如果这些@tech{值}不是数字，那可能问题不大，
-但像现在这样肯定不行，
-数轴的同一个点位怎么能对应着两个不同的数字呢？
-太有歧义了。
-
-因此，再变一次形我们就得到了@fig-ref{tl:sub1}。
-当然，这已经不是数学上用到的那个@emph{数轴}了，
-为表区分，姑且叫做@:name{时间轴}吧，
-@${n}代表“第@${n}个需要知道变量@tech{值}的时刻”。
-@handbook-sidenote*{到这里如果你还是不能理解@tech{函数}是什么，
-那就先看看@fig-ref{tl:sub1}找找灵感，
-哪些元素能启发你理解@tech{函数}这个概念?}
-
-@tamer-figure!['tl:sub1
-               @list{函数式@tech{变量}的@tech{时间轴}模型}
-               (plot-axis #:tick-range (cons 0 8) #:reals sub1
-                          #:real-position -2.0 #:real-anchor 'ct
-                          #:real->sticker (make-timeline-real->sticker "x(n)" 8)
-                          #:real-color 'DarkCyan
-                          #:real-exclude-zero? #true
-                          #:axis-label "n"
-                          400 0.0 42.0)]
-
-本书会将只有一个@tech{输入}参数的@tech{函数}画成类似沙漏的形状，@handbook-sidenote*{
- 你能联想到日常生活中有哪些东西跟它很像吗？
-}沙漏上下的箭头表明@tech{输入}@tech{值}从一端进入，
-在内部经过一番折腾(@tech{处理})，
-从另一端出来一个@tech{输出}@tech{值}。
-
-一个只会数数的程序没多大的用处，
-但如果每数到一个数，
-就把它扔给一个@tech{函数}，
-静静等待这个@tech{函数}吐出另一个数，
-情况就不一样了，
-因为你有机会得到任何数。
-@:thus{这其实就是@tech{数列}的本质：
- 一个专门用于将@emph{正整数}转化为别的数的@tech{函数}。
-}@tech{函数}名也跟@tech{数列}名相同，
-写法上略有差异：从 @${x_n} 变为 @${x(n)}。
-在@tech{数列}术语中，
-这样的@tech{函数}也被称为@:name{通项公式}。
-
-现在，你可以用很文艺的方式跟你的小伙伴炫耀@tech{函数式编程}的基本特征了：
-在@tech{函数式编程}的世界里，@idea{每个@tech{变量}都自带一条@tech{时间轴}，
-@tech{时间轴}上的关键节点对应着该@tech{变量}在程序运行时的不同取@tech{值}。}
-而运行程序的过程也像极了真实世界的时间流逝，
-@idea{今日事今日毕，明天又是崭新的一天；
-如此往复，虽从未曾惊扰昨日，一切已然悄悄变化。}
-
-@handbook-action{递归与迭代}
+@handbook-scene{递归}
 
 递推思路顺便带来了两个看似平平无奇、实则奥妙无穷的能力：
 
 @handbook-itemlist[
  #:style 'compact
 
- @item{从@:term{初始值}开始，可以一直计算@tech{变量}的“下一个”@tech{值}。
+ @item{从@:term{初始值}开始，可以一直计算@tech{变量}的“下一个”@tech{值}，
+  术语叫做@handbook-deftech[#:origin "Forward Substitute"]{前代}。
   于是，@:thus{我们得以用有限的语言来描述和理解无限的概念}。}
 
- @item{可以一直反推@tech{变量}的“上一个”@tech{值}，直到到达@:term{初始值}。
+ @item{可以一直反推@tech{变量}的“上一个”@tech{值}，直到到达@:term{初始值}，
+  术语叫做@handbook-deftech[#:origin "Back Substitute"]{回代}。
   于是，@handbook-sidenote*{俗称套娃
    }@:thus{我们得以将复杂问题拆解成规模更小的同类子问题以各个击破}。}]
 
@@ -1613,62 +1731,160 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 @:thus{@tech{递归函数}就是用数学语言描述的循环，
  每一轮循环都是在调用@tech{函数}自身}。
 
-与循环相关的另一个术语是@handbook-deftech[#:origin "Iteration"]{迭代}，
-它强调的是@emph{重复使用某个@tech{算法}}的解题过程。
-在这个过程中，@focus{每一轮循环结束时的@tech{值}即是下一轮循环的@:term{初始值}}。
+@handbook-action{数列也是函数！}
 
-@aoc-complain{
- @tech{递归}和@tech{迭代}是@tech{算法}设计的基础工具，
- 但如何正确区分这两个术语却不是那么容易。
- 本章后续部分会带大家看到@tech{递归}和@tech{迭代}的内在联系和外在差异。
+@fig-ref{numberline}只刻画了旧@tech{值}和新@tech{值}之间的@tech{函数}关系，
+也能得到我们需要的全部@tech{值}。
+但如果我问，程序运行到某一时刻时，@tech{变量}的@tech{值}是多少？
+这才是我们要定义@tech{变量}、收集全部@tech{值}的动力。
+要回答这个问题，我们需要对@fig-ref{numberline}稍微变个形，
+由此得到了@fig-ref{nl:sub1}，
+你看看有哪里不一样？
 
- 在解决实际问题的过程中，它俩经常互相协作：
+@tamer-figure!['nl:sub1
+               @list{数轴，但@:err{不该这么用}}
+               (plot-axis #:tick-range (cons 0 8) #:reals sub1
+                          #:real-position 0.618 #:real-anchor 'cb
+                          #:real-color 'Crimson
+                          #:axis-color 'RoyalBlue
+                          #:real-exclude-zero? #true
+                          #:axis-label "n"
+                          400 0.0 42.0)]
 
- @handbook-itemlist[
- #:style 'compact
+@fig-ref{nl:sub1}的数轴的名称变为了@${n}，
+表明线下方与@${n}齐平的数字代表的是@${x_n}各@tech{值}的@:name{索引}，
+也就是“第@${n}个@${x}”的@${n}；
+@${x_n} 的@tech{值}则被标在了线的上方。
+如果这些@tech{值}不是数字，那可能问题不大，
+但像现在这样肯定不行，
+数轴的同一个点位怎么能对应着两个不同的数字呢？
+太有歧义了。
 
- @item{你在@focus{用纸上}用@tech{迭代}法从@tech{递推关系}中归纳出@tech{通项公式}，
-   其本质是将@tech{递归函数}转化为等价的不带@tech{递归}的普通函数@handbook-footnote{
-    这样的普通函数有个术语叫@:term{闭形}(closed form)}，
-   使得你和计算机都能一步到位直接计算出结果，而不必专门写个循环程序来求解。}
+因此，再变一次形我们就得到了@fig-ref{tl:sub1}。
+当然，这已经不是数学上用到的那个@emph{数轴}了，
+为表区分，姑且叫做@:name{时间轴}吧，
+@${n}代表“第@${n}个需要知道变量@tech{值}的时刻”。
 
- @item{你直接把@tech{递归函数}交给计算机、让它计算某个值，
-   计算机自己知道如何@tech{迭代}出结果。}
- 
- @item{你经常会嫌计算机太笨，但是自己又懒、不想去找精炼的描述……
-   只好把@emph{繁琐的@tech{迭代}方法}写下来，直接告诉计算机：
-   如此如此，这般这般，就能怎么怎么滴。}]
+@handbook-sidenote{
+ 到这里如果你还是不能理解@tech{函数}是什么，
+那就先看看@fig-ref{tl:sub1}找找灵感，
+哪些元素能启发你理解@tech{函数}这个概念?
+@linebreak[]
+@linebreak[]
+本书会将只有一个@tech{输入}参数的@tech{函数}画成类似沙漏的形状，
+沙漏两端的箭头表明@tech{输入}@tech{值}从一端进入，
+在内部经过一番折腾(@tech{处理})，
+从另一端出来一个@tech{输出}@tech{值}。}
 
- 以上三个例子，显然都跟@tech{指令式编程}和@tech{函数式编程}@:err{没有}直接关系。
- @tech{指令式编程}训练往往会误导人，把@tech{迭代}狭义地理解为“普通循环”,
- 这或许就是“语言影响、塑造思维”的有力证据吧，哈哈哈哈哈……
-}
+@tamer-figure!['tl:sub1
+               @list{函数式@tech{变量}的@tech{时间轴}模型}
+               (plot-axis #:tick-range (cons 0 8) #:reals sub1
+                          #:real-position -2.0 #:real-anchor 'ct
+                          #:real->sticker (make-timeline-real->sticker "x(n)" 8)
+                          #:real-color 'DarkCyan
+                          #:real-exclude-zero? #true
+                          #:axis-label "n"
+                          400 0.0 42.0)]
+
+一个只会数数的程序没多大的用处，
+但如果每数到一个数，
+就把它扔给一个@tech{函数}，
+静静等待这个@tech{函数}吐出另一个数，
+情况就不一样了，
+因为你有机会得到任何数。
+@:thus{这其实就是@tech{数列}的本质：
+ 一个专门用于将@emph{正整数}转化为别的数的@tech{函数}。
+}@tech{函数}名也跟@tech{数列}名相同，
+写法上略有差异：从 @${x_n} 变为 @${x(n)}。
+在@tech{数列}术语中，
+这样的@tech{函数}也被称为@:name{通项公式}。
+
+现在，你可以用很文艺的方式跟你的小伙伴炫耀@tech{函数式编程}的基本特征了：
+在@tech{函数式编程}的世界里，@idea{每个@tech{变量}都自带一条@tech{时间轴}，
+@tech{时间轴}上的关键节点对应着该@tech{变量}在程序运行时的不同取@tech{值}。
+}而运行程序的过程也像极了真实世界的时间流逝，
+@idea{今日事今日毕，明天又是崭新的一天；
+如此往复，虽从未曾惊扰昨日，一切已然悄悄变化。}
 
 @handbook-action[#:tag "sec:rloop"]{递归式循环}
 
-理论唠叨得差不多了，重新审视代码碎片@racket[|<read-predicate-construct loop>|]，
+再看代码碎片@racket[|<read-predicate-construct loop>|]，
 它定义了一个名为 @:id{rpcl} 的二元@tech{递归函数}，
 用于构造谜题中的地址编号@tech{列表}。
 
-注意。当@tech{变量}是数值类型时，
+当@tech{变量}是数值类型时，
 其@tech{时间轴}构成一个@emph{数}的@tech{列表}（@:type{(Listof Number)}），
 每个@tech{值}都是@emph{数}（@fig-ref{tl:sub1}），
 因而@:term{递推公式}经常就是大家已经烂熟于心的算术运算；
-本例中，@:id{rpcl}的两个参数都已经是@emph{自然数列表}类型了，
+@:id{rpcl} 的参数已经是@emph{自然数列表}类型了，
 其@tech{时间轴}应该构成一个@emph{自然数列表}的@tech{列表}（@:type{(Listof (Listof Natural))}），
-每个@tech{值}也都是一个@emph{自然数列表}（@fig-ref{tl:cons}）。于是：
+每个@tech{值}也都是一个@emph{自然数列表}。
+更直观的类比即@tab-ref{rrcmp}：
+
+@tamer-table!['rrcmp
+              "递推关系：从数值类型到列表类型"
+              @tabular[
+ #:sep @hspace[1]
+ #:column-properties '(right center)
+ #:row-properties '((top-border bottom-border) bottom-border)
+ (list (list @bold{递推函数} @bold{@tech{值}类型} @bold{@emph{初始值}} @bold{@tech{值}序列类型} @bold{操作符} @bold{必要操作数})
+       (list @${s(x) = x + 1}
+             @:type{Natural}
+             @racket[0]
+             @:type{(Listof Natural)}
+             @:id{+}
+             @racket[1])
+       (list @:id{rpcl}
+             @:type{(Listof Natural)}
+             @:val{null}
+             @:type{(Listof (Listof Natural))}
+             @:id{cons}
+             @smaller{@racket[(read locin)]}))]]
 
 @handbook-itemlist[
  #:style 'compact
 
  @item{@tech{列表}类型的@:term{初始值}是 @:val{null}，代表@emph{空列表}；}
- @item{@tech{列表}类型的@:term{递推公式}是 @:id{cons}(即 @litchar{cons}truct)，
+ @item{@tech{列表}类型的@:term{操作符}是 @:id{cons}(即 @litchar{cons}truct)，
   用于构造“下一个”新@tech{列表}。@handbook-sidenote*{
    @algo-ref[#:line (cons 4 5)]{algo:rpcl}的列表构造语法借用自 Haskell。
-   }并且保证该新列表的头部项是刚读到的地址编号，其他项是原列表。}
+   }并且保证@emph{必要操作数}被添加到原列表的头部。}
  ]
 
+这有个细节，@:term{递推公式}只接收一个@tech{输入}参数，
+并且@:err{不宜}选@tech{恒等函数}。
+因此，单独一个 @:id{+} 不是数值类型的@:term{递推公式}；
+@:id{cons} 也不是@tech{列表}类型的@:term{递推公式}。
+@:id{rpcl} 本尊才是本例用于构造@tech{列表}的@:term{递推公式}，
+在其内部雇佣了 @:id{cons}，
+另一个@emph{必要操作数}则由 @:id{read} 函数从@:term{输入流}中读取。
+
+@:id{rpcl} 复杂就复杂在，它有@tech{副作用}，@handbook-sidenote*{
+就当读取两次文件，一次只构造一个@tech{列表}。
+}并且要同时构造两个@tech{列表}。
+好在，这两个@tech{列表}互相之间没有干扰，
+我们可以放心地把它当成@emph{两个}一元函数。
+根据@tech{函数式编程}对@tech{递归函数}和普通循环的偏好，
+以乙组精灵的地址编号@tech{列表}为例，
+我们对比一下@eqref[#:label "递推函数"]{successor}和 @:id{rpcl} 的@tech{迭代}过程。
+@:id{rpcl} 首秀发生在@racket[<|initialization!|>]。
+
 @handbook-sidenote{@(tamer-filebox (aoc-tamer-path "iSoH/01_hh.aex") #:path-centerized? #true)}
+
+@racketblock[
+ (code:comment @#,list{类比： @${s(0) \rightarrow 1}})
+ (rpcl null) #,(elem @${ \rightarrow (\text{list}~4)})]
+
+之后会在@:desc{每一轮循环结束时再次对自己求值以启动下一轮循环}。
+而@tech{迭代}的性质决定了，@:desc{本轮循环结束时的变量@tech{值}即是下轮循环中变量的@emph{当前值}}。
+
+@racketblock[
+ (code:comment @#,list{类比： @${s(1) \rightarrow~2}})
+ (rpcl (list 4)) #,(elem @${ \rightarrow~(\text{list}~3~4)})
+ (code:comment @#,list{类比： @${s(2) \rightarrow~3}})
+ (rpcl (list 3 4)) #,(elem @${ \rightarrow~(\text{list}~5~3~4)})]
+
+继续可得其完整@tech{时间轴}：
 
 @tamer-figure!['tl:cons
                @list{@tech{时间轴}，@tech{逆序}构造乙组精灵写的地址编号列表}
@@ -1680,16 +1896,26 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
                           #:axis-label "n"
                           400 0.0 48.0)]
 
-根据@tech{函数式编程}对@tech{递归函数}和普通循环的偏好，
-函数 @:id{rpcl} 的首秀发生在@racket[<|initialization!|>]，
-之后会在@:desc{每一轮循环结束时再次对自己求值以启动下一轮循环}。
-而@tech{迭代}的性质决定了，@:desc{本轮循环结束时的变量@tech{值}即是下轮循环中变量的@emph{当前值}}。
 前文在引入@tech{时间轴}模型的时候，有个点说得比较模糊，
 @:desc{程序运行之后的某个时刻}到底是什么时候？一秒、一小时、一天？
-显然都不是，我们重点在强调用@tech{递归}替代@:term{普通循环}，
+显然都不是，我们重点在强调用@tech{递归函数}替代@:term{普通循环}，
 那这个@focus{时刻}当然就是指@focus{每一轮循环开始的时候}。
 
-无论如何，变量 @:var{A.IDs} 和 @:var{B.IDs} 的@tech{值}至始至终都没有变过，
+最后再来对比一下，@:id{rpcl}
+内部代码碎片@racket[|<地址编号扩列，迭代下一轮>|]是如何雇佣 @:id{cons} 计算“下一个”@tech{值}的：
+
+@racketblock[
+ (code:comment @#,list{@${s(x)} 本体在等号右边：@${x + 1}，交换操作数即： @${1 + x}})
+ (code:comment @#,list{如果中缀表达式看不出来，换成前缀写法:})
+ (+    1 x)
+ (cons b B.IDs)]
+
+注意，@:id{rpcl} 不像@eqref[#:label "递推函数"]{successor}那样可以无限@tech{迭代}下去，
+文件读完就结束了。
+因此，@:id{rpcl} 的完整本体需要自行判断结束条件。
+
+总之，
+变量 @:var{A.IDs} 和 @:var{B.IDs} 的@tech{值}至始至终都没有变过，
 只不过它们在各自循环中的使命完成之后就不再现身，
 而被下一轮循环中的自己@:term{替换}掉了。
 就好比电影续作中的主角还在，
@@ -1698,147 +1924,115 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 
 @handbook-action[#:tag "sec:iloop"]{迭代式循环}
 
-@aoc-story[@racket[1]]{
- 当你在冥思苦想求解第一个谜题时学到的爆炸性信息时，
- 精灵们又开始搞事了：
- 天，这么点零食迟早会被吃完的！
- 这可不行，你必须再找到另外两个所带食物提供了最多卡路里的精灵。
- 这样，一只精灵的零食吃完了，
- 咱还有俩可以继续腐败。
-  
- 请帮助精灵们@question{找出携带食物所提供卡路里最多的前三只精灵，
-  并计算他们所带食物所能提供的卡路里总和。}}
+本节内容的一大假设是@focus{@tech{变量}在程序生命周期内的所有取值都可以通过某个@tech{函数}计算得到}。
+那么，这个假设有多靠谱呢？存不存在就是没有规律的@tech{变量}？
 
-根据题意可知，例子中携带食物提供卡路里最多的三只精灵分别是第四只（@racket[24000] 卡）、
-第三只（@racket[11000] 卡）和第五只（@racket[10000] 卡），总计 @racket[45000] 大卡。
+为了让你有事可做，
+数学课布置的作业一定会给你有规律的@tech{数列}来刁难你。
+但规律并不是@tech{数列}的固有属性，
+确实存在没有规律的@tech{数列}。
+比如，任意无理数小数点后第@${n}位数字构成的@tech{数列}。
+这些@tech{数列}没有规律，
+但你总有方法可以一个个@emph{写出}它的前@${n}项。
 
-精灵们的这两次提问都比较拗口，但是不难看出，
-用第二个谜题的思路来说，第一个谜题其实就是
-@:desc{携带食物所提供的卡路里最多的前一只精灵所能提供的卡路里总和}。
-换句话说，这两个谜题其实是一个问题，差别只在于数量的多少。
-于是，自然而然地，@focus{不同数量相同类型数据可以构成数组、列表、元组等复合类型}。
-在不同的语言里，这些数据类型都可以是很趁手的选择。
+放到程序中来，这类无规律@tech{数列}可以写死在代码里，
+也可以从文件、网络、数据库等存储设备里读取。
+本书涉及的所有谜题数据都来自于文件，
+我们解谜过程的第一步就是读取它们，
+然后保存在诸如@tech{列表}这样的@tech{数据结构}里。
 
-既然花了大量时间来说@tech{列表}，
-那求解第二个谜题的工具就是它了，
-以后我们也会经常用它解决别的问题。
-此外，在定义函数的时候，
-也应当在原题的基础之上适当考虑通用性。
-万一又有精灵来整活呢？
-@:desc{找一个}也好，@:desc{找三个}也罢，都只是@:desc{找n个}的特定案例。
-因此，相较于求解第一个谜题的 @:id{find-total-distance} 函数，
-这个复数形式的 @:id{find-total-distances} 函数增加了一个类型为 @:type{Natural} 的参数 @:var{b}：
+前文我们费了一番劲终于能够理解，
+@:id{rpcl} 函数如何卖力地完成了“读取数据”的壮举。
+于是你得到了两个无规律但干净纯粹的@tech{数列}，
+然后把它们喂给 @:id{sort} 函数、@:id{count} 函数
+和 @:stx:def{for/sum} 语法，
+并最终得到谜题答案。
 
-@handbook-chunk[|<Puzzle 2: Find Similarity Score>|
-                (define find-total-distances : (-> Input-Port Natural Natural)
-                  (λ [locin n]
-                    (let rpcl ([self:cal : Natural 0]
-                               <初始化高卡路里列表>)
-                      (define line : (U String EOF) (read-line locin 'any))
-                      (if (string? line)
-                          (let ([cal : (Option Number) (string->number line 10)])
-                            (if (exact-positive-integer? cal)
-                                (rpcl (+ self:cal cal) calories)
-                                (rpcl 0 <更新高卡路里列表>)))
-                          <高卡路里合计>))))]
+你猜，它们会怎么处理这俩@tech{数列}？
+@handbook-sidenote*{@:id{sort} 函数有点复杂，暂且不表。
+ 但你入门后仍然可以用不超过本章的知识来解释。
+}在数学上，@tech{数列}可以无限长，
+但在程序中，
+一个确定的@tech{列表}一定是有限的，
+也就一定有办法从头到尾获得它的每一个@tech{值}。
+是不是嗅到@tech{迭代}的味道了？
+是的，像 @:stx:def{for/sum} 这样的语法结构，
+像 @:id{count} 这样处理@tech{列表}的@tech{高阶函数}，
+它们要么是典型的迭代式循环，
+要么内部包含一个典型的迭代式循环。
 
-从上面这段碎片里，
-我们也可以大致看出求解第一个谜题时被拆得稀碎的代码组装成最终程序后的样子。
+如果你熟悉@tech{指令式编程}，你很可能在想，
+@:desc{咦，这不就是@emph{普通循环}吗？我可太熟了}。
+不，你没有，在@tech[#:key "函数式编程"]{函数式语言}里，
+@focus{它们完成@tech{迭代}的方式都是@tech{递归}，
+ 而且@tech{迭代}完之后原始@tech{列表}仍维持原样}。
+写出来就跟我们自己写的 @:id{rpcl} 函数很像，
+毕竟，@tech{列表}(和其他@tech{数据结构}都)有不少标准操作，
+重复代码写多了谁都会腻的，
+语言不解决这个问题的后果会很严重。
 
-算法逻辑大同小异，区别在于新的 @:id{rpcl}
-函数里代表最大值的参数类型从 @:type{Natural} 变为了 @:type{(Listof Natural)}：
+@aoc-complain{
+ @tech{递归}和@tech{迭代}是@tech{算法}设计的基础工具，
+ 但如何正确区分这两个术语却不是那么容易。
+ 不管怎么说，在解决实际问题的过程中，它俩经常互相协作：
 
-@handbook-chunk[<初始化高卡路里列表>
-                [calories : (Listof Natural) (make-list n 0)]]
+ @handbook-itemlist[
+ #:style 'compact
 
-最终结果变为了@:desc{最大值列表的和}。
+ @item{你在@focus{纸上}用@tech{迭代}法从@tech{递推关系}中归纳出@tech{通项公式}，
+   其本质是将@tech{递归函数}转化为等价的不带@tech{递归}的普通函数，
+   使得你和计算机都能一步到位直接计算出结果，而不必专门写个循环程序来求解。}
 
-@handbook-scenario[#:tag "sec:hf"]{whatever}
+ @item{你直接把@tech{递归函数}交给计算机、让它计算某个值，
+   计算机知道如何@tech{迭代}出结果。}
+ 
+ @item{你经常会嫌计算机太笨，但是自己又懒、不想去找精炼的描述……
+   只好把@emph{繁琐的@tech{迭代}方法}写下来，直接告诉计算机：
+   如此如此，这般这般，就能怎么怎么滴。}]
 
-@handbook-chunk[<高卡路里合计>
-                (apply + <更新高卡路里列表>)]
+ 以上三个例子，显然都跟@tech{指令式编程}和@tech{函数式编程}@:err{没有}直接关系。
+ @tech{指令式编程}训练往往会误导人，把@tech{迭代}狭义地理解为“普通循环”,
+ 这或许就是@idea{语言影响、塑造思维}的有力证据吧，
+ 还是负面证据，哈哈哈哈哈……
+}
 
-最后是针对列表设计的更新最大值逻辑：
-@:desc{将当前精灵所携带的卡路里插入到列表中更小的元素之前，并踢掉列表尾部的元素}。
-
-不太好理解的样子。
-给自己一点耐心，不妨先拿出纸和笔来模拟一下这个过程。
-一开始，列表里全是 @racket[0]，
-无论哪只精灵的卡路里清点好了，
-他都是第一名，会占据列表的第一个位置。
-以后每有一只精灵准备好了，
-他都要跟那只精灵比，
-比输了就让出第一名，往后挤走最后一名。
-如果第一名很幸运没输，
-那同样的戏码会在列表的第二个位置处上演。
-依此类推。
-
-以上模拟是为了理解问题，
-真正的解决之道还在于@focus{将该问题转化为对列表的操作}。
-@:desc{将自己挤进列表}实际上在做的事是
-@:desc{将列表拆分成两个小列表，
- 一个里面的元素都比自己大(或相等)，
- 另一个里面的元素都比自己小，
- 然后把这三部分按大小顺序连接成一条新列表，
- 并只保留前 n 个元素}。
-
-@handbook-sidenote*{虽然 Racket 提供了不少直接用于拆分列表的函数，
- 但是今天已经接触太多让人炸裂的知识了，
- 到最后这个环节就不折腾了，一切从简。}
-从拆分的结果来说，
-相当于对列表做了两轮筛选（对应着上述数据结构基本操作中的@:term{查找}）：
-@:desc{第一轮筛选出列表中所有比当前精灵卡路里大(或相等)的元素；
- 第二轮筛选出列表中所有比当前精灵卡路里小的元素。}
-再执行一系列基本操作（连接列表用 @racket[append]、
-截取列表用 @racket[take]，不再此详述），
-由此得到的新列表即为下一轮循环的初始值。
-
-于是，@handbook-chunk[<更新高卡路里列表>
-                   (let ([tops (filter <高卡路里过滤函数> calories)]
-                         [tail (filter-not <高卡路里过滤函数> calories)])
-                     (take (append tops (list self:cal) tail) n))]
-
-这段看似平平无奇的代码碎片引出了一个典型的高级列表操作：@racket[filter]。
-不过，鉴于 @racket[filter] 函数的@tech{类型签名}对初学者来说太过犯规，
-这里就不放出来了，我针对本题给个简单版本：
-@handbook-sidenote*{注意，这段代码碎片没有包含在任何其他碎片中，因此不会出现在最终代码里。}
-
-@handbook-chunk[<filter简易类型签名>
-                (-> (-> Any Boolean) (code:comment "参数1类型：过滤函数")
-                    (Listof Natural) (code:comment "参数2类型：自然数列表")
-                    (Listof Natural))]
-
-跟着注释不难看出，
-@racket[filter] 函数接受一个过滤用的@tech{谓词函数}和一个自然数列表，
-得到另一个自然数列表，而该列表中的元素均为原列表中能够满足过滤函数的元素。
-同理，@racket[filter-not] 函数与 @racket[filter] 函数的@tech{类型签名}相同，
-但像它的名字一样，得到的结果列表中的元素均不能满足过滤函数。
-理清这一点后，过滤高卡路里的@tech{谓词函数}就不难理解了：
-
-@handbook-chunk[<高卡路里过滤函数>
-                (λ [[peak:cal : Natural]]
-                  (peak:cal . >= . self:cal))]
-
-显然，这个@racket[<高卡路里过滤函数>]只会被用一次，
-因此不必非得给它起名字。
-好吧，这里用了两次，
-但两次产生的函数本体虽然一摸一样，
-它们也仍然是不同的@tech{值}。
-可理解为同卵双胞胎。
-
-匿名函数和@tech{高阶函数}是绝配，
-经后我们还会学习其他更数学的产生匿名函数的方法。
-
-至此，今天的任务终于完成了：
-
-提交这个答案，解锁明天的任务。
+@handbook-scenario{闭幕}
 
 文中出现了好几处理论性较强的段落，
 你现在看不懂才是正常现象，
 有待我们在后续任务中慢慢体会。
 最重要的是，
-@idea{我在帮你种@tech{函数式编程}的种子，
+@idea{我在给你种@tech{函数式编程}的种子，
  相信他日定会发芽}。
+
+冒险越来越深入了……
+
+@handbook-action{类型签名到底是干嘛用的？}
+
+且慢，好像忘了什么事。
+我们提了如此多次的@emph{类型}，
+可它到底起了啥作用？
+先看例子：
+
+@tamer-repl[(code:comment @#,list{@:id{find-similarity-score} 要求一个 @:type{Input-Port} 型的@tech{输入}参数})
+            find-similarity-score
+            (code:comment @#,list{于是，你把 @:id{find-similarity-score} 函数给整不会了})
+            (eval:error (find-similarity-score (string #\好 #\嗨 #\哟)))]
+
+简而言之，@:thus{类型允许我们用精练的语言快速准确地理清算法的逻辑脉络，
+ 这也让我写书变得容易很多}。
+本文的前三版都没有引入类型，写起来那叫一个痛苦。
+在你理解了程序之后，
+@focus{如果你只做正确的事，类型系统会悄悄隐匿于幕后；
+一旦你碰到一个教你使坏的人，类型系统会直接帮你把那人的恶意击杀于萌芽中}。
+
+@handbook-sidenote*{多写点 Python 程序，
+ 踩过坑摔疼了之后就能更深刻地理解我的用心良苦了。
+}在类型的护航下，只要程序能正常启动，
+就说明程序没有出现@focus{语言层面的错误}；
+但是@focus{类型也不是万金油，
+ 它无法保证程序结果一定符合问题情景}。
+比如，不小心多数了一个数……
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-reference[]
