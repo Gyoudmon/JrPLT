@@ -2,6 +2,16 @@
 
 (provide (all-defined-out))
 
+(require geofun/vector)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define artfont (desc-font (default-art-font) #:family 'fantasy))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define aoc-art-text : (-> Any Geo)
+  (lambda [v]
+    (geo-scale (geo-art-text v artfont #:stroke 'DimGray) 2.5)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define aoc-extract-flow-connect-from-info : (-> Any (Values (Option String) Symbol))
   (lambda [v]

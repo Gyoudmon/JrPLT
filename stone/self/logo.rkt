@@ -3,8 +3,8 @@
 (provide (all-defined-out))
 
 (require geofun/vector)
-(require geofun/digitama/avatar/bacteriophage)
-(require geofun/digitama/schematic/procedure)
+(require diafun/digitama/avatar/bacteriophage)
+(require diafun/digitama/avatar/procedure)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define geo-7-bridge-agent : (-> Nonnegative-Real Geo)
@@ -26,11 +26,17 @@
     
     7-bridge-agent))
 
-(define geo-splash-screen : (-> Geo)
+(define geo-higherOI-screen : (-> Geo)
   (lambda []
-    (geo-procedure #:iofill (λ [var] (case var [(V) 'Red] [(E) 'Green] [(F) 'Blue] [else 'Purple]))
+    (dia-procedure #:iofill (λ [var] (case var [(V) 'Red] [(E) 'Green] [(F) 'Blue] [else 'Purple]))
                    geo-7-bridge-agent
                    '(V E F) '(=))))
+
+(define geo-interdisciplinary-screen : (-> Geo)
+  (lambda []
+    (dia-procedure #:iofill (λ [var] (case var [(V) 'Red] [(E) 'Green] [(F) 'Blue] [else 'Purple]))
+                   geo-7-bridge-agent
+                   '() '(||))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define logo (bacteriophage-logo 128.0))
@@ -38,7 +44,8 @@
 (define figure (geo-inset (bacteriophage-logo 128.0 #:tail-color 'SteelBlue #:tail-alpha 1.0)))
 (define mini-icon (geo-inset (bacteriophage-logo 128.0 #:sheath-length 0.0)))
 
-(define splash (geo-splash-screen))
+(define splash:OI (geo-higherOI-screen))
+(define splash:STEM (geo-interdisciplinary-screen))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main
@@ -46,4 +53,5 @@
   figure
   (geo-frame logo #:background 'Aquamarine)
   mini-icon
-  splash)
+  splash:OI
+  splash:STEM)

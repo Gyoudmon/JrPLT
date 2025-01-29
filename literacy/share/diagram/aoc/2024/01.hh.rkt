@@ -3,10 +3,13 @@
 (provide (all-defined-out))
 
 (require racket/math)
+(require racket/list)
 
 (require geofun/vector)
 (require diafun/flowchart)
 (require diafun/flowlet)
+
+(require diafun/digitama/avatar/procedure)
 
 (require "../aoc.rkt")
 
@@ -118,6 +121,42 @@
                                           'sort)
                         (list 3 9 3 5 3 4)))
 
+
+(define apply.dia
+  (let* ([addends (list 3 3 1 2 4 3)]
+         [geo-op (aoc-art-text "+")]
+         [geo-as (map aoc-art-text addends)]
+         [result (aoc-art-text (apply + addends))])
+    (dia-procedure #:body-fill 'Lavender #:body-position 0.618
+                   (geo-scale (dia-procedure #:body-fill 'LightBlue
+                                             geo-op (build-list (length addends)
+                                                                (λ [[i : Index]] : Avatar-Procedure-Label-Datum
+                                                                  `(span ("a" (sub (,(number->string (add1 i))))))))
+                                             null geo-as)
+                              0.36)
+                   (list 'λ 'list)
+                   '(sum)
+                   (list geo-op (geo-vc-append* #:gapsize -16.0 (reverse geo-as)))
+                   result)))
+
+(define count.dia
+  (let* ([addends (list 3 9 3 5 3 4)]
+         [|x = y| (λ [v] (eq? v 3))]
+         [pred? (geo-scale (aoc-art-text (object-name |x = y|)) 0.5)]
+         [geo-as (map aoc-art-text addends)])
+    (dia-procedure #:body-fill 'Lavender
+                   (geo-scale (geo-hc-append* #:gapsize 2.0
+                                              (for/list : (Listof Geo) ([y (in-list addends)]
+                                                                        [g (in-list geo-as)])
+                                                (dia-procedure #:body-fill 'LightBlue #:iofill (λ [v] 'AliceBlue)
+                                                               pred? (list #false) #false
+                                                               (list g) (aoc-art-text (if (|x = y| y) "1" "0")))))
+                              0.36)
+                   (list 'pred? 'list)
+                   '(count)
+                   (list pred? (geo-vc-append* #:gapsize -16.0 (reverse geo-as)))
+                   (aoc-art-text (count |x = y| addends)))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main
   (make-hh-helper.dia "Puzzel 1" "Puzzel 2")
@@ -130,4 +169,7 @@
   predicate.dia
   values.dia
   sort.dia
-  hh-mutate.dia)
+  hh-mutate.dia
+
+  apply.dia
+  count.dia)

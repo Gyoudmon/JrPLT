@@ -3,10 +3,13 @@
 @require{advent/literacy.rkt}
 @require{bibentry.rkt}
 
+@(require diafun/digitama/avatar/bacteriophage)
+
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-title[
  #:document-options '(openany oneside)
  #:hide-version? #true
+ #:figure @bacteriophage-logo[32.0]
  #:subtitle "首席历史学家的行踪"]{函数降临节}
 
 @$tex:newcounter:algorithm[]

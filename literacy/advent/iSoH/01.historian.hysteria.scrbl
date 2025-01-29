@@ -470,8 +470,7 @@
   然后赋予这个名字一个专属字母符号}，
  数学也不例外。
  比如：圆周率@${\pi}，自然常数@${e}，等等。
- 
- “起名字”这件事在编程过程中就像呼吸一样自然，
+ “起名字”这事在编程过程中就像呼吸一样自然，
  @:thus{且重要，能反应出你是否真的理解了问题。
   经常训练这个亦可以激活你的词汇量}，
  就当是在玩一种更实用的字谜游戏了。}
@@ -1086,9 +1085,13 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
             (apply + (first IDs))
             (apply + (second IDs))]
 
+@tamer-figure-margin['apply.dia @list{@:id{apply}函数。
+                      @:id{+}函数放置位置靠近底部是为了凸显@:id{apply}的求值结果就是其内部实际干活的@tech{函数}的结果。}]{
+ @(geo-scale apply.dia diaflow-marginfigure-scale)}
+
 函数 @:id{apply}自身很好理解，它只需两个参数：
 一个@tech{函数}和一个@tech{列表}，
-并且那个@tech{函数}能直接接收@tech{列表}中的所有值。
+并且那个@tech{函数}能直接接收@tech{列表}中的所有值(@fig-ref{apply.dia})。
 
 @tamer-repl[(code:comment @#,list{@:id{+} @tech{类型签名}里的 @:pn{*} 表明它接收任意数量的 @:type{Number} 型@tech{值}})
             +]
@@ -1167,20 +1170,20 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
                                     [b (in-list B.sorted-IDs)])
                   <accumulate>)]
 
-@handbook-sidenote*{注意，@litchar{/} 是 Racket 合法的命名字符，
- 可解读为名字主体部分(在本例中指@:stx:def{for})的变体。
- }这段代码碎片咋一看有点抽象，
+这段代码碎片咋一看有点抽象，
 细细读来依稀可见“@tt{sum ... for each ... in list ...}”句式:
 
 @handbook-itemlist[
  #:style 'compact
 
- @item{语法 @:stx:def{for/sum} 表明可能存在很多种 @tt{for each} 循环，
-  本例中的循环的目的是 @:sym{sum}。即：@:desc{
+ @item{语法 @:stx:def{for/sum} 表明可能存在很多种 @tt{for each} 循环，@handbook-sidenote*{
+   注意，@litchar{/} 是 Racket 合法的命名字符，
+   可解读为名字主体部分(在本例中指@:stx:def{for})的变体。
+   }本例中的循环的目的是 @:sym{sum}。即：@:desc{
    累加@racket[<accumulate>]的@tech{值}，
    并最终得到一个类型为 @:type{Natural} 的结果}。}
  @item{每对中括号(@:pn{[]})代表一个 @tt{for each} 子句，每次循环都按顺序取出一个数，并给起个名字。
-  是不是在找@tt{each}这个单词在哪？它就指代每一个取出来的数，@tt{each a}、@tt{each b}。
+  是不是在找@tt{each}这个单词在哪？它就指代每一个取出来的@tech{值}：@tt{each a}、@tt{each b}。
   为避免啰嗦，就没必要专门写出来了。}
  @item{函数 @:id{in-list} 表明该子句中的数来源于某个@tech{列表}。
   本例中，提供数的@tech{列表}一定要先排好序。}
@@ -1311,7 +1314,7 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 @handbook-itemlist[
  #:style 'compact
  @item{左边第一个数字是 @racket[3]，在右边出现了三次，所以相似度是 @racket[3] @:pn{*} @racket[3] @:pn{=} @racket[9]；}
- @item{左边第二个数字是 @racket[4]，在右边仅出现一次，所以相似度是 @racket[3] @:pn{*} @racket[1] @:pn{=} @racket[4]；}
+ @item{左边第二个数字是 @racket[4]，在右边仅出现一次，所以相似度是 @racket[4] @:pn{*} @racket[1] @:pn{=} @racket[4]；}
  @item{左边第三个数字是 @racket[2]，没在右边出现，所以相似度是 @racket[2] @:pn{*} @racket[0] @:pn{=} @racket[0]；}
  @item{第四个数字 @racket[1]，也没在右边出现，相似度也是 @racket[0]；}
  @item{第五、第六个数字与第一个数字一样，相似度也都是 @racket[9]。}
@@ -1328,8 +1331,8 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 
 @algo-pseudocode[
  #:tag 'algo:find-similarity-score "Find Similarity Score"
- @list['input]{@emph{设} @${X}、@${Y} 分别是左、右两列地址编号列表}
  @list['definition]{@emph{设} @${\mathcal{W}_Y(x)} 表示@${x}在@${Y}中出现的次数}
+ @list['input]{@emph{设} @${X}、@${Y} 分别是左、右两列地址编号列表}
  @list['|weighted sum|]{计算 @${\sum_{i=1}^n x_i \cdot \mathcal{W}_Y(x_i)}}
  @list['output]{@:cmt{; 告知结果}}
 ]
@@ -1415,7 +1418,10 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 函数 @:id{count} 实际做的事是：@:desc{
  按顺序把@tech{列表}@:var{B.IDs}里的项取出来，
  问@tech{谓词函数}这一项是否符合要求，
- 如果是就@${+1}，不是就当没看见}。
+ 如果是就@${+1}，不是就当没看见}(@fig-ref{count.dia})。
+
+@tamer-figure-margin['count.dia @list{@:id{count}函数}]{
+ @(geo-scale count.dia diaflow-marginfigure-scale)}
 
 代码碎片@racket[<definition>]的位置隐藏着一些有趣的点：
 
@@ -1927,16 +1933,18 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 本节内容的一大假设是@focus{@tech{变量}在程序生命周期内的所有取值都可以通过某个@tech{函数}计算得到}。
 那么，这个假设有多靠谱呢？存不存在就是没有规律的@tech{变量}？
 
-为了让你有事可做，
-数学课布置的作业一定会给你有规律的@tech{数列}来刁难你。
-但规律并不是@tech{数列}的固有属性，
+为了让你有事可做，@handbook-sidenote*{
+ 如果你碰到了允许你挑错的教材或老师，那你是有福的。
+ 别憋着，舞起来吧。
+ }数学课布置的作业一定会给你有规律的@tech{数列}来刁难你。
+@focus{但规律并不是@tech{数列}的固有属性}，
 确实存在没有规律的@tech{数列}。
 比如，任意无理数小数点后第@${n}位数字构成的@tech{数列}。
 这些@tech{数列}没有规律，
 但你总有方法可以一个个@emph{写出}它的前@${n}项。
 
-放到程序中来，这类无规律@tech{数列}可以写死在代码里，
-也可以从文件、网络、数据库等存储设备里读取。
+放到程序中来，少数无规律@tech{数列}可以写死在代码里，
+更多的是从文件、网络、数据库等存储设备里读取。
 本书涉及的所有谜题数据都来自于文件，
 我们解谜过程的第一步就是读取它们，
 然后保存在诸如@tech{列表}这样的@tech{数据结构}里。
@@ -2014,9 +2022,9 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 可它到底起了啥作用？
 先看例子：
 
-@tamer-repl[(code:comment @#,list{@:id{find-similarity-score} 要求一个 @:type{Input-Port} 型的@tech{输入}参数})
+@tamer-repl[(code:comment @#,list{函数 @:id{find-similarity-score} 要求一个 @:type{Input-Port} 型的@tech{输入}参数})
             find-similarity-score
-            (code:comment @#,list{于是，你把 @:id{find-similarity-score} 函数给整不会了})
+            (code:comment @#,list{于是，你把它给整不会了})
             (eval:error (find-similarity-score (string #\好 #\嗨 #\哟)))]
 
 简而言之，@:thus{类型允许我们用精练的语言快速准确地理清算法的逻辑脉络，

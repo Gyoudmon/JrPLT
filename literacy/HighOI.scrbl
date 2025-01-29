@@ -11,7 +11,7 @@
  #:document-options '(openany)
  #:subtitle "程序语言理论视角"
  #:hide-version? #true
- #:figure @(geo-scale (geo-splash-screen) (* 0.618 0.618))
+ #:figure @(geo-scale splash:OI (* 0.618 0.618))
  ]{高观点下的信息学奥赛}
 
 @texbook-frontmatter[]
