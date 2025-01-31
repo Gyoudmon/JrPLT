@@ -58,7 +58,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define typesettings
   '(["literacy/Linguisteen.scrbl" xelatex]
-    ["literacy/HighOI.scrbl" xelatex]
     ["literacy/TheBigBang.scrbl" xelatex]
     ["literacy/GetProgramsDone.scrbl" xelatex]
     ["literacy/AdventOfLambda.scrbl" xelatex "advent-of-lambda"]

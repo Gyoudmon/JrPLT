@@ -1,16 +1,18 @@
 #lang scribble/book
 
+@(require geofun/resize) 
+
 @require{literacy.rkt}
 @require{bibentry.rkt}
 
-@(require geofun/digitama/avatar/bacteriophage)
+@require{../stone/self/logo.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-title[
  #:documentclass 'book
  #:document-options '(openany)
  #:subtitle (list "跨学科方法" @smaller{Racket、C++的语言朋友们})
- #:figure @bacteriophage-logo[32.0]
+ #:figure @geo-scale[@geo-interdisciplinary-screen[] 0.42]
  #:hide-version? #true
  ]{代码源记}
 

@@ -2,16 +2,17 @@
 
 (provide (all-defined-out))
 
+(require racket/list)
 (require geofun/vector)
+
 (require diafun/digitama/avatar/bacteriophage)
 (require diafun/digitama/avatar/procedure)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define geo-7-bridge-agent : (-> Nonnegative-Real Geo)
+(define geo-7-bridge-agent : (-> Nonnegative-Flonum Geo)
   (lambda [rem]
-    (define flem : Nonnegative-Flonum (real->double-flonum rem))
-    (define io:width   : Nonnegative-Flonum (* flem 1.618))
-    (define in:gapsize : Nonnegative-Flonum (* flem 0.618))
+    (define io:width   : Nonnegative-Flonum (* rem 1.618))
+    (define in:gapsize : Nonnegative-Flonum (* rem 0.618))
 
     (define-gomamon! 7-bridge-agent
       [io:width in:gapsize #:anchor '#:A #:stroke 'Yellow #:fill 'Gray #:fill-rule 'even-odd] #:-
@@ -26,17 +27,49 @@
     
     7-bridge-agent))
 
+(define geo-symbol : (-> Char Font Geo)
+  (lambda [sym font]
+    (define color (hsv (random 360) 1.0 1.0))
+
+    (bacteriophage-logo #:sheath-length 0.0 #:symbol sym
+                        #:λ-color color #:border-color color #:edge-color color
+                        #:fibre-color color #:left-foot-border-color color #:right-foot-border-color color
+                        (* (font-size font) 0.618))))
+
 (define geo-higherOI-screen : (-> Geo)
   (lambda []
     (dia-procedure #:iofill (λ [var] (case var [(V) 'Red] [(E) 'Green] [(F) 'Blue] [else 'Purple]))
                    geo-7-bridge-agent
                    '(V E F) '(=))))
 
-(define geo-interdisciplinary-screen : (-> Geo)
-  (lambda []
-    (dia-procedure #:iofill (λ [var] (case var [(V) 'Red] [(E) 'Green] [(F) 'Blue] [else 'Purple]))
-                   geo-7-bridge-agent
-                   '() '(||))))
+(define geo-interdisciplinary-screen : (->* () (Geo-Pin-Operator) Geo)
+  (lambda [[op 'xor]]
+    (parameterize (#;[default-procedure-body-fill 'WhiteSmoke])
+      (define symfont (desc-font (default-art-font) #:family 'math))
+      (define em : Nonnegative-Flonum (font-metrics-ref symfont 'em))
+      (define bacteriophage (bacteriophage-logo 16.0 #:tail.deg 24.0 #;#;#:sheath-length 0.0))
+      (define stick : Geo (geo-rectangle (* em 1.618) (* em 0.382) #:fill 'GhostWhite #:stroke #false))
+      (define characters (list #\Σ #\Ψ #\∃ #\∀ #\Γ #\→ #\∆ #\∞ #\⊗ #\⋀))
+      (define symbols : (Listof Geo)
+        (for/list ([sym (in-list characters)])
+          (geo-scale (geo-rotate (geo-symbol sym symfont) (* (random) 2pi))
+                     (+ 0.30 (* (random) 0.7)))))
+      
+      (define bacterium
+        (dia-procedure #:iofill (λ [var] 'GhostWhite) #:io-width (- (geo-width stick) 1.0)
+                       #:corner-radius -0.5
+                       #:border (desc-stroke (default-procedure-border) #:color 'DarkGrey)
+                       (λ [[rem : Nonnegative-Flonum]] : Geo
+                         (geo-cc-superimpose (geo-blank (* rem 6.0) rem)
+                                             (geo-7-bridge-agent rem)))
+                       '() '(||)))
+
+      (geo-vc-append #:gapsize (- em)
+                     (geo-cb-superimpose #:operator 'clear
+                                         (geo-pin* #:operator op
+                                                   0.5 0.72 0.14 0.0 (geo-rotate bacteriophage -20.0 #false) bacterium)
+                                         stick)
+                     (geo-pyramid (shuffle symbols) (* em -0.5) (* em 0.25) 'rnd)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define logo (bacteriophage-logo 128.0))
@@ -54,4 +87,9 @@
   (geo-frame logo #:background 'Aquamarine)
   mini-icon
   splash:OI
-  splash:STEM)
+
+  splash:STEM
+
+  #;(for/list : (Listof Geo) ([op (in-list geo-pin-operators)])
+    (geo-rt-superimpose (geo-interdisciplinary-screen op)
+                        (geo-text op))))
