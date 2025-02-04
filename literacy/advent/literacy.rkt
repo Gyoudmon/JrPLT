@@ -25,6 +25,9 @@
 (tamer-marginnote-left? #false)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define diaflow-marginfigure-scale 0.42)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-syntax (aoc-task stx)
   (syntax-parse stx #:datum-literals []
     [(_ year day title ...)
@@ -42,11 +45,14 @@
        (handbook-sidenote*
         (list (emph "时间戳") ": " (tt date) ~ (format "第~a版" 'edition) (linebreak))
         (list (emph "文字量") ": " (handbook-word-count #:make-element elem) (linebreak))
-        (add-between #:splice? #true
-                     #:before-first (list (emph "关键词") ":" ~)
-                     (for/list ([key (in-list (list kw ...))])
-                       (racketkeywordfont (tech key)))
-                     (list "," ~))))]))
+
+        (let ([keywords (list kw ...)])
+          (when (pair? keywords)
+            (add-between #:splice? #true
+                         #:before-first (list (emph "关键词") ":" ~)
+                         (for/list ([keyword (in-list keywords)])
+                           (racketkeywordfont (tech keyword)))
+                         (list "," ~))))))]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define aoc-tamer-path

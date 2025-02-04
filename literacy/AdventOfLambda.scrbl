@@ -44,6 +44,9 @@
 
 @handbook-preface-section{首席历史学家的行踪}
 
+圣诞老人、圣诞奶奶、精灵和驯鹿都生活在北极，
+那里有符合他们的自然法则、生态系统和社会分工。
+
 @aoc-story[@list{缘起}]{
  往年，@aoc-emph{首席历史学家}总会出席大型圣诞雪橇发射活动，
  但今年已有好几个月没见到他的身影了。
@@ -65,9 +68,10 @@
 @$tex{restoregeometry}
 @texbook-mainmatter[]
 
-@include-section[(submod "advent/iSoH/01.historian.hysteria.scrbl" doc)]
+@;include-section[(submod "advent/iSoH/01.historian.hysteria.scrbl" doc)]
+@include-section[(submod "advent/iSoH/02.red-nosed.report.scrbl" doc)]
 
-@texbook-command-part[#:part? #false "defaultPage" null]
+@texbook-command-part[#:part? #false "defaultPageOriginalHeadWidth" null]
 @texbook-appendix{附录}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

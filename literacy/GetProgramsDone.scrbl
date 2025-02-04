@@ -29,7 +29,7 @@
 @handbook-title[
  #:documentclass 'ctexrep
  #:document-options '([heading . #true] [fontset . macnew])
- #:subtitle "小小语言设计师的启蒙教科书"
+ #:subtitle "小小语言设计师的指令式编程启蒙"
  #:figure splash
  #:hide-version? #true
  ]{教会计算机干活吧}
