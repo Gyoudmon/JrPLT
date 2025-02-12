@@ -23,7 +23,7 @@
                                    (geo-square 16 #:stroke #false))])
     (geo-hc-append #:gapsize 4.0
                    (geo-vr-append arrow origin)
-                   (geo-vc-append (geo-text (format "~a // 10" n))
+                   (geo-vc-append (geo-text (format "~a / 10" n))
                                   (geo-arrow 5 48))
                    (geo-vr-append (geo-ghost arrow)
                                   (math-positional-digits n -1 #:nslots 3)))))

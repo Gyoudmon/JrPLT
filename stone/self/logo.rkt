@@ -69,7 +69,7 @@
                                          (geo-pin* #:operator op
                                                    0.5 0.72 0.14 0.0 (geo-rotate bacteriophage -20.0 #false) bacterium)
                                          stick)
-                     (geo-pyramid (shuffle symbols) (* em -0.5) (* em 0.5) 'rnd)))))
+                     (geo-pyramid (shuffle symbols) (* em -0.5) (* em 0.5) '??)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define logo (bacteriophage-logo 128.0))

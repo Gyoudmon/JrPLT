@@ -81,9 +81,17 @@
 {  \begin{tcolorbox}
    [enhanced, breakable, frame hidden,
       interior style={
-         draw=WhiteSmoke, line width=1pt, color=GhostWhite,
-         decorate, decoration={ random steps, segment length=4mm, amplitude=2mm }}]    }
-{  \end{tcolorbox}                                                                     }
+         draw=GhostWhite, line width=1pt, color=Snow,
+         decorate, decoration={ random steps, segment length=4mm, amplitude=2mm }}]}
+{  \end{tcolorbox}                                                                 }
+
+\newenvironment{aocBonus}
+{  \begin{tcolorbox}
+   [enhanced, breakable, frame hidden,
+      interior style={
+         draw=GhostWhite, line width=1pt, color=Honeydew!50,
+         decorate, decoration={ random steps, segment length=4mm, amplitude=2mm }}]}
+{  \end{tcolorbox}                                                                 }
 
 \newtcbox{\aocEmph}[1][GhostWhite]{
    on line, nobeforeafter,
@@ -97,3 +105,10 @@
    coltext=GhostWhite, colframe=#1, colback=Black!75!#1,
    boxsep=0pt, left=1pt, right=1pt, top=2pt, bottom=2pt,
    boxrule=0pt, bottomrule=1pt, toprule=1pt }
+
+% for tags
+\newtcbox{\tagBox}[2][]{
+   nobeforeafter, on line,
+   sharp corners=north, size=title, arc=2mm,
+   colframe=#1!85!Black, colback=#1!5!Snow,
+   coltext=#2 }

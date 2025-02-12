@@ -25,7 +25,9 @@
 (tamer-marginnote-left? #false)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define diaflow-marginfigure-scale 0.42)
+(define aoc-mparwidth (* (/ 72.0 25.4) 36 #;'mm))
+(define aoc-linewidth 400.0)
+(define aoc-flowchart-ratio 0.85)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-syntax (aoc-task stx)
@@ -85,6 +87,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define story-style (make-style "aocStoryTearedPaper" '(multicommand)))
 (define story-complain-style (make-style "aocComplain" null))
+(define story-bonus-style (make-style "aocBonus" null))
 (define story-emph-style (make-style "aocEmph" null))
 (define story-question-style (make-style "aocQuestion" null))
 
@@ -96,5 +99,22 @@
 
 (define aoc-complain
   (lambda paras
-    (make-nested-flow story-complain-style
+    (make-nested-flow story-complain-style 
                       (list (apply tamer-indent-paragraphs paras)))))
+
+(define aoc-bonus
+  (lambda paras
+    (make-nested-flow story-bonus-style 
+                      (list (apply tamer-indent-paragraphs paras)))))
+
+(define aoc-tag
+  (lambda [bcolor fgcolor content]
+    (texbook-command "tagBox" #:opt-args (list bcolor) #:args (list fgcolor) content)))
+
+(define aoc-detailed-tag
+  (lambda [bcolor fgcolor title body]
+    (texbook-command "tagDetailedBox" #:opt-args (list bcolor) #:args (list fgcolor title) body)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define natural-language-isnt-natural (aoc-tag 'Chocolate 'Black (emph "自然语言不自然")))
+(define natural-language-isnt-natural* (handbook-sidenote* natural-language-isnt-natural))

@@ -4,36 +4,3 @@
 %% render section link by name
 \renewcommand{\SecRef}[2]{节~#1(#2)}
 \renewcommand{\SecRefUC}[2]{节~#1(#2)}
-
-%% unused
-\newtcbox{\langBox}[1][]{tcbox raise base,nobeforeafter,
-  rounded corners=all,size=small,
-  colframe=cyan,colback=cyan!42,
-  colupper=white}
-
-\newtcbox{\tagBox}[1][]{tcbox raise base,nobeforeafter,
-  rounded corners=all,size=small,
-  colframe=blue,colback=blue!42,
-  colupper=white}
-
-\newtcbox{\shortBox}[1][]{tcbox raise base,nobeforeafter,
-  rounded corners=all,size=tight,
-  colframe=orange,colback=orange!42,
-  colupper=blue}
-
-\newtcbox{\detailBox}[1][]{tcbox raise base,nobeforeafter,
-  rounded corners=all,size=tight,
-  colframe=green,colback=green!42,
-  colupper=blue}
-
-\newtcbox{\quitBox}[1][]{tcbox raise base,nobeforeafter,
-  rounded corners=all,size=small,
-  colframe=red,colback=red!42,
-  colupper=white}
-
-\newcommand{\langTag}[1]{\langBox{\uppercase{\scriptsize{#1}}}}
-\newcommand{\disTag}[1]{\tagBox{\footnotesize{#1}}}
-
-\newcommand{\tldrTag}[1]{\noindent\shortBox{\footnotesize{#1}}}
-\newcommand{\deepTag}[1]{\noindent\detailBox{\footnotesize{#1}}}
-\newcommand{\quitTag}[1]{\noindent\quitBox{\footnotesize{#1}}}

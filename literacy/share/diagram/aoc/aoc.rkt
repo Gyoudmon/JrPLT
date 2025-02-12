@@ -7,6 +7,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define artfont (desc-font (default-art-font) #:family 'fantasy))
 
+(define aoc-margin-figure-separator (geo-hline 240.0 8.0 #:stroke 'LightGrey))
+
+(define aoc-assignment-desc : (-> Symbol (-> Any String))
+  (lambda [a]
+    (λ [[v : Any]] : String
+      (format "~s" v))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define aoc-art-text : (-> Any Geo)
   (lambda [v]

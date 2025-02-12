@@ -79,3 +79,7 @@ __pycache__
 
 # Datafile
 *.db
+
+# AOC inputs
+*.aoc
+

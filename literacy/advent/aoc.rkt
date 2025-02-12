@@ -46,6 +46,10 @@
                       #:for-each-do f argv ...))]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define open-input-aoc-file : (-> String Input-Port)
+  (lambda [subpath]
+    (open-input-file (digimon-path 'tamer subpath))))
+
 (define read-single-line : (-> Input-Port (U String EOF))
   (lambda [/dev/stdin]
     (read-line /dev/stdin 'any)))

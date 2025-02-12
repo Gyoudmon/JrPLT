@@ -6,6 +6,7 @@
 (require racket/list)
 
 (require geofun/vector)
+(require geofun/markup)
 (require diafun/flowchart)
 (require diafun/flowlet)
 
@@ -14,7 +15,7 @@
 (require "../aoc.rkt")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define make-rnr-helper.dia : (->* () (Any Any) Geo)
+(define make-hh-helper.dia : (->* () (Any Any) Geo)
   (lambda [[P1 '|Puzzel 1|] [P2 '|Puzzel 2|]]
     (define-values (p1-label p1-anchor) (aoc-extract-flow-connect-to-info P1))
     (define-values (p2-label p2-anchor) (aoc-extract-flow-connect-to-info P2))
@@ -49,7 +50,7 @@
       
       hh-helper.dia)))
 
-(define make-rnr-p1.dia : (->* () (Any) Geo)
+(define make-hh-p1.dia : (->* () (Any) Geo)
   (lambda [[h 'Helper]]
     (define-values (h-label h-anchor) (aoc-extract-flow-connect-from-info h))
     
@@ -63,7 +64,7 @@
 
     hh-p1.dia))
 
-(define make-rnr-p2.dia : (->* () (Any) Geo)
+(define make-hh-p2.dia : (->* () (Any) Geo)
   (lambda [[h 'Helper]]
     (define-values (h-label h-anchor) (aoc-extract-flow-connect-from-info h))
     
@@ -76,39 +77,65 @@
 
     hh-p2.dia))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define name-map.dia
-  (parameterize ([default-diaflow-block-width 100.0])
-    (make-flowchart! #:start '.home [#:background 'White] #:-
-                     (jump-down 1 (string->keyword "任务名称\nread reports"))
-                     (move-down 1.2)
-                     (move-left 0.8)
-                     (move-down 1.2 (string->symbol "碎片名称\nRead Reports"))
-                     
-                     (jump-back)
-                     (move-down 1.2)
-                     (move-right 0.8)
-                     (move-down 1.2 (string->symbol "算法名称\nRead Reports"))
-                     (move-down 2 (string->symbol "函数名称\nread-reports")))))
-  
+(define IPO.dia
+  ((inst dia-flowlet-function String) #:downward? #false #:output-desc "Output"
+                                      'Process "Input"))
+
 (define read.dia
-  (let ([sep (geo-hline 240.0 8.0 #:stroke 'LightGrey)]
-        [make-desc (λ [a] (λ [v] (format "~a" v)))])
-    (geo-vl-append (dia-flowlet-read #:peek-size 5 #:output-desc (make-desc 'a)
-                                     (open-input-bytes #"3 4\n4 3\n2 5\n1 3\n3 9\n3 3" 'locin))
-                   sep
-                   (dia-flowlet-read #:peek-size 5 #:output-desc (make-desc 'b)
-                                     (open-input-bytes  #" 4\n4 3\n2 5\n1 3\n3 9\n3 3" 'locin))
-                   ;sep
-                   #;(dia-flowlet-read #:peek-size 5 #:output-desc (make-desc 'c)
+  (geo-vl-append (dia-flowlet-read #:peek-size 5 #:output-desc (aoc-assignment-desc 'a)
+                                   (open-input-bytes #"3 4\n4 3\n2 5\n1 3\n3 9\n3 3" 'locin))
+                 aoc-margin-figure-separator
+                 (dia-flowlet-read #:peek-size 5 #:output-desc (aoc-assignment-desc 'b)
+                                   (open-input-bytes  #" 4\n4 3\n2 5\n1 3\n3 9\n3 3" 'locin))
+                 ;aoc-margin-figure-separator
+                 #;(dia-flowlet-read #:peek-size 5 #:output-desc (aoc-assignment-desc 'c)
                                      (open-input-bytes      #"4 3\n2 5\n1 3\n3 9\n3 3" 'locin))
-                   ;sep
-                   #;(dia-flowlet-read #:peek-size 5 #:output-desc (make-desc 'd)
-                                     (open-input-bytes       #" 3\n2 5\n1 3\n3 9\n3 3" 'locin)))))
+                 ;aoc-margin-figure-separator
+                 #;(dia-flowlet-read #:peek-size 5 #:output-desc (aoc-assignment-desc 'd)
+                                     (open-input-bytes       #" 3\n2 5\n1 3\n3 9\n3 3" 'locin))))
   
 (define predicate.dia
-  (dia-flowlet-andmap #:input-desc '("a" "b") #:downward? #false
-                      natural? (list 3 5)))
+  (dia-flowlet-join #:input-desc '("a" "b") #:downward? #false
+                    natural? (list 3 5)))
+
+(define hh-mutate.dia
+  (dia-flowlet-assignment #:read-desc "读取" #:write-desc "写入"
+                          'x '|+ 1| '(span ("x + " (span ([style . normal]) ("1"))))))
+
+(define values.dia
+  (geo-vl-append ((inst dia-flowlet-function Any Any) values pi #:input-desc "π" #:output-desc "π")
+                 aoc-margin-figure-separator
+                 ((inst dia-flowlet-function Any Any) values null #:input-desc "null" #:output-desc "null")
+                 aoc-margin-figure-separator
+                 ((inst dia-flowlet-function Any Any) values '#:key)))
+
+(define sort.dia
+  (dia-flowlet-function #:input-desc  geo-a:small
+                        #:output-desc geo-a:small
+                        (procedure-rename (λ [[xs : (Listof Natural)]] : (Listof Natural)
+                                            (sort xs <))
+                                          'sort)
+                        (list 3 9 3 5 3 4)))
+
+
+(define apply.dia
+  (let* ([addends (list 3 3 1 2 4 3)]
+         [geo-op (aoc-art-text "+")]
+         [geo-as (map aoc-art-text addends)]
+         [result (aoc-art-text (apply + addends))])
+    (dia-procedure #:body-fill 'Lavender #:body-position 0.618
+                   (geo-scale (dia-procedure #:body-fill 'LightBlue
+                                             geo-op (build-list (length addends)
+                                                                (λ [[i : Index]] : Avatar-Procedure-Label-Datum
+                                                                  `(span ("a" (sub (,(number->string (add1 i))))))))
+                                             null geo-as)
+                              0.36)
+                   (list 'λ 'list)
+                   '(sum)
+                   (list geo-op (geo-vc-append* #:gapsize -16.0 (reverse geo-as)))
+                   result)))
 
 (define count.dia
   (let* ([addends (list 3 9 3 5 3 4)]
@@ -130,11 +157,17 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main
-  (make-rnr-helper.dia "Puzzel 1" "Puzzel 2")
-  (make-rnr-p1.dia)
-  (make-rnr-p2.dia)
-  name-map.dia
+  (make-hh-helper.dia "Puzzel 1" "Puzzel 2")
+  (make-hh-p1.dia)
+  (make-hh-p2.dia)
+  IPO.dia
   read.dia
+  (dia-flowlet-read #:peek-size 5 #:downward? #true
+                    (open-input-bytes #"3 4\n4 3\n2 5\n1 3\n3 9\n3 3" 'locin) 4)
   predicate.dia
-  
+  values.dia
+  sort.dia
+  hh-mutate.dia
+
+  apply.dia
   count.dia)
