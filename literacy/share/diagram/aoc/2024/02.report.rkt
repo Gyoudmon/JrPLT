@@ -25,7 +25,7 @@
       (define-flowchart! rnr-helper.dia [#:start-name "Read Reports" #:background 'White] #:-
         (move-down 1 '|Initialize Reports|!)
         (move-down 1 '>>|read line|)
-        (move-down 1 '#:string?)
+        (move-down 1 '#:|is line a string|?)
         
         (move-left 1 #false "Yes")
         (move-down 1 '|split line|)
@@ -37,7 +37,7 @@
         
         (jump-back)
         (move-right 1 #false "No")
-        (move-down 1 '<<result)
+        (move-down 1 '<<reports)
         (move-down 1 '#:-=)
         (move-down 0.5)
         (move-left 0.75 #false p1-label)
@@ -130,34 +130,55 @@
                     read-char (list (open-input-bytes #"\n" 'rptin)
                                     (open-input-bytes #"" 'rptin))))
   
-(define count.dia
-  (let* ([addends (list 3 9 3 5 3 4)]
-         [|x = y| (λ [v] (eq? v 3))]
-         [pred? (geo-scale (aoc-art-text (object-name |x = y|)) 0.5)]
-         [geo-as (map aoc-art-text addends)])
+(define map.dia
+  (let* ([levels (string-split "7 6 4 2 1")]
+         [x->y (procedure-rename string->number '|x→y|)]
+         [|f(x)| (geo-scale (aoc-text (object-name x->y)) 0.5)]
+         [geo-as (map aoc-text levels)])
     (dia-procedure #:body-fill 'Lavender
                    (geo-scale (geo-hc-append* #:gapsize 2.0
-                                              (for/list : (Listof Geo) ([y (in-list addends)]
+                                              (for/list : (Listof Geo) ([y (in-list levels)]
                                                                         [g (in-list geo-as)])
-                                                (dia-procedure #:body-fill 'LightBlue #:iofill (λ [v] 'AliceBlue)
-                                                               pred? (list #false) #false
-                                                               (list g) (aoc-art-text (if (|x = y| y) "1" "0")))))
+                                                (dia-procedure #:body-fill 'LightBlue #:iofill (λ [v t] 'AliceBlue)
+                                                               |f(x)| (list #false) #false
+                                                               (list g) (aoc-text (x->y y)))))
                               0.36)
-                   (list 'pred? 'list)
-                   '(count)
-                   (list pred? (geo-vc-append* #:gapsize -16.0 (reverse geo-as)))
-                   (aoc-art-text (count |x = y| addends)))))
+                   (list '|f(x)| 'list)
+                   '(list)
+                   (list |f(x)| (geo-vc-append* (reverse geo-as)))
+                   (geo-vc-append* (reverse (map aoc-text (map x->y levels)))))))
 
+(define pipeline.dia
+  (let ([? (geo-art-text "?" #:stroke 'Crimson)])
+    (define map.dia : Geo
+      (geo-scale (dia-procedure 'map
+                                (list "f(x)" "s") (list "maybe\nlevels")
+                                (map aoc-text (map string->symbol (list "-> String\n(U Complex\n  False)" "Listof\nString")))
+                                (aoc-text (string->symbol "Listof\n(U Complex\n  False)")))
+                 1.00))
+    (define width (geo-width map.dia))
+    (define height (geo-height ?))
+    (dia-procedure #:body-fill 'Lavender
+                   (geo-vc-append #:gapsize 16.0
+                                  map.dia
+                                  (geo-cc-superimpose (geo-rectangle #:stroke (desc-stroke #:color 'Crimson #:dash 'long-dash)
+                                                                     width (* height 1.618) -0.125)
+                                                      ?))
+                   (list "s") (list "levels")
+                   (list (aoc-text (string->symbol "Listof\nString"))) (aoc-text (string->symbol "Listof\nNatural")))))
+  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main
   (make-rnr-helper.dia "Puzzel 1" "Puzzel 2")
   (make-rnr-p1.dia)
   (make-rnr-p2.dia)
   name-map.dia
-  count.dia
   (make-split.dia "Red-Nosed Reindeer nuclear fusion/fission plant")
   read-char-for-line.dia
 
   read.dia
   read-char.dia
-  read-line.dia)
+  read-line.dia
+
+  map.dia
+  pipeline.dia)

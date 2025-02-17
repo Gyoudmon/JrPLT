@@ -37,7 +37,7 @@
         
         (jump-back)
         (move-right 1 #false "No")
-        (move-down 1 '<<result)
+        (move-down 1 '<<done)
         (move-down 1 '#:-=)
         (move-down 0.5)
         (move-left 0.75 #false p1-label)
@@ -122,9 +122,9 @@
 
 (define apply.dia
   (let* ([addends (list 3 3 1 2 4 3)]
-         [geo-op (aoc-art-text "+")]
-         [geo-as (map aoc-art-text addends)]
-         [result (aoc-art-text (apply + addends))])
+         [geo-op (aoc-text '+)]
+         [geo-as (map aoc-text addends)]
+         [result (aoc-text (apply + addends))])
     (dia-procedure #:body-fill 'Lavender #:body-position 0.618
                    (geo-scale (dia-procedure #:body-fill 'LightBlue
                                              geo-op (build-list (length addends)
@@ -134,26 +134,26 @@
                               0.36)
                    (list 'λ 'list)
                    '(sum)
-                   (list geo-op (geo-vc-append* #:gapsize -16.0 (reverse geo-as)))
+                   (list geo-op (geo-vc-append* (reverse geo-as)))
                    result)))
 
 (define count.dia
   (let* ([addends (list 3 9 3 5 3 4)]
          [|x = y| (λ [v] (eq? v 3))]
-         [pred? (geo-scale (aoc-art-text (object-name |x = y|)) 0.5)]
-         [geo-as (map aoc-art-text addends)])
+         [pred? (geo-scale (aoc-text (object-name |x = y|)) 0.5)]
+         [geo-as (map aoc-text addends)])
     (dia-procedure #:body-fill 'Lavender
                    (geo-scale (geo-hc-append* #:gapsize 2.0
                                               (for/list : (Listof Geo) ([y (in-list addends)]
                                                                         [g (in-list geo-as)])
-                                                (dia-procedure #:body-fill 'LightBlue #:iofill (λ [v] 'AliceBlue)
+                                                (dia-procedure #:body-fill 'LightBlue #:iofill (λ [v t] 'AliceBlue)
                                                                pred? (list #false) #false
-                                                               (list g) (aoc-art-text (if (|x = y| y) "1" "0")))))
+                                                               (list g) (aoc-text (if (|x = y| y) 1 0)))))
                               0.36)
                    (list 'pred? 'list)
                    '(count)
-                   (list pred? (geo-vc-append* #:gapsize -16.0 (reverse geo-as)))
-                   (aoc-art-text (count |x = y| addends)))))
+                   (list pred? (geo-vc-append* (reverse geo-as)))
+                   (aoc-text (count |x = y| addends)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main

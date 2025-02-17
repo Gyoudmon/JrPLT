@@ -6,6 +6,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define artfont (desc-font (default-art-font) #:family 'fantasy))
+(define monofont (desc-font (default-art-font) #:family 'monospace))
 
 (define aoc-margin-figure-separator (geo-hline 240.0 8.0 #:stroke 'LightGrey))
 
@@ -15,11 +16,21 @@
       (format "~s" v))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define aoc-text : (-> Any Geo)
+  (lambda [v]
+    (geo-scale (geo-text (aoc-text-datum v) monofont #:color 'DimGray #:alignment 'center) 2.5)))
+
 (define aoc-art-text : (-> Any Geo)
   (lambda [v]
-    (geo-scale (geo-art-text v artfont #:stroke 'DimGray) 2.5)))
+    (geo-scale (geo-art-text (aoc-text-datum v) artfont #:stroke 'DimGray #:alignment 'center) 2.5)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define aoc-text-datum : (-> Any String)
+  (lambda [v]
+    (cond [(symbol? v) (symbol->string v)]
+          [(procedure? v) (format "~a" (object-name v))]
+          [else (format "~s" v)])))
+
 (define aoc-extract-flow-connect-from-info : (-> Any (Values (Option String) Symbol))
   (lambda [v]
     (if (pair? v)

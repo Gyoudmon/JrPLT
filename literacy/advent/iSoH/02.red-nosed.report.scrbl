@@ -23,7 +23,7 @@
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @aoc-task[2024 2]{大红鼻子的报告}
 
-@aoc-desc[#:keywords ["字符" "字符串" "联合"]
+@aoc-desc[#:keywords ["字符" "字符串" "联合类型" "可选类型"]
           #:edition [一 "2025-02-10"]]
 
 本章没有新的数学理论知识，
@@ -179,9 +179,8 @@
 @:desc{读取文件}的目的是@:desc{@emph{构造}@litchar{两组}精灵写下的地址编号@tech{列表}}。
 进而可用@tech{类型签名}更精练地表述为：
 
-@handbook-chunk[|<.read-location-IDs: type signature>|
-                (-> Input-Port (Values (Listof Natural)
-                                       (Listof Natural)))]
+@racketblock[(-> Input-Port (Values (Listof Natural)
+                                    (Listof Natural)))]
 
 于是，对于前两个问题。
 本例@:desc{读取文件}的目的可类推为@:desc{@emph{构造}@litchar{一组}报告@tech{列表}}，
@@ -190,7 +189,7 @@
 确定吗？谜题里说了，@emph{报告}的内容也是个@tech{数列}。
 因此，正确的@tech{类型签名}应该是
 
-@handbook-chunk[|<read-reports: type signature>|
+@handbook-chunk[|<type signature@read-reports>|
                 (-> Input-Port (Listof (Listof Natural)))]
 换句话说，本例中我们读文件的目的是构造出一个@emph{自然数列表}的@tech{列表}。
 
@@ -214,7 +213,7 @@
 @handbook-itemlist[
  #:style 'compact
  
- @item{如何判断是否读到了行尾？}
+ @item{“行尾”到底是什么？如何判断是否读到了“行尾”？}
  ]
 
 一方面，@emph{空格}不是我们普通话母语(书写系统)的组成部分，@handbook-sidenote*{
@@ -236,10 +235,20 @@
  虽然它起源于英语世界。
  而为了方便人类自己互相交流，
  我们才尽量把程序写得@emph{像}英语。
+ 此外，这几年迅速发展中的大语言人工智能是另一个话题，请勿混淆。
 }那干脆就把人类书写出来的“文字符号”全都当成一类东西就行了。
-于是，@emph{单个的}字母、数字、汉字、标点符号、空格……
-它们都叫做@handbook-deftech[#:origin "Character" #:abbr "Char"]{字符}；
-@emph{一个或多个字符按书写顺序串联在一起}就成了@handbook-deftech[#:origin "String"]{字符串}。
+于是，
+
+@handbook-itemlist[
+ #:style 'compact
+
+ @item{@emph{单个的}字母、数字、汉字、标点符号、空格……
+  它们都叫做@handbook-deftech[#:origin "Character" #:abbr "Char"]{字符}；
+  用于判断某个@tech{值}是否是@tech{字符}的@tech{谓词函数}叫做 @:id{char?}。}
+
+ @item{@emph{一个或多个字符按书写顺序串联在一起}就成了@handbook-deftech[#:origin "String"]{字符串}。
+  用于判断某个@tech{值}是否是@tech{字符串}的@tech{谓词函数}叫做 @:id{string?}。}
+ ]
 
 为避免与程序中已经存在的各种@tech{变量}名和@tech{值}混淆，
 程序语言会选用不同的@emph{标点符号}来标记@tech{字符}和@tech{字符串}的@tech{值}。
@@ -299,10 +308,10 @@ Racket 在显示这些@tech{字符}的@tech{值}时就把它们的名字接在 @
 没错，Racket 确实提供了这样的@tech{函数}，
 名字你也能猜到，就是很直白的 @:id{read-line}。
 
-@tamer-figure!['read-comparison @list{重复六次读操作： @:id{read} vs. @:id{read-char} vs. @:id{read-line}}]{
+@tamer-figure*['read-comparison @list{重复六次读操作： @:id{read} vs. @:id{read-char} vs. @:id{read-line}}]{
  @(let ([sep (geo-hline aoc-linewidth 8.0 #:stroke 'LightGrey)])
     (geo-vl-append #:gapsize 4.0
-                   (geo-fit read.dia aoc-linewidth 0.0)
+                   (geo-fit read.dia      aoc-linewidth 0.0)
                    sep
                    (geo-fit read-char.dia aoc-linewidth 0.0)
                    sep
@@ -356,9 +365,9 @@ Racket 在显示这些@tech{字符}的@tech{值}时就把它们的名字接在 @
             (:query-type/args read-char Input-Port)
             (:query-type/args read-line Input-Port)]
 
-类型标记中的 @litchar{U} 表示类型的@handbook-deftech[#:origin "Union"]{联合}。
-即，@emph{@tech{联合}类型的@tech{值}可以是参与@tech{联合}的所有类型中任意一个的@tech{值}}。
-通俗地说就是“……或……或……”类型。
+类型标记中的 @litchar{U} 用与构造@handbook-deftech[#:origin "Union Type"]{联合类型}。
+即，@emph{@tech{联合类型}的@tech{值}可以是参与@tech{联合}的所有类型中任意一个的@tech{值}}。
+通俗地说就是“……或……或……”类型。显然，@emph{各类型顺序不重要}。
 于是，@handbook-itemlist[
  #:style 'compact
  @item{@:id{read-char}
@@ -368,7 +377,7 @@ Racket 在显示这些@tech{字符}的@tech{值}时就把它们的名字接在 @
   函数求值结果的类型可以是 @:type{String} 或 @:type{EOF}。@handbook-sidenote*{
    @:type{(U String EOF)}}}
  @item{类型 @:type{Any} 特殊在，
-  它可以看成是所有类型的@tech{联合}，
+  它可以看成是所有类型的@tech[#:key "联合类型"]{联合}，
   本就已经包括了 @:type{EOF}，
   因此不必再特别强调 @:type{(U Any EOF)}。}
  ]
@@ -453,14 +462,17 @@ Racket 在显示这些@tech{字符}的@tech{值}时就把它们的名字接在 @
 其名称就是两个类型的名字用@tech{字符}化的箭头(@:pn{->})连接到一起。
 而@tech{字符串}类型本身过于宽泛，
 没法保证其@tech{值}的实际内容一定是合乎数学规范的数字。
-因此，@:id{string->number} 函数的求值结果也是个@tech{联合}类型：@handbook-sidenote*{
+因此，@:id{string->number} 函数的求值结果也是个@tech{联合类型}：@handbook-sidenote*{
    @:type{(U Complex False)}@linebreak[]
   如果对 @:type{Complex} 有疑问，
   可回顾昨天提到的@tech{数系}。
  }@emph{要么}是 @:type{Complex} @emph{要么}是 @:type{False}。
 通俗地说就是，存在失败可能，代表失败的是@tech{布尔型}的@tech{值} @racket[#false]。
 
-@handbook-scenario{算法设计}
+像 @:type{(U Complex False)} 这样的@tech{联合类型}也叫做@handbook-deftech[#:origin "Optional Type"]{可选类型}，
+在 Racket 中记为 @:type{(Option Complex)}。
+
+@handbook-scenario{辅助任务：read-reports 函数}
 
 回顾昨天的解谜过程，
 在分析阶段我们日常生活的词汇就已经足够用了，
@@ -471,207 +483,391 @@ Racket 在显示这些@tech{字符}的@tech{值}时就把它们的名字接在 @
 因此，现在可以直接给出完成@emph{辅助任务}的@tech{伪代码}：
 
 @algo-pseudocode[
- #:tag 'algo:rpscl "Read Reports"
- @list['|initialize reports|!]{@emph{令} @${R} = @racket[null]，代表@focus{初始}的空报告列表}
+ #:tag 'algo:rpsccl "Read Reports"
+ @list['|initialize reports|!]{@emph{令} @${R} = @racket[null]，代表@focus{初始}的@emph{空}报告@:type{列表}}
  @list['|read line|]{尝试从文件当前位置@:in{读取}一行，@emph{设}为@${L}}
- @list['|string|?]{@tt{if}@hspace[1]@:pn{@${L}确实是一行字符串},@hspace[1]@tt{then}}
- @list['|split line|]{@hspace[4]@emph{令} @${ s = L }分裂所得的强度等级串列表}
- @list['|for each level|]{@hspace[4]为收集报告 @${r}，@emph{对于} @${s} 中的每一个强度等级串 @${l}， @emph{执行}}
- @list['|convert level|]{@hspace[8]将字符串 @${l} 转化为数字}
- @list['|cons reports|]{@hspace[4]@emph{令} @focus{新}@${R = cons(r, R)}}
+ @list['|is line a string|?]{@emph{若}@hspace[1]@:pn{@${L}确实是一行@:type{字符串}},@hspace[1]@emph{则}}
+ @list['|split line|]{@hspace[4]@emph{令} @${ s = L }分裂所得的强度等级@:type{串}@:type{列表}}
+ @list['|for levels|]{@hspace[4]为@emph{收集报告} @${r}，@emph{对于} @${s} 中的每一个等级@:type{串} @${l}， @emph{执行}}
+ @list['|convert level|]{@hspace[8]将@:type{字符串} @${l} 转化为@:type{自然数}}
+ @list['|cons reports|]{@hspace[4]@emph{令} @focus{新}@${R =} 将 @${r} 添加为 @${R} 首项的新报告列表}
  @list['loop]{@hspace[4]@emph{回到}@algo-goto['|read line|]重复执行}
- @list['No]{@tt{else} @:cmt{; 此时的 @${R} 即是完整的报告列表(的倒序)}}
- @list['done]{@hspace[4]@:cmt{; 告知结果}}
+ @list['No]{@emph{否则} @:cmt{; 此时的 @${R} 即是完整的报告列表(的倒序)}}
+ @list['|reports|]{@hspace[4]@:cmt{; 告知结果}}
 ]
 
-比之昨天的@tech{算法}描述，@algo-ref{algo:rpscl}有了以下两点变化：
+比之昨天的@tech{算法}描述，@algo-ref{algo:rpsccl}有了以下两点变化：
 
 @handbook-itemlist[
  #:style 'compact
  @item{大多数@emph{步骤名}都写得更具体了，即使只看@emph{步骤名}也能准确脑补出该步的具体任务。}
- @item{步骤描述部分混合了字母符号和大白话，我觉得这样对初学者更友好一些。@handbook-sidenote*{
-   实际上，对于“读文件”这样有副作用的@tech{算法}，
-   步骤里本来就充满了很多看上去跟数学毫无关系的部分，
-   写出来就跟代码差不多了。
-   我们不需要这么多“重复”描述，哈哈哈哈哈哈……}}
+ @item{步骤描述部分混合了字母符号和大白话，我觉得这样对初学者更友好一些。}
  ]
 
-@tamer-figure['flow:rpscl
-              @list{@algo-ref{algo:rpscl} 流程图，后接@fig-ref{flow:puzzle1}或@fig-ref{flow:puzzle2}}
+实际上，对于“读文件”这样有副作用的@tech{算法}，
+步骤里本来就充满了很多看上去跟数学毫无关系的部分，
+写出来就跟代码差不多了。
+我们不需要如此多“重复”描述哈。
+
+同时，为方便你记忆@tech{算法}线索，
+@algo-ref{algo:rpsccl}的@tech{流程图}见@fig-ref{flow:rpsccl}。
+
+@tamer-figure['flow:rpsccl
+              @list{@algo-ref{algo:rpsccl} @tech{流程图}} @;后接@fig-ref{flow:puzzle1}或@fig-ref{flow:puzzle2}
               @(tamer-delayed-figure-apply #:values geo-scale #:post-argv (list 0.50)
-                                           make-rnr-helper.dia 'read-comparison 'split.dia)]
+                                           make-rnr-helper.dia)]
 
-@handbook-action{读取-判断-扩列 循环}
+@handbook-action{读取-判断-分割-转化-扩列 循环}
 
-所有的@tech{算法}也都应该有个名字，
-而@:term{循环}是绝大多数程序的典型特征。
-因此，不妨把@algo-ref{algo:rpscl}称作@:term{读取-判断-扩列 循环}，
-缩写为 @:id{rpsl}(read-predicate-construct loop)。
+也是因为有了昨天的基础，
+今天无需先@emph{打草稿}再@emph{滕答案}。
+可以一步到位，
+直接在@emph{辅助任务}@tech{函数} @:id{read-reports} 内部包含一个@tech{草稿函数}。
+
+@algo-ref{algo:rpsccl} 的核心仍是@emph{读取}、@emph{判断}、@emph{扩列} 循环，@handbook-sidenote*{
+ 这种思路得出的@tech{草稿函数}的名字未免过于冗长了，
+ 下一章我们会换个更优雅的方法规避它。
+}在@emph{扩列}前要多做两个准备工作：@emph{分割}和@emph{转化}。
+按照昨天的命名惯例，@tech{草稿函数}可定名为
+@:id{rpsccl}(read-predicate-split-convert-construct loop)。
 于是：
 
-@handbook-chunk[|<read-predicate-split loop>|
-                (let rpsl (<init!>)
-                  |<read reports>|
-                  (if <string-line?>
-                      |<等级报告扩列，迭代下一轮>|
-                      <finish>))]
-
-@focus{@tech[#:key "函数式编程"]{函数式}代码惊人的短小精悍}有没有？
-之后的活就是把那些与步骤名对应的代码碎片一个个翻译成真实代码。
-注意区分，
-代码碎片用@emph{角括号}(@:pn{< >})界定，
-@tech{伪代码}步骤名用@emph{角引号}(@:pn{« »})界定。
-本例中它们大致上一一对应，
-除了@focus{用晦涩的中文}写出来的那句。
-
-@algo-ref[#:line 'initialization!]{algo:rpscl}没有强调类型，
-在这补上：
-
-@handbook-chunk[<init!>
-                [A.IDs : (Listof Natural) null] (code:comment "甲组精灵写下的地址编号列表")
-                [B.IDs : (Listof Natural) null] (code:comment "乙组精灵写下的地址编号列表")]
-
-本例中的两个@tech{变量}的类型均为@:term{自然数列表}(@:type{(Listof Natural)})，
-初始值@:term{空列表}写作 @:val{null}。
-
-此外，本段代码碎片将@tech{变量} @${X}和@${Y}重命名成了 @:var{A.IDs} 和 @:var{B.IDs}。
-
-@algo-ref[#:line '|read IDs|]{algo:rpscl}就是字面直译，
-@:desc{对清单文件 @:var{rptin} 执行 @racket[read] 操作，给结果起名为 @${a}；
- 重复一次，给结果起名为 @${b}}：
-
-@handbook-chunk[|<read reports>|
-                (define a : Any (read rptin))
-                (define b : Any (read rptin))]
-
-函数 @:id{read} 的求值结果可以是@emph{任何}（@:type{Any}）合理类型的@tech{值}，
-其中包括特殊值 @tech{eof}，也即清单读完了。
-注意，此时我们要假装自己是英语母语人士，
-将文件里的@:term{连续空格}(包括@:term{换行})视作单词、数字和符号的分隔符。
-因此只管@emph{读}，不用考虑换行。
-这也意味着，@:id{read} 自己知道@emph{当前位置}在哪里，
-就像我们在看书时，眼睛会跟着一起移动(@fig-ref{read.dia})。
-
-本例中，我们可以放心地假设，
-@${a} 和 @${b} 要么是@emph{自然数}，要么是 @tech{eof},
-不存在其他可能。
-于是，@algo-ref[#:line 'predicate?]{algo:rpscl} 就是对结果提问：@:desc{
- @${a}是自然数吗？@${b}是自然数吗？}
-并且要同时回答 @racket[#true](@emph{是})才算条件达成(@fig-ref{predicate.dia})：
-
-@handbook-chunk[<string-line?>
-                (and (exact-nonnegative-integer? a)  (code:comment "a 是自然数吗？")
-                     (exact-nonnegative-integer? b)) (code:comment "b 是自然数吗？")]
-
-@tamer-figure-margin['string-line.dia @algoref[#:line '|predicate?|]{algo:rpscl}]{
- @(geo-fit read-char.dia aoc-mparwidth 0.0)}
-
-按照正常说话顺序，“@:desc{若 @algoref[#:line 'predicate?]{algo:rpscl}，
- 则 @algoref[#:line (cons 4 6)]{algo:rpscl}，
- 否则 @algoref[#:line (cons 7 8)]{algo:rpscl}}”，
-在得到 @${a} 和 @${b} 的回答之后，
-我们会先处理@emph{条件成立}时要做的事：
-
-@handbook-chunk[|<等级报告扩列，迭代下一轮>|
-                (rpsl (cons a A.IDs)  (code:comment "构造新的甲组编号列表，保证 a 成为原列表的头部")
-                      (cons b B.IDs)) (code:comment "构造新的乙组编号列表，保证 b 成为原列表的头部")]
-
-这段代码碎片的名字相当晦涩，写出来倒是意外地简单。
-它蕴含了@tech{函数式编程}的基本原理，暂不详述。
-先忍耐一下，如果实在憋不住，
-可以先从@Secref{sec:fp}看起，
-到@Secref{sec:rloop}结束。
-
-于是，就剩最后一句了。
-当@emph{条件不成立}时，
-@algo-ref{algo:rpscl}就直接结束了：
-
-@handbook-chunk[<finish>
-                (list A.IDs B.IDs)]
-
-@handbook-scene{类型签名}
-
-从解谜的角度来说，我们已经打好草稿了；
-从答题的角度来说，还缺少一步：把草稿誊写到答题卡上。
-
-先看一下代码碎片@racket[|<read-predicate-split loop>|]组装完成后的样子：
-
-@handbook-sidenote*{同样，本段代码碎片也没有包含在任何其他碎片中，因此不会出现在最终代码里。}
-@handbook-chunk[<rpsl>
-                (let rpsl ([A.IDs : (Listof Natural) null]  (code:comment "甲组精灵的地址编号列表")
-                           [B.IDs : (Listof Natural) null]) (code:comment "乙组精灵的地址编号列表")
-                  (define a : Any (read rptin))
-                  (define b : Any (read rptin))
-
-                  (if (and (exact-nonnegative-integer? a)  (code:comment "a 是自然数吗？")
-                           (exact-nonnegative-integer? b)) (code:comment "b 是自然数吗？")
-                      (rpsl (cons a A.IDs)  (code:comment "构造新的甲组编号列表，保证 a 是头部")
-                            (cons b B.IDs)) (code:comment "构造新的乙组编号列表，保证 b 是头部")
-                      (values A.IDs B.IDs)))]
-
-全景下的@racket[|<read-predicate-split loop>|]就剩一个疑点了：
-@:stx:def{let} 就是数学解答题和证明题中常用的@:term{设}或@:term{令}，
-如果顺便给 @:stx:def{let} 起个名字，
-就会同时定义一个同名@tech{函数}，@focus{并立即调用它}。
-本例中，我们定义的@tech{函数}叫做 @:id{rpsl}，带两个参数。
-之所以在定义时就火急火燎地调用它，
-是因为它只是个@emph{临时}@tech{函数}，
-写完就随手扔进垃圾桶了，
-这种匪夷所思的事经常发生在你@emph{不得不记笔记}时。
-而习惯较好的做法是把它放置在另一个正式@tech{函数}里，方便随叫随用。
-这个正式@tech{函数}便是本节一开始就提到的@:term{辅助任务}碎片：
-
 @handbook-chunk[|<Helper: Read Reports>|
-                (define read-reports <函数read-reports的类型签名>
-                  (λ <函数read-reports的参数列表>
-                    |<read-predicate-split loop>|))]
+                (define read-reports : |<type signature@read-reports>|
+                  (lambda [rptin] (code:comment @#,list{@emph{输入流}参数名全称 @litchar{r}e@litchar{p}or@litchar{t} @litchar{in}put-port})
+                    (let rpsccl (|<initialize reports!>|)
+                      (define line (read-line rptin)) (code:comment @#,list{字面直译 @algoref[#:line '|read line|]{algo:rpsccl}})
+                      (if (string? line) (code:comment @#,list{借助@tech{谓词函数}直译 @algoref[#:line '|is line a string?|]{algo:rpsccl}})
+                          |<iterate for constructing reports>|
+                          <reports>))))]
+
+终于到了众望所归地@:desc{把步骤名对应的代码碎片一个个翻译成真实代码}环节。
+但是@tech{草稿函数} @:id{rpsccl} 的大部分步骤都比昨天的简单、直白很多，
+强行为每个步骤都配一个代码碎片就显得很多此一举了。
+因此，@:thus{前文已经提过的简单直译的步骤名已经以@tech{注释}形式标在其对应代码的右边了}。
+剩下的三个确实都比较有说法。
+
+首先是@algo-ref[#:line '|initialize reports!|]{algo:rpsccl}，
+定义和初始化报告列表 @:var{reports}，
+但要注意把数学习题命名@tech{变量}的习惯改成更具@emph{可读性}的程序@tech{变量}名，
+并补上类型信息：
+
+@handbook-chunk[|<initialize reports!>|
+                [reports : (Listof (Listof Natural)) null] (code:comment "空报告列表")]
+
+@handbook-action{函数式条件表达式：if 语法}
+
+昨天解谜时也碰到过条件表达式，
+但我们一不留神就略过了，
+毕竟就是 @tt{if} @emph{语法}嘛，都能看得懂。
+可如果要从@tech{函数式编程}的角度看，
+你觉得 @tt{if} @emph{语法}是什么？
+是@tech{函数}吗？
+
+理论上讲，@tech{函数式编程}中的 @tt{if} 语法是形如
+@$$[#:tag "if_expr"]{if(\texttt{test-expr}, \texttt{then-expr}, \texttt{else-expr})}
+的@tech{函数}，而@:err{非}@tech{指令式编程}中的条件@emph{语句}。@handbook-sidenote*{
+ 这个差别你现在可能看不出来，但可以先记在脑子里。
+ }具体来说，它要求三个参数，且@focus{都不能省略}，
+第一个参数 @:var{test-expr} 用作@emph{条件测试}，
+当条件成立时，@${if} @tech{函数}被化简为第二个参数 @:var{then-expr} 并继续对其求@tech{值}；
+当条件不成立时，@${if} @tech{函数}被化简为第三个参数 @:var{else-expr} 并继续对其求@tech{值}。
+即：@$$=[#:tag "if_def"]{ ~\\
+ if(@racket[#t], @:in{then-expr}, \texttt{else-expr}) \rightarrow @:in{then-expr} \\
+ if(@racket[#f], \texttt{then-expr}, @:in{else-expr}) \rightarrow @:in{else-expr}}
+通俗地说就是“@tt{if @:var{test-expr} then @:var{then-expr} else @:var{else-expr}}”。
+这有两件特别有趣的事:
+
+@handbook-itemlist[
+ #:style 'compact
+
+ @item{“@tt{if ... then ... else ...}”并@:err{不是}地道的英语句式，
+  只是因其简洁、清晰的特点而成了各种现代程序语言的标准。
+  但根据各语言语法习惯的不同，直接写全这三个单词的语言倒还真不多。
+  Racket 遵循其@tech{函数}的 @tech{sexp} 写法，
+  只需要写出其中的 @:stx:def{if} 即可。}
+ 
+ @item{@${if} @tech{函数}定义式中的 @tt{-expr} 表明三个参数各自都只能是@emph{一条} @tech{sexp}，
+  而@:err{不能}直接给出@emph{多条} @tech{sexps}。
+  否则不就分不清哪个是 @:var{then-expr} 哪个是 @:var{else-expr} 了嘛？
+  不过，必要时我们有多种方法可以把多条 @tech{sexps} 打包成一条 @tech{sexp}。}
+ ]
+
+以上是理论说法，可以把 @:stx:def{if} 语法解读成数学@tech{函数}，
+但在具体的语言中，达成此目标的具体做法未必都是程序@tech{函数}。
+在 Racket 中，至少写出来在形式上看不出差别，
+更深入的知识今后再细聊。
+
+回到任务中来，
+@tech{伪代码}的“@:desc{若 @algoref[#:line '|is line a string?|]{algo:rpsccl}，
+ 则 @algoref[#:line (cons 4 8)]{algo:rpsccl}，
+ 否则 @algoref[#:line 10]{algo:rpsccl}}”翻译成代码即:
+@racket[(if (string? line) |<iterate for constructing reports>| <reports>)]。
+该 @:stx:def{if} 语法的参数按顺序依次是：
+
+@handbook-itemlist[
+ #:style 'ordered
+
+ @item{@tt{test-expr}： 本例中雇佣了@tech{谓词函数} @:id{string?} 来@emph{测试}读到的行是否真是@tech{字符串}}
+ @item{@tt{then-expr}： 本例中对应代码碎片 @racket[|<iterate for constructing reports>|]}
+ @item{@tt{else-expr}： 本例中对应代码碎片 @racket[|<reports>|]}
+ ]
+
+这次我们先完成@emph{条件不成立}时要做的事：
+@algo-ref{algo:rpsccl}结束了。
+
+@handbook-chunk[<reports>
+                reports]
+
+啊…… 这么简单的吗？
+昨天的@emph{辅助任务}一次得到两个结果@tech{值}，
+我们用到了 @:id{values} 函数。
+今天只有一个结果@tech{值}，
+就这么光秃秃的放那多少显得怪怪的。
+
+正如@fig-ref{flow:rpsccl}把 @:var{reports} 放在@emph{平行四边形}里，
+借着形状共同表达“输出 @:var{reports}”一样，
+@algo-ref[#:line 'reports]{algo:rpsccl} 作为一个步骤名不应该用名词，
+这里实际上代表的是“@tt{evaluate to} @:var{reports}”的简略表达。
+与之对应的代码碎片也只需包含@tech{变量} @:var{reports} 自己即可。
+
+@tech[#:key "函数式编程"]{函数式语言}通常不需要专门的 @tt{return} 语句。
+谁最后被化简到，谁的@tech{值}就是最终的结果@tech{值}。
+计算机直接打交道的也只有@tech{值}，
+程序代码指示语言如何把 @tech{sexp} 化简成@tech{值}再交给计算机处理。
+有点绕，但点破了就不觉得奇怪了，习惯就好。
+
+@handbook-action{列表操作}
+
+好的，本例@emph{辅助任务}最后一步，也是最重要、最有趣的一步来了。
+当@emph{条件成立}时，我们需要扩增报告列表，
+扩增的实际过程对应着@algo-ref[#:line (cons 4 8)]{algo:rpsccl}。
+很明显，@emph{扩列}实际要做的事不止一件，
+作为 @:stx:def{if} 语法的一条 @tt{then-expr} 很可能写不下。
+
+Racket 提供了多种方法可以@:desc{把多条 @tech{sexps} 打包成一条 @tech{sexp}}，
+这里我选用大家已经熟悉的 @:stx:def{let} 语法来完成此目的，
+因为在@emph{扩列}的准备工作中需要定义临时@tech{变量}：
+
+@handbook-chunk[|<iterate for constructing reports>|
+                (let ([s (string-split line)]) (code:comment @#,list{字面直译 @algoref[#:line '|split line|]{algo:rpsccl}})
+                  (rpsccl (cons |<convert levels>| reports)))]
+
+@aoc-complain{
+你能看出来这段代码碎片的名字就是用英语写的“@tech{迭代}，用以构造(下一个)报告列表”吗？
+类似昨天@emph{辅助任务}中的代码碎片“@racket[|<地址编号扩列，迭代下一轮>|]”。
+如果看不出来，你需要额外花精力补英语了，
+至少要熟记本书中出现的中英文术语。}
+
+@handbook-scene{For Each 循环：for/list 语法}
+
+除去对@tech{函数式编程}本身的理解难度，@emph{扩列}的核心难点是完成代码碎片 @racket[|<convert levels>|]，
+将分裂所得的数字@tech{字符串}@emph{挨个}转化为真正的@emph{自然数}。
+从 @algo-ref[#:line '|for levels|]{algo:rpsccl} 和 @algoref[#:line '|convert level|]{algo:rpsccl}
+中我们看到了熟悉的句式“for @smaller{the} @:var{level list}, for each @:var{l} in list @:var{s} do @:var{converting}”。
+尝试将它逐句翻译成代码：
+@tamer-hidden-repl[(define s (string-split "7 6 4 2 1"))]
+@racketblock[(for/list : (Listof (Option Complex)) ([l (in-list s)])
+               (string->number l))]
+
+有那么点意思了。
+昨天解谜用到的 @:stx:def{for/sum} 语法用于累加，
+其类型标记是 @:type{Natural}，
+其@tech{循环体}也得同步产生一个 @:type{Natural} 类型的@tech{值}；
+@:stx:def{for/list} 语法也是一类 @tt{for each} 循环，
+用于产生@tech{列表}类型的@tech{值}。
+因此，其类型标记是 @:type{(Listof T)}，
+但@tech{循环体}只需产生@tech{列表}内@emph{项}的类型 @:type{T} 的@tech{值}。
+这里的 @:type{T} 可以替换成任何具体的类型，本例中是 @:type{(Option Complex)}。
+更直观一些的对比见@tab-ref{tbl:forslcmp}：
+
+@tamer-table!['tbl:forslcmp
+              "For Each 循环：for/sum vs. for/list"
+              @tabular[
+ #:sep @hspace[1]
+ #:column-properties '(center)
+ #:row-properties '((top-border bottom-border) bottom-border)
+ (list (list @bold{语法变种} @bold{@tech{循环体}@tech{值}类型} @bold{最终@tech{值}类型} @bold{折叠操作符} @bold{折叠初始@tech{值}} @bold{最终@tech{值}操作符})
+       (list @:stx:def{for/sum}
+             @:type{Natural}
+             @:type{(Listof Natural)}
+             @:id{+}
+             @racket[0]
+             @:id{values})
+       (list @:stx:def{for/list}
+             @smaller{@:type{(Option Complex)}}
+             @smaller{@smaller{@:type{(Listof (Option Complex))}}}
+             @:id{cons}
+             @racket[null]
+             @:id{reverse}))]]
+
+对于 @:stx:def{for/sum} 和 @:stx:def{for/list} 这两个 @tt{For Each} 循环的变种，
+它们的共同点都是在@emph{做折叠}，
+把一个@tech{列表}类型的@tech{值}折叠成另一个@tech{值}。
+就像把一张纸折叠成一个千纸鹤一样……抽象。
+
+你可以回忆看看，你用纸和笔做复杂的混合运算时，
+是不是经常先把好算的结果写在草稿纸上？
+并且，草稿纸上每多一个数字，
+题目里(或草稿纸上)就多划掉一个数字，
+直到整个算式都算完。
+在这个例子里，
+“折叠”体现在“划掉”这个动作上，
+毕竟，真的折叠草稿纸来盖住用过的数字就太傻了。
+
+@tab-ref{tbl:forslcmp}多了一个@emph{最终值操作符}，
+这是因为 @:id{cons} 函数总是把@tech{循环体}产生的@tech{值}加在“上一个”最终@tech{值}的头部，
+这导致最终的@tech{列表}@tech{值}总是原列表的倒序，
+这件事多少有点违背常识，也会一不小心干扰到后续分析。
+因此，@:stx:def{for/list} 会很贴心的雇用 @:id{reverse} 函数把最终@tech{值}反转回来。
+
+@aoc-bonus{
+ @tab-ref{tbl:forslcmp}看起来很像@tab-ref{tbl:rrcmp}。
+ 是的，它们相似的根本原因是，
+ 在@tech{函数式编程}中，
+ @tt{for each} 这样的@tech{迭代}式循环本来就是@tech{递归函数}的语法糖。
+ 它们内部遵循着相同的@emph{数学操作原理}。
+ 建议@:thus{把此观点放在脑子里，闲暇时思考思考，没准就悟了呢}。
+ 到那时，你就入门了。
+}
+
+@handbook-scene{列表映射：map 函数}
+
+@:stx:def{for/list} 语法使得我们不必编写大量重复代码来@:desc{按顺序取出@tech{列表}中的每一个@tech{值}}，
+而只要关注@:desc{如何操作每一个取到的@tech{值}}。
+这点我们已经达成共识。
+
+但是，如果我说 @:stx:def{for/list} 语法还是太啰嗦了，你会怎么想？
+比如:
+
+@handbook-itemlist[
+ #:style 'compact
+ 
+ @item{@tech{子句}中的 @:id{in-list} 函数就是纯粹多余。
+  谁不知道@tech{值}的来源是个@tech{列表}？}
+  
+ @item{@tech{循环体}所做的事情仅仅只是把@emph{取出的@tech{值}喂给另一个函数}，
+  然后就结束了。不免让人觉得，给这些个@tech{值}取名也很多余不是？}
+ ]
+
+嗯，当我们对@tech{列表}要做的事同时符合上述两种简单情形，
+确实可以把 @tt{for each} 循环替换成相应的@tech{高阶函数}来处理。
+比如，单个@emph{自然数}@tech{列表}的累加运算，
+我们可以直接把它扔给 @:id{apply} 函数。
+
+@tamer-figure-margin['map.dia @list{@:id{map} 函数}]{@(geo-fit map.dia aoc-mparwidth 0.0)}
+
+从功能上看，
+本例使用 @:stx:def{for/list} 语法只做了一件再简单不过的事：
+@:desc{把@tech{列表}中的每个@tech{值}挨个喂给相同的@tech{函数}，
+ 并把所有结果@tech{值}再按@focus{相同的顺序}收集到另一个@tech{列表}中}。
+这个操作听起来很实用，也不像会出幺蛾子的样子，对不对？
+因此，在数学和@tech{函数式编程}中，如此这般的操作值得拥有专属名字，
+叫做@handbook-deftech[#:origin "Map"]{映射}。
+
+@aoc-bonus{
+ @emph{映射}和 @tt{map} 这俩都是烂大街的名字，可能会给你造成混淆。
+ 比如，初等数学课上干脆就把@tech{函数}和@emph{映射}当作同义词；
+ 计算机科学某些领域的 @tt{map} 是一种数据结构；
+ 英语和地理课上的 @tt{map} 是地图。
+
+ 尽管各种解释的内在有相通之处，我仍然建议你在记忆时注意区分，
+ @tech{函数式编程}中的@tech{映射}是一类定义明确的@tech{高阶函数}。
+}
+
+于是，当我们心中建立起该操作对应的数学概念后，
+上述啰嗦的 @:stx:def{for/list} 语法就被精简成了三个单词：
+@tamer-repl[(map string->number s)]
+换句话说，
+@:thus{@tt{For each} 循环符合人类的语言习惯，
+ 写出来更具@emph{可读性};
+ @:id{map} 函数迫使你像数学家一样思考，
+ 对初学者可能不那么一目了然}。
+此外，特别强调一下，
+@focus{这两种方式都属于@tech{迭代}式循环，
+ 也都是同等地道的@tech{函数式编程}}。
+
+本例中的 @:id{map} 函数接收两个参数，
+一个@focus{一元}@tech{函数}，一个@tech{列表}，
+结果@tech{值}是另一个@tech{列表}(@fig-ref{map.dia})。
+你可以试着写写看它的@tech{类型签名}：
+
+@racketblock[(-> (-> String (Option Complex)) (code:comment "string->number 函数的类型签名")
+                 (Listof String) (code:comment "字符串列表")
+                 (Listof (Option Complex)))]
+
+这个一元@tech{函数}没啥特殊要求，
+只要能单独接收@tech{列表}中的@focus{每一个}@tech{值}即可。
+
+@tamer-repl[(code:comment "将列表中的每个数 +1")
+            (map add1 (list 1 2 7 8 9))
+            (code:comment "判断列表中各个字符是否是空白字符")
+            (map char-whitespace? (list #\space #\2 #\tab #\D #\newline))]
+
+@handbook-scene{算法严谨性：缺失的一环}
+
+有时候，编写@tech{函数式程序}的过程，就像是在接通管道或电路，
+前一段的@tech{输出}@focus{类型}必须要跟后一段的@tech{输入}@focus{类型}适配，
+否则@focus{类型系统}会粗暴地打断你的程序，
+根本不给运行机会。
+
+结合前文的分析，我们碰到了一些微妙的问题。先捋一捋：
+
+@handbook-itemlist[
+ #:style 'ordered
+
+ @item{代码碎片 @racket[|<convert levels>|] 应该产生一个类型为 @:type{(Listof Natural)} 的@tech{值}}
+ @item{@:id{string->number} 函数只能保证把@tech{字符串}转化为 @:type{(Option Complex)} 类型的@tech{值}}
+ @item{@emph{复合}了 @:id{string->number} 函数的 @:id{map} 函数只能保证结果@tech{值}的类型是 @:type{(Listof (Option Complex)}}
+ ]
+发现问题出在哪了吗？
+如果从文字看不出来，可以看@fig-ref{pipeline.dia}找找灵感。
+注意，此图的重点是@emph{类型}(而非@tech{值})通过@tech{函数}之后的变化，
+而且省略了 @tech{sexp} 写法的最外层括号。
+
+@tamer-figure-margin['pipeline.dia @list{代码碎片 @racket[|<convert levels>|] @emph{类型}管道的微妙问题}]{@(geo-fit pipeline.dia aoc-mparwidth 0.0)}
+
+也就是说，
+@algo-ref[#:line '|for levels|]{algo:rpsccl} 和 @algoref[#:line '|convert level|]{algo:rpsccl}的大白话描述缺了关键一环：
+需要一个形如 @racket[(-> (Listof (Option Complex)) (Listof Natural))] 的@tech{函数}把代码碎片 @racket[|<convert levels>|]
+的内部管道给接通了。
+
+@aoc-bonus{
+ 昨天任务结束后，你不是疑惑过“类型到底干嘛了”？这就碰到了个活的例子。
+ 
+ 之所以我没把这关键一环放在@tech{伪代码}里，
+ 是因为这涉及到@tech{算法}的@emph{严谨性}。
+ @tech{伪代码}可以描述得很严谨，
+ 但代价是我们得亲自用纸和笔去验证，
+ 这听着就很无趣，且浪费时间。
+ 因此，@:thus{如果语言的类型系统能提醒甚至代替我们搞定严谨性，
+ 我们就该放宽心把它交给语言来做}。
+
+ 在没有类型系统(或类型系统只是摆设)的语言里，你可以不做这一步，
+ 但代价是你很可能会被“程序一运行就崩溃”搞崩溃。
+ 实际上，从谜题提供的文件里，我们一眼就能看出来，
+ @:id{string->number} 函数一定会给我们@emph{自然数}结果@tech{值}。
+ 可万一有人修改了谜题文件了呢？
+ 或者，你测试程序时自己笔误了呢？
+ 就像这样：
+
+ @tamer-repl[(define strs (string-split "9 -7i 6< 2 1"))
+             (map string->number strs)]
+
+ 看，程序虽能运行，但出现奇怪的结果了吧？
+}
+
+@handbook-scene{列表过滤：filter 函数}
+
+@handbook-chunk[|<convert levels>|
+                null]
+
+@handbook-scenario{主线任务1：count-safe-reports 函数}
 
 @handbook-chunk[|<Puzzle 1: Count Safe Reports>|
                 (define count-safe-reports : (-> Input-Port Natural)
                   (lambda [rptin]
                     2222))]
-
-@handbook-chunk[<函数read-reports的类型签名>
-                : (-> Input-Port (Listof (Listof Natural)))]
-
-跟@tech{变量}类型一样，
-@tech{函数}的类型信息也跟在用空格隔开的单个冒号（@:pn{:}）后面。
-@focus{@:pn{(-> )}表明这个类型代表的是@tech{函数}，
-里面的最后一个类型代表@:term{陪域}类型；
-其余类型按顺序@emph{依次}表示每一个@tech{输入}参数的类型。}
-本例中@tech{输入}参数只有一个，
-而那个大写的 @:stx{Values} 带出了两个结果@tech{值}。
-于是，函数 @:id{read-reports} 的功能可以简单表述为：
-@:thus{给定一个类型为@:term{输入流}（@:type{Input-Port}）的@tech{输入}参数，
- 得到两个类型为@:term{自然数列表}（@:type{(Listof Natural)}）的结果。}
-完美匹配了辅助任务的目标：
-@:desc{阅读谜题提供的清单文件，得到两组精灵写下的编号列表。}
-
-@focus{@tech{类型签名}只强调参数的类型，不强调参数的名字}。
-因为计算机不懂名字的寓意，它们更擅长通过类型来理解程序；
-而人类读者更习惯通过@emph{有意义的名字}来理解内容。
-因此，我们把类型为 @:type{Input-Port} 的参数命名为 @:var{rptin}（即
-@litchar{loc}ation ID @litchar{in}put-port 的缩写）：
-
-@handbook-chunk[<函数read-reports的参数列表>
-                [rptin]]
-
-你注意到代码碎片@racket[|<read reports>|]里也用到@tech{变量} @:var{rptin} 了吗？
-这也是 @:id{rpsl} 草稿函数实锤的另一个重要原因：
-它知道如何解谜，但是没有花精力去关注谜题里的数据到底从哪来。
-当它被放置在 @:id{read-reports} 里时，
-就自动共享了@:term{输入流} @:var{rptin}。
-@:desc{读取数据}就像@:desc{打开水龙头就有水流出来}一样自然。
-
-最后再唠叨一句，
-在将@tech{伪代码}翻译成程序之前，
-我首先强调了要给@tech{算法}起名。
-不知你注意到了没，
-@algo-ref{algo:rpscl}本来也是有名字的，
-在它自己序号右边，
-那个醒目的@racket["Find Location IDs(大白话版)"]。
-只不过在实际程序中，
-一个名字可能不是那么地够用。
 
 于是，
 接下来我们实际运行代表@emph{辅助任务}@racket[|<Helper: Read Reports>|]的函数 @:id{read-reports}，

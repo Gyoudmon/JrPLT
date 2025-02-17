@@ -308,11 +308,11 @@
  #:tag 'algo:rpcl "Read Location IDs(代数版)"
  @list['initialization!]{@emph{设} @${X}、@${Y}分别是@focus{初始}代表甲、乙两组地址编号列表的@emph{空列表}}
  @list['|read IDs|]{尝试从文件当前位置@:in{读取}两个@:type{自然数}，@emph{设}为@${a}、@${b}}
- @list['predicate?]{@tt{if}@hspace[2]@:pn{@${a}和@${b}确实都是@:type{自然数}}, @tt{then}}
+ @list['predicate?]{@emph{若}@hspace[2]@:pn{@${a}和@${b}确实都是@:type{自然数}}, @emph{则}}
  @list['|cons X|]{@hspace[4]@emph{令} @focus{新}@${X = cons(a, X)}}
  @list['|cons Y|]{@hspace[4]@emph{令} @focus{新}@${Y = cons(b, Y)}}
  @list['loop]{@hspace[4]@emph{回到}@algo-goto['|read IDs|]重复执行}
- @list['No]{@tt{else} @:cmt{; 此时的 @${X}、@${Y} 分别指代甲、乙两组地址编号列表(的倒序)}}
+ @list['No]{@emph{否则} @:cmt{; 此时的 @${X}、@${Y} 分别指代甲、乙两组地址编号列表(的倒序)}}
  @list['done]{@hspace[4]@:cmt{; 告知结果}}
 ]
 
@@ -337,7 +337,7 @@
 比如，把@algo-ref{algo:rpcl}画成流程图就长@fig-ref{flow:rpcl}那样。
 
 @tamer-figure!['flow:rpcl
-               @list{@algo-ref{algo:rpcl} 流程图，后接@fig-ref{flow:puzzle1}或@fig-ref{flow:puzzle2}}
+               @list{@algo-ref{algo:rpcl} @tech{流程图}，后接@fig-ref{flow:puzzle1}或@fig-ref{flow:puzzle2}}
                @(tamer-delayed-figure-apply #:values geo-fit #:post-argv (list (* aoc-linewidth aoc-flowchart-ratio) 0.0)
                                             make-hh-helper.dia 'flow:puzzle1 'flow:puzzle2)]
 
@@ -494,6 +494,7 @@
 本例中它们大致上一一对应，
 除了@focus{用晦涩的中文}写出来的那句。
 
+@aoc-bonus{
 @algo-ref{algo:rpcl}看着已经很数学了，
 但如果我说它还可以进一步数学化你会怎么想？
 前面我们强调了@tech{算法}步骤的@:term{简洁}和@:term{精确}，
@@ -505,6 +506,7 @@
 所以，这个目标我们直接放到真实代码中来，
 这也是@idea{在智能时代@:err{不能}只学数学而不学计算机科学}的原因。
 这方面，@focus{计算机科学家的方法甚至比数学家的都更优越}。
+}
 
 程序语言确保@tech{算法}严谨的地基是@focus{给代码加上类型标记}。
 于是，@:type{Typed} Racket 定义@tech{变量}需要同时提供三个信息：
@@ -610,7 +612,7 @@
 
 按照正常说话顺序，“@:desc{若 @algoref[#:line 'predicate?]{algo:rpcl}，
  则 @algoref[#:line (cons 4 6)]{algo:rpcl}，
- 否则 @algoref[#:line (cons 7 8)]{algo:rpcl}}”，
+ 否则 @algoref[#:line 8]{algo:rpcl}}”，
 在得到 @${a} 和 @${b} 的回答之后，
 我们会先处理@emph{条件成立}时要做的事：
 
@@ -667,9 +669,7 @@ Racket 是为数不多@focus{直接允许@tech{函数}拥有多个结果@tech{�
 顺带一提，借助 @:id{values} 函数，
 @algo-ref[#:line '|read IDs|]{algo:rpcl}也可以简化为一句话：
 
-@handbook-sidenote*{本书惯例，孤立的代码碎片以 @litchar{.} 开头，不会出现在最终代码里。}
-@handbook-chunk[|<.read IDs/Values>|
-                (define-values (a b) (values (read locin) (read locin)))]
+@racketblock[(define-values (a b) (values (read locin) (read locin)))]
 
 @handbook-scene{类型签名}
 
@@ -678,17 +678,16 @@ Racket 是为数不多@focus{直接允许@tech{函数}拥有多个结果@tech{�
 
 先看一下代码碎片@racket[|<read-predicate-construct loop>|]组装完成后的样子：
 
-@handbook-chunk[<.rpcl>
-                (let rpcl ([A.IDs : (Listof Natural) null]  (code:comment "甲组精灵的地址编号列表")
-                           [B.IDs : (Listof Natural) null]) (code:comment "乙组精灵的地址编号列表")
-                  (define a : Any (read locin))
-                  (define b : Any (read locin))
-
-                  (if (and (exact-nonnegative-integer? a)  (code:comment "a 是自然数吗？")
-                           (exact-nonnegative-integer? b)) (code:comment "b 是自然数吗？")
-                      (rpcl (cons a A.IDs)  (code:comment "构造新的甲组编号列表，保证 a 是头部")
-                            (cons b B.IDs)) (code:comment "构造新的乙组编号列表，保证 b 是头部")
-                      (values A.IDs B.IDs)))]
+@racketblock[(let rpcl ([A.IDs : (Listof Natural) null]  (code:comment "甲组精灵的地址编号列表")
+                        [B.IDs : (Listof Natural) null]) (code:comment "乙组精灵的地址编号列表")
+               (define a : Any (read locin))
+               (define b : Any (read locin))
+               
+               (if (and (exact-nonnegative-integer? a)  (code:comment "a 是自然数吗？")
+                        (exact-nonnegative-integer? b)) (code:comment "b 是自然数吗？")
+                   (rpcl (cons a A.IDs)  (code:comment "构造新的甲组编号列表，保证 a 是头部")
+                         (cons b B.IDs)) (code:comment "构造新的乙组编号列表，保证 b 是头部")
+                   (values A.IDs B.IDs)))]
 
 全景下的@racket[|<read-predicate-construct loop>|]就剩一个疑点了：
 @:stx:def{let} 就是数学解答题和证明题中常用的@:term{设}或@:term{令}，
@@ -696,15 +695,16 @@ Racket 是为数不多@focus{直接允许@tech{函数}拥有多个结果@tech{�
 就会同时定义一个同名@tech{函数}，@focus{并立即调用它}。
 本例中，我们定义的@tech{函数}叫做 @:id{rpcl}，带两个参数。
 之所以在定义时就火急火燎地调用它，
-是因为它只是个@emph{临时}@tech{函数}，
-写完就随手扔进垃圾桶了，
+是因为它只是个@handbook-deftech{草稿函数}，@handbook-sidenote*{
+ 这个名字是我自己起的，其他地方可能没有类似的说法。
+ }写完就随手扔进垃圾桶了，
 这种匪夷所思的事经常发生在你@emph{不得不记笔记}时。
 而习惯较好的做法是把它放置在另一个正式@tech{函数}里，方便随叫随用。
 这个正式@tech{函数}便是本节一开始就提到的@:term{辅助任务}碎片：
 
 @handbook-chunk[|<Helper: Read Location IDs>|
-                (define read-location-ids |<read-location-ids: type signature>|
-                  (λ |<read-location-ids: argument list>|
+                (define read-location-ids |<type signature@read-location-ids>|
+                  (λ |<argument list@read-location-ids>|
                     |<read-predicate-construct loop>|))]
 
 这段代码碎片用 @:stx{define} 和 @:stx{λ}
@@ -712,13 +712,13 @@ Racket 是为数不多@focus{直接允许@tech{函数}拥有多个结果@tech{�
  λ 是第十一个希腊字母的小写，在函数式语言里代表的正是函数本体。
  在 Racket 中也可写成它的英语单词： @racket[lambda]。
 }除了在它内部包含了@racket[|<read-predicate-construct loop>|]本体外，
-还需标注清楚它的@tech{类型签名}和参数列表(argument list)。
+还需标注清楚它的@tech{类型签名}和参数列表(Argument List)。
 所谓@handbook-deftech[#:origin "Type Signature"]{类型签名}，
 简单来说就是@tech{函数}的@:term{定义域}(输入参数)和@:term{陪域}(可能的输出结果)应当满足的类型约定。
 标注@tech{类型签名}的方式有很多，
 比较常见的是像下面这样：
 
-@handbook-chunk[|<read-location-ids: type signature>|
+@handbook-chunk[|<type signature@read-location-ids>|
                 : (-> Input-Port (Values (Listof Natural)
                                          (Listof Natural)))]
 
@@ -741,11 +741,11 @@ Racket 是为数不多@focus{直接允许@tech{函数}拥有多个结果@tech{�
 因此，我们把类型为 @:type{Input-Port} 的参数命名为 @:var{locin}（即
 @litchar{loc}ation ID @litchar{in}put-port 的缩写）：
 
-@handbook-chunk[|<read-location-ids: argument list>|
+@handbook-chunk[|<argument list@read-location-ids>|
                 [locin]]
 
 你注意到代码碎片@racket[|<read IDs>|]里也用到@tech{变量} @:var{locin} 了吗？
-这也是 @:id{rpcl} 草稿函数实锤的另一个重要原因：
+这也是 @:id{rpcl} @tech{草稿函数}实锤的另一个重要原因：
 它知道如何解谜，但是没有花精力去关注谜题里的数据到底从哪来。
 当它被放置在 @:id{read-location-ids} 里时，
 就自动共享了@:term{输入流} @:var{locin}。
@@ -844,7 +844,7 @@ Racket 读取到一个表达式之后，
 
 @handbook-sidenote{@(tamer-filebox (aoc-tamer-path "iSoH/01_hh.aex") #:path-centerized? #true)}
 @tamer-repl[#:requires ["../aoc.rkt"]
-            ($ read-location-ids < "iSoH/01_hh.aex" > list)]
+            ($ read-location-ids #:< "iSoH/01_hh.aex" #:> list)]
 
 于是，我们看到了一个大@tech{列表}包着两个小@tech{列表}，
 小@tech{列表}里分别存储着两组精灵写下的地址编号。
@@ -854,8 +854,9 @@ Racket 读取到一个表达式之后，
 本书50个谜题的例题数据和谜题数据都以文件形式提供，
 想来重复“打开/关闭”如此多的文件是件相当无趣的事，
 不如把语法简化为格式“@exec{$ @${func} @${args ...} @:pn{<} @${filename}}”好了。
-@margin-note*{前文我是不是提过，Racket的主特性是“语言导向编程”，
- 并且已经有一个复刻自 Python 的子语言？
+@margin-note*{前文我是不是提过，Racket的主特性是“语言导向编程”？
+ 此外，为避免有人把@emph{重定向符}误以为@emph{大小关系符}，
+ 我在它们前面加了 @:pn{#:} 前缀。
  }这也是 Racket 自带的特殊能力，
 我有意把它的语法改得像 Shell：
 使用@:term{标准输入重定向操作符}(@:pn{<})将文件内容喂给函数 @:id{read-location-ids}。
@@ -1073,14 +1074,14 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
 比如：
 
 @tamer-repl[(code:comment @#,list{读取甲、乙两组精灵的地址编号，并将结果起名为 @:var{IDs}})
-            (define IDs ($ read-location-ids < "iSoH/01_hh.aex" > list))
+            (define IDs ($ read-location-ids #:< "iSoH/01_hh.aex" #:> list))
             IDs
             (code:comment @#,list{函数 @:id{first} 和 @:id{second} 可分别获得列表中的第一项和第二项})
             (apply + (first IDs))
             (apply + (second IDs))]
 
-@tamer-figure-margin['apply.dia @list{@:id{apply}函数。
-                      @:id{+}函数放置位置靠近底部是为了凸显@:id{apply}的求值结果就是其内部实际干活的@tech{函数}的结果。}]{
+@tamer-figure-margin['apply.dia @list{@:id{apply} 函数。
+                      @:id{+} 函数放置位置靠近底部是为了凸显@:id{apply}的求值结果就是其内部实际干活的@tech{函数}的结果。}]{
  @(geo-fit apply.dia aoc-mparwidth 0.0)}
 
 函数 @:id{apply}自身很好理解，它只需两个参数：
@@ -1112,15 +1113,15 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
  #:tag 'desc:find-total-distance "Find Total Distance(大白话版)"
  @list['|sort 1st|]{将甲组的地址编号列表按升序@emph{排序}}
  @list['|sort 2nd|]{将乙组的地址编号列表按升序@emph{排序}}
- @list['|for each|]{@emph{对于}两组列表中的@emph{每一对地址编号}，执行：}
- @list['accumulate]{@hspace[4]计算差距并累加到总差距中}
+ @list['|for each|]{为@emph{累加求和}，@emph{对于}两组列表中的@emph{每一对地址编号}，执行：}
+ @list['accumulate]{@hspace[4]计算差距}
  @list['output]{@:cmt{; 告知结果}}
 ]
 
 相对于@algo-ref{desc:read-location-ids}的晦涩，
 @algo-ref{desc:find-total-distance}倒是直白很多。
 由@tech{缩进}可知，
-@algo-ref[#:line 'accumulate]{desc:find-total-distance}归属于@algoref[#:line 'for-each]{desc:find-total-distance}，
+@algo-ref[#:line 'accumulate]{desc:find-total-distance}归属于@algoref[#:line '|for each|]{desc:find-total-distance}，
 它们共同构成了一种符合人类思维习惯的@:term{循环结构}。
 换句话说，人类读者在阅读时不用考虑往回跳转，
 读一遍就可以继续往后；
@@ -1142,7 +1143,7 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
  @list['output]{@:cmt{; 告知结果}}
 ]
 
-@algo-ref[#:line 'for-each]{desc:find-total-distance
+@algo-ref[#:line '|for each|]{desc:find-total-distance
  }和@algoref[#:line 'accumulate]{desc:find-total-distance
  }被替换成了一句@tech{求和式}。
 按理说，如此简单的@tech{算法}，
@@ -1165,7 +1166,8 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
                   <accumulate>)]
 
 这段代码碎片咋一看有点抽象，
-细细读来依稀可见“@tt{sum ... for each ... in list ...}”句式:
+细细读来依稀可见“@tt{for @smaller{the} @:var{sum}, for each @:var{a} in list @:var{A.sorted-IDs},
+ each @:var{b} in list @:var{B.sorted-IDs} do @:var{accumulating}}”句式:
 
 @handbook-itemlist[
  #:style 'compact
@@ -1173,13 +1175,16 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
  @item{语法 @:stx:def{for/sum} 表明可能存在很多种 @tt{for each} 循环，@handbook-sidenote*{
    注意，@litchar{/} 是 Racket 合法的命名字符，
    可解读为名字主体部分(在本例中指@:stx:def{for})的变体。
-   }本例中的循环的目的是 @:sym{sum}。即：@:desc{
-   累加@racket[<accumulate>]的@tech{值}，
-   并最终得到一个类型为 @:type{Natural} 的结果}。}
- @item{每对中括号(@:pn{[]})代表一个 @tt{for each} 子句，每次循环都按顺序取出一个数，并给起个名字。
+   }本例中循环的目的是 @:sym{sum}(累加总和)，结果@tech{值}类型为 @:type{Natural}。}
+ @item{@:name{循环体}以@emph{缩进}形式排版，可以是一条或多条 @tech{sexps}，
+  并且应该产生与 @:sym{sum} 类型一致的@tech{值}。
+  本例中的@tech{循环体}只有代码碎片 @racket[<accumulate>]，
+  其结果@tech{值}类型应该是 @:type{Natural}。}
+ @item{每对中括号(@:pn{[]})代表一个 @tt{for each} @:name{子句}，
+  每次循环都按顺序取出下一个@tech{值}，并给起个名字。
   是不是在找@tt{each}这个单词在哪？它就指代每一个取出来的@tech{值}：@tt{each a}、@tt{each b}。
   为避免啰嗦，就没必要专门写出来了。}
- @item{函数 @:id{in-list} 表明该子句中的数来源于某个@tech{列表}。
+ @item{函数 @:id{in-list} 表明该@tech{子句}中的@tech{值}来源于某个@tech{列表}。
   本例中，提供数的@tech{列表}一定要先排好序。}
  ]
 
@@ -1200,7 +1205,7 @@ Lisp/Racket 特殊在，它们连语法都写成了广义表的形式。
 有了之前完成@emph{辅助任务}的经验，
 现在你应该知道从哪看@algo-ref{algo:find-total-distance}的名字了，
 与之对应的@tech{函数}名是@:id{find-total-distance}。
-同样也是因为简单，无需再为该@tech{函数}配个草稿函数。
+同样也是因为简单，无需再为该@tech{函数}配个@tech{草稿函数}。
 
 @tech{算法}名字应该是对其功能的简短描述：
 @:desc{阅读谜题提供的清单文件，计算甲、乙两组精灵所写地址编号的总差距}。
@@ -1260,13 +1265,13 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 @handbook-scene{测试谜题1解法}
 
 第一个谜题求解完毕，先用例题数据检验一下：
-@tamer-repl[($ find-total-distance < "iSoH/01_hh.aex" #:expect 11)]
+@tamer-repl[($ find-total-distance #:< "iSoH/01_hh.aex" #:expect 11)]
 
 求值的最终结果是 @racket[11]，符合预期。
 如果结果不对，本书也将不复存在。
 
 任务数据保存在后缀名为 @litchar{.aoc} 的文件中：
-@tamer-repl[($ find-total-distance < "iSoH/01_hh.aoc")]
+@tamer-repl[($ find-total-distance #:< "iSoH/01_hh.aoc")]
 
 提交这个答案，解锁第二个谜题。
 
@@ -1378,12 +1383,11 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 鉴于 @:id{count} 函数的@tech{类型签名}对初学者来说太过犯规，
 这里就不放出来了，我针对本题给个简单版本：
 
-@handbook-chunk[|<.count: simplified type signature>|
-                (-> (-> Any Boolean) (code:comment "参数1类型：过滤函数")
-                    (Listof Natural) (code:comment "参数2类型：自然数列表")
-                    Natural)]
+@racketblock[(-> (-> Any Boolean) (code:comment "参数1类型：过滤函数")
+                 (Listof Natural) (code:comment "参数2类型：自然数列表")
+                 Natural)]
 
-@tamer-figure-margin['count.dia @list{@:id{count}函数}]{@(geo-fit count.dia aoc-mparwidth 0.0)}
+@tamer-figure-margin['count.dia @list{@:id{count} 函数}]{@(geo-fit count.dia aoc-mparwidth 0.0)}
 
 跟着注释不难看出，
 @:id{count} 函数接受一个过滤用的@tech{谓词函数}和一个 @:type{(Listof Natural)} 型的@tech{值}，
@@ -1407,13 +1411,14 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
   这事咋一看很奇妙，仔细一想却又很稀松平常。
   定义@tech{函数}的本质只是在给@tech{函数}起名字，
   这在@tech{函数式编程}中就像呼吸一样自然。
-  即使你不做，函数式语言也很可能瞒着你悄悄做了不少。
-  比如：
+  即使你不做，函数式语言也很可能瞒着你悄悄做了不少。@handbook-sidenote*{
+   还有很多其他可能，这里不一一列举。
+  }比如：
 
  @itemlist[
  #:style 'compact
- @item{给@:stx:def{let}起名就是在@emph{定义}一次性函数；}
- @item{不起名直接用@:sym{λ}就@emph{产生}了一个@tech{匿名函数}。}
+ @item{给 @:stx:def{let}起 名就是在@emph{定义}一次性@tech{草稿函数}；}
+ @item{不起名直接用 @:sym{λ} 就@emph{产生}了一个@tech{匿名函数}。}
  ]}
  
  @item{@focus{内部@tech{函数}自动共享外部@tech{函数}的@tech{变量}}。
@@ -1446,10 +1451,10 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 @handbook-scene{测试谜题2解法}
 
 谜题2求解完毕，先用例题数据测试一下：
-@tamer-repl[($ find-similarity-score < "iSoH/01_hh.aex" #:expect 31)]
+@tamer-repl[($ find-similarity-score #:< "iSoH/01_hh.aex" #:expect 31)]
 
 然后是任务数据：
-@tamer-repl[($ find-similarity-score < "iSoH/01_hh.aoc")]
+@tamer-repl[($ find-similarity-score #:< "iSoH/01_hh.aoc")]
 
 提交这个答案，解锁明天的任务。
 
@@ -1803,9 +1808,9 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 @:id{rpcl} 的参数已经是@emph{自然数列表}类型了，
 其@tech{时间轴}应该构成一个@emph{自然数列表}的@tech{列表}（@:type{(Listof (Listof Natural))}），
 每个@tech{值}也都是一个@emph{自然数列表}。
-更直观的类比即@tab-ref{rrcmp}：
+更直观的对比即@tab-ref{tbl:rrcmp}：
 
-@tamer-table!['rrcmp
+@tamer-table!['tbl:rrcmp
               "递推关系：从数值类型到列表类型"
               @tabular[
  #:sep @hspace[1]
@@ -1930,8 +1935,8 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 前文我们费了一番劲终于能够理解，
 @:id{rpcl} 函数如何卖力地完成了“读取数据”的壮举。
 于是你得到了两个无规律但干净纯粹的@tech{数列}，
-然后把它们喂给 @:id{sort} 函数、@:id{count} 函数
-和 @:stx:def{for/sum} 语法，
+然后把它们喂给 @:id{sort} 函数(@racket[|<sort IDs>|])、
+@:id{count} 函数(@racket[<count>])和 @:stx:def{for/sum} 语法(@racket[<sum>])，
 并最终得到谜题答案。
 
 你猜，它们会怎么处理这俩@tech{数列}？

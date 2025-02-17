@@ -36,9 +36,9 @@
                         #:fibre-color color #:left-foot-border-color color #:right-foot-border-color color
                         (* (font-size font) 0.618))))
 
-(define geo-higherOI-screen : (-> Geo)
+(define geo-slides-screen : (-> Geo)
   (lambda []
-    (dia-procedure #:iofill (λ [var] (case var [(V) 'Red] [(E) 'Green] [(F) 'Blue] [else 'Purple]))
+    (dia-procedure #:iofill (λ [var type] (case var [(V) 'Red] [(E) 'Green] [(F) 'Blue] [else 'Purple]))
                    geo-7-bridge-agent
                    '(V E F) '(=))))
 
@@ -56,7 +56,7 @@
                      (+ 0.30 (* (random) 0.7)))))
       
       (define bacterium
-        (dia-procedure #:iofill (λ [var] 'GhostWhite) #:io-width (- (geo-width stick) 1.0)
+        (dia-procedure #:iofill (λ [var type] 'GhostWhite) #:io-width (- (geo-width stick) 1.0)
                        #:corner-radius -0.5
                        #:border (desc-stroke (default-procedure-border) #:color 'DarkGrey)
                        (λ [[rem : Nonnegative-Flonum]] : Geo
@@ -77,7 +77,7 @@
 (define figure (geo-inset (bacteriophage-logo 128.0 #:tail-color 'SteelBlue #:tail-alpha 1.0)))
 (define mini-icon (geo-inset (bacteriophage-logo 128.0 #:sheath-length 0.0)))
 
-(define splash:OI (geo-higherOI-screen))
+(define splash:PPT (geo-slides-screen))
 (define splash:STEM (geo-interdisciplinary-screen))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -86,7 +86,7 @@
   figure
   (geo-frame logo #:background 'Aquamarine)
   mini-icon
-  splash:OI
+  splash:PPT
 
   splash:STEM
 
