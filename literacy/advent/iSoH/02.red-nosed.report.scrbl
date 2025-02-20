@@ -284,7 +284,9 @@
 除了这俩，@tech{空白字符}还有很多，
 为方便人类阅读，
 Racket 在显示这些@tech{字符}的@tech{值}时就把它们的名字接在 @litchar{#\} 后面了。
-至于 @tech{eof}，它并不作为@tech{字符}出现在文件里，
+
+至于代表@emph{文件结尾}的 @tamer-deftech[#:origin "End of File"]{eof}，
+它并不作为@tech{字符}出现在文件里，
 而作为一种状态指示@emph{再也没有更多@tech{字符}可读了}。
 
 好的，回答问题的理论知识已经足够了。
@@ -376,7 +378,7 @@ Racket 在显示这些@tech{字符}的@tech{值}时就把它们的名字接在 @
  @item{@:id{read-line}
   函数求值结果的类型可以是 @:type{String} 或 @:type{EOF}。@handbook-sidenote*{
    @:type{(U String EOF)}}}
- @item{类型 @:type{Any} 特殊在，
+ @item{@handbook-deftech[#:origin "Any"]{任意}类型特殊在，
   它可以看成是所有类型的@tech[#:key "联合类型"]{联合}，
   本就已经包括了 @:type{EOF}，
   因此不必再特别强调 @:type{(U Any EOF)}。}
@@ -659,7 +661,7 @@ Racket 提供了多种方法可以@:desc{把多条 @tech{sexps} 打包成一条 
 如果看不出来，你需要额外花精力补英语了，
 至少要熟记本书中出现的中英文术语。}
 
-@handbook-scene{For Each 循环：for/list 语法}
+@handbook-scene{迭代式循环：for/list 语法}
 
 除去对@tech{函数式编程}本身的理解难度，@emph{扩列}的核心难点是完成代码碎片 @racket[|<convert levels>|]，
 将分裂所得的数字@tech{字符串}@emph{挨个}转化为真正的@emph{自然数}。
@@ -759,8 +761,8 @@ Racket 提供了多种方法可以@:desc{把多条 @tech{sexps} 打包成一条 
 
 从功能上看，
 本例使用 @:stx:def{for/list} 语法只做了一件再简单不过的事：
-@:desc{把@tech{列表}中的每个@tech{值}挨个喂给相同的@tech{函数}，
- 并把所有结果@tech{值}再按@focus{相同的顺序}收集到另一个@tech{列表}中}。
+@emph{把@tech{列表}中的每个@tech{值}挨个喂给相同的@tech{函数}，
+ 并把所有结果@tech{值}再按@focus{相同的顺序}收集到新@tech{列表}中}。
 这个操作听起来很实用，也不像会出幺蛾子的样子，对不对？
 因此，在数学和@tech{函数式编程}中，如此这般的操作值得拥有专属名字，
 叫做@handbook-deftech[#:origin "Map"]{映射}。
@@ -792,8 +794,8 @@ Racket 提供了多种方法可以@:desc{把多条 @tech{sexps} 打包成一条 
 结果@tech{值}是另一个@tech{列表}(@fig-ref{map.dia})。
 你可以试着写写看它的@tech{类型签名}：
 
-@racketblock[(-> (-> String (Option Complex)) (code:comment "string->number 函数的类型签名")
-                 (Listof String) (code:comment "字符串列表")
+@racketblock[(-> (-> String (Option Complex)) (code:comment "参数1类型：字符串到可能数的转化")
+                 (Listof String) (code:comment "参数2类型：字符串列表")
                  (Listof (Option Complex)))]
 
 这个一元@tech{函数}没啥特殊要求，
@@ -811,37 +813,37 @@ Racket 提供了多种方法可以@:desc{把多条 @tech{sexps} 打包成一条 
 否则@focus{类型系统}会粗暴地打断你的程序，
 根本不给运行机会。
 
-结合前文的分析，我们碰到了一些微妙的问题。先捋一捋：
+结合前文的分析，我们碰到了一个微妙的问题。先捋一捋：
 
 @handbook-itemlist[
- #:style 'ordered
+ #:style 'compact
 
  @item{代码碎片 @racket[|<convert levels>|] 应该产生一个类型为 @:type{(Listof Natural)} 的@tech{值}}
  @item{@:id{string->number} 函数只能保证把@tech{字符串}转化为 @:type{(Option Complex)} 类型的@tech{值}}
  @item{@emph{复合}了 @:id{string->number} 函数的 @:id{map} 函数只能保证结果@tech{值}的类型是 @:type{(Listof (Option Complex)}}
  ]
 发现问题出在哪了吗？
-如果从文字看不出来，可以看@fig-ref{pipeline.dia}找找灵感。
-注意，此图的重点是@emph{类型}(而非@tech{值})通过@tech{函数}之后的变化，
-而且省略了 @tech{sexp} 写法的最外层括号。
+如果从文字看不出来，可以看@fig-ref{pipeline.dia}找找灵感，
+从 @:var{s} 到 @:var{Maybe Levels} 到 @:var{Just Levels}。
+注意，此图的重点是@tech{变量}的@emph{类型}(而非@tech{值})流经@tech{函数}管道的变化。
 
 @tamer-figure-margin['pipeline.dia @list{代码碎片 @racket[|<convert levels>|] @emph{类型}管道的微妙问题}]{@(geo-fit pipeline.dia aoc-mparwidth 0.0)}
 
 也就是说，
-@algo-ref[#:line '|for levels|]{algo:rpsccl} 和 @algoref[#:line '|convert level|]{algo:rpsccl}的大白话描述缺了关键一环：
-需要一个形如 @racket[(-> (Listof (Option Complex)) (Listof Natural))] 的@tech{函数}把代码碎片 @racket[|<convert levels>|]
-的内部管道给接通了。
+@algo-ref[#:line '|for levels|]{algo:rpsccl} 和 @algoref[#:line '|convert level|]{algo:rpsccl} 的大白话描述缺了关键一环：
+需要一个形如 @racket[(-> (Listof (Option Complex)) (Listof Natural))] 的@tech{函数}在代码碎片 @racket[|<convert levels>|]
+内部把管道给接通了。
 
 @aoc-bonus{
- 昨天任务结束后，你不是疑惑过“类型到底干嘛了”？这就碰到了个活的例子。
+ 昨天任务结束时，你不是疑惑过“类型到底干嘛了”？这就碰到了个活的例子。
  
  之所以我没把这关键一环放在@tech{伪代码}里，
- 是因为这涉及到@tech{算法}的@emph{严谨性}。
+ 是因为这关乎@tech{算法}的@emph{严谨性}。
  @tech{伪代码}可以描述得很严谨，
  但代价是我们得亲自用纸和笔去验证，
- 这听着就很无趣，且浪费时间。
+ 这听着就很无趣且浪费时间。
  因此，@:thus{如果语言的类型系统能提醒甚至代替我们搞定严谨性，
- 我们就该放宽心把它交给语言来做}。
+  我们就该放宽心把它交给语言来做}。
 
  在没有类型系统(或类型系统只是摆设)的语言里，你可以不做这一步，
  但代价是你很可能会被“程序一运行就崩溃”搞崩溃。
@@ -855,12 +857,86 @@ Racket 提供了多种方法可以@:desc{把多条 @tech{sexps} 打包成一条 
              (map string->number strs)]
 
  看，程序虽能运行，但出现奇怪的结果了吧？
+ 虽然@emph{复数} @racket[0-7i] 和@tech{布尔}@tech{值} @racket[#false] 都是 Racket 靠谱的@tech{值}，
+ 但它俩都无法参与@emph{比大小}，
+ 继续运行做@emph{主线任务}你就会看到程序崩溃了。
 }
 
 @handbook-scene{列表过滤：filter 函数}
 
+好的，问题已经明确，
+找到一个@tech{函数}将 @racket[(Listof (Option Complex))] 类型的@tech{输入}@tech{值}转化为
+@racket[(Listof Natural)] 类型的@tech{输出}@tech{值}。
+这有两个细节比较有意思：
+
+@handbook-itemlist[
+ #:style 'ordered
+ @item{@emph{转化}这个动作是对@tech{列表}而言，又是从@tech{列表}到@tech{列表}的操作。}
+ @item{@tech{输出}类型 @:type{Natural} 是@tech{输入}类型 @:type{Complex} 的子类型。
+  换句话说，对于@tech{列表}内的每个@tech{值}，
+  实际上根本不涉及@emph{转化}，而只是在做@emph{筛选}。
+  即使 @:type{False} 跟 @:type{Natural} 没有直接关系，
+  @:type{(Option Complex)} 也只是增大了@emph{筛选}的范围，
+  对结果没有影响。}
+]
+
+第2点觉得眼熟吗？昨天我们已经做过类似的任务了。
+@emph{数数}用的@tech{高阶函数} @:id{count}，
+其核心是不是也是在做@emph{筛选}？
+只不过它关心的是@tech{列表}中满足要求的@tech{值}的数量，
+而不关心具体是哪些@tech{值}符合要求。
+
+在@tech{函数式编程}中，
+@emph{把@tech{列表}中符合要求的@tech{值}筛选出来，并搜集到新@tech{列表}中}，
+这样的操作称为@handbook-deftech[#:origin "Filter"]{过滤}。
+而@emph{筛选}的过程，
+就是@emph{挨个把@tech{列表}中的@tech{值}喂给@tech{谓词函数}提问}的过程。
+于是，你应该可以写出 @:id{filter} 函数在本例中的@tech{类型签名}了：
+
+@racketblock[(-> (-> Any Boolean) (code:comment "参数1类型：过滤用谓词函数")
+                 (Listof (Option Complex)) (code:comment "参数2类型：可能数列表")
+                 (Listof Natural))]
+
+@tamer-figure-margin['filter.dia @list{@:id{filter} 函数}]{@(geo-fit filter.dia aoc-mparwidth 0.0)}
+
+至此，@fig-ref{pipeline.dia} 里缺失的那环就齐了：
+
 @handbook-chunk[|<convert levels>|
-                null]
+                (filter exact-nonnegative-integer? (map string->number s))]
+
+如过不是最常用的话，@:id{map} 和 @:id{filter} 是编程中极其常见的操作。
+值得我们多关注一下它俩的联系和区别：
+
+@tamer-repl[(code:comment "判断列表中各个自然数是否是偶数")
+            (map even? (list 9 7 6 2 1))
+            (code:comment "过滤出列表中的所有偶数")
+            (filter even? (list 9 7 6 2 1))]
+
+@aoc-bonus{
+ 虽然前文特别解释了类型系统的必要性，但我这里还是要强调一下：
+ @focus{类型系统只能在语言层面保证算法的严谨，是很难在任务逻辑层面保证算法严谨的}。
+ 本例中，我们通过 @:id{filter} 函数让类型系统很开心，
+ 但它实际上只是剔除了错误的数据，
+ 进而导致读到的@tech{列表}@tech{长度}缩短，
+ 仍然有可能导致后续任务出错。
+}
+
+@handbook-scene{测试辅助任务}
+
+@emph{辅助任务}完成，用例题数据测试一下：
+
+@handbook-sidenote{@(tamer-filebox (aoc-tamer-path "iSoH/02_rnr.aex") #:path-centerized? #true)}
+
+@tamer-repl[#:requires ["../aoc.rkt"]
+            ($ read-reports #:< "iSoH/02_rnr.aex")]
+
+可以看到，读取到的@emph{报告列表}仍然是倒序。
+不过这不影响@emph{主线任务}，
+也就没有必要专门反转它了。
+如果你不明白为什么读到的列表是倒序，
+或者不明白报告列表的构造过程，
+请重新阅读@Secref{sec:rloop}并在纸上模拟它执行的过程，
+该列的表格、该画的示意图都做起来。
 
 @handbook-scenario{主线任务1：count-safe-reports 函数}
 
@@ -869,27 +945,11 @@ Racket 提供了多种方法可以@:desc{把多条 @tech{sexps} 打包成一条 
                   (lambda [rptin]
                     2222))]
 
-于是，
-接下来我们实际运行代表@emph{辅助任务}@racket[|<Helper: Read Reports>|]的函数 @:id{read-reports}，
-看看它到底会@tech{输出}些啥：
-
-@handbook-sidenote{@(tamer-filebox (aoc-tamer-path "iSoH/02_rnr.aex") #:path-centerized? #true)}
-
-@tamer-repl[#:requires ["../aoc.rkt"]
-            ($ read-reports < "iSoH/02_rnr.aex")]
-
 @handbook-scenario[#:tag "sec:read"]{超神的 read 函数}
-
-@focus{@tech{值}从@emph{信息}中来、到@emph{信息}中去。
-}正如我们人类能够从“读到”或“听到”的文字段落中自动提取有用的信息一样，
-Racket 的 @:id{read} 函数比你预期的要强大和前卫很多。
-它首先跳过所有的空格@tech{字符}，
-从第一个有墨迹的@tech{字符}开始，
-直接读出@emph{单个}但完整的@tech{值}。
 
 @handbook-scenario{闭幕}
 
-继第一章初识的@emph{自然数}、@tech{数列}、@tech{函数}这几个典型的数学类型之后，
+继昨天初识的@emph{自然数}、@tech{数列}、@tech{函数}这几个典型的数学类型之后，
 @:term{运算}可操作的@tech{值}的类型于本章又扩增了两个：
 我们首次将语文范畴的@tech{字符}和@tech{字符串}也吸纳为计算机的基本数据类型。
 

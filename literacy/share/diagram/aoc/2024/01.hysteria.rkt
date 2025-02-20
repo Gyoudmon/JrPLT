@@ -121,39 +121,30 @@
 
 
 (define apply.dia
-  (let* ([addends (list 3 3 1 2 4 3)]
-         [geo-op (aoc-text '+)]
-         [geo-as (map aoc-text addends)]
-         [result (aoc-text (apply + addends))])
-    (dia-procedure #:body-fill 'Lavender #:body-position 0.618
-                   (geo-scale (dia-procedure #:body-fill 'LightBlue
-                                             geo-op (build-list (length addends)
-                                                                (λ [[i : Index]] : Avatar-Procedure-Label-Datum
-                                                                  `(span ("a" (sub (,(number->string (add1 i))))))))
-                                             null geo-as)
+  (let ([addends (list 3 3 1 2 4 3)])
+    (dia-procedure #:body-fill aoc-outer-body-fill #:body-position 0.618
+                   (geo-scale (dia-procedure #:body-fill aoc-inner-body-fill
+                                             '+ (build-list (length addends)
+                                                            (λ [[i : Index]] : Dia-Procedure-Label-Datum
+                                                              `(span ("a" (sub (,(number->string (add1 i))))))))
+                                             null addends)
                               0.36)
-                   (list 'λ 'list)
-                   '(sum)
-                   (list geo-op (geo-vc-append* (reverse geo-as)))
-                   result)))
+                   #(λ list) 'sum
+                   (list + (reverse addends)) (apply + addends))))
 
 (define count.dia
   (let* ([addends (list 3 9 3 5 3 4)]
-         [|x = y| (λ [v] (eq? v 3))]
-         [pred? (geo-scale (aoc-text (object-name |x = y|)) 0.5)]
-         [geo-as (map aoc-text addends)])
-    (dia-procedure #:body-fill 'Lavender
+         [eq3? (procedure-rename (λ [v] (eq? v 3)) '|x = y|)])
+    (dia-procedure #:body-fill aoc-outer-body-fill
                    (geo-scale (geo-hc-append* #:gapsize 2.0
-                                              (for/list : (Listof Geo) ([y (in-list addends)]
-                                                                        [g (in-list geo-as)])
-                                                (dia-procedure #:body-fill 'LightBlue #:iofill (λ [v t] 'AliceBlue)
-                                                               pred? (list #false) #false
-                                                               (list g) (aoc-text (if (|x = y| y) 1 0)))))
+                                              (for/list : (Listof Geo) ([y (in-list addends)])
+                                                (dia-procedure #:body-fill aoc-inner-body-fill #:iofill aoc-inner-iofill
+                                                               (assert (object-name eq3?) symbol?)
+                                                               #(#false) #false
+                                                               (list y) (eq3? y))))
                               0.36)
-                   (list 'pred? 'list)
-                   '(count)
-                   (list pred? (geo-vc-append* (reverse geo-as)))
-                   (aoc-text (count |x = y| addends)))))
+                   #(pred? list) 'count
+                   (list eq3? (reverse addends)) (count eq3? addends))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main

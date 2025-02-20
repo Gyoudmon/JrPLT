@@ -559,8 +559,8 @@
 函数 @:id{read} 的求值结果@handbook-footnote{Racket 不太强调@:term{返回值}这个说法，
  而更偏好@handbook-deftech[#:origin "Evalutes to a Result"]{求值结果}。
  如果你已经习惯了其他语言的叫法，那就按你自己的习惯来。
- }可以是@emph{任何}（@:type{Any}）合理类型的@tech{值}，
-其中包括特殊@tech{值} @tamer-deftech[#:origin "End of File"]{eof}，
+ }可以是@tech{任意}合理类型的@tech{值}，
+其中包括特殊@tech{值} @tech{eof}，
 代表@:name{文件结尾}，也即清单读完了。
 注意，此时我们要假装自己是英语母语人士，
 将文件里的@:term{连续空格}(包括@:term{换行})视作单词、数字和符号的分隔符。
@@ -600,8 +600,7 @@
 
 像@handbook-sidenote*{Racket 的@tech{谓词函数}通常以问号(@:pn{?})结尾。}
 @racket[exact-nonnegative-integer?] 这样@emph{
- 接受一个任意类型的参数，
- 得到一个@tech{布尔型}（@:type{Boolean}）的结果（@racket[#true] 或 @racket[#false]），
+ 接受一个@tech{任意}类型的参数，得到一个@tech{布尔}类型的结果，
  用以检查输入参数是否满足某些条件}的函数称为@handbook-deftech[#:origin "Predicate Function"]{谓词函数}，
 可类比一般疑问句中的谓语，但句法上要简单很多。
 
@@ -1383,7 +1382,7 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 鉴于 @:id{count} 函数的@tech{类型签名}对初学者来说太过犯规，
 这里就不放出来了，我针对本题给个简单版本：
 
-@racketblock[(-> (-> Any Boolean) (code:comment "参数1类型：过滤函数")
+@racketblock[(-> (-> Any Boolean) (code:comment "参数1类型：过滤用谓词函数")
                  (Listof Natural) (code:comment "参数2类型：自然数列表")
                  Natural)]
 

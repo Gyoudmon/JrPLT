@@ -4,9 +4,15 @@
 
 (require geofun/vector)
 
+(require diafun/digitama/avatar/procedure)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define artfont (desc-font (default-art-font) #:family 'fantasy))
 (define monofont (desc-font (default-art-font) #:family 'monospace))
+
+(define aoc-inner-body-fill : Color (rgb* 'LightBlue))
+(define aoc-outer-body-fill : Color (rgb* 'Lavender))
+(define aoc-inner-iofill : Dia-Procedure-IO-Fill (λ [v t] 'AliceBlue))
 
 (define aoc-margin-figure-separator (geo-hline 240.0 8.0 #:stroke 'LightGrey))
 
@@ -18,13 +24,24 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define aoc-text : (-> Any Geo)
   (lambda [v]
-    (geo-scale (geo-text (aoc-text-datum v) monofont #:color 'DimGray #:alignment 'center) 2.5)))
+    (geo-scale (geo-text #:id (aoc-text-id v) #:color 'Black #:alignment 'center
+                         (aoc-text-datum v) monofont)
+               2.5)))
 
 (define aoc-art-text : (-> Any Geo)
   (lambda [v]
-    (geo-scale (geo-art-text (aoc-text-datum v) artfont #:stroke 'DimGray #:alignment 'center) 2.5)))
+    (geo-scale (geo-art-text #:id (aoc-text-id v) #:stroke 'Black #:alignment 'center
+                             (aoc-text-datum v) artfont)
+               2.5)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define aoc-text-id : (-> Any Symbol)
+  (lambda [v]
+    (cond [(symbol? v) v]
+          [(string? v) (string->symbol v)]
+          [(procedure? v) (assert (object-name v) symbol?)]
+          [else (string->symbol (format "~a" v))])))
+
 (define aoc-text-datum : (-> Any String)
   (lambda [v]
     (cond [(symbol? v) (symbol->string v)]

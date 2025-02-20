@@ -33,7 +33,7 @@
                        (λ [[rem : Nonnegative-Flonum]] : Geo
                          (geo-cc-superimpose (geo-blank (* rem 6.0) rem)
                                              (geo-art-text "编程 for 数学 & 物理" #:fill 'Black)))
-                       '() '(||)))
+                       #() #false))
 
       (geo-pin* #:operator op
                 0.50 0.78 0.07 0.00

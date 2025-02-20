@@ -4,6 +4,7 @@
 
 (require racket/list)
 (require racket/string)
+(require racket/math)
 
 (require geofun/vector)
 (require geofun/markup)
@@ -132,40 +133,51 @@
   
 (define map.dia
   (let* ([levels (string-split "7 6 4 2 1")]
-         [x->y (procedure-rename string->number '|x→y|)]
-         [|f(x)| (geo-scale (aoc-text (object-name x->y)) 0.5)]
-         [geo-as (map aoc-text levels)])
-    (dia-procedure #:body-fill 'Lavender
+         [name '|x→y|])
+    (dia-procedure #:body-fill aoc-outer-body-fill #:input-format "~s"
                    (geo-scale (geo-hc-append* #:gapsize 2.0
-                                              (for/list : (Listof Geo) ([y (in-list levels)]
-                                                                        [g (in-list geo-as)])
-                                                (dia-procedure #:body-fill 'LightBlue #:iofill (λ [v t] 'AliceBlue)
-                                                               |f(x)| (list #false) #false
-                                                               (list g) (aoc-text (x->y y)))))
+                                              (for/list : (Listof Geo) ([l (in-list levels)])
+                                                (dia-procedure #:body-fill aoc-inner-body-fill #:iofill aoc-inner-iofill
+                                                               #:output-format " ~a " #:input-format "~s"
+                                                               (aoc-text name) #(#false) #false
+                                                               (list l) (string->number l))))
                               0.36)
-                   (list '|f(x)| 'list)
-                   '(list)
-                   (list |f(x)| (geo-vc-append* (reverse geo-as)))
-                   (geo-vc-append* (reverse (map aoc-text (map x->y levels)))))))
+                   #(|f(x)| list) 'list
+                   (list name levels) (map string->number levels))))
 
+(define filter.dia
+  (parameterize ([print-boolean-long-form #false])
+    (let ([levels (map string->number (string-split "9 -7i 6< 2" #;1))])
+      (dia-procedure #:body-fill aoc-outer-body-fill
+                     (geo-scale (geo-hc-append* #:gapsize 4.0
+                                                (for/list : (Listof Geo) ([l (in-list levels)])
+                                                  (dia-procedure #:io-datum-width -2.0
+                                                                 #:body-fill aoc-inner-body-fill #:iofill aoc-inner-iofill
+                                                                 (geo-scale (aoc-text natural?) 0.75)
+                                                                 #(#false) #false
+                                                                 (list l) (natural? l))))
+                                0.36)
+                     #(pred? list) 'list
+                     (list natural? (reverse levels)) (reverse (filter natural? levels))))))
+  
 (define pipeline.dia
-  (let ([? (geo-art-text "?" #:stroke 'Crimson)])
+  (let ([? (geo-art-text "?" #:stroke 'Crimson)]
+        [geo-var (λ [[x : String]] : Geo (aoc-text (string->symbol x)))])
     (define map.dia : Geo
       (geo-scale (dia-procedure 'map
-                                (list "f(x)" "s") (list "maybe\nlevels")
-                                (map aoc-text (map string->symbol (list "-> String\n(U Complex\n  False)" "Listof\nString")))
-                                (aoc-text (string->symbol "Listof\n(U Complex\n  False)")))
+                                `("f(x)" ,(geo-var "s")) (geo-var "Maybe\nLevels")
+                                #("String ->\n(U Complex\n  False)" "Listof\nString") "Listof\n(U Complex\n  False)")
                  1.00))
     (define width (geo-width map.dia))
     (define height (geo-height ?))
-    (dia-procedure #:body-fill 'Lavender
+    (dia-procedure #:body-fill aoc-outer-body-fill
                    (geo-vc-append #:gapsize 16.0
                                   map.dia
                                   (geo-cc-superimpose (geo-rectangle #:stroke (desc-stroke #:color 'Crimson #:dash 'long-dash)
                                                                      width (* height 1.618) -0.125)
                                                       ?))
-                   (list "s") (list "levels")
-                   (list (aoc-text (string->symbol "Listof\nString"))) (aoc-text (string->symbol "Listof\nNatural")))))
+                   `(,(geo-var "s")) (geo-var "Just\nLevels")
+                   #("Listof\nString") "Listof\nNatural")))
   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main
@@ -180,5 +192,6 @@
   read-char.dia
   read-line.dia
 
+  pipeline.dia
   map.dia
-  pipeline.dia)
+  filter.dia)

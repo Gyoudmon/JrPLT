@@ -40,7 +40,7 @@
   (lambda []
     (dia-procedure #:iofill (λ [var type] (case var [(V) 'Red] [(E) 'Green] [(F) 'Blue] [else 'Purple]))
                    geo-7-bridge-agent
-                   '(V E F) '(=))))
+                   #(V E F) #(=))))
 
 (define geo-interdisciplinary-screen : (->* () (Geo-Pin-Operator) Geo)
   (lambda [[op 'xor]]
@@ -62,7 +62,7 @@
                        (λ [[rem : Nonnegative-Flonum]] : Geo
                          (geo-cc-superimpose (geo-blank (* rem 6.0) rem)
                                              (geo-7-bridge-agent rem)))
-                       '() '(||)))
+                       #() #false))
 
       (geo-vc-append #:gapsize (- em)
                      (geo-cb-superimpose #:operator 'atop
