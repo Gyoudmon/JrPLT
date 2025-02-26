@@ -3,7 +3,7 @@
 @require{literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-story{系统调试与测试}
+@handbook-root-story{系统调试与测试}
 @handbook-word-count[]
 
 @handbook-scenario{系统调试}

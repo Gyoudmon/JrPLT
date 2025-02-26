@@ -2,14 +2,41 @@
 
 @require{literacy.rkt}
 
+@require{diagram/setup.rkt}
+
+@(require geofun/vector)
+
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-story{开发工具和运行环境}
+@handbook-root-story{开发工具和运行环境}
 @handbook-word-count[]
 
 本系统既是一个软件系统，也是一个教学系统，两者深度融合，不分彼此。
 
-每一个学生在入门的前期阶段就是要在自己的计算机上正确安装开发软件、配套的课程源码并配置好。
-因此，本系统在开发之初就考虑到了学生安装和学习的便利性。
+每一个学生在学习的准备阶段就是要在自己的计算机上正确安装开发软件、配套的课程源码并配置好，
+其详细流程见@fig-ref{setup.dia}。
+
+入学流程第一步是让学生“自备个人电脑”，
+这其实隐含表达了当下少儿编程市场的一个大问题。
+因为教学内容套路化——找个成熟题库按部就班刷题就是了，
+线下编程机构普遍自己提供廉价计算机供学生使用，
+进而导致家长也普遍觉得这个现象很合理。
+这在学校尚有可行之处，
+因为校队队员通常目标明确，
+且天天有机会去机房练习。
+其他同学，如果没有自己的电脑，
+那他们没有任何途径能把所学知识带回去，
+更不要说主动复习和练习了。
+在正常学期中，一周一次课，
+没有自备电脑、
+或虽有电脑但不练习的学生普遍进度缓慢，
+甚至没有进度。
+因此我不建议不能自备电脑的学生系统学编程，
+不如专心把时间分配给课内科目。
+
+接下来的流程步骤均依赖终端软件，
+Windows 10 及更高版本的默认安装就能胜任。 
+
+@tamer-figure!['setup.dia "入学第一课流程图"]{@(geo-scale setup.dia 0.42)}
 
 @handbook-scenario{安装开发工具}
 @handbook-word-count[]
@@ -19,7 +46,8 @@
 Racket@$cite[plt-tr1] 起源于游戏化的青少年编程教育@$cite{RoR}，
 在此需求之上从 PLT Scheme 发展成为了一个独立又前卫的
 Lisp 方言@handbook-footnote{Lisp 是最古老的两大高级程序语言之一,
- PLT Scheme 又是 Lisp 语系知名度最高的两大方言之一。}。
+ PLT Scheme 又是 Lisp 语系知名度最高的两大方言之一。}，
+并且持续给程序语言设计领域输出新思想和新技术。
 
 在本系统中，
 我用 Racket 编写的构建工具可以帮助学生隐藏编译、测试 C++ 程序和项目时的所有恼人细节。
@@ -52,7 +80,7 @@ git 是目前应用最广泛的版本控制软件之一，
 以上软件运行本系统就已经够用了，但在实际的教学实施中，
 合理使用如下软件可以提升教学过程的流畅度。
 
-@itemlist[
+@handbook-itemlist[
  #:style 'compact
 
  @item{Python凭借其“容易上手”的特点晋升为用户数量最多的语言。
@@ -81,19 +109,35 @@ git 是目前应用最广泛的版本控制软件之一，
 然后自然而然过渡到对“环境变量”的配置，
 本系统的运行需要将以下几个路径加入到环境变量 @envvar{PATH} 中：
 
-@itemlist[
+@handbook-itemlist[
  @item{C:\Program Files\Racket}
  @item{C:\Program Files\Git\mingw64\bin}
  @item{C:\Program Files\Git\usr\bin}
  @item{C:\Program Files\CodeBlocks\MinGW\bin}
  @item{C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build}
- @item{C:\opt\GYDMstem\lib}
+ @item{C:\opt\JrPLT\lib}
  ]
 
 @handbook-scenario{部署系统}
 @handbook-word-count[]
 
+部署系统的过程可以脚本化，
+但在实际教学实施中仍然是我带着学生一起做。
+主要目的有以下几点：
 
+@handbook-itemlist[
+ #:style 'compact
+ 
+ @item{给学生普及“版本控制”的基本概念，
+  从一开始就给学生营造一个团队协作的氛围。
+  在后续学习过程中养成“进教室”先更新的习惯。}
+ 
+ @item{给学生普及远程登陆的基本常识，
+  让学生体验一把当黑客的感觉。}
+
+ @item{观察学生对特殊字符是否敏感，
+  有没有耐心应对 C++ 这样的纯文本编程语言。}
+ ]
 
 @handbook-action{部署构建工具}
 
@@ -103,14 +147,11 @@ digimon 是我用 Racket 编写的工具箱软件，内含C++项目构建工具�
 可将本文配套源码中的 digimon 目录复制到 @filepath{C:\opt\}，
 然后执行以下命令安装：
 
-@itemlist[#:style 'compact
-          @commandline{raco pkg install --auto --link C:/opt/digimon}]
-
 @handbook-action{部署系统运行时库和游戏资源}
 
-GYDMstem 是本系统的运行时库和预设资源。
+JrPLT 是本系统的运行时库和预设资源。
 
-GYDMstem 也包含在本文配套的源码中，
+JrPLT 也包含在本文配套的源码中，
 将同名文件夹复制到 @filepath{C:\opt\} 即可。
 其 lib 子目录已在上述步骤中配置到环境变量中了(最后一条路径)。
 
@@ -119,14 +160,14 @@ GYDMstem 也包含在本文配套的源码中，
 这是本系统依赖的底层图形库。
 对于 Windows 学生，
 安装 SDL2 比较麻烦，
-因此它和它依赖的动态链接库都已经包含在 GYDMstem 中了，
+因此它和它依赖的动态链接库都已经包含在 JrPLT 中了，
 无需额外安装。
 
 @handbook-action{部署系统}
 
 big-bang 是本游戏引擎的源码，
 在实际授课中一般不提供给学生，
-由教师编译好并包含在 GYDMstem 中一起分发给学生。
+由教师编译好并包含在 JrPLT 中一起分发给学生。
 
 @handbook-action{部署课程源码}
 

@@ -3,7 +3,7 @@
 @require{literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-story{系统可行性和功能需求分析}
+@handbook-root-story{系统可行性和功能需求分析}
 @handbook-word-count[]
 
 @handbook-scenario{同类技术方案介绍}

@@ -5,13 +5,13 @@
 (require diafun/flowchart)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define host-name "plteen.fun")
-(define host (string->symbol (format "/~a" host-name)))
+(define host-name "HOST")
+(define host (string->symbol (format "/[~a]" host-name)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define git-clone-string : (-> Symbol Path-String String)
   (lambda [repo dest]
-    (format "git clone stem@~a:~a.git ~a/~a" host-name repo dest repo)))
+    (format "git clone [~a]:~a.git ~a/~a" host-name repo dest repo)))
 
 (define raco-pkg-install-string : (-> Path-String String)
   (lambda [pkg]
@@ -19,24 +19,24 @@
 
 (define scp-string : (-> Symbol Path-String String)
   (lambda [src dest]
-    (format "scp -r stem@~a:~a ~a/~a" host-name src dest src)))
+    (format "scp -r [~a]:~a ~a/~a" host-name src dest src)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-flowchart! setup.dia #:at 2 [#:start-name "Setup" #:background 'White] #:-
-  (jump-to 5.5 host)
+  (jump-to 5 host)
   (jump-back)
-  
-  (move-down 1 (string->symbol "自备电脑\nGot a Personal Computer\nfor Yourself!"))
-  (move-down 1 ':|Run PowerShell|)
-  (move-down 1.2 (string->keyword ">>:选择工作目录\nSelect a Folder as Your Workspace"))
-  (move-down 1.2 (string->keyword ">>:下载开发软件\nDownload Development Software") "cd D:/[name]")
-  (move-down 1.2 (string->symbol ":安装开发软件\nInstall Development Software"))
-  (move-down 1.2 (string->symbol ":编辑PATH环境变量\nEdit the PATH Environment Variable") "sysdm.cpl")
-  (move-down 1.2 (string->keyword ">>:克隆我开发的课程软件\nClone Course-related Software"))
-  (move-down 1.2 (string->symbol ">>:安装我的课程软件\nInstall Course-related Software")
-             (string-append "raco pkg install --auto --link C:/digimon " "\n"
-                            "raco pkg install --auto --link C:/graphics"))
-  (move-down 1.2 (string->keyword ">>:克隆课程源码库\nClone Source Repositories"))
+
+  (move-down 1 '|自备个人电脑!|)
+  (move-down 1 ':|启动终端软件|)
+  (move-down 1.2 (string->keyword ">>:选择工作目录"))
+  (move-down 1.2 (string->keyword ">>:下载开发软件") "cd D:/[name]")
+  (move-down 1.2 (string->symbol ":安装开发软件"))
+  (move-down 1.2 (string->symbol ":编辑 PATH 环境变量") "sysdm.cpl")
+  (move-down 1.2 (string->keyword ">>:克隆本文描述的软件"))
+  (move-down 1.2 (string->symbol ">>:安装本文描述的软件")
+             (string-append (raco-pkg-install-string "C:/digimon") " \n"
+                            (raco-pkg-install-string "C:/graphics")))
+  (move-down 1.2 (string->keyword ">>:克隆课程源码库"))
   (move-down 1 'End$)
 
   (jump-back)

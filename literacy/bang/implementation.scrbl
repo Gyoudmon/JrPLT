@@ -3,7 +3,7 @@
 @require{literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-story{系统功能模块的实现}
+@handbook-root-story{系统功能模块的实现}
 @handbook-word-count[]
 
 @handbook-scenario{图形引擎}

@@ -8,7 +8,7 @@
    #:date "2024")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-story{绪论} 
+@handbook-root-story{绪论} 
 @handbook-word-count[]
 
 @handbook-scenario{背景和意义}

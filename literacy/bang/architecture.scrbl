@@ -3,7 +3,7 @@
 @require{literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-story{系统设计}
+@handbook-root-story{系统设计}
 @handbook-word-count[]
 
 @handbook-scenario{图形引擎}
