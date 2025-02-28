@@ -42,8 +42,6 @@
 挑战过程可能会出现函数式不擅长的问题，
 届时我们也不会犹豫使用其他思路来求解。
 
-@include-section{advent/notation.scrbl}
-
 @handbook-preface-section{首席历史学家的行踪}
 
 圣诞老人、圣诞奶奶、精灵和驯鹿都生活在北极，
@@ -64,6 +62,8 @@
  一个谜题价值一颗星。
  
  祝你好运！}
+
+@include-section{advent/notation.scrbl}
 
 @handbook-smart-table[]
 

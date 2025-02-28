@@ -124,7 +124,7 @@ void WarGrey::STEM::LotteryPlane::on_mission_start(float width, float height) {
 
 void WarGrey::STEM::LotteryPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
     Box box = this->window->get_bounding_box();
-    cPoint O = this->get_matter_location(this->window, MatterPort::CC);
+    Dot O = this->get_matter_location(this->window, MatterPort::CC);
     
     if (this->state == TCLMState::Play) {
         double distance = box.width() * 0.5F - ball_radius;
@@ -141,7 +141,7 @@ void WarGrey::STEM::LotteryPlane::update(uint64_t count, uint32_t interval, uint
 }
 
 void WarGrey::STEM::LotteryPlane::prepare(const std::map<size_t, LotteryPlane::Ballet*>& balls) {
-    cPoint dot = this->get_matter_location(this->window, MatterPort::CC);
+    Dot dot = this->get_matter_location(this->window, MatterPort::CC);
     Box box = this->window->get_bounding_box();
     float apothem = (box.width() * 0.5F - ball_radius) * flsqrt(2.0F) * 0.5F;
 
@@ -179,7 +179,7 @@ void WarGrey::STEM::LotteryPlane::reset() {
     }
 }
 
-void WarGrey::STEM::LotteryPlane::update_balls(const std::map<size_t, Ballet*>& balls, std::vector<Ballet*>& lucky_balls, const cPoint& O, float distance, bool motion_only) {
+void WarGrey::STEM::LotteryPlane::update_balls(const std::map<size_t, Ballet*>& balls, std::vector<Ballet*>& lucky_balls, const Dot& O, float distance, bool motion_only) {
     for (auto ball : balls) {
         this->apply_forces(ball.second, O, distance, motion_only);
 
@@ -224,12 +224,12 @@ bool WarGrey::STEM::LotteryPlane::pick(LotteryPlane::Ballet* ball) {
         
             /* moving the winning ball */ {
                 float slot_width = ball_radius * 2.0F;
-                cPoint out = this->get_matter_location(this->outlet, MatterPort::LB);
-                cPoint end = this->get_matter_location(this->winning_slot, MatterPort::LB);
-                cVector v = end - out;
+                Dot out = this->get_matter_location(this->outlet, MatterPort::LB);
+                Dot end = this->get_matter_location(this->winning_slot, MatterPort::LB);
+                Vector v = end - out;
 
-                this->glide(gliding_duration, ball, cVector(0.0F, _Y(v)));
-                this->glide(gliding_duration, ball, cVector(_X(v) + slot_width * float(this->current_winning_slot), 0.0F));
+                this->glide(gliding_duration, ball, Vector(0.0F, v.y));
+                this->glide(gliding_duration, ball, Vector(v.x + slot_width * float(this->current_winning_slot), 0.0F));
             }
         }
     }
@@ -238,19 +238,19 @@ bool WarGrey::STEM::LotteryPlane::pick(LotteryPlane::Ballet* ball) {
 }
 
 /*************************************************************************************************/
-void WarGrey::STEM::LotteryPlane::spot_ball(LotteryPlane::Ballet* ball, const cPoint& O, float apothem) {
+void WarGrey::STEM::LotteryPlane::spot_ball(LotteryPlane::Ballet* ball, const Dot& O, float apothem) {
     // 号码球的初始位置随机出现在摇奖机上部
-    float bx = random_uniform(_X(O) - apothem, _X(O) + apothem);
-    float by = random_uniform(_Y(O) - apothem, _Y(O));
+    float bx = random_uniform(O.x - apothem, O.x + apothem);
+    float by = random_uniform(O.y - apothem, O.y);
 
     this->move_to(ball, Position(bx, by), MatterPort::CC);
     ball->motion_stop();
 }
 
-void WarGrey::STEM::LotteryPlane::apply_forces(LotteryPlane::Ballet* ball, const cPoint& O, float radius, bool no_fan) {
+void WarGrey::STEM::LotteryPlane::apply_forces(LotteryPlane::Ballet* ball, const Dot& O, float radius, bool no_fan) {
     double fan_dy = 0.0;
-    cPoint B = this->get_matter_location(ball, MatterPort::CC);
-    float distance = std::abs(B - O);
+    Dot B = this->get_matter_location(ball, MatterPort::CC);
+    float distance = point_distance(B.x, B.y, O.x, O.y);
     
     if (!no_fan) {
         double now = current_inexact_milliseconds();
@@ -263,7 +263,8 @@ void WarGrey::STEM::LotteryPlane::apply_forces(LotteryPlane::Ballet* ball, const
 
     if (distance > radius) {
         // 奖球反弹，运动轨迹由弹力、重力和支持力共同决定，摩擦损耗随机
-        double theta = std::arg(O - B);
+        Vector v = O - B;
+        double theta = vector_direction(v.x, v.y);
         double elasticity = double(distance - radius);
         double friction_loss = random_uniform(0.8, 1.0);
         double dx, dy;

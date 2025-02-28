@@ -593,22 +593,22 @@ namespace {
 
         void reflow_class_logos(double duration = gliding_duration) {
             if (!this->doors.empty()) {
-                cPoint spot = this->get_matter_location(this->side_border, MatterPort::CB);
+                Dot spot = this->get_matter_location(this->side_border, MatterPort::CB);
                 Box grid = this->doors.rbegin()->second->get_bounding_box() * 1.2F;
 
                 for (auto cls = this->doors.rbegin(); cls != this->doors.rend(); cls ++) {
                     this->glide_to(duration, cls->second, spot, MatterPort::CB, { 0.0F, -1.0F });
-                    spot -= cPoint(0.0F, grid.height());
+                    spot -= Dot(0.0F, grid.height());
                 }
             }
         }
 
         void reflow_discipline_logos(double duration = gliding_duration) {
             if (!this->disciplines.empty()) {
-                cPoint gap(4.0F, 0.0F);
-                cPoint spot = this->get_matter_location(this->platform, MatterPort::LC) + gap;
-                float grid_width = this->disciplines.begin()->second->get_bounding_box().width() + _X(gap);
-                float dis_x0 = _X(spot);
+                Dot gap(4.0F, 0.0F);
+                Dot spot = this->get_matter_location(this->platform, MatterPort::LC) + gap;
+                float grid_width = this->disciplines.begin()->second->get_bounding_box().width() + gap.x;
+                float dis_x0 = spot.x;
 
                 for (auto dis : this->disciplines) {
                     uint64_t disCode = this->model->get_discipline_code(dis.second->get_type());
@@ -616,9 +616,9 @@ namespace {
                     if ((disCode == this->the_disCode) || (this->the_disCode == 0U)) {
                         dis.second->show(true);
                         this->glide_to(duration, dis.second, spot, MatterPort::LC);
-                        spot += cPoint(grid_width, 0.0F);
+                        spot += Dot(grid_width, 0.0F);
                     } else {
-                        this->glide_to(duration, dis.second, { dis_x0, _Y(spot) }, MatterPort::LC);
+                        this->glide_to(duration, dis.second, { dis_x0, spot.y }, MatterPort::LC);
                     }
                 }
             }
@@ -626,14 +626,14 @@ namespace {
 
         void reflow_students(double duration = gliding_duration) {
             if (!this->students.empty()) {
-                cPoint nocls_stu = this->get_matter_location(this->side_border, MatterPort::LB);
+                Dot nocls_stu = this->get_matter_location(this->side_border, MatterPort::LB);
                 Box grid = this->students.begin()->second->get_bounding_box();
                 uint64_t desk_idx, seat_idx;
                 float gap = 4.0F;
          
-                grid.rbdot += cVector(gap, gap);
-                set_X(nocls_stu, _X(nocls_stu) * 0.90F);
-                set_Y(grid.ltdot, grid.height() * 3.0F);
+                grid.rbdot += Dot(gap, gap);
+                nocls_stu.x = nocls_stu.x * 0.90F;
+                grid.ltdot.y = grid.height() * 3.0F;
 
                 for (auto stu : this->students) {
                     uint64_t stuClsId = this->model->get_student_class(stu.second->primary_key());
@@ -643,11 +643,11 @@ namespace {
                     if (stuClsId == 0U) {
                         this->glide_to(duration, stu.second, nocls_stu, MatterPort::RB);
 
-                        if (_Y(nocls_stu) > grid_y) {
-                            nocls_stu -= cVector(0.0F, grid.height());
+                        if (nocls_stu.y > grid_y) {
+                            nocls_stu -= Dot(0.0F, grid.height());
                         } else {
-                            nocls_stu -= cVector(grid.width(), 0.0F);
-                            set_Y(nocls_stu, _Y(this->get_matter_location(this->side_border, MatterPort::LB)));
+                            nocls_stu.x -= grid.width();
+                            nocls_stu.y = this->get_matter_location(this->side_border, MatterPort::LB).y;
                         }
                     } else {
                         if (stu.second->visible()) {

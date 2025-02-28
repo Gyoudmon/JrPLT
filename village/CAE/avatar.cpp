@@ -28,7 +28,7 @@ void WarGrey::CAE::AvatarPlane::reflow(float width, float height) {
         this->move_to(this->labels[idx],  { grid_width * 0.3F, grid.by() }, MatterPort::CB);
         this->move_to(this->avatars[idx], { grid_width * 1.5F, grid.by() }, MatterPort::CB);
         
-        grid += cPoint(0.0F, grid.height());
+        grid += Dot(0.0F, grid.height());
     }
 
     this->move_to(this->title, { grid_width * 1.5F, 0.0F }, MatterPort::CT);

@@ -68,11 +68,6 @@ Pygame 是 Python 提供的游戏开发库，
 本文的解决方案也包括一个简化的 Python 版本，
 使得学生能够使用 pygame 学习与 C++ 学生同步的项目制课程。
 
-@handbook-action{乐高、桌游等实体玩具}
-@handbook-word-count[]
-
-【待补充】
-
 @handbook-scenario{系统可行性}
 @handbook-word-count[]
 
@@ -128,6 +123,7 @@ C 风格比 C++ 风格入门更费劲。
 但本文所提及的研课思路的靠谱性可以通过以下事实佐证:
 
 @itemlist[
+ #:style 'compact
 
  @item{Scratch 就是对象导向的图形化语言，只是可能很少有人会跟学生提及这个点。}
 
@@ -144,7 +140,7 @@ C 风格比 C++ 风格入门更费劲。
 
  ]
 
-以上观点，已经在4-6年级小学生群体中得到验证。
+以上观点，已经在4-7年级学生群体中得到验证。
 因此，从孩子认知角度出发，本系统的设计与实现可行且必要。
 
 @handbook-scenario{系统功能需求分析}

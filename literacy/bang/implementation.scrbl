@@ -12,8 +12,5 @@
 @handbook-scenario{通信系统}
 @handbook-word-count[]
 
-@handbook-scenario{教学项目}
-@handbook-word-count[]
-
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-reference[]

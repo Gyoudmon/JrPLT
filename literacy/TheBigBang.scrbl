@@ -37,6 +37,7 @@
 @include-section{bang/architecture.scrbl}
 @include-section{bang/implementation.scrbl}
 @include-section{bang/test.scrbl}
+@include-section{bang/application.scrbl}
 @include-section{bang/future.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -63,7 +64,7 @@
  
  初学者的入门困境大同小异，
  但是青少年往往需要不同的解决方案。
- 在教学实施方面，学生显然是最重要的人。
+ 在教学实践方面，学生显然是最重要的人。
  他们让我学会了从孩子的角度思考问题、
  理论和技术应该朝哪个方向发力；
  他们的收获、困惑，
