@@ -8,7 +8,7 @@
 学完本课程之后，学生将对程序语言、程序设计和计算思维有个初步的了解。
 本课程取名为@tech{宇宙大爆炸}是顺应了宇宙发展“从无到有”的自然规律。
 
-@centered{@stone-image["Disciplines/Disciplines/big-bang.png" #:scale 0.28]}
+@centered{@stone-image["Bang/big-bang.png" #:scale 0.28]}
 
 这是@tech{宇宙大爆炸}的主界面。
 其中，企鹅是 @tech{Linux} 操作系统的吉祥物，

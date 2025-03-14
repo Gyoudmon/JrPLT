@@ -9,13 +9,13 @@
 (require diafun/digitama/avatar/procedure)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define geo-7-bridge-agent : (-> Nonnegative-Flonum Geo)
-  (lambda [rem]
+(define geo-7-bridge-agent : (->* (Nonnegative-Flonum) (Maybe-Fill-Paint) Geo)
+  (lambda [rem [brush 'Gray]]
     (define io:width   : Nonnegative-Flonum (* rem 1.618))
     (define in:gapsize : Nonnegative-Flonum (* rem 0.618))
 
     (define-gomamon! 7-bridge-agent
-      [io:width in:gapsize #:anchor '#:A #:stroke 'Yellow #:fill 'Gray #:fill-rule 'even-odd] #:-
+      [io:width in:gapsize #:anchor '#:A #:stroke 'Yellow #:fill brush #:fill-rule 'even-odd] #:-
       (move-up 3 '#:B)
       (drift -1.4 '(-0.618+1.5i) '#:C)
       (drift '#:B '(+0.618-1.5i))
@@ -44,7 +44,7 @@
 
 (define geo-interdisciplinary-screen : (->* () (Geo-Pin-Operator) Geo)
   (lambda [[op 'xor]]
-    (parameterize (#;[default-procedure-body-fill 'WhiteSmoke])
+    (parameterize ([default-procedure-body-fill 'SlateGray])
       (define symfont (desc-font (default-art-font) #:family 'math))
       (define em : Nonnegative-Flonum (font-metrics-ref symfont 'em))
       (define bacteriophage (bacteriophage-logo 16.0 #:tail.deg 24.0 #;#;#:sheath-length 0.0))
@@ -61,7 +61,7 @@
                        #:border (desc-stroke (default-procedure-border) #:color 'DarkGrey)
                        (λ [[rem : Nonnegative-Flonum]] : Geo
                          (geo-cc-superimpose (geo-blank (* rem 6.0) rem)
-                                             (geo-7-bridge-agent rem)))
+                                             (geo-7-bridge-agent rem 'LightSteelBlue)))
                        #() #false))
 
       (geo-vc-append #:gapsize (- em)

@@ -116,10 +116,16 @@
         (define (multiply)
           (define _array2d/lhs (_array/vector _int M N))
           (define _array2d/rhs (_array/vector _int N P))
-          (define-matrix fxmatrix_multiply (_fun _array2d/lhs _array2d/rhs [_size = M] [_size = N] [_size = P] -> _Matrix_ptr) #:wrap delete-matrix)
+          (define-matrix fxmatrix_multiply
+            (_fun _array2d/lhs _array2d/rhs
+                  [_size = M] [_size = N] [_size = P]
+                  -> _Matrix_ptr)
+            #:wrap delete-matrix)
           fxmatrix_multiply)
         
-        ((hash-ref! λs (list M N P) multiply) lhs rhs)))))
+        ((hash-ref! λs (list M N P) multiply) lhs rhs))))
+  ;;; END for testing
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (unsafe-require/typed/provide

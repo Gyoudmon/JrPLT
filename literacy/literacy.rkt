@@ -28,7 +28,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define /dev/src  (build-path "literacy" "share" "src"))
-(define /prce/mem (build-path "literacy" "share" "mem"))
+(define /proc/mem (build-path "literacy" "share" "mem"))
 
 (define stone-image
   (lambda [path #:scale [scale 1.0]]

@@ -15,8 +15,10 @@ void Plteen::TrackPlane::load(float width, float height) {
 
     TheBigBang::load(width, height);
 
+    // Load Dimension, for Demonstrating Variable in thesis
     this->variable = this->insert(new Dimensionlet(this->style, "deg", "方向"));
     this->variable->bind_value(this->heading);
+    // END
 
     this->bracers.push_back(this->insert(new Estelle()));
     this->bracers.push_back(this->insert(new Joshua()));
@@ -35,7 +37,7 @@ void Plteen::TrackPlane::load(float width, float height) {
 void Plteen::TrackPlane::reflow(float width, float height) {
     TheBigBang::reflow(width, height);
 
-    this->move_to(this->variable, { width, 0.0F }, MatterPort::RT, { -8.0F, 8.0F });
+    this->move_to(this->variable, { width, 0.0F }, MatterPort::RT, { -8.0F, 50.0F });
 }
 
 void Plteen::TrackPlane::update(uint64_t interval, uint32_t count, uint64_t uptime) {

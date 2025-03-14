@@ -11,22 +11,25 @@
 
 由需求分析可知，
 本文提供的技术解决方案是一个类似 Scratch 的 2D 游戏运行时系统，
-以及与该引擎配套的适用于青少年教学实践的外围工具集。
+以及建立在该引擎之上的一些列项目制课程。
 
-@handbook-scenario{引擎运行时系统总体设计}
+@handbook-scenario{引擎内核总体设计}
 @handbook-word-count[]
 
-@fig-ref{arch.dia}图示了本文技术解决方案的核心架构。
+@fig-ref{arch.dia}展示了本引擎的核心架构。
 跟绝大多数软件系统一样，
 本教学引擎的核心系统也具备明显的层次结构。
 
 @tamer-figure![
  'arch.dia
- @list{游戏运行时系统架构图}]{
- @architecture.dia
+ @list{引擎内核架构图}]{
+ @(geo-scale architecture.dia 0.32)
 }
 
-@handbook-scenario{构建系统总体设计}
+@handbook-scenario{项目制课程总体设计}
+@handbook-word-count[]
+
+@handbook-scenario{网络通信协议}
 @handbook-word-count[]
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

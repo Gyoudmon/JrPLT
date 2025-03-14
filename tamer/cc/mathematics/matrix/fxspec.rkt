@@ -172,11 +172,16 @@
                      (fxmatrix_add_subtract mtx3x4.cpp mtx3x4.cpp #true)
                      (matrix+ mtx3x4.rkt mtx3x4.rkt)))
         (it "can do subtract [-, -=]" #:do
-          (expect-satisfy matrix_is_zero (fxmatrix_add_subtract mtx3x4.cpp mtx3x4.cpp #false)))
+          (expect-satisfy matrix_is_zero
+                          (fxmatrix_add_subtract mtx3x4.cpp mtx3x4.cpp #false)))
         (it "can do scalar multiplication [*, *=]" #:do
           (expect-satisfy matrix_is_zero (fxmatrix_scale mtx3x4.cpp 0 #true))
-          (expect-is fxmatrix-equal/2d (fxmatrix_scale mtx3x4.cpp 1 #true) mtx3x4.rkt)
-          (expect-is fxmatrix-equal/2d (fxmatrix_scale mtx3x4.cpp 2 #true) (matrix-scale mtx3x4.rkt 2)))
+          (expect-is fxmatrix-equal/2d
+                     (fxmatrix_scale mtx3x4.cpp 1 #true)
+                     mtx3x4.rkt)
+          (expect-is fxmatrix-equal/2d
+                     (fxmatrix_scale mtx3x4.cpp 2 #true)
+                     (matrix-scale mtx3x4.rkt 2)))
         (it "can do scalar division [/, /=]" #:do
           (expect-is fxmatrix-equal/2d
                      (fxmatrix_scale mtx3x4.cpp 2 #false)
@@ -185,8 +190,11 @@
           (let ([mtx3x2 (list->matrix 3 2 (take random-entries 6))]
                 [mtx2x4 (list->matrix 2 4 (take-right random-entries 8))])
             (expect-is fxmatrix-equal/2d
-                       (fxmatrix-multiply (matrix->vector* mtx3x2) (matrix->vector* mtx2x4))
-                       (matrix* mtx3x2 mtx2x4))))))))
+                       (fxmatrix-multiply (matrix->vector* mtx3x2)
+                                          (matrix->vector* mtx2x4))
+                       (matrix* mtx3x2 mtx2x4)))))
+      ; END
+      )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main

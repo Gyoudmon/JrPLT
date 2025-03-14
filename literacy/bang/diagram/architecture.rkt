@@ -2,44 +2,64 @@
 
 (provide (all-defined-out))
 
-(require geofun/vector)
+(require diafun/flowchart)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define layer-width : Nonnegative-Flonum 400.0)
-(define layer-height : Nonnegative-Flonum 50.0)
-(define layer-subheight : Nonnegative-Flonum 28.0)
-(define layer-font : Font (desc-font (default-font) #:size 'x-large))
-(define layer-subfont : Font (default-font))
-
-(define geo-arch-layer : (-> (Listof String) [#:fgcolor Color] [#:bgcolor (Option Color)] [#:border Color] Geo)
-  (lambda [coms #:fgcolor [fgcolor 'Black] #:bgcolor [bgcolor #false] #:border [border (default-stroke)]]
-    (define n : Index (length coms))
-    (define cwidth (if (> n 1) (/ layer-width n) layer-width))
-    
-    (geo-hc-append*
-     (for/list ([c (in-list coms)])
-       (geo-cc-superimpose
-        (geo-rectangle #:fill bgcolor #:stroke border
-                       cwidth layer-height)
-        (geo-text c layer-font #:color fgcolor))))))
-
-(define geo-arch-sublayer : (-> String (Listof String) [#:fgcolor Color] [#:bgcolor (Option Color)] [#:border Color] Geo)
-  (lambda [desc coms #:fgcolor [fgcolor 'Black] #:bgcolor [bgcolor #false] #:border [border (default-stroke)]]
-    (define n : Index (length coms))
-    (define gapsize : Nonnegative-Flonum 8.0)
-    (define cwidth (if (> n 1) (/ (- layer-width (* (+ n 1) gapsize)) n) (- layer-width (* 2.0 gapsize))))
-    
-    (geo-hc-append*
-     (for/list ([c (in-list coms)])
-       (geo-cc-superimpose
-        (geo-rectangle #:fill bgcolor #:stroke border
-                       cwidth layer-subheight)
-        (geo-text c layer-subfont #:color fgcolor))))))
+(define arch-tree-hwidth 0.75)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define architecture.dia : Geo
-  (geo-vc-append (geo-arch-sublayer "第三方库" (list "SDL2"))
-                 (geo-arch-layer (list "操作系统(Windows/macOS/Linux)"))))
+(define-flowchart! architecture.dia
+  #:parameterize ([default-diaflow-block-width 150.0]
+                  [default-diaflow-arrow-target-shape #false]
+                  [default-diaflow-free-track-dash 'solid])
+  #:start 'JrPLT [#:background 'White] #:-
+  (move-down 0.75 '.plteen)
+  (move-left 2.50)
+  (move-down 0.75 (string->symbol "Graphics\n(Drawing Context)"))
+  (move-down 1.00 '#:.GA)
+  (move-down 1.00 '#:.GB)
+  (move-down 1.00)
+  (move-left arch-tree-hwidth 'Texture)
+  (jump-back) (move-left arch-tree-hwidth 'Image)
+  (jump-back) (move-left arch-tree-hwidth 'Font)
+  
+  (jump-back '.plteen)
+  (move-right 2.5)
+  (move-down 0.75 'Physics)
+  (move-down 1.00 '#:.PA)
+  (move-down 1.00 '#:.PB)
+  (move-down 1.00 '#:.PC)
+  (move-down 1.00)
+  (move-right arch-tree-hwidth 'Motion)
+  (jump-back) (move-right arch-tree-hwidth '|Color Space|)
+  (jump-back) (move-right arch-tree-hwidth 'Geometry)
+  (jump-back) (move-right arch-tree-hwidth 'Algebra)
+  
+  (jump-back '.plteen)
+  (move-left 0.75)
+  (move-down 0.75 'Virtualization)
+  (move-down 1.00 '#:.VA)
+  (move-down 1.00 '#:.VB)
+  (move-down 1.00 '#:.VC)
+  (move-down 1.00 '#:.VD)
+  (move-down 1.00)
+  (move-left arch-tree-hwidth (string->symbol "Wormhole\n(UDP)"))
+  (move-left 1.25 'ASN.1)
+  (jump-back) (move-left arch-tree-hwidth (string->symbol "Filesystem\nResource"))
+  (jump-back) (move-left arch-tree-hwidth 'Position)
+  (jump-back) (move-left arch-tree-hwidth 'Screen)
+  (jump-back) (move-left arch-tree-hwidth 'Display)
+
+  (jump-back '.plteen)
+  (move-right 0.75)
+  (move-down 0.75 '|User Interface|)
+  (move-down 1.00 '#:.UA)
+  (move-down 1.00 '#:.UB)
+  (move-down 1.00 '#:.UC)
+  (move-down 1.00 (string->symbol "Matter\n(Visual Object)"))
+  (jump-back) (move-right arch-tree-hwidth 'Layout)
+  (jump-back) (move-right arch-tree-hwidth 'Interaction)
+  (jump-back) (move-right arch-tree-hwidth 'Timeline))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main

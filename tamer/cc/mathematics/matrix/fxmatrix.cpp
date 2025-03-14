@@ -19,6 +19,7 @@ namespace Plteen {
     }
 }
 
+/*************************************************************************************************/
 extern "C" {
     __ffi__ Matrix* make_null_square_fxmatrix() {
         return new Matrix(fxmatrix_4x4());
@@ -92,7 +93,27 @@ extern "C" {
     }
 
     /*********************************************************************************************/
-    __ffi__ Matrix* fxmatrix_add_subtract(Matrix* lhs, Matrix* rhs, bool forward) {
+    __ffi__ bool fxmatrix_equal(Matrix* m1, Matrix* m2) {
+        return m1->operator==(*m2);
+    }
+}
+
+/*************************************** Matrix Arithematics *************************************/
+extern "C" {
+    __ffi__ Matrix* fxmatrix_add_subtract(Matrix* lhs, Matrix* rhs, bool forward);
+    __ffi__ Matrix* fxmatrix_scale(Matrix* lhs, int rhs, bool forward);
+
+    __ffi__ Matrix* fxmatrix_multiply(int* lhs2D, int* rhs2D, size_t M, size_t N, size_t P) {
+        fxmatrix<3, 2> lhs(lhs2D, M * N);
+        fxmatrix<2, 4> rhs(rhs2D, N * P);
+
+        return new Matrix(lhs * rhs);
+    }
+}
+// END
+
+extern "C" {
+    Matrix* fxmatrix_add_subtract(Matrix* lhs, Matrix* rhs, bool forward) {
         fxmatrix_3x4 self;
         fxmatrix_3x4 mrhs;
 
@@ -108,13 +129,11 @@ extern "C" {
         return new Matrix(self);
     }
 
-    __ffi__ Matrix* fxmatrix_scale(Matrix* lhs, int rhs, bool forward) {
+    Matrix* fxmatrix_scale(Matrix* lhs, int rhs, bool forward) {
         fxmatrix_3x4 self;
 
         lhs->extract_diagonal(self);
-        // lhs->extract_lower_triangle(self);
-        // lhs->extract_upper_triangle(self);
-
+    
         if (forward) {
             self *= rhs;
         } else {
@@ -122,17 +141,5 @@ extern "C" {
         }
 
         return new Matrix(self);
-    }
-
-    __ffi__ Matrix* fxmatrix_multiply(int* lhs2D, int* rhs2D, size_t M, size_t N, size_t P) {
-        fxmatrix<3, 2> lhs(lhs2D, M * N);
-        fxmatrix<2, 4> rhs(rhs2D, N * P);
-
-        return new Matrix(lhs * rhs);
-    }
-
-    /*********************************************************************************************/
-    __ffi__ bool fxmatrix_equal(Matrix* m1, Matrix* m2) {
-        return m1->operator==(*m2);
     }
 }
