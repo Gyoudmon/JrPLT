@@ -38,16 +38,11 @@
 它在传统竞赛刷题课中也被用作测评系统。
 
 @tamer-figure!['spec.dia "specmon: 行为驱动开发支持系统"]{
- @(tabular #:column-properties '(center)
-           #:sep @hspace[1]
-           (list (list (hspace 4)
-                       (geo-scale spec.dia 0.32)
-                       (hspace 8)
-                       (geo-scale bdd.dia 0.32))
-                 (list ""
-                       "(1). 结构模块简图"
-                       ""
-                       "(2). 简易工作流")))
+ @(let ([s 0.32])
+    (list @(para (hspace 4))
+          @(para (geo-scale spec.dia s) "结构模块简图")
+          @(para (hspace 8))
+          @(para (geo-scale bdd.dia s) "简易工作流")))
 }
 
 @:sym{specmon} 使用 Typed Racket 编写，
@@ -158,7 +153,7 @@ BDD 系测试框架比较讲究“行为规范即是可执行的测试代码”�
 此外，本引擎自带一个类似课程项目软件的测试用引擎项目软件(名为 Tamer)，
 里面的每个项目都是对特定界面机能的试运行。
 比如，
-@fig-ref{lru.exe} 中用随机生成的正多边形代表游戏中可能出现的场景布局，
+@fig-ref*{lru.exe} 中用随机生成的正多边形代表游戏中可能出现的场景布局，
 当用户需要选中堆叠在一起的某个游戏物体时，
 本引擎会依次选择指针输入设备作用范围内的最近最久未被选中的物体。
 被选中物体的边界框会被高亮显示，
@@ -166,14 +161,9 @@ BDD 系测试框架比较讲究“行为规范即是可执行的测试代码”�
 
 @tamer-figure!['lru.exe "手动测试用于“鼠标单击选择”的最近最久未选中算法(LRU)"]{
  @(let ([s 0.132])
-    (tabular #:column-properties '(center)
-             #:sep @hspace[1]
-             (list (list (stone-image "Bang/LayerOrder1.png" #:scale s)
-                         (stone-image "Bang/LayerOrder2.png" #:scale s)
-                         (stone-image "Bang/LayerOrder3.png" #:scale s))
-                   (list "(1). 选中了顶层形状"
-                         "(2). 选中了中层形状"
-                         "(3). 选中了底层形状"))))
+    (list @(para (stone-image "Bang/LayerOrder1.png" #:scale s) "选中了顶层形状")
+          @(para (stone-image "Bang/LayerOrder2.png" #:scale s) "选中了中层形状")
+          @(para (stone-image "Bang/LayerOrder3.png" #:scale s) "选中了底层形状")))
 }
 
 @handbook-action{可用性测试}
@@ -220,11 +210,9 @@ BDD 系测试框架比较讲究“行为规范即是可执行的测试代码”�
 @fig-ref{watch.exe} 通过“监视被选中角色的方向”演示了该机制。
 
 @tamer-figure!['watch.exe "实时变量监视案例"]{
- @(let ([s 0.128])
-    (tabular #:column-properties '(center)
-             (list (list (stone-image "Bang/Watch1.png" #:scale s)
-                         (stone-image "Bang/Watch2.png" #:scale s)
-                         (stone-image "Bang/Watch3.png" #:scale s)))))
+ @(let ([s 0.18])
+    (list @(para (stone-image "Bang/Watch1.png" #:scale s))
+          @(para (stone-image "Bang/Watch2.png" #:scale s))))
 }
 
 C++ 实现该机制的原理很简单，

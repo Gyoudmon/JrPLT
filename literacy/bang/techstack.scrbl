@@ -3,18 +3,19 @@
 @require{literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-root-story{相关技术介绍}
+@handbook-root-story{技术栈}
 @handbook-word-count[]
 
 @handbook-scenario{同类技术方案}
 @handbook-word-count[]
 
-研发一个新的软件系统，首先要面对的问题是“为什么不用现成的方案”？
+研发一个新的软件系统，
+首先要面对的问题是“为什么不用现成的方案”？
 
 在主流少儿编程市场上，
 学生只有 Scratch、C++ 和 Python 三个选项。
 对于本文尝试解决的问题，
-一定不能脱离以上现实问题完全另起炉灶。
+不宜脱离以上现实问题完全另起炉灶。
 
 @handbook-action{Unity}
 @handbook-word-count[]
@@ -52,6 +53,8 @@ Web 端复制品 腾讯可视化游戏开发工具 等层出不穷。
 保留运行时的图形化呈现，
 但使用代码语言替代积木编写程序创作作品、
 探索现代 K-12 教育。
+
+此外，Scratch 3.30 也开始收费了。
 
 @handbook-action{Pygame}
 @handbook-word-count[]

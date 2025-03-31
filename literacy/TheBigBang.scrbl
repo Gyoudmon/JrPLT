@@ -32,7 +32,7 @@
 @handbook-smart-table[]
 
 @include-section{bang/introduction.scrbl}
-@include-section{bang/technique.scrbl}
+@include-section{bang/techstack.scrbl}
 @include-section{bang/requirement.scrbl}
 @include-section{bang/architecture.scrbl}
 @include-section{bang/implementation.scrbl}

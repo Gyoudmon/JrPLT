@@ -5,7 +5,7 @@
 (require diafun/flowchart)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define-flowchart! prepare.dia #:at 2 [#:start-name "第一阶段主题课" #:background 'White] #:-
+(define-flowchart! prepare.dia [#:start-name "第一阶段主题课" #:background 'White] #:-
   (move-down 1 '|自备个人电脑!|)
   (move-down 1 'λ|认识 Shell|)
   (move-down 1 '#:-=)

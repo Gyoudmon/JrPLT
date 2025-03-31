@@ -2,7 +2,7 @@
 
 @(require "../literacy.rkt")
 
-@require{../../share/diagram/aoc/2024/02.report.rkt}
+@require{02.report.rkt}
 @require{../../share/timeline.rkt}
 
 @(require digimon/digitama/tamer/pseudocode)

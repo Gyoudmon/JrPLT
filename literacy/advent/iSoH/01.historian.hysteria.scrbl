@@ -2,7 +2,7 @@
 
 @(require "../literacy.rkt")
 
-@require{../../share/diagram/aoc/2024/01.hysteria.rkt}
+@require{01.hysteria.rkt}
 @require{../../share/timeline.rkt}
 
 @(require digimon/digitama/tamer/pseudocode)
@@ -13,18 +13,6 @@
 @(require plotfun/axis)
 
 @(define diaflow-node-scale 0.36)
-
-@;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@(define hh:add1-sticker
-   (lambda [id r datum unit font color]
-     (define c (rgb* color (/ (+ r 1.0) 8.0)))
-     (define g (geo-vc-append (geo-text "+1" font #:color c)
-                              (geo-arc (* unit 0.5) pi 0.0 #:stroke c #:ratio 0.85)))
-
-     (cons (if (eq? 'arrow datum)
-               (geo-pin* 1.0 0.56 0.5 0.5 g (geo-dart (* unit 0.1) (* pi 0.5) #:fill c #:stroke #false))
-               g)
-           'lc)))
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @aoc-task[2024 1]{慌乱的历史学者}
@@ -1635,13 +1623,7 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 @tech{变量} @${x} 的@tech{值}依次是 @${0, 1, 2, 3, 4, 5, ... }。
 现在把它们直观化为@fig-ref{numberline}的@emph{数轴}：
 
-@tamer-figure!['numberline
-               @list{数轴，一生二、二生三、三生万物}
-               @(plot-axis #:tick-range (cons 0 7) #:reals '(0 1 2 3 4 5 6 (7 . arrow))
-                           #:real->sticker hh:add1-sticker
-                           #:axis-color 'Orange
-                           #:axis-label "x"
-                           400 0.0 42.0)]
+@tamer-figure!['numberline @list{数轴，一生二、二生三、三生万物} number-axis/add1]
 
 箭头方向和颜色渐变方向都说明了@focus{右边是正向}。
 这条数轴取名为@${x}，
@@ -1733,15 +1715,13 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 由此得到了@fig-ref{nl:sub1}，
 你看看有哪里不一样？
 
-@tamer-figure!['nl:sub1
-               @list{数轴，但@:err{不该这么用}}
-               (plot-axis #:tick-range (cons 0 8) #:reals sub1
-                          #:real-position 0.618 #:real-anchor 'cb
-                          #:real-color 'Crimson
-                          #:axis-color 'RoyalBlue
-                          #:real-exclude-zero? #true
-                          #:axis-label "n"
-                          400 0.0 42.0)]
+@tamer-figure!['nl:sub1 @list{数轴，但@:err{不该这么用}}
+               (plot-integer-axis #:range (cons 0 8)
+                     #:style (make-plot-axis-style #:color 'RoyalBlue)
+                     #:integer-style (make-plot-axis-real-style #:position 0.618 #:anchor 'cb #:color 'Crimson)
+                     #:exclude-zero? #true
+                     #:label "n"
+                     sub1)]
 
 @fig-ref{nl:sub1}的数轴的名称变为了@${n}，
 表明线下方与@${n}齐平的数字代表的是@${x_n}各@tech{值}的@:name{索引}，
@@ -1757,15 +1737,7 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 为表区分，姑且叫做@:name{时间轴}吧，
 @${n}代表“第@${n}个需要知道变量@tech{值}的时刻”。
 
-@tamer-figure!['tl:sub1
-               @list{函数式@tech{变量}的@tech{时间轴}模型}
-               (plot-axis #:tick-range (cons 0 8) #:reals sub1
-                          #:real-position -2.0 #:real-anchor 'ct
-                          #:real->sticker (make-timeline-real->sticker "x(n)" 8)
-                          #:real-color 'DarkCyan
-                          #:real-exclude-zero? #true
-                          #:axis-label "n"
-                          400 0.0 42.0)]
+@tamer-figure!['tl:sub1 @list{函数式@tech{变量}的@tech{时间轴}模型} timeline/sub1]
 
 @aoc-bonus{到这里如果你还是不能理解@tech{函数}是什么，
 那就先看看@fig-ref{tl:sub1}找找灵感，
@@ -1877,15 +1849,13 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 
 继续可得其完整@tech{时间轴}：
 
-@tamer-figure!['tl:cons
-               @list{@tech{时间轴}，@tech{逆序}构造乙组精灵写的地址编号列表}
-               (plot-axis #:tick-range (cons 0 7) #:reals #(null (4) (3 4) (5 3 4) (3 5 3 4) (9 3 5 3 4) (3 9 3 5 3 4))
-                          #:real-position -2.0 #:real-anchor 'ct
-                          #:real->sticker (make-timeline-real->sticker "ID(n)" 7 0.618)
-                          #:real-color 'DarkCyan
-                          #:real-exclude-zero? #true
-                          #:axis-label "n"
-                          400 0.0 48.0)]
+@tamer-figure!['tl:cons @list{@tech{时间轴}，@tech{逆序}构造乙组精灵写的地址编号列表}
+               (plot-integer-axis #:range (cons 0 7)
+                                  #:integer-style dkcyan-style
+                                  #:integer->sticker (make-timeline-real->sticker "ID(n)" 7 0.618)
+                                  #:exclude-zero? #true
+                                  #:label "n"
+                                  #(null (4) (3 4) (5 3 4) (3 5 3 4) (9 3 5 3 4) (3 9 3 5 3 4)))]
 
 前文在引入@tech{时间轴}模型的时候，有个点说得比较模糊，
 @:desc{程序运行之后的某个时刻}到底是什么时候？一秒、一小时、一天？

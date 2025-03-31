@@ -12,7 +12,7 @@
 
 (require diafun/digitama/avatar/procedure)
 
-(require "../aoc.rkt")
+(require "../style.rkt")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define make-hh-helper.dia : (->* () (Any Any) Geo)

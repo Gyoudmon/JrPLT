@@ -14,7 +14,7 @@
 
 (require diafun/digitama/avatar/procedure)
 
-(require "../aoc.rkt")
+(require "../style.rkt")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define make-rnr-helper.dia : (->* () (Any Any) Geo)
