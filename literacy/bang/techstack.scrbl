@@ -3,7 +3,7 @@
 @require{literacy.rkt}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-root-story{技术栈}
+@handbook-root-story{系统技术栈与工具选型}
 @handbook-word-count[]
 
 @handbook-scenario{同类技术方案}
@@ -17,7 +17,7 @@
 对于本文尝试解决的问题，
 不宜脱离以上现实问题完全另起炉灶。
 
-@handbook-action{Unity}
+@handbook-action{Unity 引擎}
 @handbook-word-count[]
 
 Unity 是功能强大的跨平台游戏开发环境及运行引擎，
@@ -28,10 +28,13 @@ Unity 是功能强大的跨平台游戏开发环境及运行引擎，
 因而也更容易找到工作。
 
 对于学习编程的青少年来说，
-Unity 有两个大问题：一是它的主语言是 C#；
+Unity 有两个大问题：
+一是它的主语言是 C#，
+对有比赛、升学考虑的学生家长而言，
+这可以“一票否决”；
 二是它是 3D 游戏引擎，入门门槛天然不低。
 
-@handbook-action{Scratch}
+@handbook-action{图形化创作工具}
 @handbook-word-count[]
 
 Scratch 是时下针对青少年设计的最热门的图形化创作工具，
@@ -56,7 +59,7 @@ Web 端复制品 腾讯可视化游戏开发工具 等层出不穷。
 
 此外，Scratch 3.30 也开始收费了。
 
-@handbook-action{Pygame}
+@handbook-action{Pygame 游戏开发库}
 @handbook-word-count[]
 
 Pygame 是 Python 提供的游戏开发库，
@@ -71,26 +74,10 @@ Pygame 是 Python 提供的游戏开发库，
 本文的解决方案也包括一个简化的 Python 版本，
 使得学生能够使用 pygame 学习与 C++ 学生同步的项目制课程。
 
-@handbook-scenario{核心系统及第三方库}
+@handbook-scenario{第三方库}
 @handbook-word-count[]
 
-@handbook-action{JrPLT}
-@handbook-word-count[]
-
-JrPLT 即是本文所提技术方案的核心系统。
-采用 C++17 编写，
-兼容 Windows、macOS、Linux 三大操作系统。
-除标准模版库(STL)、底层图形库和系统接口层外，
-所有代码自含。
-
-@handbook-action{TheBigBang}
-@handbook-word-count[]
-
-TheBigBang 是基于本系统二次开发的项目制课程。
-包含教师演示系统、
-学生个人项目和学生团队项目。 
-
-@handbook-action{SDL2}
+@handbook-action{多媒体开发库}
 @handbook-word-count[]
 
 SDL 是一个用于开发跨平台多媒体软件的底层框架。
@@ -101,7 +88,7 @@ SDL 是一个用于开发跨平台多媒体软件的底层框架。
 @handbook-scenario{学生用开发软件}
 @handbook-word-count[]
 
-@handbook-action{Racket}
+@handbook-action{Racket 与外围工具软件包}
 
 Racket@$cite[plt-tr1] 起源于游戏化的青少年编程教育@$cite{RoR}，
 在此需求之上从 PLT Scheme 发展成为了一个独立又前卫的
@@ -111,15 +98,14 @@ Lisp 方言@handbook-footnote{Lisp 是最古老的两大高级程序语言之一
 在我的课程设置中，
 Racket 是一个帮助学生打开学科眼界的窗口
 
-在本文的技术方案中，
-学生需安装两个我编写的 Racket 软件包：
+本文提出的技术方案提供的两个外围工具软件就是用 Racket 编写：
 
 @handbook-itemlist[
  #:style 'compact
 
  @item{digimon 包含构建工具和测试系统，
-  可以帮助学生隐藏编译、
-  测试 C++ 程序和项目时的所有恼人细节。}
+  可以帮助学生隐藏构建复杂 C++ 程序和项目时的所有恼人细节；
+  竞赛班学生也可将“测试驱动刷题”融入正常的学习过程中。}
 
  @item{graphics 包含函数式可视化工具@handbook-footnote{
    本文中的软件工程图也由该软件生成。
@@ -137,14 +123,16 @@ Linux 安装 gcc、macOS 安装 XCode 没有异议；
 这对于青少年学生来说极其必要，
 因为他们通常只能用家长淘汰下来的旧电脑。
 
-@handbook-action{Visual Studio Code}
+@handbook-action{代码编辑器}
 
-Visual Studio Code(以下简称为 VSCode)是微软推出的“可扩展编辑器”，其主要职能是编辑代码。
-VSCode 对学生而言足够轻便，与本文推荐的其他软件配合可显著减少学生入门过程中的痛苦程度。
+Visual Studio Code 是微软推出的“可扩展编辑器”，
+被我们选用来作为基本的代码编辑工具。
+对学生而言它足够轻便，
+与本文推荐的其他软件配合可显著减少学生入门过程中的痛苦程度。
 
-@handbook-action{git}
+@handbook-action{版本控制软件}
 
-git 是目前应用最广泛的版本控制软件之一，
+git 是目前应用最广泛的版本控制软件之一。
 在本文的教学实践中，
 它主要用于帮助学生从教师机同步课程源码。
 以及，课程后期学生之间、师生之间团队协作做项目用。

@@ -59,7 +59,10 @@
   (move-down 1.00 (string->symbol "Matter\n(Visual Object)"))
   (jump-back) (move-right arch-tree-hwidth 'Layout)
   (jump-back) (move-right arch-tree-hwidth 'Interaction)
-  (jump-back) (move-right arch-tree-hwidth 'Timeline))
+  (jump-back) (move-right arch-tree-hwidth 'Timeline)
+
+  (jump-back '.plteen)
+  (move-down 1.75 'Datum))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main
