@@ -12,8 +12,8 @@
 (define colorize-actor : (Dia-Path-Node-Style-Make DiaUC-Actor-Style)
   (lambda [id hint]
     (case id
-      [(#::Researcher :Teacher) (make-diauc-actor-style #:fill-paint 'Yellow)]
-      [(:Engineer) (make-diauc-actor-style #:fill-paint 'DeepSkyBlue)]
+      [(#:Researcher #:Teacher) (make-diauc-actor-style #:fill-paint 'Yellow)]
+      [(#:Engineer) (make-diauc-actor-style #:fill-paint 'DeepSkyBlue)]
       [else (make-diauc-actor-style)])))
 
 (define colorize-ucase : (Dia-Path-Node-Style-Make DiaUC-UCase-Style)
@@ -25,13 +25,13 @@
       [else (make-diauc-ucase-style)])))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define-use-case! role.dia #:start ':Engineer
+(define-use-case! role.dia #:start '#:Engineer
   #:parameterize ([default-diauc-actor-style-make colorize-actor]
                   [default-diauc-ucase-style-make colorize-ucase])
-  [#:background 'White #:node-desc #hasheq((:Engineer . "软件工程师")
-                                           (#::Researcher . "教研老师")
-                                           (:Teacher . "授课老师")
-                                           (#::Student . "学生")
+  [#:background 'White #:node-desc #hasheq((#:Engineer . "软件工程师")
+                                           (#:Researcher . "教研老师")
+                                           (#:Teacher . "授课老师")
+                                           (#:Student . "学生")
                                            (arch . "设计教学引擎")
                                            (dev . "实现教学引擎")
                                            (asset . "预制素材资源")
@@ -55,7 +55,7 @@
   
   (jump-to 'dev)
   (radial-move 2.5 -25 'bdd inc)
-  (radial-move 2.5 +0 'asset ext)
+  (radial-back 2.5 +0 'asset ext)
 
   (jump-to 'arch)
   (radial-move 2.5 -15 'api inc)
@@ -64,34 +64,33 @@
   (jump-to 'train)
   (radial-move 2 -15 'doc inc)
   (radial-move 2 +15 'example inc)
-  (radial-move 2.0 +75 'study ext)
+  (radial-back 2.0 +75 'study ext)
   
-  (jump-to +8i ':Teacher)
+  (jump-to +8i '#:Teacher)
   (radial-move 2 -30 'fit)
   (radial-move 3 0 'deploy)
   (move-to 3+9i 'report)
   
-  (jump-to +4i '#::Researcher)
+  (jump-to +4i '#:Researcher)
   (radial-move 1.5 25 'slide)
   (move-to 'study)
   (move-to 'example #false inc)
-  (jump-back) (move-to ':Teacher)
+  (jump-back) (move-to '#:Teacher)
 
   (jump-to 'study)
   (radial-move 2.5 -10 'trade-off inc)
-  (radial-move 2.0 +25 'experiment ext)
+  (radial-back 2.0 +25 'experiment ext)
   (move-to 3.0+5.5i 'ct inc)
 
-  (jump-to 6+8i '#::Student)
+  (jump-to 6+8i '#:Student)
   (radial-move 2 -150.0 'dup)
   (move-to 'report) (jump-back)
   (move-to 'deploy)
   
-  (jump-to 'fit)
-  (move-to 'ct #false ext)
-  
-  (jump-to 'dup)
-  (move-to 'ct #false ext)
+  (jump-to 'ct)
+  (move-to 'fit #false ext)
+  (jump-to 'ct)
+  (move-to 'dup #false ext)
   
   (jump-to 0.5-3.5i '.sys)
   (move-right 5 #false title)
