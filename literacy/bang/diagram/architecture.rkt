@@ -74,19 +74,17 @@
 
 (define architecture.dia : Geo
   (geo-table* (list (list #false (arch-blank-layer '|应用程序| '(课程项目 演示项目 其他应用)))
-                    #;(list (arch-layer-name '表现层)
-                          (arch-layer '|可视对象| (list "背景图集" "界面元素" "运动轨迹" "动作精灵" "复杂交互对象" "统计图表")))
                     (list (arch-layer-name '功能层)
                           (arch-layer '|图形用户接口| (list "时间轴" "用户交互" "窗体渲染" "信息提示机制" "可视元素模型")))
                     (list (arch-layer-name '核心层)
-                          (arch-layers (list (cons '|物理系统| (list "代数对象" "几何对象" "物理对象" "随机数发生器"))
-                                             (cons '|虚拟化| (list "虫洞(通信)系统" "文件系统" "显示器与屏幕")))))
+                          (arch-layers (list (cons '|物理系统| (list "代数对象" "几何对象" "物理对象" "随机数"))
+                                             (cons '|虚拟化| (list "通信系统" "文件系统" "显示器与屏幕" "位置")))))
                     (list (arch-layer-name '基础设施层)
                           (arch-layers (list (cons '|数据类型包装| (list "类型操作函数" "数值函数" "高精度算术" "文件路径"))
-                                             (cons '|底层渲染| (list "画笔与笔刷" "美术资源")))))
+                                             (cons '|底层渲染| (list "画笔与笔刷" "字体" "美术资源")))))
                     (list (arch-layer-name '平台无关层)
                           (arch-layers (list (cons '|C++ 运行时| (list "基础数据类型" "STL" "shared_ptr" "filesystem"))
-                                             (cons 'SDL2 (list "事件机制" "网络接口" "绘图库")))))
+                                             (cons 'SDL2 (list "事件机制" "网络接口" "多媒体")))))
                     (list #false (arch-blank-layer '|操作系统| '(Windows macOS Linux))))
               'cc 'cc arch-layer-hgap arch-layer-vgap))
 

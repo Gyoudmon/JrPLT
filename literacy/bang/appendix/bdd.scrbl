@@ -11,9 +11,7 @@
 
 我们以 Matrix 对象的算术运算规范为例来说明本引擎开发过程中的测试工作流。
 
-@handbook-action{编写最小测试单元}
-
-此步骤详见@Secref{matrix}。
+@handbook-action{编写最小测试单元(略)}
 
 @handbook-action{编写测试驱动函数或测试包装器}
 
