@@ -8,11 +8,9 @@
    #:date "2024")
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-root-story{绪论} 
-@handbook-word-count[]
+@handbook-root-story{绪论}
 
 @handbook-scenario{背景和意义}
-@handbook-word-count[]
 
 我们现在正处在信息时代向智能时代的过渡阶段。
 这个阶段的典型特点是，
@@ -40,7 +38,6 @@
 还要确保学生真的能够学有所成、学以致用。
 
 @handbook-scenario{国内外研究现状}
-@handbook-word-count[]
 
 自2013年(或更早的时候)起，
 世界各国陆续将信息技术@handbook-footnote{严格来说，计算机科学、信息技术、
@@ -75,7 +72,6 @@ Python 介于两者之间，既可以用来参加难度较低的语言和算法�
 也可以替代Scratch参加软硬件结合的科创类比赛。
 
 @handbook-scenario{本文主要工作}
-@handbook-word-count[]
 
 本文从程序语言理论视角，结合国内外跨学科教育研究现状，
 并从国内青少年学业压力这个现实问题出发，
@@ -95,7 +91,6 @@ Python 介于两者之间，既可以用来参加难度较低的语言和算法�
 本文主要关注与这套课程配套的软件系统。
 
 @handbook-scenario{论文组织结构}
-@handbook-word-count[]
 
 本文的组织结构如下:
 

@@ -4,10 +4,8 @@
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-root-story{系统技术栈与工具选型}
-@handbook-word-count[]
 
 @handbook-scenario{同类技术方案}
-@handbook-word-count[]
 
 研发一个新的软件系统，
 首先要面对的问题是“为什么不用现成的方案”？
@@ -17,13 +15,13 @@
 对于本文尝试解决的问题，
 不宜脱离以上现实问题完全另起炉灶。
 
-@handbook-action{Unity 引擎}
-@handbook-word-count[]
+@handbook-action{商业游戏引擎}
 
-Unity 是功能强大的跨平台游戏开发环境及运行引擎，
-而且其设计之初就解决了游戏开发领域的一大痛点：
-其他游戏开发工具都太难用、开发过程太痛苦。
-因此，Unity 在设计上的成功成了游戏开发领域的标杆，
+游戏开发领域一直存在一个大的痛点：
+开发工具都太难用、开发过程太痛苦。
+而现有商业引擎中解决了此痛点的代表是 Unity，
+一个功能强大的跨平台游戏开发环境及运行引擎。
+其设计上的成功成了游戏开发领域的标杆，
 有 Unity 经验的求职者因其职业习惯靠谱，
 因而也更容易找到工作。
 
@@ -35,7 +33,6 @@ Unity 有两个大问题：
 二是它是 3D 游戏引擎，入门门槛天然不低。
 
 @handbook-action{图形化创作工具}
-@handbook-word-count[]
 
 Scratch 是时下针对青少年设计的最热门的图形化创作工具，
 也确实是青少年入门编程的主要选择。
@@ -60,7 +57,6 @@ Web 端复制品 腾讯可视化游戏开发工具 等层出不穷。
 此外，Scratch 3.30 也开始收费了。
 
 @handbook-action{Pygame 游戏开发库}
-@handbook-word-count[]
 
 Pygame 是 Python 提供的游戏开发库，
 建立在跨平台的多媒体开发框架 SDL 之上。
@@ -75,10 +71,8 @@ Pygame 是 Python 提供的游戏开发库，
 使得学生能够使用 pygame 学习与 C++ 学生同步的项目制课程。
 
 @handbook-scenario{第三方库}
-@handbook-word-count[]
 
 @handbook-action{多媒体开发库}
-@handbook-word-count[]
 
 SDL 是一个用于开发跨平台多媒体软件的底层框架。
 它封装了图形库、人机输入设备事件、
@@ -86,7 +80,6 @@ SDL 是一个用于开发跨平台多媒体软件的底层框架。
 使得我们的系统可以直接提供对跨平台的支持。
 
 @handbook-scenario{学生用开发软件}
-@handbook-word-count[]
 
 @handbook-action{Racket 与外围工具软件包}
 
