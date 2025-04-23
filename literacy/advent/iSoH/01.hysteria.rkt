@@ -102,7 +102,7 @@
 
 (define hh-mutate.dia
   (dia-flowlet-assignment #:read-desc "读取" #:write-desc "写入"
-                          'x '|+ 1| '(span ("x + " (span ([style . normal]) ("1"))))))
+                          'x '|+ 1| (<span> null "x + " (<span> '([style . normal]) "1"))))
 
 (define values.dia
   (geo-vl-append ((inst dia-flowlet-function Any Any) values pi #:input-desc "π" #:output-desc "π")
@@ -112,8 +112,8 @@
                  ((inst dia-flowlet-function Any Any) values '#:key)))
 
 (define sort.dia
-  (dia-flowlet-function #:input-desc  geo-a:small
-                        #:output-desc geo-a:small
+  (dia-flowlet-function #:input-desc  <a:small>
+                        #:output-desc <a:small>
                         (procedure-rename (λ [[xs : (Listof Natural)]] : (Listof Natural)
                                             (sort xs <))
                                           'sort)
@@ -126,7 +126,7 @@
                    (geo-scale (dia-procedure #:body-fill aoc-inner-body-fill
                                              '+ (build-list (length addends)
                                                             (λ [[i : Index]] : Dia-Procedure-Label-Datum
-                                                              `(span ("a" (sub (,(number->string (add1 i))))))))
+                                                              (<span> null "a" (<sub> (number->string (add1 i))))))
                                              null addends)
                               0.36)
                    #(λ list) 'sum

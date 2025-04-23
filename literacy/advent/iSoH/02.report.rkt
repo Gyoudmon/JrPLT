@@ -127,7 +127,7 @@
 
 (define read-char-for-line.dia
   (dia-flowlet-join #:downward? #false #:and? #false
-                    #:output-desc (list geo-s:small)
+                    #:output-desc (list <s:small>)
                     read-char (list (open-input-bytes #"\n" 'rptin)
                                     (open-input-bytes #"" 'rptin))))
   
