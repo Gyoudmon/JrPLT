@@ -133,7 +133,7 @@ BDD 系测试框架比较讲究“行为规范即是可执行的测试代码”�
 @fig-ref{watch.exe} 通过“监视被选中角色的方向”演示了该机制。
 
 @tamer-figure!['watch.exe "实时变量监视案例"]{
- @(let ([s 0.19])
+ @(let ([s 0.18])
     (list @(para (stone-image "Bang/Watch1.png" #:scale s))
           @(para (stone-image "Bang/Watch2.png" #:scale s))))
 }

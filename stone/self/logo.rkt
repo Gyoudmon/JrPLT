@@ -16,12 +16,14 @@
 
     (define-gomamon! 7-bridge-agent
       [io:width in:gapsize #:anchor '#:A #:stroke 'Yellow #:fill brush #:fill-rule 'even-odd] #:-
+
       (move-up 3 '#:B)
       (drift -1.4 '(-0.618+1.5i) '#:C)
       (drift '#:B '(+0.618-1.5i))
       (drift +1.4 '(+0.618+1.5i) '#:D)
       (drift '#:B '(-0.618-1.5i))
-      (jump-back)
+
+      (jump-to '#:D)
       (drift '#:A '(-0.618+3.0i))
       (drift '#:C '(-0.618+0.0i)))
     

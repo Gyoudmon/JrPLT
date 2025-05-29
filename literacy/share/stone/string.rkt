@@ -63,16 +63,17 @@
                    (make-chars-array (string (string-ref txt idx)) #:index #false))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define ex:chars (make-chars-array "我是一个字符数组"))
-(define ex:string (make-chars-array "我是一个字符串" #:string? #true))
+(define ex-chars (make-chars-array "我是一个字符数组"))
+(define ex-string (make-chars-array "我是一个字符串" #:string? #true))
 
 (define cat (geo-concatenate "古典" "书屋"))
-(define ref:chars (geo-char-at "青少计算机科学" 4))
-(define ref:string (geo-char-at "青少计算思维" 4))
+(define ref-chars (geo-char-at "青少计算机科学" 4))
+(define ref-string (geo-char-at "青少计算思维" 4))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main
-  ex:chars
-  ex:string
-  ref:chars
-  ref:string)
+  ex-chars
+  ex-string
+  cat
+  ref-chars
+  ref-string)

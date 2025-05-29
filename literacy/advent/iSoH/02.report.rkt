@@ -26,28 +26,28 @@
       (define-flowchart! rnr-helper.dia [#:start-name "Read Reports" #:background 'White] #:-
         (move-down 1 '|Initialize Reports|!)
         (move-down 1 '>>|read line|)
-        (move-down 1 '#:|is line a string|?)
+
+        [#:tree (move-down 1 '#:|is line a string|?)
+
+         [=> (move-left 1 #false "Yes")
+             (move-down 1 '|split line|)
+             (move-down 1 'λ|convert levels|)
+             (move-down 1 '|cons reports|)
+             (move-down 1 #false)
+             (move-left 1 #false "Loop")
+             (L-step '>>|read line|)]
         
-        (move-left 1 #false "Yes")
-        (move-down 1 '|split line|)
-        (move-down 1 'λ|convert levels|)
-        (move-down 1 '|cons reports|)
-        (move-down 1 #false)
-        (move-left 1 #false "Loop")
-        (L-step '>>|read line|)
-        
-        (jump-back)
-        (move-right 1 #false "No")
-        (move-down 1 '<<reports)
-        (move-down 1 '#:-=)
-        (move-down 0.5)
-        (move-left 0.75 #false p1-label)
-        (move-down 1 p1-anchor)
-        
-        (jump-back)
-        (move-down 0.5)
-        (move-right 0.75 #false p2-label)
-        (move-down 1 p2-anchor))
+         [=> (move-right 1 #false "No")
+             (move-down 1 '<<reports)
+             (move-down 1 '#:-=)
+
+             [=> (move-down 0.5)
+                 (move-left 0.75 #false p1-label)
+                 (move-down 1 p1-anchor)]
+             
+             [=> (move-down 0.5)
+                 (move-right 0.75 #false p2-label)
+                 (move-down 1 p2-anchor)]]])
       
       rnr-helper.dia)))
 
@@ -99,16 +99,15 @@
   (parameterize ([default-diaflow-block-width 100.0])
     (make-flowchart! #:start '.home [#:background 'White] #:-
                      (jump-down 1 (string->keyword "任务名称\nread reports"))
-                     (move-down 1.2)
-                     (move-left 0.8)
-                     (move-down 1.2 (string->symbol "碎片名称\nRead Reports"))
-                     
-                     (jump-back)
-                     (move-down 1.2)
-                     (move-right 0.8)
-                     (move-down 1.2 (string->symbol "算法名称\nRead Reports"))
-                     (move-down 2.0 (string->symbol "函数名称\nread-reports")))))
 
+                     [=> (move-down 1.2)
+                         (move-left 0.8)
+                         (move-down 1.2 (string->symbol "碎片名称\nRead Reports"))]
+                     
+                     [=> (move-down 1.2)
+                         (move-right 0.8)
+                         (move-down 1.2 (string->symbol "算法名称\nRead Reports"))
+                         (move-down 2.0 (string->symbol "函数名称\nread-reports"))])))
 
 (define read.dia
   (dia-flowlet-read #:reader read #:grid-width -1.0 #:grid-height -1.0

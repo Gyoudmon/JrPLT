@@ -52,7 +52,9 @@
   (lambda [data [sfactor 1.0]]
     (define-values (k b xmax ymax fx) (hookes-fit/least-square-method data))
 
-    (parameterize ([plot-pen-color-map 'pastel2])
+    (parameterize ([plot-pen-color-map 'pastel2]
+                   [plot-font-size 14]
+                   [plot-legend-font-size 12])
       (scale (plot ;#:title "胡克定律探究实验"
                    #:x-label "砝码质量(m/g)" #:y-label "弹簧伸长长度(ΔL/cm)"
                    #:x-min 0 #:x-max xmax #:y-max (ceiling ymax)

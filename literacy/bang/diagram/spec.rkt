@@ -9,24 +9,24 @@
   #:parameterize ([default-diaflow-arrow-target-shape #false]
                   [default-diaflow-free-track-dash 'solid])
   #:start 'specmon [#:background 'White] #:-
-  (move-down 0.75 '.spec)
-  (move-left 1.50)
-  (move-down 0.75 'DSL)
+
+  [#:tree (move-down 0.75 '.spec)
+   [=> (move-left 1.50)
+       (move-down 0.75 'DSL)]
   
-  (jump-back '.spec)
-  (move-right 1.5)
-  (move-down 0.75 'Prover)
+   [=> (move-right 1.5)
+       (move-down 0.75 'Prover)]
   
-  (jump-back '.spec)
-  (move-down 0.75 'Behavior)
-  (move-down 0.75 '.bdd)
-  (move-right 0.75)
-  (move-down 0.75 'Issue)
-  (move-down 1.00 'Formatter)
+   [=> (move-down 0.75 'Behavior)
+
+       [#:tree (move-down 0.75 '.bdd)
+
+        [=> (move-right 0.75)
+            (move-down 0.75 'Issue)
+            (move-down 1.00 'Formatter)]
   
-  (jump-back '.bdd)
-  (move-left 0.75)
-  (move-down 0.75 'Expectation))
+        [=> (move-left 0.75)
+            (move-down 0.75 'Expectation)]]]])
 
 (define-flowchart! bdd.dia
   #:parameterize ([default-diaflow-arrow-label-rotate? #true]

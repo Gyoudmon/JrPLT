@@ -1,19 +1,23 @@
 #lang typed/racket
 
-(require bitmap)
+(require geofun/vector)
 
-(define R : Flonum 32.0)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define R : Flonum 64.0)
+(define gap : Flonum 32.0)
 
-(define regular-polygon : (-> Index Flonum Bitmap)
-  (lambda [n pi-m]
-    (bitmap-cc-superimpose (bitmap-regular-polygon n R (* pi pi-m) #:inscribed? #true #:fill 'darkorange)
-                           (bitmap-circle R #:fill 'ghostwhite))))
+(define regular-polygon : (->* (Index Flonum) (Byte) Geo)
+  (lambda [n pi-m [step 1]]
+    (geo-cc-superimpose (geo-circle R #:stroke 'silver)
+                        (geo-star-polygon n step R (* pi pi-m))
+                        (geo-circle 1 #:fill 'black))))
 
-(define polygon-r3 (regular-polygon 3 -0.5))
-(define polygon-r4 (regular-polygon 4 -0.25))
-(define polygon-r6 (regular-polygon 6 -0.5))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define polygons
+  (geo-table* (list (list (regular-polygon 3 -0.5) (regular-polygon 4 -0.25)   (regular-polygon 5 -0.5)   (regular-polygon 8 0.0))
+                    (list                   #false                    #false (regular-polygon 5 -0.5 2) (regular-polygon 8 0.0 3)))
+              'cc 'cc gap gap))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main
-  polygon-r3
-  polygon-r4
-  polygon-r6)
+  polygons)

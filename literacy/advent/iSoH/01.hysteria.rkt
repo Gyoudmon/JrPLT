@@ -26,27 +26,26 @@
         (move-down 1 '>>|read IDs|)
         ;(jump-right 1.5 '/doc/locin)
         ;(move-left 1.5 #false "from")
-        (move-down 1 '#:predicate?)
         
-        (move-left 1 #false "Yes")
-        (move-down 1 '|cons X|)
-        (move-down 1 '|cons Y|)
-        (move-down 1)
-        (move-left 1 #false "Loop")
-        (L-step '>>|read IDs|)
+        [#:tree (move-down 1 '#:predicate?)
+         [=> (move-left 1 #false "Yes")
+             (move-down 1 '|cons X|)
+             (move-down 1 '|cons Y|)
+             (move-down 1)
+             (move-left 1 #false "Loop")
+             (L-step '>>|read IDs|)]
         
-        (jump-back)
-        (move-right 1 #false "No")
-        (move-down 1 '<<done)
-        (move-down 1 '#:-=)
-        (move-down 0.5)
-        (move-left 0.75 #false p1-label)
-        (move-down 1 p1-anchor)
+         [=>  (move-right 1 #false "No")
+              (move-down 1 '<<done)
+
+              [#:tree (move-down 1 '#:-=)
+               [=> (move-down 0.5)
+                   (move-left 0.75 #false p1-label)
+                   (move-down 1 p1-anchor)]
         
-        (jump-back)
-        (move-down 0.5)
-        (move-right 0.75 #false p2-label)
-        (move-down 1 p2-anchor))
+               [=> (move-down 0.5)
+                   (move-right 0.75 #false p2-label)
+                   (move-down 1 p2-anchor)]]]])
       
       hh-helper.dia)))
 

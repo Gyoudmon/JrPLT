@@ -24,41 +24,39 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-flowchart! setup.dia #:at 2 [#:start-name "Setup" #:background 'White] #:-
   (jump-to 5.5 host)
-  (jump-back)
+  (jump-to '#:home)
   
   (move-down 1 (string->symbol "自备电脑\nGot a Personal Computer\nfor Yourself!"))
   (move-down 1 ':|Run PowerShell|)
-  (move-down 1.2 (string->keyword ">>:选择工作目录\nSelect a Folder as Your Workspace"))
-  (move-down 1.2 (string->keyword ">>:下载开发软件\nDownload Development Software") "cd D:/[name]")
-  (move-down 1.2 (string->symbol ":安装开发软件\nInstall Development Software"))
-  (move-down 1.2 (string->symbol ":编辑PATH环境变量\nEdit the PATH Environment Variable") "sysdm.cpl")
-  (move-down 1.2 (string->keyword ">>:克隆我开发的课程软件\nClone Course-related Software"))
-  (move-down 1.2 (string->symbol ">>:安装我的课程软件\nInstall Course-related Software")
-             (string-append "raco pkg install --auto --link C:/digimon " "\n"
-                            "raco pkg install --auto --link C:/graphics"))
-  (move-down 1.2 (string->keyword ">>:克隆课程源码库\nClone Source Repositories"))
-  (move-down 1 'End$)
 
-  (jump-back)
-  (jump-left 2 '|/doc/~/[repo]/|)
-  (jump-to host)
-  (L-step '|/doc/~/[repo]/| #false (cons (string-append (git-clone-string 'pbl "D:/[name]") "\n"
-                                                        (git-clone-string 'noi "D:/[name]")) #false))
+  [#:tree (move-down 1.2 (string->keyword ">>:选择工作目录\nSelect a Folder as Your Workspace"))
+   [=> [#:tree (move-down 1.2 (string->keyword ">>:下载开发软件\nDownload Development Software") "cd D:/[name]")
+        [=> (move-down 1.2 (string->symbol ":安装开发软件\nInstall Development Software"))
+            (move-down 1.2 (string->symbol ":编辑PATH环境变量\nEdit the PATH Environment Variable") "sysdm.cpl")
+            
+            [#:tree (move-down 1.2 (string->keyword ">>:克隆我开发的课程软件\nClone Course-related Software"))
+             [=> (move-down 1.2 (string->symbol ">>:安装我的课程软件\nInstall Course-related Software")
+                            (string-append "raco pkg install --auto --link C:/digimon " "\n"
+                                           "raco pkg install --auto --link C:/graphics"))
+                 
+                 [#:tree (move-down 1.2 (string->keyword ">>:克隆课程源码库\nClone Source Repositories"))
+                  [=> (move-down 1 'End$)]
+                  [=> (jump-left 2 '|/doc/~/[repo]/|)
+                      (jump-to host)
+                      (L-step '|/doc/~/[repo]/| #false (cons (string-append (git-clone-string 'pbl "D:/[name]") "\n"
+                                                                            (git-clone-string 'noi "D:/[name]")) #false))]]]
+             
+             [=> (jump-left 2 '/doc/C:/opt/)
+                 (jump-to host)
+                 (L-step '/doc/C:/opt/ #false (cons (string-append (git-clone-string 'digimon " C:/opt") " \n"
+                                                                   (git-clone-string 'graphics "C:/opt") "\n"
+                                                                   (git-clone-string 'JrPLT "   C:/opt") "   ") #false))]]]
+   
+        [=> (jump-left 2 '/doc/~/software/)
+            (jump-to host)
+            (L-step '/doc/~/software/ #false (cons (scp-string 'software "D:/[name]") #false))]]]
   
-  (jump-back)
-  (jump-left 2 '/doc/C:/opt/)
-  (jump-to host)
-  (L-step '/doc/C:/opt/ #false (cons (string-append (git-clone-string 'digimon " C:/opt") " \n"
-                                                     (git-clone-string 'graphics "C:/opt") "\n"
-                                                     (git-clone-string 'JrPLT "   C:/opt") "   ") #false))
-
-  (jump-back)
-  (jump-left 2 '/doc/~/software/)
-  (jump-to host)
-  (L-step '/doc/~/software/ #false (cons (scp-string 'software "D:/[name]") #false))
-  
-  (jump-back)
-  (move-left 2 '|/doc/D:/[name]/| "mkdir D:/[name]"))
+   [=> (move-left 2 '|/doc/D:/[name]/| "mkdir D:/[name]")]])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main

@@ -8,7 +8,8 @@
 @(define (array-example id content)
    @centered{@(let* ([arr content]
                      [size (string-length arr)])
-                (tamer-figure! id (format "含~a个元素的字符数组，内容下标最大值是~a"
+                (void)
+                #;(tamer-figure! id (format "含~a个元素的字符数组，内容下标最大值是~a"
                                     size (sub1 size))
                                (make-chars-array #:font example-font
                                                  arr)))})
@@ -16,7 +17,8 @@
 @(define (string-example id content)
    @centered{@(let* ([arr content]
                      [size (string-length arr)])
-                (tamer-figure! id (format "含~a个字符的字符串，内容下标最大值是~a，占据~a个格子"
+                (void)
+                #;(tamer-figure! id (format "含~a个字符的字符串，内容下标最大值是~a，占据~a个格子"
                                     size (sub1 size) (add1 size))
                                (make-chars-array #:font example-font #:string? #true
                                                  arr)))})

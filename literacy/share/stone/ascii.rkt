@@ -52,24 +52,34 @@
           [(char-symbolic? ch) 'MintCream]
           [else 'WhiteSmoke])))
 
-(define ascii->code : (-> Integer Geo)
-  (lambda [code]
+(define ascii->code : (->* (Integer) (Nonnegative-Flonum) Geo)
+  (lambda [code [width 96.0]]
+    (define height : Nonnegative-Flonum 48.0)
     (define ch (integer->char code))
     (define color (ascii-color ch))
     (geo-rb-superimpose
-     (geo-cc-superimpose (geo-rectangle 96 48 #:stroke 'LightGray #:fill color)
-                         (if (hash-has-key? non-printable-chars code)
-                             (geo-text (format "[~a]" (cadr (hash-ref non-printable-chars code))) #:color 'DimGrey)
-                             (geo-text ch main-font)))
+     (geo-cc-superimpose (geo-rectangle width height #:stroke 'LightGray #:fill color)
+                         (geo-fit (if (hash-has-key? non-printable-chars code)
+                                      (geo-text (format "[~a]" (cadr (hash-ref non-printable-chars code))) #:color 'DimGrey)
+                                      (geo-text ch main-font))
+                                  width height))
      (geo-cc-superimpose (geo-rectangle 28 16 #:stroke #false #:fill #false)
                          (geo-text code #:color 'DimGrey)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define ascii
   (geo-table 8
-   (for/list : (Listof Geo) ([code (in-range 128)])
-     (ascii->code code))
-   null null
-   2.0 2.0))
+             (for/list : (Listof Geo) ([code (in-range 128)])
+               (ascii->code code))
+             null null 2.0 2.0))
 
-ascii
+(define ascii16
+  (geo-table 16
+             (for/list : (Listof Geo) ([code (in-range 128)])
+               (ascii->code code 72.0))
+             null null 2.0 2.0))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(module+ main
+  ascii
+  ascii16)

@@ -6,9 +6,9 @@ int main(int argc, char** argv) {
     define(int, idx);
     define(int, L_neighbor);
     define(int, R_neighbor);
-    int sugars[] = { 8, 9, 10, 11, 12 };
+    int S[] = { 8, 9, 10, 11, 12 };
     
-    watch_array(int, sugars);
+    watch_array(int, S);
     take_snapshot("Initialized");
 
     idx = 0;
@@ -16,10 +16,10 @@ int main(int argc, char** argv) {
         L_neighbor = (idx - 1 + 5) % 5;
         R_neighbor = (idx + 1) % 5;
 
-        sugars[idx] /= 3;
+        S[idx] /= 3;
 
-        sugars[L_neighbor] += sugars[idx];
-        sugars[R_neighbor] += sugars[idx];
+        S[L_neighbor] += S[idx];
+        S[R_neighbor] += S[idx];
 
         take_snapshot("Loop");
         idx ++;

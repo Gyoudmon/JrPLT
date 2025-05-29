@@ -71,21 +71,21 @@
   (radial-move 3 0 'deploy)
   (move-to 3+9i 'report)
   
-  (jump-to +4i '#:Researcher)
-  (radial-move 1.5 25 'slide)
-  (move-to 'study)
-  (move-to 'example #false inc)
-  (jump-back) (move-to '#:Teacher)
+  [#:tree (jump-to +4i '#:Researcher)
+   [=> (radial-move 1.5 25 'slide)
+       (move-to 'study)
+       (move-to 'example #false inc)]
+   [=> (move-to '#:Teacher)]]
 
   (jump-to 'study)
   (radial-move 2.5 -10 'trade-off inc)
   (radial-back 2.0 +25 'experiment ext)
   (move-to 3.0+5.5i 'ct inc)
 
-  (jump-to 6+8i '#:Student)
-  (radial-move 2 -150.0 'dup)
-  (move-to 'report) (jump-back)
-  (move-to 'deploy)
+  [#:tree (jump-to 6+8i '#:Student)
+   [=> (radial-move 2 -150.0 'dup)
+       (move-to 'report)]
+   [=> (move-to 'deploy)]]
   
   (jump-to 'ct)
   (move-to 'fit #false ext)
