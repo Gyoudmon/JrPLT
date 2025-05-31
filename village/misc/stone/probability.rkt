@@ -3,8 +3,6 @@
 (require geofun/vector)
 (require plotfun/axis)
 
-(require racket/list)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define cols : Byte 10)
 (define rows : Byte 10)
