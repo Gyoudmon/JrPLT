@@ -27,7 +27,7 @@
                         (* (random) scale-span)))))
       
       (define bacterium
-        (dia-procedure #:iofill (λ [var type] 'GhostWhite) #:io-width (- (geo-width stick) 1.0)
+        (dia-procedure #:iofill (λ [idx var type] 'GhostWhite) #:io-width (- (geo-width stick) 1.0)
                        #:corner-radius -0.5
                        #:border (desc-stroke (default-procedure-border) #:color 'DarkGrey)
                        (λ [[rem : Nonnegative-Flonum]] : Geo

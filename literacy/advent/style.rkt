@@ -12,7 +12,7 @@
 
 (define aoc-inner-body-fill : Color (rgb* 'LightBlue))
 (define aoc-outer-body-fill : Color (rgb* 'Lavender))
-(define aoc-inner-iofill : Dia-Procedure-IO-Fill (λ [v t] 'AliceBlue))
+(define aoc-inner-iofill : Dia-Procedure-IO-Fill (λ [idx v t] 'AliceBlue))
 
 (define aoc-margin-figure-separator (geo-hline 240.0 8.0 #:stroke 'LightGrey))
 

@@ -6,7 +6,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-flowchart! spec.dia
-  #:parameterize ([default-diaflow-arrow-target-shape #false]
+  #:parameterize ([default-diaflow-arrow-target-tip #false]
                   [default-diaflow-free-track-dash 'solid])
   #:start 'specmon [#:background 'White] #:-
 
@@ -32,7 +32,7 @@
   #:parameterize ([default-diaflow-arrow-label-rotate? #true]
                   [default-diaflow-arrow-label-inline? #false]
                   [default-diaflow-free-track-dash 'long-dash]
-                  [default-diaflow-free-track-target-shape default-arrow-tip])
+                  [default-diaflow-free-track-target-tip default-arrow-tip])
   #:start 'λtestable-unit [#:background 'White #:node-desc #hasheq((λtestable-unit . "编写最小可测单元")
                                                                    (test-driver . "编写\n测试驱动函数或包装器")
                                                                    (ffi . "编写\n驱动函数的 FFI 绑定")

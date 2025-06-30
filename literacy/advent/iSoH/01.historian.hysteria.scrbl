@@ -1623,12 +1623,12 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 @tech{变量} @${x} 的@tech{值}依次是 @${0, 1, 2, 3, 4, 5, ... }。
 现在把它们直观化为@fig-ref{numberline}的@emph{数轴}：
 
-@tamer-figure!['numberline @list{数轴，一生二、二生三、三生万物} number-axis/add1]
+@tamer-figure!['numberline @list{数轴，一生二、二生三、三生万物} number-axis/succ]
 
 箭头方向和颜色渐变方向都说明了@focus{右边是正向}。
 这条数轴取名为@${x}，
-表明@${x_n}的@tech{值}就是数线下方与@${x}齐平的每个@emph{非负整数}@handbook-footnote{
- 按照数轴惯例，@emph{自然数}指的是数轴上 @racket[0] 点右边的等距离点位。}点：@handbook-sidenote*{
+表明@${x_n}的@tech{值}就是数线下标注的每个@emph{非负整数}@handbook-footnote{
+ 按照数轴惯例，@emph{自然数}指的是数轴上 @racket[0] 点右边的等距离点位。}：@handbook-sidenote*{
  今后当你困扰于复杂的递推关系时，别忘了回忆起这里我们开始的地方，没准就悟了呢。
 }从 @racket[0] 开始，每应用一次@emph{递推公式}，
 就往右边跳一步，进而落在了下一个@emph{自然数}点上。
@@ -1715,13 +1715,7 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 由此得到了@fig-ref{nl:sub1}，
 你看看有哪里不一样？
 
-@tamer-figure!['nl:sub1 @list{数轴，但@:err{不该这么用}}
-               (plot-integer-axis #:range (cons 0 8)
-                     #:style (make-plot-axis-style #:color 'RoyalBlue)
-                     #:integer-style (make-plot-axis-real-style #:position 0.618 #:anchor 'cb #:color 'Crimson)
-                     #:exclude-zero? #true
-                     #:label "n"
-                     sub1)]
+@tamer-figure!['nl:sub1 @list{数轴，但@:err{不该这么用}} number-axis/error]
 
 @fig-ref{nl:sub1}的数轴的名称变为了@${n}，
 表明线下方与@${n}齐平的数字代表的是@${x_n}各@tech{值}的@:name{索引}，
@@ -1851,8 +1845,8 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 
 @tamer-figure!['tl:cons @list{@tech{时间轴}，@tech{逆序}构造乙组精灵写的地址编号列表}
                (plot-integer-axis #:range (cons 0 7)
-                                  #:integer-style dkcyan-style
-                                  #:integer->sticker (make-timeline-real->sticker "ID(n)" 7 0.618)
+                                  #:mark-style dkcyan-style
+                                  #:mark-template (make-timeline-real-desc "ID(n)" 7 0.618)
                                   #:exclude-zero? #true
                                   #:label "n"
                                   #(null (4) (3 4) (5 3 4) (3 5 3 4) (9 3 5 3 4) (3 9 3 5 3 4)))]

@@ -24,15 +24,17 @@
 (define coordinate
   (geo-freeze gomamon))
 
-(define style (make-plot-axis-real-style #:anchor 'cc #:color 'RoyalBlue #:dot-radius -2.0))
+(define style (make-plot-mark-style #:anchor 'cc #:color 'RoyalBlue #:pin-length 0.0 #:gap-length '(100 %)))
 
 (define axis
-  (plot-axis #:ticks (plot-fixed-ticks 0.0 1.0 0.1) #:label "P" #:real-style style
-             (list 0 1)))
+  (plot-axis #:ticks (plot-fixed-ticks 0.0 1.0 0.1) #:label "P" #:mark-style style
+             #:style (make-plot-axis-style #:tip plot-no-tip)
+             null))
 
 (define integer-axis
-  (plot-integer-axis #:range (cons 0 100) #:label "%" #:exclude-zero? #false #:integer-style style
-                     (list 0 100)))
+  (plot-integer-axis #:range (cons 0 100) #:label "%" #:exclude-zero? #false #:mark-style style
+                     #:style (make-plot-axis-style #:tip plot-no-tip)
+                     null))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main
