@@ -1,7 +1,7 @@
 #lang typed/racket/base
 
 (require geofun/vector)
-(require plotfun/axis)
+(require plotfun/line)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define cols : Byte 10)
@@ -24,15 +24,15 @@
 (define coordinate
   (geo-freeze gomamon))
 
-(define style (make-plot-mark-style #:anchor 'cc #:color 'RoyalBlue #:pin-length 0.0 #:gap-length '(100 %)))
+(define style (make-plot-mark-style #:color 'RoyalBlue #:pin-length 0.0 #:gap-length '(100 %)))
 
 (define axis
-  (plot-axis #:ticks (plot-fixed-ticks 0.0 1.0 0.1) #:label "P" #:mark-style style
+  (plot-line #:ticks (plot-fixed-ticks 0.0 1.0 0.1) #:label "P" #:mark-style style
              #:style (make-plot-axis-style #:tip plot-no-tip)
              null))
 
 (define integer-axis
-  (plot-integer-axis #:range (cons 0 100) #:label "%" #:exclude-zero? #false #:mark-style style
+  (plot-integer-line #:range (cons 0 100) #:label "%" #:exclude-zero? #false #:mark-style style
                      #:style (make-plot-axis-style #:tip plot-no-tip)
                      null))
 

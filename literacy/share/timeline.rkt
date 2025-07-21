@@ -3,10 +3,10 @@
 (provide (all-defined-out))
 
 (require geofun/vector)
-(require plotfun/axis)
+(require plotfun/line)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define dkcyan-style (make-plot-mark-style #:pin-length 0.0 #:gap-length '(200 %) #:gap-angle pi/2 #:anchor 'ct #:color 'DarkCyan))
+(define dkcyan-style (make-plot-mark-style #:pin-length 0.0 #:gap-length '(200 %) #:gap-angle pi/2 #:color 'DarkCyan))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define make-timeline-real-desc : (->* (String Index) (Real) Plot-Mark->Description)
@@ -28,35 +28,33 @@
     (define n (real->double-flonum (real-part pt)))
     (define c (rgb* color (/ (+ n 1.0) 8.0)))
     (define unit (max (real-part (- (transform (+ n 1.0) 0.0) (transform n 0.0))) 0.0))
-    (define g (geo-vc-append (geo-text "+1" font #:color c)
-                             (geo-arc (* unit 0.5) 3.4 6.0 #:stroke c #:ratio 1.618)))
     
-    (make-sticker (if (eq? 'arrow datum)
-                      (geo-pin* 0.975 0.58 0.5 0.5 g (geo-dart (* unit 0.1) (* pi 0.375) #:fill c #:stroke #false))
-                      g)
+    (make-sticker (geo-vc-append (geo-text "+1" font #:color c)
+                                 (geo-edge #:stroke c #:target-tip default-arrow-tip
+                                           #:scale unit
+                                           (list (list 0.1 0.5-0.16i 0.9))))
                   'lb
-                  (make-rectangular 0.0 (* unit 0.25)))))
+                  (* unit 0.1-0.25i))))
 
 (define number-axis/succ : Geo
-  (plot-integer-axis #:range (cons 0 7)
+  (plot-integer-line #:range (cons 0 7)
                      #:unit-length '(12.5 %)
                      #:mark-style (make-plot-mark-style #:color 'Orange #:pin-length 0.0)
                      #:mark-template hh:succ-desc
                      #:exclude-zero? #false
                      #:label "x"
-                     (list 0 1 2 3 4 5 6
-                           (plot-integer 7 #:gap-length 0.0 #:datum 'arrow))))
+                     (list 0 1 2 3 4 5 6 7)))
 
 (define number-axis/error : Geo
-  (plot-integer-axis #:range (cons 0 8)
+  (plot-integer-line #:range (cons 0 8)
                      #:style (make-plot-axis-style #:stroke (desc-stroke default-axis-stroke #:color 'RoyalBlue))
-                     #:mark-style (make-plot-mark-style #:anchor 'cb #:color 'Crimson #:pin-length 0.0 #:gap-length '(61.8 %))
+                     #:mark-style (make-plot-mark-style #:color 'Crimson #:pin-length 0.0 #:gap-length '(61.8 %))
                      #:exclude-zero? #true
                      #:label "n"
                      sub1))
 
 (define timeline/sub1 : Geo
-  (plot-integer-axis #:range (cons 0 8)
+  (plot-integer-line #:range (cons 0 8)
                      #:mark-style dkcyan-style
                      #:mark-template (make-timeline-real-desc "x(n)" 8)
                      #:exclude-zero? #true

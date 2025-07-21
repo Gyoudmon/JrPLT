@@ -1,6 +1,6 @@
 #lang typed/racket/base
 
-(require mathfun/position)
+(require expfun/position)
 (require geofun/vector)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

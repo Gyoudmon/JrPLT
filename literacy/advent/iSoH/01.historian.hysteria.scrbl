@@ -10,7 +10,7 @@
 
 @(require geofun/vector)
 @(require diafun/flowchart)
-@(require plotfun/axis)
+@(require plotfun/line)
 
 @(define diaflow-node-scale 0.36)
 
