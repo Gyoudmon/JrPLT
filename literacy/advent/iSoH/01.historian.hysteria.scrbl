@@ -1844,7 +1844,7 @@ Racket 能自己@emph{推导}出结果的@emph{类型}，
 继续可得其完整@tech{时间轴}：
 
 @tamer-figure!['tl:cons @list{@tech{时间轴}，@tech{逆序}构造乙组精灵写的地址编号列表}
-               (plot-integer-axis #:range (cons 0 7)
+               (plot-integer-line #:range (cons 0 7)
                                   #:mark-style dkcyan-style
                                   #:mark-template (make-timeline-real-desc "ID(n)" 7 0.618)
                                   #:exclude-zero? #true

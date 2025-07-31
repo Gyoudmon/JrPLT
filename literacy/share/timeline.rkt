@@ -29,10 +29,10 @@
     (define c (rgb* color (/ (+ n 1.0) 8.0)))
     (define unit (max (real-part (- (transform (+ n 1.0) 0.0) (transform n 0.0))) 0.0))
     
-    (make-sticker (geo-vc-append (geo-text "+1" font #:color c)
-                                 (geo-edge #:stroke c #:target-tip default-arrow-tip
-                                           #:scale unit
-                                           (list (list 0.1 0.5-0.16i 0.9))))
+    (make-sticker (geo-path #:stroke c #:target-tip default-arrow-tip
+                            #:labels (make-geo-path-label "+1" #:font font #:color c)
+                            #:scale unit
+                            (list (list 0.1 0.5-0.16i 0.9)))
                   'lb
                   (* unit 0.1-0.25i))))
 
