@@ -5,7 +5,7 @@
 
 #include "memory.h"
 
-int main() {
+int main(int argc, char* argv[]) {
     define_init(int, sum, 0);
     define_array(char, ISBN, 10);
     define_init(char, checksum, 'X');
@@ -15,7 +15,11 @@ int main() {
     
     take_snapshot("defined");
 
-    sscanf("0-670-82162-X", "%c-%3c-%5c-%c", ISBN, publisher, book, id);
+    if (argc > 1) {
+        sscanf(argv[1], "%c-%3c-%5c-%c", ISBN, publisher, book, id);
+    } else {
+        sscanf("0-670-82162-X", "%c-%3c-%5c-%c", ISBN, publisher, book, id);
+    }
 
     take_snapshot("initialized");
 
