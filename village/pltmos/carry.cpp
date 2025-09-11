@@ -14,18 +14,20 @@ static const char BIN_KEY = 'b';
 static const char OCT_KEY = 'o';
 static const char HEX_KEY = 'x';
 
-static const facility_item_t ordered_keys[] = {
-    { DEC_KEY, "十进制" },
-    { BIN_KEY, "二进制" },
-    { OCT_KEY, "八进制" },
-    { HEX_KEY, "十六进制" }
-};
+static const TextFacilityConfig<4> text_config = {
+    {
+        { DEC_KEY, "十进制" },
+        { BIN_KEY, "二进制" },
+        { OCT_KEY, "八进制" },
+        { HEX_KEY, "十六进制" }
+    },
 
-static const bool key_states[][sizeof(ordered_keys)/sizeof(facility_item_t)] = {
-    { false, true, true, true },
-    { true, false, true, true },
-    { true, true, false, true },
-    { true, true, true, false },
+    {
+        { false, true, true, true },
+        { true, false, true, true },
+        { true, true, false, true },
+        { true, true, true, false },
+    }
 };
 
 /*************************************************************************************************/
@@ -61,7 +63,7 @@ namespace {
 }
 
 WarGrey::PLT::DotAndCarryOnePlane::DotAndCarryOnePlane(size_t num)
-        : TheBigBang("位值制与进制系统"), TextFacilityPlane(GameFont::monospace(FontSize::large), ordered_keys, key_states) {
+        : TheBigBang("位值制与进制系统"), TextFacilityPlane(GameFont::monospace(FontSize::large), text_config) {
     if (num > 0) {
         this->animals = std::vector<Animal*>(num, nullptr);
     } else {

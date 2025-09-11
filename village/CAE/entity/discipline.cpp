@@ -1,6 +1,6 @@
 #include "discipline.hpp"
 
-#include <strings.h>
+#include <plteen/datum/string.hpp>
 
 using namespace WarGrey::CAE;
 using namespace Plteen;
@@ -28,19 +28,19 @@ const char* WarGrey::CAE::DisciplineEntity::type_to_name(DisciplineType type) {
 }
 
 DisciplineType WarGrey::CAE::DisciplineEntity::name_to_type(const char* name) {
-    if ((strcasecmp(name, "mathematics") == 0) || (strcasecmp(name, "math") == 0)) {
+    if ((string_ci_equal(name, "mathematics") == 0) || (string_ci_equal(name, "math") == 0)) {
         return DisciplineType::Mathematics;
-    } else if ((strcasecmp(name, "programming") == 0) || (strcasecmp(name, "coding") == 0)) {
+    } else if ((string_ci_equal(name, "programming") == 0) || (string_ci_equal(name, "coding") == 0)) {
         return DisciplineType::Programming;
-    } else if (strcasecmp(name, "STEM") == 0) {
+    } else if (string_ci_equal(name, "STEM") == 0) {
         return DisciplineType::STEM;
-    } else if ((strcasecmp(name, "3dprinting") == 0) || (strcasecmp(name, "3d") == 0)) {
+    } else if ((string_ci_equal(name, "3dprinting") == 0) || (string_ci_equal(name, "3d") == 0)) {
         return DisciplineType::Printing3D;
-    } else if (strcasecmp(name, "physics") == 0) {
+    } else if (string_ci_equal(name, "physics") == 0) {
         return DisciplineType::Physics;
-    } else if (strcasecmp(name, "chemistry") == 0) {
+    } else if (string_ci_equal(name, "chemistry") == 0) {
         return DisciplineType::Chemistry;
-    } else if ((strcasecmp(name, "biology") == 0) || (strcasecmp(name, "bio") == 0)) {
+    } else if ((string_ci_equal(name, "biology") == 0) || (string_ci_equal(name, "bio") == 0)) {
         return DisciplineType::Biology;
     } else {
         return DisciplineType::Blank;

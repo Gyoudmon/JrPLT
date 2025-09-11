@@ -1,6 +1,6 @@
 #include "class.hpp"
 
-#include <strings.h>
+#include <plteen/datum/string.hpp>
 
 using namespace WarGrey::CAE;
 using namespace Plteen;
@@ -15,9 +15,9 @@ static const char* class_room_type_to_name(ClassRoomType type) {
 }
 
 static ClassRoomType name_to_class_room_type(const char* name) {
-    if (strcasecmp(name, "Computer Room/C") == 0) {
+    if (string_ci_equal(name, "Computer Room/C") == 0) {
         return ClassRoomType::ComputerColumn;
-    } else if (strcasecmp(name, "STEM") == 0) {
+    } else if (string_ci_equal(name, "STEM") == 0) {
         return ClassRoomType::STEM;
     } else {
         return ClassRoomType::Blank;

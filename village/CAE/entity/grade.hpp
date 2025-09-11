@@ -37,5 +37,5 @@ namespace WarGrey::CAE {
         std::vector<double> points;
     };
 
-    typedef std::shared_ptr<GradeEntity> shared_grade_t;
+    typedef std::shared_ptr<WarGrey::CAE::GradeEntity> shared_grade_t;
 }

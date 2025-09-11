@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <exception>
+#include <memory>
 
 #include <plteen/datum/string.hpp>
 

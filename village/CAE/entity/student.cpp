@@ -1,6 +1,6 @@
 #include "student.hpp"
 
-#include <strings.h>
+#include <plteen/datum/string.hpp>
 
 using namespace WarGrey::CAE;
 using namespace Plteen;
@@ -15,9 +15,9 @@ static const char* gender_to_name(StudentGender gender) {
 }
 
 static StudentGender name_to_gender(const char* gender) {
-    if ((strcasecmp(gender, "girl") == 0) || (strcasecmp(gender, "g") == 0)) {
+    if ((string_ci_equal(gender, "girl") == 0) || (string_ci_equal(gender, "g") == 0)) {
         return StudentGender::Girl;
-    } else if ((strcasecmp(gender, "boy") == 0) || (strcasecmp(gender, "b") == 0)) {
+    } else if ((string_ci_equal(gender, "boy") == 0) || (string_ci_equal(gender, "b") == 0)) {
         return StudentGender::Boy;
     } else {
         return StudentGender::_;
