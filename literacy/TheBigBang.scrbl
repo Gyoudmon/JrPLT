@@ -16,7 +16,11 @@
             names)))
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-title[#:λtitle title #:author mk-author]{面向青少年程序设计教学引擎的设计与实现}
+@handbook-title[
+ #:λtitle title #:author mk-author
+ ;#:documentclass 'acmart
+ ;#:document-options '(manuscript natbib nonacm screen timestamp acmthm)
+ ]{面向青少年程序设计教学引擎的设计与实现}
 @authorsaddresses[]
 
 @include-abstract{bang/abstract_zh.scrbl}

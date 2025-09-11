@@ -16,7 +16,8 @@
                     (geo-vr-append (geo-hc-append #:gapsize gapsize (geo-text (format " ~a " x) font #:color 'DeepSkyBlue) arrow)
                                    (geo-hc-append #:gapsize gapsize (geo-text (format " ~a " y) font #:color 'DeepSkyBlue) arrow))
                     (geo-cc-superimpose (geo-rectangle 64 #:stroke 'RoyalBlue)
-                                        (geo-text (format " z = ~a(~a, ~a) " f x y) (desc-font font #:size 12.0) #:color 'SteelBlue))
+                                        (geo-text (format " z = ~a (~a, ~a) " f x y)
+                                                  (desc-font font #:size 12.0) #:color 'SteelBlue))
                     arrow
                     (geo-text (format " ~a " z) font #:color 'DeepSkyBlue))))
 

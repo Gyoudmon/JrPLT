@@ -1,19 +1,19 @@
 #lang typed/racket
 
-(require plot)
+(require plotfun)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; 粗糙的函数
-(define make-rough-hookes-law : (-> (Vector Real Real) (Values Real (-> Real Real)))
+(define make-rough-hookes-law : (-> Complex (Values Real (-> Real Real)))
   (lambda [xy]
-    (define k (/ (vector-ref xy 1) (vector-ref xy 0)))
+    (define k (/ (imag-part xy) (real-part xy)))
 
     (values k
             (λ [[x : Real]] : Real
               (* k x)))))
 
 ; 函数拟合/最小二乘法
-(define hookes-fit/least-square-method : (-> (Listof (Vector Real Real)) (Values Real Real (-> Real Real)))
+(define hookes-fit/least-square-method : (-> (Listof Complex) (Values Real Real (-> Real Real)))
   (lambda [data]
     (define N : Real (add1 (length data)))
   
@@ -23,8 +23,8 @@
                  [Σxy : Real 0.0]
                  [Σx² : Real 0.0])
                 ([datum (in-list data)])
-        (define x : Real (vector-ref datum 0))
-        (define y : Real (vector-ref datum 1))
+        (define x : Real (real-part datum))
+        (define y : Real (imag-part datum))
         
         (values (+ Σx x)
                 (+ Σy y)
@@ -42,29 +42,30 @@
               (+ (* k x) b)))))
 
 (module+ main
-  (define data : (Listof (Vector Real Real))
-    (list #(60 4.9)
-          #(50 3.5)
-          #(40 2.0)
-          #(30 0.9)
-          #(20 0.5)))
+  (define data : (Listof Complex)
+    (list 0+0i
+          20+3i
+          40+7i
+          60+10i
+          80+13i
+          100+16i))
   
   (define-values (k b fx) (hookes-fit/least-square-method data))
 
-  (parameterize ([plot-pen-color-map 'pastel2])
-    (plot #:title "胡克定律探究实验"
-          #:x-label "砝码质量(m)" #:y-label "弹簧伸长长度(ΔL)"
-          #:x-min 0 #:x-max 100 #:y-min 0 #:y-max 20
-          #:width 600 #:height 600
-          
-          (list* (points #:sym 'fullcircle1 #:color 'black
-                         data)
-                 (function #:label (format "最小二乘法线性拟合(k = ~a)" (~r k #:precision 4))
-                           #:color 'ForestGreen
-                           fx)
-                 (for/list : (Listof renderer2d) ([xy (in-list data)]
-                                                  [c (in-naturals 4)])
-                   (define-values (k f) (make-rough-hookes-law xy))
-                   (function #:label (format "ΔL = ~am" (~r k #:precision 4))
-                             #:color c #:alpha 0.5
-                             f))))))
+  (parameterize ([default-plot-visualizer-label-position 1.0])
+    (plot-cartesian #:x-label "砝码质量" #:y-label "重力大小"
+                    #:x-desc "m/g" #:y-desc "G/N"
+                    #:mark-style (make-plot-mark-style #:pin-angle 0.0 #:gap-angle 0.0)
+                    #:x-range (cons 0 1000) #:y-range (cons 0 10)
+                    #:width 600 #:height 600
+                    
+                    (list #;(lines #:color 'black
+                                 data)
+                          #;(function #:label (format "最小二乘法线性拟合(k = ~a)" (~r k #:precision 4))
+                                    #:color 'ForestGreen
+                                    fx)
+                          #;(for/list : (Listof Plot-Visualizer) ([xy (in-list (cdr data))])
+                              (define-values (k f) (make-rough-hookes-law xy))
+                              (function #:label (format "ΔL = ~am" (~r k #:precision 4))
+                                        #:opacity 0.25
+                                        f))))))
