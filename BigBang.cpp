@@ -3,6 +3,7 @@
 #include "village/splash.hpp"
 
 #include "village/pltmos/carry.hpp"
+#include "village/pltmos/terminal.hpp"
 #include "village/pltmos/stream.hpp"
 #include "village/stemos/motion/lottery.hpp"
 #include "village/stemos/schematics/optics/pinhole.hpp"
@@ -48,6 +49,7 @@ namespace {
 
             this->splash = this->push_plane(new JrPlane(this));
 
+            this->push_plane(new TerminalPlane());
             this->push_plane(new DotAndCarryOnePlane());
             this->push_plane(new StreamPlane());
             this->push_plane(new LotteryPlane());

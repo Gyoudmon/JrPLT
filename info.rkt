@@ -59,7 +59,8 @@
 (define typesettings
   '(["literacy/Linguisteen.scrbl" xelatex]
     ["literacy/TheBigBang.scrbl" xelatex]
-    ["literacy/GetProgramsDone.scrbl" xelatex]
-    ["literacy/AdventOfLambda.scrbl" xelatex "advent-of-lambda"]
+    ["literacy/MakeItCompute.scrbl" xelatex "make-it-compute"]
+    ["literacy/WeaveTheLambda.scrbl" xelatex "weave-the-lambda"]
+    ["literacy/AIReadme.scrbl" xelatex]
 
     ["literacy/Metrics.scrbl" xelatex #:explicitly-make]))

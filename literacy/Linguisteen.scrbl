@@ -10,7 +10,7 @@
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-title[
  #:documentclass 'book
- #:document-options '(openany)
+ #:document-options '(openany oneside)
  #:subtitle (list "跨学科方法" @smaller{Racket、C++的语言朋友们})
  #:figure @geo-scale[@geo-interdisciplinary-screen[] 0.42]
  #:hide-version? #true
@@ -72,6 +72,9 @@
 
 @include-section{linguisteen/environment.scrbl}
 @include-section{linguisteen/answers.scrbl}
+
+@; force hiding numbers of following section, same as setting #:numbered? to `#true`
+@;texbook-backmatter[]
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-appendix[#:numbered? #true bibentries

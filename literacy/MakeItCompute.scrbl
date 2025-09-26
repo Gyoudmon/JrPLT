@@ -1,6 +1,6 @@
 #lang scribble/report
 
-@require{htdp/literacy.rkt}
+@require{compute/literacy.rkt}
 @require{bibentry.rkt}
 
 @(require geofun/vector)
@@ -41,20 +41,20 @@
 @$tex:setcounter['page 1]
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@include-section{htdp/greetings.scrbl}
-@include-section{htdp/big-bang.scrbl}
-@include-section{htdp/fxdata.scrbl}
-@include-section{htdp/vardata.scrbl}
-@include-section{htdp/abstract.scrbl}
-@include-section{htdp/memory.scrbl}
-@include-section{htdp/power.scrbl}
-@include-section{htdp/goodbye.scrbl}
+@include-section{compute/greetings.scrbl}
+@include-section{compute/big-bang.scrbl}
+@include-section{compute/fxdata.scrbl}
+@include-section{compute/vardata.scrbl}
+@include-section{compute/abstract.scrbl}
+@include-section{compute/memory.scrbl}
+@include-section{compute/power.scrbl}
+@include-section{compute/goodbye.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @texbook-appendix{附录}
 
 @include-section{linguisteen/environment.scrbl}
-@include-section{htdp/for-parent.scrbl}
+@include-section{compute/for-parent.scrbl}
 
 @handbook-appendix[#:numbered? #true
  bibentries]

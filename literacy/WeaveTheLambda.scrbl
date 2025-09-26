@@ -1,6 +1,6 @@
 #lang scribble/book
 
-@require{advent/literacy.rkt}
+@require{lambda/literacy.rkt}
 @require{bibentry.rkt}
 
 @(require diafun/digitama/avatar/bacteriophage)
@@ -10,7 +10,7 @@
  #:document-options '(openany oneside)
  #:hide-version? #true
  #:figure @bacteriophage-logo[32.0]
- #:subtitle "少年语言设计师的函数式编程启蒙"]{函数降临节}
+ #:subtitle "少年语言设计师的函数式编程启蒙"]{用函数编织世界吧}
 
 @$tex:newcounter:algorithm[]
 
@@ -91,8 +91,8 @@
 @$tex{restoregeometry}
 @texbook-mainmatter[]
 
-@include-section[(submod "advent/iSoH/01.historian.hysteria.scrbl" doc)]
-@include-section[(submod "advent/iSoH/02.red-nosed.report.scrbl" doc)]
+@include-section[(submod "lambda/iSoH/01.historian.hysteria.scrbl" doc)]
+@include-section[(submod "lambda/iSoH/02.red-nosed.report.scrbl" doc)]
 
 @texbook-command-part[#:part? #false "defaultPageOriginalHeadWidth" null]
 @texbook-appendix{附录}

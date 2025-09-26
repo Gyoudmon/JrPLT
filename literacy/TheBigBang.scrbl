@@ -18,8 +18,7 @@
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @handbook-title[
  #:λtitle title #:author mk-author
- ;#:documentclass 'acmart
- ;#:document-options '(manuscript natbib nonacm screen timestamp acmthm)
+ #:tex-package "acmhack.tex"
  ]{面向青少年程序设计教学引擎的设计与实现}
 @authorsaddresses[]
 
