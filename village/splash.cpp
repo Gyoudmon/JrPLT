@@ -10,41 +10,19 @@ static const int advent_days = 25;
 
 /*************************************************************************************************/
 namespace {
-    static int xtile_count = 15;
-    static int ytile_count = 15;
+    static const int Tile_Count = 15;
+    static const float Tile_Size = 48.0F;
+}
 
-    class RadixAtlas : public PlanetCuteAtlas {
-    public:
-        RadixAtlas(int row, int col) : PlanetCuteAtlas(row, col, GroundBlockType::Stone) {}
-
-        virtual ~RadixAtlas() noexcept {}
-
-    public:
-        int preferred_local_fps() override { return 4; }
-
-    protected:
-        void alter_map_tile(size_t r, size_t c) override {
-            if ((r == 0) || (c == 0) || (r == this->map_row - 1) || (c == this->map_col - 1)) {
-                this->set_tile_type(r, c, GroundBlockType::Grass);
-            }
-        }
-
-    protected:
-        void on_tilemap_load(shared_texture_t atlas) override {
-            Margin margin = this->get_map_overlay();
-            Dot tile_rb;
-
-            PlanetCuteAtlas::on_tilemap_load(atlas);
-
-            tile_rb = this->get_map_tile_location(0, MatterPort::RB);
-            this->create_logic_grid(xtile_count, ytile_count, Margin(tile_rb.y - margin.top, tile_rb.x));
-        }
-    };
+/*********************************************************************************************/
+Plteen::JrPlane::JrPlane(Cosmos* master) : Plane("青少计算机科学"), master(master) {
+    this->set_background(BLACK);
+    this->set_grid_color(AZURE);
 }
 
 /*********************************************************************************************/
 void Plteen::JrPlane::load(float width, float height) {
-    this->title = this->insert(new Labellet(GameFont::Title(), BLACK, this->name()));
+    this->title = this->insert(new Labellet(GameFont::Title(), GHOSTWHITE, this->name()));
             
     this->agent = this->insert(new Linkmon());
     this->agent->scale(-1.0F, 1.0F);
@@ -80,19 +58,19 @@ void Plteen::JrPlane::load_for_demo(float width, float height) {
 }
 
 void Plteen::JrPlane::load_for_plot(float width, float height) {
-    this->stage = this->insert(new RadixAtlas(xtile_count + 2, ytile_count + 2));
     this->host = this->insert(new Joshua("邹忌"));
     this->wife = this->insert(new Estelle("妻"));
     this->concubine = this->insert(new Klose("妾"));
     this->handsome = this->insert(new Olivier("徐公"));
 
-    this->stage->scale(0.75F);
     this->set_bubble_margin({ 4.0F, 8.0F });
 }
         
 void Plteen::JrPlane::reflow(float width, float height) {
+    this->create_centered_grid(::Tile_Count, ::Tile_Size, { 0.0F, float(this->title->display_height()) * 1.618F });
+
     this->move_to(this->title, Position(this->agent, MatterPort::RB), MatterPort::LB);
-            
+
     for (int idx = 0; idx < this->coins.size(); idx ++) {
         if (idx == 0) {
             this->move_to(this->coins[idx], Position(this->agent, MatterPort::LB), MatterPort::LT);
@@ -115,11 +93,10 @@ void Plteen::JrPlane::reflow_demo(float width, float height) {
 }
 
 void Plteen::JrPlane::reflow_plot(float width, float height) {
-    this->move_to(this->stage, Position(width * 0.5, height * 0.618), MatterPort::CC);
-    this->stage->move_to_logic_tile(this->host, xtile_count / 2, ytile_count / 2, MatterPort::CB, MatterPort::CB);
-    this->stage->move_to_logic_tile(this->wife, 0, -3, MatterPort::CB, MatterPort::CB);
-    this->stage->move_to_logic_tile(this->concubine, 0, -1, MatterPort::CB, MatterPort::CB);
-    this->stage->move_to_logic_tile(this->handsome, -1, 0, MatterPort::CB, MatterPort::CB);
+    this->move_to_grid(this->host, Tile_Count / 2, Tile_Count / 2, MatterPort::CB);
+    this->move_to_grid(this->wife, 0, Tile_Count - 3, MatterPort::CB);
+    this->move_to_grid(this->concubine, 0, Tile_Count - 1, MatterPort::CB);
+    this->move_to_grid(this->handsome, Tile_Count - 1, 0, MatterPort::CB);
 }
 
 void Plteen::JrPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {

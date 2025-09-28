@@ -723,12 +723,12 @@ namespace {
         }
         
         void load_menus(float width, float height) {
-            this->menus[MenuType::TopLevel] = this->insert(new Continent(new TopLevelMenu()));
-            this->menus[MenuType::Class] = this->insert(new Continent(new ClassMenu()));
-            this->menus[MenuType::Discipline] = this->insert(new Continent(new DisciplineMenu()));
-            this->menus[MenuType::Student] = this->insert(new Continent(new StudentMenu()));
-            this->menus[MenuType::Grade] = this->insert(new Continent(new GradeMenu()));
-            this->menus[MenuType::Clear] = this->insert(new Continent(new ClearMenu()));
+            this->menus[MenuType::TopLevel] = this->insert(new Planelet(new TopLevelMenu()));
+            this->menus[MenuType::Class] = this->insert(new Planelet(new ClassMenu()));
+            this->menus[MenuType::Discipline] = this->insert(new Planelet(new DisciplineMenu()));
+            this->menus[MenuType::Student] = this->insert(new Planelet(new StudentMenu()));
+            this->menus[MenuType::Grade] = this->insert(new Planelet(new GradeMenu()));
+            this->menus[MenuType::Clear] = this->insert(new Planelet(new ClearMenu()));
 
             for (auto menu : this->menus) {
                 if (this->the_menu_type != menu.first) {
@@ -740,7 +740,7 @@ namespace {
         }
 
         void load_avatars(float width, float height) {
-            this->avatar = this->insert(new Continent(new AvatarPlane("Avatars")));
+            this->avatar = this->insert(new Planelet(new AvatarPlane("Avatars")));
 
             this->avatar->set_border_color(ROYALBLUE);
             this->avatar->set_background_color(RGBA(DIMGRAY, 0.64));
@@ -877,8 +877,8 @@ namespace {
         std::map<uint64_t, DoorSprite*> doors;
         std::map<uint64_t, DisciplineSprite*> disciplines;
         std::map<uint64_t, StudentSprite*> students;
-        std::map<MenuType, Continent*> menus;
-        Continent* avatar;
+        std::map<MenuType, Planelet*> menus;
+        Planelet* avatar;
         Linkmon* agent;
 
     private:

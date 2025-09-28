@@ -4,9 +4,9 @@
 
 #include "village/pltmos/carry.hpp"
 #include "village/pltmos/terminal.hpp"
+#include "village/pltmos/char_art.hpp"
 #include "village/pltmos/stream.hpp"
 #include "village/stemos/motion/lottery.hpp"
-#include "village/stemos/schematics/optics/pinhole.hpp"
 #include "village/stemos/schematics/optics/chromaticity.hpp"
 
 using namespace Plteen;
@@ -50,10 +50,10 @@ namespace {
             this->splash = this->push_plane(new JrPlane(this));
 
             this->push_plane(new TerminalPlane());
+            this->push_plane(new ASCIIArtPlane());
             this->push_plane(new DotAndCarryOnePlane());
             this->push_plane(new StreamPlane());
             this->push_plane(new LotteryPlane());
-            this->push_plane(new PinholePlane());
             this->push_plane(new ChromaticityDiagramPlane());
         }
 

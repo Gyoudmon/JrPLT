@@ -14,7 +14,7 @@ static const char BIN_KEY = 'b';
 static const char OCT_KEY = 'o';
 static const char HEX_KEY = 'x';
 
-static const TextFacilityConfig<4> text_config = {
+static const CmdletConfig<4> text_config = {
     {
         { DEC_KEY, "十进制" },
         { BIN_KEY, "二进制" },
@@ -63,7 +63,7 @@ namespace {
 }
 
 WarGrey::PLT::DotAndCarryOnePlane::DotAndCarryOnePlane(size_t num)
-        : TheBigBang("位值制与进制系统"), TextFacilityPlane(GameFont::monospace(FontSize::large), text_config) {
+        : TheBigBang("位值制与进制系统"), CmdletPlane(GameFont::monospace(FontSize::large), text_config) {
     if (num > 0) {
         this->animals = std::vector<Animal*>(num, nullptr);
     } else {
@@ -78,7 +78,7 @@ void WarGrey::PLT::DotAndCarryOnePlane::load(float width, float height) {
     auto base_font = GameFont::Default(FontSize::medium);
     auto expt_font = GameFont::Default(FontSize::xx_small);
     
-    TextFacilityPlane::load(width, height);
+    CmdletPlane::load(width, height);
     this->set_background(LIGHTSKYBLUE);
 
     this->counter = this->insert(new Labellet(label_font, BLACK, "??? ="));
@@ -97,7 +97,7 @@ void WarGrey::PLT::DotAndCarryOnePlane::load(float width, float height) {
 }
 
 void WarGrey::PLT::DotAndCarryOnePlane::reflow(float width, float height) {
-    TextFacilityPlane::reflow(width, height);
+    CmdletPlane::reflow(width, height);
 
     this->move_to(this->stage, { width * 0.5F, height *  0.5F }, MatterPort::CC, { 0.0F, 10.0F });
     this->move_to(this->counter, { this->stage, MatterPort::RT }, MatterPort::RC);
@@ -136,10 +136,6 @@ void WarGrey::PLT::DotAndCarryOnePlane::graze(float width, float height) {
             this->send_to_back(this->expts[idx], this->stage);
         }
     }
-}
-
-bool WarGrey::PLT::DotAndCarryOnePlane::can_select(IMatter* m) {
-    return ThePLTPlane::can_select(m);
 }
 
 /*************************************************************************************************/
@@ -216,12 +212,12 @@ void WarGrey::PLT::DotAndCarryOnePlane::counting(size_t idx, int row, int col, d
         std::string speech = (is_carrying ? make_nstring("逢 %d 进 1", row) : make_nstring("%X", row));
 
         this->bring_to_front(this->animals[idx]);
-        this->animals[idx]->say(speech_duration, " " + speech + " ");
+        this->animals[idx]->say(speech_duration, speech);
         this->stage->glide_to_logic_tile(motion_duration, this->animals[idx], row, col, MatterPort::CC, MatterPort::CC);
     }
 }
 
-void WarGrey::PLT::DotAndCarryOnePlane::on_facility_command(size_t idx, char key, float width, float height) {
+void WarGrey::PLT::DotAndCarryOnePlane::on_cmdlet(size_t idx, char key, const std::string& name, float width, float height) {
     this->on_new_counting_round(key, width, height);
     this->notify_updated();
 }

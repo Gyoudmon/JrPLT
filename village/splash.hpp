@@ -11,7 +11,7 @@
 namespace Plteen {
     class JrPlane : public Plane {
     public:
-        JrPlane(Cosmos* master) : Plane("青少计算机科学"), master(master) {}
+        JrPlane(Cosmos* master);
 
     public:  // 覆盖游戏基本方法
         void load(float width, float height) override;
@@ -46,7 +46,6 @@ namespace Plteen {
         // Plteen::ConveyerBeltlet* conveyer;
 
     private: // for the plot
-        Plteen::PlanetCuteAtlas* stage;
         Plteen::Citizen* host;
         Plteen::Citizen* wife;
         Plteen::Citizen* concubine;

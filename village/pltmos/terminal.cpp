@@ -17,10 +17,10 @@ static const char MKS_KEY = 'g';
 static const char POS_KEY = 'p';
 static const char NWL_KEY = 'n';
 
-static const std::string cout_fmt(" std::cout << \"%s\"; ");
+static const std::string cout_fmt("std::cout << \"%s\";");
 static const std::string ccnt_fmt("%s在%s%s。");
-static const std::string prnt_fmt(" printf(\"(%%d, %%d)\", %s, %s); ");
-static const std::string pcnt_fmt("(%d, %d)");
+static const std::string prnt_fmt("printf(\"L%%d:%%d.\", %s, %s);");
+static const std::string pcnt_fmt("L%d:%d.");
 
 static const char* subjects [] = {
     "一只修勾", "某e人", "小学生", "挖呀挖老师",
@@ -40,28 +40,21 @@ static const char* actions [] = {
     "教李白写代码", "emo发呆", "打怪兽", "突然唱起《孤勇者》"
 };
 
-static const TextFacilityConfig<4> text_config = {
-    {
-        { CLS_KEY, "清空控制台" },
-        { MKS_KEY, "荒诞造句" },
-        { POS_KEY, "打印位置" },
-        { NWL_KEY, "手动换行" }
-    },
-
-    {
-        { false, false, false, false },
-        { false, false, false, false },
-        { false, false, false, false },
-        { false, false, false, false },
-    }
+static const cmdlet_item_t text_config[] = {
+    { CLS_KEY, "清空控制台" },
+    { MKS_KEY, "荒诞造句" },
+    { POS_KEY, "打印位置" },
+    { NWL_KEY, "手动换行" }
 };
 
 /*************************************************************************************************/
 WarGrey::PLT::TerminalPlane::TerminalPlane(int r, int c)
-        : TheBigBang("终端控制台", GHOSTWHITE), TextFacilityPlane(GameFont::monospace(FontSize::large), text_config)
+        : TheBigBang("终端控制台", GHOSTWHITE), CmdletPlane(GameFont::monospace(FontSize::large), text_config)
         , term_row(r), term_col(c), term_ridx(0), term_cidx(0) {
     this->set_background(BLACK);
     this->set_grid_color(DIMGRAY);
+    this->set_enabled_cmdlet_color(LIGHTSKYBLUE);
+    this->set_processing_cmdlet_color(PALEGREEN);
 
     if ((r > 0) || (c > 0)) {
         this->chars = new Labellet**[this->term_row + 1];
@@ -84,12 +77,9 @@ WarGrey::PLT::TerminalPlane::~TerminalPlane() noexcept {
 
 void WarGrey::PLT::TerminalPlane::load(float width, float height) {
     auto label_font = GameFont::monospace(FontSize::xx_large);
-    auto digit_font = GameFont::fantasy(FontSize::x_large);
-    auto base_font = GameFont::Default(FontSize::medium);
     auto seq_font = GameFont::Default(FontSize::x_small);
 
-    TextFacilityPlane::load(width, height);
-    this->stage = this->insert(new Rectanglet(this->term_col * GRID_CELL_WIDTH, this->term_row * GRID_CELL_HEIGHT, transparent));
+    CmdletPlane::load(width, height);
     this->assistant = this->insert(new Klose());
 
     for (int r = 0; r < this->term_row; r ++) {
@@ -110,12 +100,11 @@ void WarGrey::PLT::TerminalPlane::load(float width, float height) {
 }
 
 void WarGrey::PLT::TerminalPlane::reflow(float width, float height) {
-    TextFacilityPlane::reflow(width, height);
+    CmdletPlane::reflow(width, height);
 
-    this->move_to(this->stage, { width * 0.5F, height * 0.5F }, MatterPort::CC);
-    this->move_to(this->assistant, { this->stage, MatterPort::RT}, MatterPort::LT, {GRID_CELL_WIDTH, 0.0F });
-    this->create_grid(this->term_row, this->term_col, this->stage);
-
+    this->create_centered_grid(this->term_row, this->term_col, GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
+    this->move_to_grid(this->assistant, 0, -2, MatterPort::CC);
+    
     for (int r = 0; r < this->term_row; r ++) {
         for (int c = 0; c < this->term_col; c ++) {
             this->move_to_grid(this->chars[r][c], r, c, MatterPort::CC);
@@ -133,26 +122,16 @@ void WarGrey::PLT::TerminalPlane::reflow(float width, float height) {
     }
 }
 
-void WarGrey::PLT::TerminalPlane::update(uint64_t count, uint32_t interval, uint64_t uptime) {
-}
-
-bool WarGrey::PLT::TerminalPlane::can_select(IMatter* m) {
-    return ThePLTPlane::can_select(m);
-}
-
 /*************************************************************************************************/
 void WarGrey::PLT::TerminalPlane::on_mission_start(float width, float height) {
     this->clear_screen();
 }
 
-void WarGrey::PLT::TerminalPlane::on_motion_complete(Plteen::IMatter* m, float x, float y, double xspd, double yspd) {
-}
-
 void WarGrey::PLT::TerminalPlane::on_bubble_expired(IMatter* who, SpeechBubble type) {
-    this->clear_working_facility();
+    this->cmdlet_job_done();
 }
 
-void WarGrey::PLT::TerminalPlane::on_facility_command(size_t idx, char key, float width, float height) {
+void WarGrey::PLT::TerminalPlane::on_cmdlet(size_t idx, char key, const std::string& name, float width, float height) {
     switch (key) {
     case MKS_KEY: {
         const char* who = subjects[random_uniform(1, sizeof(subjects) / sizeof(char*)) - 1];
@@ -172,11 +151,11 @@ void WarGrey::PLT::TerminalPlane::on_facility_command(size_t idx, char key, floa
         this->display(coordinate);
     }; break;
     case NWL_KEY: {
-        this->assistant->say(CMDLET_DURATION, " <Enter> ");
+        this->assistant->say(CMDLET_DURATION, "std::cout << std::endl;");
         this->display("\n");
     }; break;
     case CLS_KEY: {
-        this->assistant->say(CMDLET_DURATION, " cls ");
+        this->assistant->say(CMDLET_DURATION, "cls");
         this->clear_screen();
     }; break;
     }
@@ -197,6 +176,7 @@ void WarGrey::PLT::TerminalPlane::display(const std::string& message) {
 
             if (character != "\n") {
                 if (len == 1) {
+                    this->chars[this->term_ridx][this->term_cidx]->show(true);
                     this->chars[this->term_ridx][this->term_cidx]->set_text(character, MatterPort::CC);
                     this->move_to_grid(this->chars[this->term_ridx][this->term_cidx], this->term_ridx, this->term_cidx, MatterPort::CC);
                     this->term_cidx ++;
@@ -207,6 +187,7 @@ void WarGrey::PLT::TerminalPlane::display(const std::string& message) {
                         this->linefeed();
                     }
 
+                    this->chars[this->term_ridx][this->term_cidx]->show(true);
                     this->chars[this->term_ridx][this->term_cidx]->set_text(character, MatterPort::CC);
                     this->glide_to_grid(CHAR_DURATION, this->chars[this->term_ridx][this->term_cidx],
                                             this->term_ridx, this->term_cidx, MatterPort::CC,
@@ -242,7 +223,7 @@ void WarGrey::PLT::TerminalPlane::clear_term_cell(int row, int col, int count) {
     }
 
     for (int c = col; c < end_idx; c ++) {
-        this->chars[row][c]->set_text(MatterPort::CC, " ");
+        this->chars[row][c]->show(false);
     }
 }
 

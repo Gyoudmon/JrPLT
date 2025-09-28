@@ -9,7 +9,7 @@ namespace WarGrey::PLT {
     static const size_t SLOTS = 16;
 
     /*********************************************************************************************/
-    class __lambda__ DotAndCarryOnePlane : public WarGrey::PLT::ThePLTPlane, public Plteen::TextFacilityPlane {
+    class __lambda__ DotAndCarryOnePlane : public WarGrey::PLT::ThePLTPlane, public Plteen::CmdletPlane {
     public:
         DotAndCarryOnePlane(size_t num = 0);
         virtual ~DotAndCarryOnePlane() noexcept {}
@@ -20,11 +20,8 @@ namespace WarGrey::PLT {
         void on_mission_start(float width, float height) override;
         void on_mission_complete() override;
 
-    public:
-        bool can_select(Plteen::IMatter* m) override;
-
     protected:
-        void on_facility_command(size_t idx, char cmd, float width, float height) override;
+        void on_cmdlet(size_t idx, char cmd, const std::string& name, float width, float height) override;
         void on_motion_complete(Plteen::IMatter* m, float x, float y, double xspd, double yspd) override;
 
     private:
