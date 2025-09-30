@@ -19,7 +19,9 @@ static const float GRID_CELL_WIDTH = 32.0F;
 static const float GRID_CELL_HEIGHT = 64.0F;
 static const float LASER_THICKNESS = 4.0F;
 static const int LASER_COL0 = -2;
+
 static const RGBA true_color = RGBA(ROYALBLUE, 0.81);
+static const RGBA mirror_color = RGBA(CHOCOLATE, 0.81);
 
 static const char VIS_KEY = 'v';
 static const char SQR_KEY = 'q';
@@ -71,7 +73,7 @@ WarGrey::PLT::ASCIIArtPlane::~ASCIIArtPlane() noexcept {
 
 void WarGrey::PLT::ASCIIArtPlane::load(float width, float height) {
     auto label_font = GameFont::monospace(FontSize::xx_large);
-    auto seq_font = GameFont::Default(FontSize::medium);
+    auto seq_font = GameFont::Default(FontSize::x_large);
     auto model_font = GameFont::math(FontSize::x_large);
     auto cell_seq_font = GameFont::Default(FontSize::x_small);
 
@@ -107,8 +109,8 @@ void WarGrey::PLT::ASCIIArtPlane::reflow(float width, float height) {
     this->create_centered_grid(this->term_row, this->term_col, GRID_CELL_WIDTH, GRID_CELL_HEIGHT);
     this->move_to_grid(this->assistant, 0, LASER_COL0 - 2, MatterPort::RC);
     this->move_to(this->modinfo, { width * 0.02F, height * 0.20F }, MatterPort::CC);
-    this->move_to_grid(this->posinfo,  this->term_row + 0, 0, MatterPort::LC);
-    this->move_to_grid(this->spaninfo, this->term_row + 1, 0, MatterPort::LT);
+    this->move_to_grid(this->posinfo,  this->term_row + 0, 0, MatterPort::LB);
+    this->move_to_grid(this->spaninfo, this->term_row + 1, 0, MatterPort::LB);
 
     for (int r = 0; r < this->term_row; r ++) {
         for (int c = 0; c < this->term_col; c ++) {
@@ -325,8 +327,10 @@ void WarGrey::PLT::ASCIIArtPlane::draw_background(dc_t* dc, float X, float Y, fl
             this->true_shape = std::make_shared<Texture>(dc->create_blank_image(Width, Height));
         } else if ((this->assistant->get_heading() != 0.0) && (this->last_scanline_pos != pos) && (this->true_shape->okay())) {
             SDL_Texture* origin = dc->get_target();
+            Dot mirror = this->get_grid_cell_location(this->algorithm->height() - 1, 0, MatterPort::CC);
             float px, py, t;
 
+            
             dc->set_target(this->true_shape->self());
 
             for (float y = flfloor(this->last_scanline_pos.y); y < flfloor(pos.y); y += 1.0F) {
@@ -349,7 +353,12 @@ void WarGrey::PLT::ASCIIArtPlane::draw_background(dc_t* dc, float X, float Y, fl
                     }
                 }
 
-                dc->draw_line(intersects[0].x, intersects[0].y, intersects[1].x, intersects[1].y, true_color);
+                if (y < mirror.y) {
+                    dc->draw_line(intersects[0].x, intersects[0].y, intersects[1].x, intersects[1].y, true_color);
+                } else {
+                    dc->draw_line(intersects[0].x, intersects[0].y, intersects[1].x, intersects[1].y, mirror_color);
+                }
+                
             }
 
             dc->set_target(origin);

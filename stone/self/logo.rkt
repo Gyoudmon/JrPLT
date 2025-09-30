@@ -76,7 +76,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define logo (bacteriophage-logo 128.0))
 (define icon (geo-inset logo))
-(define figure (geo-inset (bacteriophage-logo 128.0 #:tail-color 'SteelBlue #:tail-alpha 1.0)))
 (define mini-icon (geo-inset (bacteriophage-logo 128.0 #:sheath-length 0.0)))
 
 (define splash:PPT (geo-slides-screen))
@@ -85,7 +84,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main
   logo
-  figure
   (geo-frame logo #:background 'Aquamarine)
   mini-icon
   splash:PPT
