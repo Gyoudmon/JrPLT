@@ -86,16 +86,14 @@
 
 感谢大脑的抽象力和可塑性。
 
-@handbook-smart-table[]
+@handbook-smart-table[#:phantom? #true]
 
-@$tex{restoregeometry}
 @texbook-mainmatter[]
 
 @include-section[(submod "lambda/iSoH/01.historian.hysteria.scrbl" doc)]
 @include-section[(submod "lambda/iSoH/02.red-nosed.report.scrbl" doc)]
 
-@texbook-command-part[#:part? #false "defaultPageOriginalHeadWidth" null]
 @texbook-appendix{附录}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-appendix[#:numbered? #true #:index-section? #true bibentries]
+@handbook-bonus-appendix[#:numbered? #true #:index-section? #true bibentries]

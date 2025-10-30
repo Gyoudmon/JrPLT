@@ -34,16 +34,16 @@ void Plteen::JrPlane::load(float width, float height) {
         if (task_name == nullptr) {
             std::string vname = make_nstring(task_name_fmt, idx + 1, unknown_task_name);
             
-            this->coins.push_back(this->insert(new Coinlet(vname, idx + 1)));
+            this->coins.push_back(this->spawn<Coinlet>(vname, idx + 1));
             this->coins.back()->stop();
         } else {
             std::string vname = make_nstring(task_name_fmt, idx + 1, task_name);
 
-            this->coins.push_back(this->insert(new Coinlet(vname, idx + 1)));
+            this->coins.push_back(this->spawn<Coinlet>(vname, idx + 1));
         }
     }
 
-    this->tux = this->insert(new Tuxmon());
+    this->tux = this->spawn<Tuxmon>();
     this->tux->wear("santa_hat");
 
     this->tooltip = this->insert(make_label_for_tooltip(GameFont::Tooltip()));
@@ -58,12 +58,10 @@ void Plteen::JrPlane::load_for_demo(float width, float height) {
 }
 
 void Plteen::JrPlane::load_for_plot(float width, float height) {
-    this->host = this->insert(new Joshua("邹忌"));
-    this->wife = this->insert(new Estelle("妻"));
-    this->concubine = this->insert(new Klose("妾"));
-    this->handsome = this->insert(new Olivier("徐公"));
-
-    this->set_bubble_margin({ 4.0F, 8.0F });
+    this->host = this->spawn<Joshua>("邹忌");
+    this->wife = this->spawn<Estelle>("妻");
+    this->concubine = this->spawn<Klose>("妾");
+    this->handsome = this->spawn<Olivier>("徐公");
 }
         
 void Plteen::JrPlane::reflow(float width, float height) {

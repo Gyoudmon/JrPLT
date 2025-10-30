@@ -58,9 +58,9 @@
 读者应铭记于心：
 @focus{跨学科和对比学习是贯穿全书的暗线}。
 
-@handbook-smart-table[]
-
+@handbook-smart-table[#:phantom? #true]
 @texbook-mainmatter[]
+
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @include-section{linguisteen/greetings.scrbl}
 @include-section{linguisteen/typesystem.scrbl}
@@ -77,7 +77,7 @@
 @;texbook-backmatter[]
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-appendix[#:numbered? #true bibentries
+@handbook-bonus-appendix[#:numbered? #true bibentries
  (book-bib-entry #:date "1997"
                  "CnC" "Computability and Complexity: From a Programming Perspective"
                  "Neil D. Jones" "The MIT Press")

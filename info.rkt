@@ -61,6 +61,7 @@
     ["literacy/TheBigBang.scrbl" xelatex]
     ["literacy/MakeItCompute.scrbl" xelatex "make-it-compute"]
     ["literacy/WeaveTheLambda.scrbl" xelatex "weave-the-lambda"]
+    ["literacy/STEM.scrbl" xelatex]
     ["literacy/AIReadme.scrbl" xelatex]
 
     ["literacy/Metrics.scrbl" xelatex #:explicitly-make]))

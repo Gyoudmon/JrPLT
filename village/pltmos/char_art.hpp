@@ -36,7 +36,7 @@ namespace WarGrey::PLT {
         void clear_term_cell(int r, int c, int count);
 
     private:
-        void display_shape(WarGrey::PLT::ASCIIArt* algo, const std::string& name, bool mirror);
+        void display_shape(WarGrey::PLT::ASCIIArt* algo, const std::string& name);
         void scan_done();
 
     private:

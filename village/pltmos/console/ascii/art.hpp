@@ -15,6 +15,7 @@ namespace WarGrey::PLT {
         virtual std::string model_desc() const noexcept = 0;
         virtual std::string line_desc(int l) const noexcept = 0;
         virtual std::string shape_line(int l) const noexcept = 0;
+        virtual bool mirror() const noexcept { return false; }
 
     public:
         virtual int pos(int l) const noexcept = 0;

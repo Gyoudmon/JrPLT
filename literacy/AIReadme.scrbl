@@ -25,4 +25,4 @@
 @include-section{bang/appendix/bdd.scrbl}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-appendix[#:numbered? #false #:index-section? #false #:prefab-bibentries? #false]
+@handbook-bonus-appendix[#:numbered? #false #:index-section? #false #:prefab-bibentries? #false]

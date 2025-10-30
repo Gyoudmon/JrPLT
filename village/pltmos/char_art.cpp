@@ -4,6 +4,7 @@
 
 #include "console/ascii/rectangle.hpp"
 #include "console/ascii/triangle.hpp"
+#include "console/ascii/pyramid.hpp"
 #include "console/ascii/hollow_rhumbus.hpp"
 
 using namespace Plteen;
@@ -27,19 +28,16 @@ static const char VIS_KEY = 'v';
 static const char SQR_KEY = 'q';
 static const char RIT_KEY = 'w';
 static const char TRI_KEY = 'e';
-static const char RHM_KEY = 'r';
-
-static const std::string cout_fmt("std::cout << \"%s\";");
-static const std::string ccnt_fmt("%s在%s%s。");
-static const std::string prnt_fmt("printf(\"(%%d, %%d)\", %s, %s);");
-static const std::string pcnt_fmt("(%d, %d)");
+static const char PYR_KEY = 'r';
+static const char RHM_KEY = 't';
 
 static const cmdlet_item_t text_config[] = {
     { VIS_KEY, "算法可视化" },
-    { SQR_KEY, "实心矩形" },
-    { RIT_KEY, "实心直角三角形" },
-    { TRI_KEY, "实心等腰三角形" },
-    { RHM_KEY, "空心菱形" }
+    { SQR_KEY, "矩形阴影图" },
+    { RIT_KEY, "直角三角形阴影图" },
+    { TRI_KEY, "等腰三角形阴影图" },
+    { PYR_KEY, "金字塔图" },
+    { RHM_KEY, "菱形轮廓图" }
 };
 
 
@@ -73,9 +71,9 @@ WarGrey::PLT::ASCIIArtPlane::~ASCIIArtPlane() noexcept {
 
 void WarGrey::PLT::ASCIIArtPlane::load(float width, float height) {
     auto label_font = GameFont::monospace(FontSize::xx_large);
-    auto seq_font = GameFont::Default(FontSize::x_large);
+    auto seq_font = GameFont::monospace(FontSize::x_large);
     auto model_font = GameFont::math(FontSize::x_large);
-    auto cell_seq_font = GameFont::Default(FontSize::x_small);
+    auto cell_seq_font = GameFont::monospace(FontSize::x_small);
 
     CmdletPlane::load(width, height);
     
@@ -220,11 +218,11 @@ void WarGrey::PLT::ASCIIArtPlane::on_motion_complete(Plteen::IMatter* m, float x
             }
 
             if (R == 0) {
-                this->posinfo->append_text(MatterPort::LC, "%d", this->algorithm->pos(L));
-                this->spaninfo->append_text(MatterPort::LC, "%d", this->algorithm->span(L));
+                this->posinfo->append_text(MatterPort::LC, "%3d", this->algorithm->pos(L));
+                this->spaninfo->append_text(MatterPort::LC, "%3d", this->algorithm->span(L));
             } else if (this->chars[R][0]->visible()) {
-                this->posinfo->append_text(MatterPort::LC, ", %d", this->algorithm->pos(L));
-                this->spaninfo->append_text(MatterPort::LC, ", %d", this->algorithm->span(L));
+                this->posinfo->append_text(MatterPort::LC, ",%3d", this->algorithm->pos(L));
+                this->spaninfo->append_text(MatterPort::LC, ",%3d", this->algorithm->span(L));
             }
         }
     }
@@ -245,10 +243,11 @@ void WarGrey::PLT::ASCIIArtPlane::on_bubble_expired(IMatter* who, SpeechBubble t
 
 void WarGrey::PLT::ASCIIArtPlane::on_cmdlet(size_t idx, char key, const std::string& name, float width, float height) {
     switch (key) {
-    case SQR_KEY: this->display_shape(new CharRectangle(this->term_row, this->term_col), name, false); break;
-    case RIT_KEY: this->display_shape(new CharRightTriangle(this->term_row, this->term_col), name, false); break;
-    case TRI_KEY: this->display_shape(new CharRegularTriangle(this->term_row, this->term_col), name, false); break;
-    case RHM_KEY: this->display_shape(new CharHollowRhumbus(this->term_row, this->term_col), name, true); break;
+    case SQR_KEY: this->display_shape(new CharRectangle(this->term_row, this->term_col), name); break;
+    case RIT_KEY: this->display_shape(new CharRightTriangle(this->term_row, this->term_col), name); break;
+    case TRI_KEY: this->display_shape(new CharIsoscelesTriangle(this->term_row, this->term_col), name); break;
+    case PYR_KEY: this->display_shape(new CharPyramid(this->term_row, this->term_col), name); break;
+    case RHM_KEY: this->display_shape(new CharHollowRhumbus(this->term_row, this->term_col), name); break;
     case VIS_KEY: {
         if (this->algorithm != nullptr) {
             this->scanline->show(true);
@@ -263,7 +262,7 @@ void WarGrey::PLT::ASCIIArtPlane::on_cmdlet(size_t idx, char key, const std::str
     this->notify_updated();
 }
 
-void WarGrey::PLT::ASCIIArtPlane::display_shape(ASCIIArt* algo, const std::string& name, bool mirror) {
+void WarGrey::PLT::ASCIIArtPlane::display_shape(ASCIIArt* algo, const std::string& name) {
     std::vector<int> lft_cols;
     std::vector<int> rgt_cols;
     Dot dot;
@@ -273,7 +272,7 @@ void WarGrey::PLT::ASCIIArtPlane::display_shape(ASCIIArt* algo, const std::strin
     this->assistant->say(CMDLET_DURATION, name);
     this->modinfo->set_text("Model:\n" + this->algorithm->model_desc(), MatterPort::LT);
     this->posinfo->set_text(MatterPort::LC, "%s: ", "起始位置");
-    this->spaninfo->set_text(MatterPort::LC, "%s: ", "填充长度");
+    this->spaninfo->set_text(MatterPort::LC, "%s: ", "边界跨度");
 
     this->clear_screen();
     this->shape_dots.clear();
@@ -290,7 +289,7 @@ void WarGrey::PLT::ASCIIArtPlane::display_shape(ASCIIArt* algo, const std::strin
         this->linefeed(false);
     }
 
-    if (mirror) {
+    if (algo->mirror()) {
         for (int l = algo->height() - 1; l >= 1; l --) {
             int p = algo->pos(l);
             int s = algo->span(l);

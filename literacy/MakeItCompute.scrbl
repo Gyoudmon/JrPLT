@@ -6,7 +6,7 @@
 @(require geofun/vector)
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@(define font (desc-font #:family 'math #:size 16.0))
+@(define font (desc-font #:family 'math #:style 'italic #:size 16.0))
 @(define arrow (geo-arrow 3.0 32.0 #:stroke #false #:fill 'DodgerBlue))
 @(define gapsize 4.0)
 
@@ -36,7 +36,7 @@
  ]{教会计算机干活吧}
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-smart-table[]
+@handbook-smart-table[#:phantom? #true]
 
 @$tex:setcounter['page 1]
 
@@ -56,6 +56,6 @@
 @include-section{linguisteen/environment.scrbl}
 @include-section{compute/for-parent.scrbl}
 
-@handbook-appendix[#:numbered? #true
+@handbook-bonus-appendix[#:numbered? #true
  bibentries]
 

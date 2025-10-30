@@ -19,16 +19,16 @@
 @handbook-title[
  #:λtitle title #:author mk-author
  #:tex-package "acmhack.tex"
- ]{面向青少年程序设计教学引擎的设计与实现}
+ ]{面向青少年编程教育的应用创作框架的设计与实现}
 @authorsaddresses[]
 
 @include-abstract{bang/abstract_zh.scrbl}
 
 @; https://dl.acm.org/ccs
-@ccsdesc[#:number 500]{Social and professional topics~Computational thinking}
-@ccsdesc[#:number 500]{Social and professional topics~K-12 education}
-@ccsdesc[#:number 300]{Software and its engineering~Interactive games}
-@ccsdesc[#:number 100]{Human-centered computing~Graphical user interfaces}
+@ccsdesc[#:number 500]{Human-centered computing~Interaction design theory, concepts and paradigms}
+@ccsdesc[#:number 500]{Social and professional topics~Computing education}
+@ccsdesc[#:number 400]{Software and its engineering~Software notations and tools}
+@ccsdesc[#:number 300]{Human-centered computing~Interaction design tools and techniques}
 
 @keywords{编程教育, 跨学科学习, 项目式学习, 游戏引擎}
 
@@ -91,4 +91,4 @@
 }
 
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@handbook-appendix[#:numbered? #false #:index-section? #false #:prefab-bibentries? #false]
+@handbook-bonus-appendix[#:numbered? #false #:index-section? #false #:prefab-bibentries? #false]

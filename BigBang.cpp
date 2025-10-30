@@ -47,14 +47,14 @@ namespace {
             this->set_window_size(0, 0);
 #endif
 
-            this->splash = this->push_plane(new JrPlane(this));
+            this->splash = this->spawn<JrPlane>(this);
 
-            this->push_plane(new TerminalPlane());
-            this->push_plane(new ASCIIArtPlane());
-            this->push_plane(new DotAndCarryOnePlane());
-            this->push_plane(new StreamPlane());
-            this->push_plane(new LotteryPlane());
-            this->push_plane(new ChromaticityDiagramPlane());
+            this->spawn<TerminalPlane>();
+            this->spawn<ASCIIArtPlane>();
+            this->spawn<DotAndCarryOnePlane>();
+            this->spawn<StreamPlane>();
+            this->spawn<LotteryPlane>();
+            this->spawn<ChromaticityDiagramPlane>();
         }
 
     protected:

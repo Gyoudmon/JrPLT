@@ -163,8 +163,10 @@
         [geo-var (λ [[x : String]] : Geo (aoc-text (string->symbol x)))])
     (define map.dia : Geo
       (geo-scale (dia-procedure 'map
-                                `("f(x)" ,(geo-var "s")) (geo-var "Maybe\nLevels")
-                                #("String ->\n(U Complex\n  False)" "Listof\nString") "Listof\n(U Complex\n  False)")
+                                `("f(x)" ,(geo-var "s"))
+                                (geo-var "Maybe\nLevels")
+                                #("String ->\n(U Complex\n  False)" "Listof\nString")
+                                "Listof\n(U Complex\n  False)")
                  1.00))
     (define width (geo-width map.dia))
     (define height (geo-height ?))
@@ -174,8 +176,10 @@
                                   (geo-cc-superimpose (geo-rectangle #:stroke (desc-stroke #:color 'Crimson #:dash 'long-dash)
                                                                      width (* height 1.618) -0.125)
                                                       ?))
-                   `(,(geo-var "s")) (geo-var "Just\nLevels")
-                   #("Listof\nString") "Listof\nNatural")))
+                   `(,(geo-var "s"))
+                   (geo-var "Just\nLevels")
+                   #("Listof\nString")
+                   "Listof\nNatural")))
   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (module+ main

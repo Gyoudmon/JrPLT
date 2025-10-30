@@ -3,10 +3,10 @@
 #include "art.hpp"
 
 namespace WarGrey::PLT {
-    class __lambda__ CharRegularTriangle : virtual public WarGrey::PLT::ASCIIArt {
+    class __lambda__ CharIsoscelesTriangle : virtual public WarGrey::PLT::ASCIIArt {
     public:
-        CharRegularTriangle(int term_row, int term_col);
-        virtual ~CharRegularTriangle() noexcept {};
+        CharIsoscelesTriangle(int term_row, int term_col);
+        virtual ~CharIsoscelesTriangle() noexcept {};
         
     public:
         std::string model_desc() const noexcept override;

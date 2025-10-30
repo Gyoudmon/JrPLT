@@ -19,7 +19,10 @@
 
 \newcommand{\defaultPage}{\newgeometry{left=32mm, top=32mm, ignoremp}}
 \newcommand{\defaultPageOriginalHeadWidth}{\defaultPage \addtolength{\headwidth}{-\marginparwidth}}
+
 \renewcommand{\preDoc}{\defaultPage}
+\renewcommand{\preMainMatter}{\restoregeometry}
+\renewcommand{\postMainMatter}{\defaultPageOriginalHeadWidth}
 
 \pagestyle{fancy}
 \addtolength{\headwidth}{\marginparwidth}
