@@ -8,7 +8,7 @@
 (define-type ArraySection (List (-> Integer Integer Integer) Integer Color))
 
 (define default-font : Font (desc-font #:family 'decorative #:size 48))
-(define default-border : Stroke (desc-stroke #:width 2.0))
+(define default-border : Pen (desc-stroke #:width 2.0))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define geo-cells : (-> (Listof Integer) Font Real Fill-Paint (Listof (Option Geo)))
@@ -52,7 +52,7 @@
        (values (append cells self)
                ns++)))
     
-    (geo-table* cells 'cc 'cc (list gapsize (- (stroke-width default-border))) gapsize)))
+    (geo-table* cells 'cc 'cc (list gapsize (- (pen-width default-border))) gapsize)))
 
 (define make-array-sections-merge-flow : (->* ((Listof ArraySection)) (Font #:gapsize Nonnegative-Real) Geo)
   (lambda [ss [font default-font] #:gapsize [gapsize 8.0]]

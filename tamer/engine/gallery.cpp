@@ -44,16 +44,16 @@ void Plteen::GalleryPlane::reflow_for_house(float width, float height) {
 
 /*************************************************************************************************/
 void Plteen::GalleryPlane::load_for_raft(float width, float height) {
-    this->sea = this->insert(new Ellipselet(raft_width * 1.618F, raft_height, DEEPSKYBLUE));
+    this->sea = this->spawn<Ellipselet>(raft_width * 1.618F, raft_height, DEEPSKYBLUE);
 
-    this->mast = this->insert(new Rectanglet(4.0F, raft_width, BURLYWOOD, SADDLEBROWN));
-    this->flag = this->insert(new Trianglet(raft_height * 0.618F, 0.0F, ROYALBLUE, DODGERBLUE));
+    this->mast = this->spawn<Rectanglet>(4.0F, raft_width, BURLYWOOD, SADDLEBROWN);
+    this->flag = this->spawn<Trianglet>(raft_height * 0.618F, 0.0F, ROYALBLUE, DODGERBLUE);
 
-    this->post = this->insert(new RoundedRectanglet(raft_height * 0.618F, raft_height * 2.0F, -0.45F, BURLYWOOD, BURLYWOOD));
-    this->paddle = this->insert(new Linelet(raft_width * 0.618F, raft_height * 2.0F, BROWN));
-    this->raft = this->insert(new RoundedRectanglet(raft_width, raft_height, -0.1F, BURLYWOOD, BURLYWOOD));
-    this->bow = this->insert(new RegularPolygonlet(3, raft_height * 0.5F, 180.0F, KHAKI, BURLYWOOD));
-    this->stern = this->insert(new RegularPolygonlet(3, raft_height * 0.5F, 0.0F, KHAKI, BURLYWOOD));
+    this->post = this->spawn<RoundedRectanglet>(raft_height * 0.618F, raft_height * 2.0F, -0.45F, BURLYWOOD, BURLYWOOD);
+    this->paddle = this->spawn<Linelet>(raft_width * 0.618F, raft_height * 2.0F, BROWN);
+    this->raft = this->spawn<RoundedRectanglet>(raft_width, raft_height, -0.1F, BURLYWOOD, BURLYWOOD);
+    this->bow = this->spawn<RegularPolygonlet>(3, raft_height * 0.5F, 180.0F, KHAKI, BURLYWOOD);
+    this->stern = this->spawn<RegularPolygonlet>(3, raft_height * 0.5F, 0.0F, KHAKI, BURLYWOOD);
                 
     /* load renderer's name as the caption */ {
         dc_t* device = this->drawing_context();

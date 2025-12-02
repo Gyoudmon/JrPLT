@@ -9,13 +9,13 @@
 (require diafun/digitama/avatar/procedure)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define geo-7-bridge-agent : (->* (Nonnegative-Flonum) (Maybe-Fill-Paint) Geo)
-  (lambda [rem [brush 'Gray]]
+(define geo-7-bridge-agent : (->* (Nonnegative-Flonum) (Color) Geo)
+  (lambda [rem [fill-color 'Gray]]
     (define io:width   : Nonnegative-Flonum (* rem 1.618))
     (define in:gapsize : Nonnegative-Flonum (* rem 0.618))
 
     (define-gomamon! 7-bridge-agent
-      [io:width in:gapsize #:anchor '#:A #:stroke 'Yellow #:fill brush #:fill-rule 'even-odd] #:-
+      [io:width in:gapsize #:anchor '#:A #:stroke 'Yellow #:fill (desc-brush #:color fill-color #:rule 'even-odd)] #:-
 
       (move-up 3 '#:B)
       (drift -1.4 '(-0.618+1.5i) '#:C)
