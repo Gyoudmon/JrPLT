@@ -9,12 +9,12 @@
   #:parameterize ([default-diaflow-arrow-label-inline? #false]
                   [default-diaflow-arrow-label-rotate? #true])
   [#:start-name "同音替换加密" #:background 'White
-   #:node-desc #hasheq((initial-cipher-table! . "初始化密文表")
-                       (>>define-plain-text . "写下明文\nPlaintext")
-                       (encrypting? . "存在字符 p?")
-                       (random . "随机确定密文索引 n")
-                       (encrypt . "计算当前字符密文 c")
-                       (<<cipher . "写下密文 c"))] #:-
+   #:block-desc #hasheq((initial-cipher-table! . "初始化密文表")
+                        (>>define-plain-text . "写下明文\nPlaintext")
+                        (encrypting? . "存在字符 p?")
+                        (random . "随机确定密文索引 n")
+                        (encrypt . "计算当前字符密文 c")
+                        (<<cipher . "写下密文 c"))] #:-
   (move-down 1 'initial-cipher-table!)
   (move-down 1 '>>define-plain-text)
   (move-down 1 'encrypting?)
@@ -35,11 +35,11 @@
   #:parameterize ([default-diaflow-arrow-label-inline? #false]
                   [default-diaflow-arrow-label-rotate? #true])
   [#:start-name "同音替换解密" #:background 'White
-   #:node-desc #hasheq((initial-cipher-table! . "初始化明文符号表\nPlaintext")
-                       (>>cipher . "读取密文\ncipher")
-                       (okay? . "读取成功?")
-                       (wrap . "环绕到最小密文 c")
-                       (<<plain . "输出 Plaintext 中\nc 前一个位置处的字符"))] #:-
+   #:block-desc #hasheq((initial-cipher-table! . "初始化明文符号表\nPlaintext")
+                        (>>cipher . "读取密文\ncipher")
+                        (okay? . "读取成功?")
+                        (wrap . "环绕到最小密文 c")
+                        (<<plain . "输出 Plaintext 中\nc 前一个位置处的字符"))] #:-
   (move-down 1 'initial-cipher-table!)
   (move-down 1 '>>cipher)
   (move-down 1 'okay?)

@@ -47,7 +47,7 @@
 
 (define number-axis/error : Geo
   (plot-integer-line #:range (cons 0 8)
-                     #:style (make-plot-axis-style #:stroke (desc-stroke default-axis-stroke #:color 'RoyalBlue))
+                     #:style (make-plot-axis-style #:pen (desc-stroke default-axis-pen #:color 'RoyalBlue))
                      #:mark-style (make-plot-mark-style #:color 'Crimson #:pin-length 0.0 #:gap-length '(61.8 %))
                      #:exclude-zero? #true
                      #:label "n"

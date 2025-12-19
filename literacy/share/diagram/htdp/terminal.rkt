@@ -49,8 +49,8 @@
                   (format "size: ~a x ~a" col row))))
 
 (define-flowchart! ASCII-Art.dia [#:start-name "Filled ASCII Shape" #:background 'White
-                              #:node-desc #hasheq((|&Display Line| . "Display\nLine")
-                                                  (|&Display Line.| . "Display\nLine"))] #:-
+                                  #:block-desc #hasheq((|&Display Line| . "Display\nLine")
+                                                       (|&Display Line.| . "Display\nLine"))] #:-
   (move-down 1 '>>|Read n|)
 
   [#:tree (move-down 1 '#:|1 <= L <= n|?)
@@ -86,7 +86,7 @@
        (move-down 0.75 'End$)]])
 
 (define-flowchart! display-detailed-line.dia #:start '|&Display Line.| [#:background 'White
-                                                                        #:node-desc #hasheq((|&Display Line.| . "Display\nLine"))] #:-
+                                                                        #:block-desc #hasheq((|&Display Line.| . "Display\nLine"))] #:-
   [#:tree (move-down 1 '#:|1 <= C < pos(L)|?)
    [=> (move-down 1 '<<|Display WhiteSpace|)
        (move-left 1)
@@ -109,7 +109,7 @@
             (move-down 0.75 '<<newline)]]]])
 
 (define-flowchart! mirror.dia [#:start-name "Mirrored Shape" #:background 'White
-                                #:node-desc #hasheq((|λDisplay Line1| . "Display Line")
+                               #:block-desc #hasheq((|λDisplay Line1| . "Display Line")
                                                     (|λDisplay Line2| . "Display Line"))] #:-
   (move-down 1 '>>|Read n|)
 

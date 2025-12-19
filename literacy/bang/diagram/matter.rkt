@@ -6,7 +6,7 @@
 (require geofun/markup)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define class-color : (Dia-Path-Node-Style-Make DiaCls-Class-Style)
+(define class-color : (Dia-Block-Style-Make DiaCls-Class-Style)
   (lambda [anchor hint]
     (cond [(memq anchor '(Sprite Atlas Tracklet Continent Dimensionlet))
            (make-diacls-class-style #:fill-paint 'RoyalBlue)]

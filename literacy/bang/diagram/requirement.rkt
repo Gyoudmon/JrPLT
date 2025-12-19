@@ -9,14 +9,14 @@
 (define ext : String "extend")
 (define title : String "JrPLT 教学引擎及项目制教学实践")
 
-(define colorize-actor : (Dia-Path-Node-Style-Make DiaUC-Actor-Style)
+(define colorize-actor : (Dia-Block-Style-Make DiaUC-Actor-Style)
   (lambda [id hint]
     (case id
       [(#:Researcher #:Teacher) (make-diauc-actor-style #:fill-paint 'Yellow)]
       [(#:Engineer) (make-diauc-actor-style #:fill-paint 'DeepSkyBlue)]
       [else (make-diauc-actor-style)])))
 
-(define colorize-ucase : (Dia-Path-Node-Style-Make DiaUC-UCase-Style)
+(define colorize-ucase : (Dia-Block-Style-Make DiaUC-UCase-Style)
   (lambda [id hint]
     (case id
       [(arch dev api bdd) (make-diauc-ucase-style #:fill-paint 'DeepSkyBlue #:stroke-color 'transparent)]
@@ -28,27 +28,28 @@
 (define-use-case! role.dia #:start '#:Engineer
   #:parameterize ([default-diauc-actor-style-make colorize-actor]
                   [default-diauc-ucase-style-make colorize-ucase])
-  [#:background 'White #:node-desc #hasheq((#:Engineer . "软件工程师")
-                                           (#:Researcher . "教研老师")
-                                           (#:Teacher . "授课老师")
-                                           (#:Student . "学生")
-                                           (arch . "设计教学引擎")
-                                           (dev . "实现教学引擎")
-                                           (asset . "预制素材资源")
-                                           (api . "规范命名 API")
-                                           (train . "培训系统用法")
-                                           (doc . "编写用户文档")
-                                           (example . "编写范例项目")
-                                           (bdd . "行为驱动开发")
-                                           (deploy . "部署系统\n同步课程源码")
-                                           (study . "研发课程")
-                                           (slide . "编写演示程序")
-                                           (fit . "裁剪课程项目")
-                                           (dup . "完成课程项目")
-                                           (experiment . "设计实验")
-                                           (ct . "分解、识别\n抽象、建模")
-                                           (trade-off . "权衡新旧知识点")
-                                           (report . "项目总结与报告"))] #:-
+  [#:background 'White
+   #:block-desc #hasheq((#:Engineer . "软件工程师")
+                        (#:Researcher . "教研老师")
+                        (#:Teacher . "授课老师")
+                        (#:Student . "学生")
+                        (arch . "设计教学引擎")
+                        (dev . "实现教学引擎")
+                        (asset . "预制素材资源")
+                        (api . "规范命名 API")
+                        (train . "培训系统用法")
+                        (doc . "编写用户文档")
+                        (example . "编写范例项目")
+                        (bdd . "行为驱动开发")
+                        (deploy . "部署系统\n同步课程源码")
+                        (study . "研发课程")
+                        (slide . "编写演示程序")
+                        (fit . "裁剪课程项目")
+                        (dup . "完成课程项目")
+                        (experiment . "设计实验")
+                        (ct . "分解、识别\n抽象、建模")
+                        (trade-off . "权衡新旧知识点")
+                        (report . "项目总结与报告"))] #:-
   (radial-move 2 -45 'arch)
   (radial-move 2 0 'dev)
   (radial-move 2 +45 'train)

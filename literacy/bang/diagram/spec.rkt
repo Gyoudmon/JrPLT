@@ -33,11 +33,13 @@
                   [default-diaflow-arrow-label-inline? #false]
                   [default-diaflow-free-track-dash 'long-dash]
                   [default-diaflow-free-track-target-tip default-arrow-tip])
-  #:start 'λtestable-unit [#:background 'White #:node-desc #hasheq((λtestable-unit . "编写最小可测单元")
-                                                                   (test-driver . "编写\n测试驱动函数或包装器")
-                                                                   (ffi . "编写\n驱动函数的 FFI 绑定")
-                                                                   (λspec . "编写 Behaviors")
-                                                                   (prove . "运行 Prover"))] #:-
+  #:start 'λtestable-unit
+  [#:background 'White
+   #:block-desc #hasheq((λtestable-unit . "编写最小可测单元")
+                        (test-driver . "编写\n测试驱动函数或包装器")
+                        (ffi . "编写\n驱动函数的 FFI 绑定")
+                        (λspec . "编写 Behaviors")
+                        (prove . "运行 Prover"))] #:-
   (move-down 1 'test-driver)
   (move-down 1 'ffi)
   (move-down 1 'λspec)

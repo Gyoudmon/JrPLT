@@ -6,8 +6,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-flowchart! prepare.dia
-  #:parameterize ([default-diaflow-edge-label-rotate? #true]
-                  [default-diaflow-edge-label-inline? #false])
+  #:parameterize ([default-diaflow-track-label-rotate? #true]
+                  [default-diaflow-track-label-inline? #false])
   [#:start-name "第一阶段主题课" #:background 'White] #:-
   (move-down 1 '|自备个人电脑!|)
   (move-down 1 'λ|认识 Shell|)

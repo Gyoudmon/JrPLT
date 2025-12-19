@@ -149,7 +149,7 @@ void Plteen::TrackPlane::run_bracer_in_8_ways(IMatter* bracer, size_t sides, siz
     double meridian = double(rounds * gapsize);
     double rad = degrees_to_radians(360.0 / sides);
     double factor = 2.0 - 2.0 * flcos(rad); 
-    double direction = bracer->get_heading();
+    double direction = bracer->get_heading(true);
     Position dot = this->get_matter_location(bracer, MatterPort::LT);
             
     this->set_pen_color(bracer, RGBA::HSV(random_uniform(0.0, 360.0)));

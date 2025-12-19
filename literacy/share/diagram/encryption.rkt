@@ -6,14 +6,15 @@
 (require diafun/flowchart)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(default-diaflow-edge-font (desc-font #:size 'x-large))
+(default-diaflow-track-font (desc-font #:size 'x-large))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-flowchart! encryption.dia #:start '/doc/plain/s
-  [#:background 'White #:node-desc #hasheq((/doc/plain/s  . "明文\nplain")
-                                           (/doc/cipher/s . "密文\nqmbjo")
-                                           (/doc/plain/r  . "明文\nplain")
-                                           (/doc/cipher/r . "密文\nqmbjo"))] #:-
+  [#:background 'White
+   #:block-desc #hasheq((/doc/plain/s  . "明文\nplain")
+                        (/doc/cipher/s . "密文\nqmbjo")
+                        (/doc/plain/r  . "明文\nplain")
+                        (/doc/cipher/r . "密文\nqmbjo"))] #:-
   (move-right 1.5 '/doc/cipher/s "加密")
   (move-right 1.5 '/doc/cipher/r "传输")
   (move-right 1.5 '/doc/plain/r "解密")

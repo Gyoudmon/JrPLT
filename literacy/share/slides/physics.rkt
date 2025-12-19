@@ -24,10 +24,10 @@
     (plot-real-line #:length 800.0
                     ;#:label (cons "微观尺度" "宏观尺度")
                     #:ticks plot-no-ticks
-                    #:style (make-plot-axis-style #:stroke (desc-stroke #:width 3.0 #:color color)
+                    #:style (make-plot-axis-style #:pen (desc-stroke #:width 3.0 #:color color)
                                                   #:font (desc-font #:size 'large)
                                                   #:tip plot-bi-tip)
-                    #:mark-style (make-plot-mark-style #:pin-stroke (desc-stroke #:width 2.0 #:color color))
+                    #:mark-style (make-plot-mark-style #:pin-pen (desc-stroke #:width 2.0 #:color color))
                     #:mark-template (plot-template #:pin-length '(300 %) #:pin-angle (- rad)
                                                    #:shape #false #:desc scale-desc
                                                    '(25 %) (- rad))

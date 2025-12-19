@@ -49,7 +49,7 @@
           (define sub-labels : Geo
             (geo-hc-append* #:gapsize arch-layer-hgap
                             (for/list : (Listof Geo:Group) ([mod (in-list module-names)])
-                              (assert (dia-flow-node mod #:scale s) geo:group?))))
+                              (assert (dia-flow-block mod #:scale s) geo:group?))))
 
           (geo-cc-superimpose frame
                               (geo-vc-append #:gapsize arch-layer-vgap label sub-labels)))
